@@ -99,7 +99,7 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
    <span class="bdot">S</span>스파르탄 리서치<span class="tg">· Telegram ↗</span></a>
  <p class="eyebrow">Earnings Calendar · KRX</p>
  <h1>다가오는 실적 발표 일정</h1>
- <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-07-26</b> 접수 공시<br>
+ <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-07-27</b> 접수 공시<br>
    실적공시예고와 실적 관련 IR개최만 자동 선별했습니다.</p>
 
  <div class="stats">
@@ -126,7 +126,7 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-26 22:37 · 평일 매일 자동 갱신</p>
+   생성 2026-07-27 00:43 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -157,10 +157,12 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 (function(){
   var el=document.getElementById("visits"); if(!el) return;
   var A="https://abacus.jasoncameron.dev", ns="spartan-earnings";   // 실시간 무료 카운터(캐시 없음)
-  var day="d"+new Date().toISOString().slice(0,10).replace(/-/g,"");
+  var kst=new Date(Date.now()+324e5).toISOString().slice(0,10).replace(/-/g,"");  // 한국시각(UTC+9) 기준 날짜
+  var day="d"+kst;
   function j(u){return fetch(u).then(function(r){return r.ok?r.json():null}).catch(function(){return null});}
-  var fresh=!sessionStorage.getItem("v_counted");
-  if(fresh){try{sessionStorage.setItem("v_counted","1");}catch(e){}}
+  var mark="v_"+kst;                                   // 날짜별 세션표시 → 자정 넘으면 새로 카운트
+  var fresh=!sessionStorage.getItem(mark);
+  if(fresh){try{sessionStorage.setItem(mark,"1");}catch(e){}}
   var op=fresh?"/hit/":"/get/";   // 세션당 1회만 증가(새로고침 중복 방지)
   Promise.all([j(A+op+ns+"/total"), j(A+op+ns+"/"+day)]).then(function(x){
     if(!x[0]){el.style.display="none";return;}
