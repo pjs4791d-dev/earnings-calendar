@@ -114,6 +114,18 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 .ctbl td.neg{color:#dc2626}
 .cmsg{color:var(--muted);font-size:14px;padding:26px 0;text-align:center}
 .csrc{color:var(--faint);font-size:11.5px;margin-top:12px}
+.cswitch{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.sw{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.sw button{appearance:none;border:0;background:var(--surface);color:var(--muted);font:inherit;
+ font-size:12.5px;font-weight:700;padding:6px 14px;cursor:pointer}
+.sw button+button{border-left:1px solid var(--line)}
+.sw button.on{background:var(--accent);color:#fff}
+.ctbl tr.key td{font-weight:800;font-size:14px;background:var(--yego-bg)}
+.ctbl tr.key td:first-child{color:var(--yego)}
+.ctbl tr.sub td{color:var(--muted);font-size:12.5px}
+.ctbl tr.sub td:first-child{padding-left:22px;font-weight:500}
+.ctbl td.pre{opacity:.85}
+.cflag{font-size:10px;font-weight:700;margin-left:3px;vertical-align:1px}
 .brand{display:inline-flex;align-items:center;gap:8px;text-decoration:none;margin:0 0 16px;
  font-size:14px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
 .brand .bdot{width:22px;height:22px;border-radius:6px;background:var(--accent);color:var(--bg);
@@ -179,12 +191,18 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
   <datalist id="corps"></datalist>
  </div>
  <div id="csug" class="csug"></div>
+ <div class="cswitch">
+  <span class="sw" data-k="freq">
+    <button class="on" data-v="Y">연간</button><button data-v="Q">분기</button></span>
+  <span class="sw" data-k="consol">
+    <button class="on" data-v="C">연결</button><button data-v="I">별도</button></span>
+ </div>
  <div id="cout" class="cout"></div>
 </section>
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-27 21:32 · 평일 매일 자동 갱신</p>
+   생성 2026-07-27 21:42 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -214,35 +232,57 @@ function loadCorps(){
     dl.innerHTML=names.map(function(n){return '<option value="'+n+'">'}).join('');
   }).catch(function(){ corpsLoading=false; });
 }
-function fmtNum(v){
+var KEYROWS=['매출액','영업이익','당기순이익'];       // 하이라이트할 핵심 항목
+var COPT={freq:'Y',consol:'C'}, LASTQ=null;
+function fmtNum(v,digit){
   if(v===null||v===undefined) return '–';
-  return Math.round(v).toLocaleString('ko-KR');
+  var d=(digit===null||digit===undefined)?0:digit;
+  return v.toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d});
 }
 function renderConsensus(name,code,d){
   var out=document.getElementById('cout');
-  if(!d||!d.rows||!Object.keys(d.rows).length||d.empty){
-    out.innerHTML='<div class="cmsg">📭 <b>'+name+'</b>의 컨센서스 데이터가 없어요.<br>'+
+  if(!d||!d.rows||!d.rows.length||d.empty){
+    out.innerHTML='<div class="cmsg">📭 <b>'+name+'</b>의 데이터가 없어요.<br>'+
       '<span style="font-size:12.5px">애널리스트 커버리지가 없는 종목일 수 있어요.</span></div>';
     return;
   }
-  var ys=d.years||[], keys=['매출액','영업이익','당기순이익'];
-  var head='<tr><th>항목</th>'+ys.map(function(y){
-    return '<th class="'+(y.indexOf('(E)')>-1?'est':'')+'">'+y+'</th>'}).join('')+'</tr>';
-  var body=keys.filter(function(k){return d.rows[k]}).map(function(k){
-    var tds=d.rows[k].map(function(v,i){
-      var est=(ys[i]||'').indexOf('(E)')>-1;
-      var cls=(est?'est ':'')+((v!==null&&v<0)?'neg':'');
-      return '<td class="'+cls.trim()+'">'+fmtNum(v)+'</td>';
+  var hd=d.header||[];
+  var head='<tr><th>항목</th>'+hd.map(function(h){
+    var f=h.est?'<span class="cflag">(E)</span>':(h.pre?'<span class="cflag">(P)</span>':'');
+    return '<th class="'+(h.est?'est':'')+'">'+h.label+f+'</th>';
+  }).join('')+'</tr>';
+  var body=d.rows.map(function(r){
+    var isKey=KEYROWS.indexOf(r.name)>-1;
+    var cls=isKey?'key':(r.lvl===2?'sub':'');
+    var label=r.name+(r.unit?' <span style="font-weight:400;font-size:11.5px;opacity:.7">('+r.unit+')</span>':'');
+    var tds=r.vals.map(function(v,i){
+      var h=hd[i]||{}, c=[];
+      if(h.est) c.push('est'); if(h.pre) c.push('pre');
+      if(v!==null&&v<0) c.push('neg');
+      return '<td class="'+c.join(' ')+'">'+fmtNum(v,r.digit)+'</td>';
     }).join('');
-    return '<tr><td>'+k+'</td>'+tds+'</tr>';
+    return '<tr class="'+cls+'"><td>'+label+'</td>'+tds+'</tr>';
   }).join('');
+  var meta=(d.consol==='C'?'연결':'별도')+' · '+(d.freq==='Q'?'분기':'연간');
   out.innerHTML='<div class="cbox"><div class="cname">'+name+
     '<span class="ccode">'+code+'</span></div>'+
-    '<div class="cunit">단위: 억원 · (E)=증권가 추정치 · 조회시각 '+
+    '<div class="cunit">'+meta+' · 단위: 억원(비율·주당금액 제외) · (E)=추정치, (P)=잠정 · 조회 '+
       new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+'</div>'+
     '<div class="ctblwrap"><table class="ctbl"><thead>'+head+'</thead><tbody>'+body+
     '</tbody></table></div><div class="csrc">출처: FnGuide</div></div>';
 }
+/* 연간/분기 · 연결/별도 전환 */
+(function(){
+  document.querySelectorAll('.sw').forEach(function(sw){
+    sw.querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click',function(){
+        sw.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b)});
+        COPT[sw.dataset.k]=b.dataset.v;
+        if(LASTQ) lookup(LASTQ);
+      });
+    });
+  });
+})();
 function lookup(q){
   q=(q||'').trim(); if(!q) return;
   var out=document.getElementById('cout'), sug=document.getElementById('csug');
@@ -268,8 +308,9 @@ function lookup(q){
     }
   }
   if(!code){ out.innerHTML='<div class="cmsg">❓ <b>'+q+'</b> 를 찾지 못했어요. 기업명이나 종목코드를 확인해주세요.</div>'; return; }
+  LASTQ=q;
   out.innerHTML='<div class="cmsg">⏳ '+name+' 컨센서스를 불러오는 중…</div>';
-  fetch(WORKER+'?code='+code).then(function(r){return r.json()})
+  fetch(WORKER+'?code='+code+'&freq='+COPT.freq+'&consol='+COPT.consol).then(function(r){return r.json()})
     .then(function(d){ renderConsensus(name,code,d); })
     .catch(function(){ out.innerHTML='<div class="cmsg">⚠️ 조회에 실패했어요. 잠시 후 다시 시도해주세요.</div>'; });
 }
