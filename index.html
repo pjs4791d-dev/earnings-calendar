@@ -150,6 +150,37 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 .foot a{color:var(--accent);text-decoration:none;font-weight:600}
 @media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}
  .visits{position:static;display:block;text-align:right;margin:-4px 0 12px}}
+
+/* ── 데스크톱 레이아웃 (넓은 화면에서 2단으로) ───────────── */
+@media(min-width:960px){
+ .wrap{max-width:1160px;padding:48px 32px 80px}
+ h1{font-size:36px}
+ .meta{font-size:14.5px}
+ .visits{top:49px;right:32px;font-size:13px}
+ .stats{gap:14px;margin:30px 0 10px}
+ .stat{padding:18px 18px}
+ .stat .num{font-size:30px}
+ .stat .lbl{font-size:12.5px}
+ .tabs{margin:30px 0 6px}
+ .tab{font-size:15.5px;padding:11px 18px}
+ /* 일정: 신문처럼 2단 — 왼쪽 열을 다 읽고 오른쪽 열로 */
+ .list{columns:2;column-gap:40px;border-top:0;margin-top:16px}
+ .day{break-inside:avoid;-webkit-column-break-inside:avoid;
+      border-top:1px solid var(--line);border-bottom:0;padding:16px 0}
+ .ev{padding:7px 8px}
+ .ev-c{font-size:15.5px}
+ /* 컨센서스: 넓게 */
+ #p-con .search{max-width:560px}
+ .cbox{padding:24px 26px}
+ .cname{font-size:21px}
+ .ctbl{font-size:14px}
+ .ctbl th,.ctbl td{padding:10px 14px}
+ .con-lead{font-size:14.5px;max-width:760px}
+}
+@media(min-width:1360px){
+ .wrap{max-width:1320px}
+ .list{columns:3;column-gap:38px}
+}
 </style>
 
 <a class="wm" href="https://t.me/SpartanResearch" target="_blank" rel="noopener"><span class="wd"></span>스파르탄 리서치</a>
@@ -211,7 +242,7 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-27 21:49 · 평일 매일 자동 갱신</p>
+   생성 2026-07-27 21:53 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
