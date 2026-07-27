@@ -86,12 +86,18 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 .tag{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
 .t-yego{color:var(--yego);background:var(--yego-bg)}.t-ir{color:var(--ir);background:var(--ir-bg)}
 .empty{display:none;text-align:center;color:var(--muted);padding:40px 0;font-size:14px}
-.tabs{display:flex;gap:6px;margin:24px 0 4px;border-bottom:1px solid var(--line)}
-.tab{appearance:none;border:0;background:none;font:inherit;font-size:14.5px;font-weight:700;
- color:var(--muted);padding:10px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
-.tab:hover{color:var(--ink)}
-.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
-.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+/* 좁은 화면: 상단 가로 메뉴 / 넓은 화면: 왼쪽 사이드바 */
+.shell{display:block}
+.side{display:flex;gap:4px;margin:22px 0 20px;padding-bottom:6px;overflow-x:auto;
+ border-bottom:1px solid var(--line);-webkit-overflow-scrolling:touch}
+.ngrp{display:none}
+.nav{appearance:none;border:0;background:none;font:inherit;font-size:14.5px;font-weight:700;
+ color:var(--muted);padding:9px 13px;cursor:pointer;border-radius:9px;white-space:nowrap}
+.nav:hover{color:var(--ink)}
+.nav.on{color:var(--accent);background:var(--yego-bg)}
+.nav:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.main{min-width:0}
+.main h1{margin-top:2px}
 .con-lead{color:var(--muted);font-size:13.5px;line-height:1.6;margin:18px 0 0}
 .con-lead b{color:var(--ink)}
 .csug{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0}
@@ -151,35 +157,31 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 @media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}
  .visits{position:static;display:block;text-align:right;margin:-4px 0 12px}}
 
-/* ── 데스크톱 레이아웃 (넓은 화면에서 2단으로) ───────────── */
+/* ── 데스크톱: 왼쪽 사이드바 + 본문 (일정은 계속 세로 스크롤) ── */
 @media(min-width:960px){
- .wrap{max-width:1160px;padding:48px 32px 80px}
- h1{font-size:36px}
+ .wrap{max-width:1140px;padding:44px 32px 88px}
+ h1{font-size:32px}
  .meta{font-size:14.5px}
- .visits{top:49px;right:32px;font-size:13px}
- .stats{gap:14px;margin:30px 0 10px}
- .stat{padding:18px 18px}
- .stat .num{font-size:30px}
- .stat .lbl{font-size:12.5px}
- .tabs{margin:30px 0 6px}
- .tab{font-size:15.5px;padding:11px 18px}
- /* 일정: 신문처럼 2단 — 왼쪽 열을 다 읽고 오른쪽 열로 */
- .list{columns:2;column-gap:40px;border-top:0;margin-top:16px}
- .day{break-inside:avoid;-webkit-column-break-inside:avoid;
-      border-top:1px solid var(--line);border-bottom:0;padding:16px 0}
- .ev{padding:7px 8px}
+ .visits{top:45px;right:32px;font-size:13px}
+ .shell{display:grid;grid-template-columns:212px 1fr;gap:44px;align-items:start;margin-top:26px}
+ .side{position:sticky;top:28px;display:block;overflow:visible;margin:0;padding:0;border-bottom:0}
+ .ngrp{display:block;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+   color:var(--faint);margin:18px 0 7px;padding:0 12px}
+ .ngrp:first-child{margin-top:0}
+ .nav{display:block;width:100%;text-align:left;margin-bottom:3px;padding:10px 12px}
+ .stats{gap:12px;margin:26px 0 10px}
+ .stat{padding:17px 18px}
+ .stat .num{font-size:28px}
+ .day{grid-template-columns:104px 1fr;padding:16px 0}
+ .dm{font-size:21px}
+ .ev{padding:8px 10px;grid-template-columns:70px 1fr auto}
  .ev-c{font-size:15.5px}
- /* 컨센서스: 넓게 */
- #p-con .search{max-width:560px}
+ .ev-t{font-size:13.5px}
  .cbox{padding:24px 26px}
  .cname{font-size:21px}
  .ctbl{font-size:14px}
  .ctbl th,.ctbl td{padding:10px 14px}
- .con-lead{font-size:14.5px;max-width:760px}
-}
-@media(min-width:1360px){
- .wrap{max-width:1320px}
- .list{columns:3;column-gap:38px}
+ .con-lead{font-size:14.5px}
 }
 </style>
 
@@ -187,17 +189,21 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 <div class="wrap"><span id="visits" class="visits">집계 중…</span>
  <a class="brand" href="https://t.me/SpartanResearch" target="_blank" rel="noopener">
    <span class="bdot">S</span>스파르탄 리서치<span class="tg">· Telegram ↗</span></a>
+
+<div class="shell">
+ <nav class="side" role="tablist">
+  <div class="ngrp">실적</div>
+  <button class="nav on" data-p="cal" role="tab">📅 실적 일정</button>
+  <button class="nav" data-p="con" role="tab">📊 컨센서스</button>
+ </nav>
+
+<main class="main">
+<section id="p-cal">
  <p class="eyebrow">Earnings Calendar · KRX</p>
  <h1>다가오는 실적 발표 일정</h1>
  <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-07-27</b> 접수 공시<br>
    실적공시예고와 실적 관련 IR개최만 자동 선별했습니다.</p>
 
- <div class="tabs" role="tablist">
-  <button class="tab on" data-p="cal" role="tab">📅 실적 일정</button>
-  <button class="tab" data-p="con" role="tab">📊 컨센서스</button>
- </div>
-
-<section id="p-cal">
  <div class="stats">
   <div class="stat"><div class="num" id="cnt">211</div><div class="lbl">전체 일정</div></div>
   <div class="stat s-yego"><div class="num">86</div><div class="lbl">실적공시예고</div></div>
@@ -222,8 +228,10 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 </section>
 
 <section id="p-con" hidden>
- <p class="con-lead">기업을 검색하면 <b>증권가 컨센서스</b>(매출액·영업이익·당기순이익)를
-   그 자리에서 실시간으로 불러옵니다. 최근 3개년 실적과 향후 3개년 추정치를 함께 보여줘요.</p>
+ <p class="eyebrow">Consensus · FnGuide</p>
+ <h1>증권가 컨센서스</h1>
+ <p class="con-lead">기업을 검색하면 <b>매출액·영업이익·당기순이익</b>을 비롯한 재무 항목을
+   그 자리에서 실시간으로 불러옵니다. 최근 실적과 향후 추정치를 함께 보여줘요.</p>
  <div class="search">
   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
   <input id="cq" type="text" placeholder="기업명 또는 종목코드 (예: 삼성전자, 005930)"
@@ -239,16 +247,18 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
  </div>
  <div id="cout" class="cout"></div>
 </section>
+</main>
+</div>
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-27 21:53 · 평일 매일 자동 갱신</p>
+   생성 2026-07-27 21:59 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
 /* ── 탭 전환 ─────────────────────────────── */
 (function(){
- var tabs=[].slice.call(document.querySelectorAll('.tab'));
+ var tabs=[].slice.call(document.querySelectorAll('.nav'));
  tabs.forEach(function(t){
   t.addEventListener('click',function(){
    tabs.forEach(function(x){x.classList.toggle('on',x===t)});
