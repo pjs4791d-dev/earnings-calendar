@@ -114,6 +114,15 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 .ctbl td.neg{color:#dc2626}
 .cmsg{color:var(--muted);font-size:14px;padding:26px 0;text-align:center}
 .csrc{color:var(--faint);font-size:11.5px;margin-top:12px}
+.cac{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:30;background:var(--surface);
+ border:1px solid var(--line);border-radius:11px;box-shadow:0 8px 26px rgba(0,0,0,.13);
+ max-height:290px;overflow-y:auto;padding:5px}
+.cac div{padding:9px 12px;border-radius:8px;cursor:pointer;font-size:14.5px;
+ display:flex;justify-content:space-between;gap:10px;align-items:center}
+.cac div:hover,.cac div.sel{background:var(--line2)}
+.cac div.sel{outline:1px solid var(--accent)}
+.cac b{font-weight:800;color:var(--accent)}
+.cac .cd{color:var(--faint);font-size:12px;font-variant-numeric:tabular-nums}
 .cswitch{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 .sw{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
 .sw button{appearance:none;border:0;background:var(--surface);color:var(--muted);font:inherit;
@@ -187,8 +196,8 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
  <div class="search">
   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
   <input id="cq" type="text" placeholder="기업명 또는 종목코드 (예: 삼성전자, 005930)"
-         autocomplete="off" list="corps">
-  <datalist id="corps"></datalist>
+         autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list">
+  <div id="cac" class="cac" role="listbox" hidden></div>
  </div>
  <div id="csug" class="csug"></div>
  <div class="cswitch">
@@ -202,7 +211,7 @@ h1{font-size:29px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-27 21:42 · 평일 매일 자동 갱신</p>
+   생성 2026-07-27 21:49 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -226,11 +235,22 @@ function loadCorps(){
   if(CORPS||corpsLoading) return;
   corpsLoading=true;
   fetch('corp_map.json').then(function(r){return r.json()}).then(function(j){
-    CORPS=j;
-    var dl=document.getElementById('corps');
-    var names=Object.keys(j).slice(0,4000);
-    dl.innerHTML=names.map(function(n){return '<option value="'+n+'">'}).join('');
+    CORPS=j; CNAMES=Object.keys(j);
   }).catch(function(){ corpsLoading=false; });
+}
+var CNAMES=[];
+/* 이름 앞부분 일치를 우선 → 그다음 포함. 짧은 이름 먼저 (본체 기업이 위로) */
+function rankNames(q){
+  q=(q||'').trim().toLowerCase(); if(!q||!CNAMES.length) return [];
+  var exact=[], starts=[], contains=[];
+  for(var i=0;i<CNAMES.length;i++){
+    var n=CNAMES[i], l=n.toLowerCase(), p=l.indexOf(q);
+    if(p<0) continue;
+    if(l===q) exact.push(n); else if(p===0) starts.push(n); else contains.push(n);
+  }
+  var byLen=function(a,b){return a.length-b.length||a.localeCompare(b,'ko')};
+  starts.sort(byLen); contains.sort(byLen);
+  return exact.concat(starts, contains);
 }
 var KEYROWS=['매출액','영업이익','당기순이익'];       // 하이라이트할 핵심 항목
 var COPT={freq:'Y',consol:'C'}, LASTQ=null;
@@ -293,7 +313,7 @@ function lookup(q){
   } else if(CORPS){
     if(CORPS[q]) code=CORPS[q];
     else{
-      var hits=Object.keys(CORPS).filter(function(n){return n.toLowerCase().indexOf(q.toLowerCase())>-1});
+      var hits=rankNames(q);                       // 앞부분 일치 우선 정렬
       if(hits.length===1){ name=hits[0]; code=CORPS[name]; }
       else if(hits.length>1){
         out.innerHTML='<div class="cmsg">여러 기업이 검색됐어요. 아래에서 골라주세요.</div>';
@@ -314,11 +334,48 @@ function lookup(q){
     .then(function(d){ renderConsensus(name,code,d); })
     .catch(function(){ out.innerHTML='<div class="cmsg">⚠️ 조회에 실패했어요. 잠시 후 다시 시도해주세요.</div>'; });
 }
+/* 자동완성 드롭다운 (앞부분 일치 우선) */
 (function(){
-  var cq=document.getElementById('cq');
-  if(!cq) return;
-  cq.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); lookup(cq.value); }});
-  cq.addEventListener('change',function(){ if(CORPS&&CORPS[cq.value]) lookup(cq.value); });
+  var cq=document.getElementById('cq'), ac=document.getElementById('cac');
+  if(!cq||!ac) return;
+  var items=[], sel=-1;
+  function close(){ ac.hidden=true; ac.innerHTML=''; items=[]; sel=-1; cq.setAttribute('aria-expanded','false'); }
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  function show(q){
+    items=rankNames(q).slice(0,8);
+    if(!items.length){ close(); return; }
+    var ql=q.trim().toLowerCase();
+    ac.innerHTML=items.map(function(n,i){
+      var p=n.toLowerCase().indexOf(ql), hl=esc(n);
+      if(p>-1) hl=esc(n.slice(0,p))+'<b>'+esc(n.slice(p,p+ql.length))+'</b>'+esc(n.slice(p+ql.length));
+      return '<div role="option" data-i="'+i+'"><span>'+hl+'</span><span class="cd">'+CORPS[n]+'</span></div>';
+    }).join('');
+    ac.hidden=false; sel=-1; cq.setAttribute('aria-expanded','true');
+    [].slice.call(ac.children).forEach(function(el){
+      el.addEventListener('mousedown',function(e){ e.preventDefault(); pick(+el.dataset.i); });
+    });
+  }
+  function mark(){
+    [].slice.call(ac.children).forEach(function(el,i){ el.classList.toggle('sel',i===sel); });
+    if(sel>=0&&ac.children[sel]) ac.children[sel].scrollIntoView({block:'nearest'});
+  }
+  function pick(i){ var n=items[i]; if(!n) return; cq.value=n; close(); lookup(n); }
+
+  cq.addEventListener('input',function(){
+    loadCorps();
+    var v=cq.value.trim();
+    if(!v||/^\d{6}$/.test(v)) close(); else show(v);
+  });
+  cq.addEventListener('keydown',function(e){
+    if(!ac.hidden&&items.length){
+      if(e.key==='ArrowDown'){ e.preventDefault(); sel=(sel+1)%items.length; mark(); return; }
+      if(e.key==='ArrowUp'){ e.preventDefault(); sel=(sel-1+items.length)%items.length; mark(); return; }
+      if(e.key==='Escape'){ close(); return; }
+      if(e.key==='Enter'&&sel>=0){ e.preventDefault(); pick(sel); return; }
+    }
+    if(e.key==='Enter'){ e.preventDefault(); close(); lookup(cq.value); }
+  });
+  cq.addEventListener('blur',function(){ setTimeout(close,120); });
 })();
 
 /* ── 일정 탭 검색 ─────────────────────────── */
