@@ -307,7 +307,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-27 22:18 · 평일 매일 자동 갱신</p>
+   생성 2026-07-27 22:21 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -500,12 +500,18 @@ function lookup(q){
  var input=document.getElementById('q'),
      days=[].slice.call(document.querySelectorAll('.day')),
      cnt=document.getElementById('cnt'), empty=document.getElementById('empty');
+ var evs=[].slice.call(document.querySelectorAll('.day .ev'));
  function run(){
   var q=input.value.trim().toLowerCase(), total=0;
+  /* 앞부분 일치를 우선. 앞부분 일치가 하나도 없을 때만 포함 검색으로 넓힘
+     (한글·영문 동일하게 동작 — data-corp 는 소문자 회사명) */
+  var prefixOnly=false;
+  if(q) prefixOnly=evs.some(function(ev){return ev.dataset.corp.indexOf(q)===0});
   days.forEach(function(day){
    var vis=0;
    day.querySelectorAll('.ev').forEach(function(ev){
-    var show=!q||ev.dataset.corp.indexOf(q)>-1;
+    var p=ev.dataset.corp.indexOf(q);
+    var show=!q||(prefixOnly ? p===0 : p>-1);
     ev.style.display=show?'':'none'; if(show)vis++;
    });
    day.style.display=vis?'':'none'; total+=vis;
