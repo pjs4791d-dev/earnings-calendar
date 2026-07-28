@@ -192,15 +192,30 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 .cflag{font-size:9.5px;font-weight:700;margin-left:3px;vertical-align:1px}
 /* 리서치 목록 */
 .rlist{border-top:1px solid var(--line)}
-.ritem{display:grid;grid-template-columns:78px 1fr auto;gap:12px;align-items:baseline;
- padding:11px 8px;margin:0 -8px;border-bottom:1px solid var(--line2);border-radius:6px;
- text-decoration:none;color:inherit;transition:background .1s}
+.ritem{display:grid;grid-template-columns:62px minmax(0,1fr) 64px 74px 84px 92px;gap:10px;
+ align-items:baseline;padding:10px 8px;margin:0 -8px;border-bottom:1px solid var(--line2);
+ border-radius:6px;text-decoration:none;color:inherit;transition:background .1s}
 .ritem:hover{background:var(--line2)}
-.rdt{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
-.rti{font-size:14.5px;font-weight:600;letter-spacing:-.01em;line-height:1.45}
-.rti .pdf{font-size:10px;font-weight:700;color:var(--down);border:1px solid var(--down);
- border-radius:3px;padding:0 4px;margin-left:7px;vertical-align:2px;opacity:.75}
-.rbr{font-size:12px;color:var(--muted);white-space:nowrap;font-weight:600}
+.ritem.rhd{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em;
+ border-bottom:1px solid var(--line);padding-bottom:8px;pointer-events:none}
+.rdt{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.rti{font-size:14px;font-weight:600;letter-spacing:-.01em;line-height:1.45;
+ overflow:hidden;text-overflow:ellipsis}
+.rti .pdf{font-size:9.5px;font-weight:700;color:var(--down);border:1px solid var(--down);
+ border-radius:3px;padding:0 4px;margin-left:6px;vertical-align:2px;opacity:.7}
+.rop{font-size:11.5px;font-weight:700;white-space:nowrap}
+.rop.op-buy{color:var(--up)} .rop.op-sell{color:var(--down)} .rop.op-hold{color:var(--muted)}
+.rtg{font-size:12.5px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums;
+ text-align:right}
+.rwr{font-size:12px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rbr{font-size:12px;color:var(--muted);white-space:nowrap;font-weight:600;
+ overflow:hidden;text-overflow:ellipsis}
+@media(max-width:760px){
+ .ritem{grid-template-columns:58px minmax(0,1fr) 62px;row-gap:2px}
+ .rtg{grid-column:2;text-align:left;font-size:12px;color:var(--muted)}
+ .rwr,.rbr{grid-column:2;font-size:11.5px}
+ .ritem.rhd span:nth-child(n+4){display:none}
+}
 .rpage{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:18px}
 .rpage button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);
  font:inherit;font-size:12.5px;font-weight:600;min-width:32px;padding:6px 10px;border-radius:6px;cursor:pointer}
@@ -330,11 +345,16 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 <section id="p-rpt" hidden>
  <p class="eyebrow">Research · 증권사 리포트</p>
  <h1>리서치 조회</h1>
- <p class="con-lead">기업을 검색하면 <b>증권사별 리포트</b>를 최신순으로 정리해 보여줍니다.
+ <p class="con-lead">증권사 리포트를 <b>최신순</b>으로 보여줍니다. 기업·작성자·제공처로 검색할 수 있고,
    제목을 누르면 <b>리포트 원문(PDF)</b> 이 열려요.</p>
+ <div class="cswitch" style="margin:14px 0 0">
+  <span class="sw" id="rmode">
+   <button class="on" data-v="co">기업</button><button data-v="writer">작성자</button><button data-v="office">제공처</button>
+  </span>
+ </div>
  <div class="search">
   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
-  <input id="rq" type="text" placeholder="기업명 또는 종목코드 (예: 삼성전자, 005930)"
+  <input id="rq" type="text" placeholder="기업명 검색 (비워두면 전체 최신순)"
          autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list">
   <div id="rac" class="cac" role="listbox" hidden></div>
  </div>
@@ -346,7 +366,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-28 14:41 · 평일 매일 자동 갱신</p>
+   생성 2026-07-28 14:58 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -512,74 +532,72 @@ function lookup(q){
     .then(function(d){ renderConsensus(name,code,d); })
     .catch(function(){ out.innerHTML='<div class="cmsg">⚠️ 조회에 실패했어요. 잠시 후 다시 시도해주세요.</div>'; });
 }
-/* ── 리서치 조회 (증권사 리포트) ──────────────── */
-var RCUR={name:'',code:'',page:1};
+/* ── 리서치 조회 (증권사 리포트, 한경컨센서스) ───────── */
+var RQ={mode:'co', q:'', page:1};
+function rEsc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function opClass(o){
+  var t=(o||'').toLowerCase();
+  if(/buy|매수|strong/.test(t)) return 'op-buy';
+  if(/sell|매도|reduce|축소/.test(t)) return 'op-sell';
+  if(/hold|중립|neutral|marketperform/.test(t)) return 'op-hold';
+  return '';
+}
 function renderReports(d){
   var out=document.getElementById('rout'), pg=document.getElementById('rpage');
-  if(!d.items.length){
-    out.innerHTML='<div class="cmsg">📄 <b>'+RCUR.name+'</b>의 리포트를 찾지 못했어요.</div>';
+  if(!d.items||!d.items.length){
+    out.innerHTML='<div class="cmsg">📄 조건에 맞는 리포트를 찾지 못했어요.'+
+      (RQ.q?'<br><span style="font-size:12.5px">검색어를 바꾸거나 다른 종류로 찾아보세요.</span>':'')+'</div>';
     pg.innerHTML=''; return;
   }
-  var head='<div class="rhead"><span class="rname">'+RCUR.name+
-    ' <span class="ccode">'+RCUR.code+'</span></span>'+
-    '<span class="rcnt">'+RCUR.page+'페이지 · '+d.items.length+'건 · 최신순</span></div>';
-  var body=d.items.map(function(it){
-    var href=it.pdf||it.link||'#';
-    return '<a class="ritem" href="'+href+'" target="_blank" rel="noopener">'+
-      '<span class="rdt">'+it.date+'</span>'+
-      '<span class="rti">'+it.title+(it.pdf?'<span class="pdf">PDF</span>':'')+'</span>'+
-      '<span class="rbr">'+it.broker+'</span></a>';
+  var label={co:'기업',writer:'작성자',office:'제공처'}[RQ.mode];
+  var head='<div class="rhead"><span class="rname">'+
+    (RQ.q? rEsc(RQ.q)+' <span class="ccode">'+label+' 검색</span>' : '전체 최신 리포트')+
+    '</span><span class="rcnt">'+d.sdate+' ~ '+d.edate+' · '+RQ.page+'페이지 · '+d.items.length+'건</span></div>';
+  var rows=d.items.map(function(it){
+    return '<a class="ritem" href="'+it.pdf+'" target="_blank" rel="noopener">'+
+      '<span class="rdt">'+it.date.slice(2)+'</span>'+
+      '<span class="rti">'+rEsc(it.title)+(it.pdf?'<span class="pdf">PDF</span>':'')+'</span>'+
+      '<span class="rop '+opClass(it.opinion)+'">'+rEsc(it.opinion||'-')+'</span>'+
+      '<span class="rtg">'+rEsc(it.target||'-')+'</span>'+
+      '<span class="rwr">'+rEsc(it.writer||'-')+'</span>'+
+      '<span class="rbr">'+rEsc(it.office||'-')+'</span></a>';
   }).join('');
-  out.innerHTML=head+'<div class="rlist">'+body+'</div>';
-  var last=Math.min(d.pages||1,12), btns='';
-  for(var i=1;i<=last;i++) btns+='<button data-pg="'+i+'"'+(i===RCUR.page?' class="on"':'')+'>'+i+'</button>';
-  pg.innerHTML=last>1?btns:'';
+  var colhead='<div class="ritem rhd">'+
+    '<span>일자</span><span>제목</span><span>의견</span><span>적정가</span><span>작성자</span><span>제공처</span></div>';
+  out.innerHTML=head+'<div class="rlist">'+colhead+rows+'</div>';
+  var btns='';
+  for(var i=1;i<=10;i++) btns+='<button data-pg="'+i+'"'+(i===RQ.page?' class="on"':'')+'>'+i+'</button>';
+  pg.innerHTML=btns;
   [].slice.call(pg.querySelectorAll('button')).forEach(function(b){
     b.addEventListener('click',function(){ loadReports(+b.dataset.pg); });
   });
 }
 function loadReports(page){
+  RQ.page=page||1;
   var out=document.getElementById('rout');
-  RCUR.page=page||1;
-  out.innerHTML='<div class="cmsg">⏳ '+RCUR.name+' 리포트를 불러오는 중…</div>';
+  out.innerHTML='<div class="cmsg">⏳ 리포트를 불러오는 중…</div>';
   document.getElementById('rpage').innerHTML='';
-  fetch(WORKER+'reports?code='+RCUR.code+'&page='+RCUR.page)
-   .then(function(r){return r.arrayBuffer()})
-   .then(function(buf){
-     var html=new TextDecoder('euc-kr').decode(buf);          // 네이버는 EUC-KR
-     var doc=new DOMParser().parseFromString(html,'text/html');
-     var items=[];
-     [].slice.call(doc.querySelectorAll('tr')).forEach(function(tr){
-       if(!tr.querySelector('a[href*="company_read"]')) return;
-       var td=tr.querySelectorAll('td'); if(td.length<5) return;
-       var pdfA=tr.querySelector('a[href$=".pdf"]');
-       items.push({
-         title:(td[1].textContent||'').trim(),
-         broker:(td[2].textContent||'').trim(),
-         date:(td[4].textContent||'').trim(),
-         pdf:pdfA?pdfA.getAttribute('href'):''
-       });
-     });
-     var pages=1;
-     [].slice.call(doc.querySelectorAll('a[href*="page="]')).forEach(function(a){
-       var m=/page=(\d+)/.exec(a.getAttribute('href')||''); if(m) pages=Math.max(pages,+m[1]);
-     });
-     renderReports({items:items,pages:pages});
-   })
+  fetch(WORKER+'reports?mode='+RQ.mode+'&q='+encodeURIComponent(RQ.q)+'&page='+RQ.page)
+   .then(function(r){return r.json()})
+   .then(renderReports)
    .catch(function(){ out.innerHTML='<div class="cmsg">⚠️ 조회에 실패했어요. 잠시 후 다시 시도해주세요.</div>'; });
 }
-function rlookup(q){
-  q=(q||'').trim(); if(!q) return;
-  var out=document.getElementById('rout');
-  var code=null,name=q;
-  if(/^\d{6}$/.test(q)){ code=q; if(CORPS) for(var n in CORPS){ if(CORPS[n]===q){name=n;break;} } }
-  else if(CORPS){
-    if(CORPS[q]) code=CORPS[q];
-    else{ var h=rankNames(q); if(h.length){ name=h[0]; code=CORPS[name]; } }
-  }
-  if(!code){ out.innerHTML='<div class="cmsg">❓ <b>'+q+'</b> 를 찾지 못했어요.</div>'; return; }
-  RCUR.name=name; RCUR.code=code; loadReports(1);
-}
+function rlookup(q){ RQ.q=(q||'').trim(); loadReports(1); }
+/* 검색 종류(기업/작성자/제공처) 전환 */
+(function(){
+  var sw=document.getElementById('rmode'); if(!sw) return;
+  sw.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click',function(){
+      sw.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b)});
+      RQ.mode=b.dataset.v;
+      var ph={co:'기업명 검색 (비워두면 전체 최신순)',
+              writer:'작성자 이름 검색 (예: 변용진)',
+              office:'증권사 검색 (예: iM증권)'}[RQ.mode];
+      var rq=document.getElementById('rq'); rq.placeholder=ph; rq.focus();
+      if(RQ.q) loadReports(1);
+    });
+  });
+})();
 
 /* 자동완성 드롭다운 (앞부분 일치 우선) — 컨센서스·리서치 두 검색창에서 공용 */
 function attachAC(inputId, boxId, onPick){
