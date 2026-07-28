@@ -192,10 +192,14 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 .cflag{font-size:9.5px;font-weight:700;margin-left:3px;vertical-align:1px}
 /* 리서치 목록 */
 .rlist{border-top:1px solid var(--line)}
-.ritem{display:grid;grid-template-columns:62px minmax(0,1fr) 64px 74px 84px 92px;gap:10px;
+.ritem{display:grid;grid-template-columns:58px 96px minmax(0,1fr) 58px 72px 80px 88px;gap:10px;
  align-items:baseline;padding:10px 8px;margin:0 -8px;border-bottom:1px solid var(--line2);
  border-radius:6px;text-decoration:none;color:inherit;transition:background .1s}
 .ritem:hover{background:var(--line2)}
+.ritem.nolink{cursor:default}
+.ritem.nolink:hover{background:none}
+.rcp{font-size:13.5px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;
+ overflow:hidden;text-overflow:ellipsis}
 .ritem.rhd{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em;
  border-bottom:1px solid var(--line);padding-bottom:8px;pointer-events:none}
 .rdt{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -210,11 +214,14 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 .rwr{font-size:12px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rbr{font-size:12px;color:var(--muted);white-space:nowrap;font-weight:600;
  overflow:hidden;text-overflow:ellipsis}
-@media(max-width:760px){
- .ritem{grid-template-columns:58px minmax(0,1fr) 62px;row-gap:2px}
- .rtg{grid-column:2;text-align:left;font-size:12px;color:var(--muted)}
- .rwr,.rbr{grid-column:2;font-size:11.5px}
+@media(max-width:860px){
+ .ritem{grid-template-columns:56px minmax(0,1fr) 56px;row-gap:2px}
+ .rcp{grid-column:2;font-size:13px;color:var(--accent)}
+ .rti{grid-column:2}
+ .rop{grid-column:3;grid-row:1;text-align:right}
+ .rtg,.rwr,.rbr{grid-column:2;font-size:11.5px;color:var(--muted);text-align:left;font-weight:500}
  .ritem.rhd span:nth-child(n+4){display:none}
+ .ritem.rhd span:nth-child(2){grid-column:2}
 }
 .rpage{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:18px}
 .rpage button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);
@@ -366,7 +373,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-28 15:14 · 평일 매일 자동 갱신</p>
+   생성 2026-07-28 15:25 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -557,21 +564,27 @@ function renderReports(d){
     (RQ.q? rEsc(RQ.q)+' <span class="ccode">'+label+' 검색</span>' : '전체 최신 리포트')+
     '</span><span class="rcnt">'+d.sdate+' ~ '+d.edate+' · '+RQ.page+'페이지 · '+d.items.length+'건</span></div>';
   var rows=d.items.map(function(it){
-    return '<a class="ritem" href="'+it.pdf+'" target="_blank" rel="noopener">'+
-      '<span class="rdt">'+it.date.slice(2)+'</span>'+
+    var href=it.pdf||it.link||'';                    // PDF 없으면 상세 페이지로
+    var inner='<span class="rdt">'+it.date.slice(2)+'</span>'+
+      '<span class="rcp">'+rEsc(it.corp||'-')+'</span>'+
       '<span class="rti">'+rEsc(it.title)+(it.pdf?'<span class="pdf">PDF</span>':'')+'</span>'+
       '<span class="rop '+opClass(it.opinion)+'">'+rEsc(it.opinion||'-')+'</span>'+
       '<span class="rtg">'+rEsc(it.target||'-')+'</span>'+
       '<span class="rwr">'+rEsc(it.writer||'-')+'</span>'+
-      '<span class="rbr">'+rEsc(it.office||'-')+'</span></a>';
+      '<span class="rbr">'+rEsc(it.office||'-')+'</span>';
+    // 열 수 있는 링크가 없으면 <a> 대신 <span> — 빈 href 클릭 시 페이지가 새로고침되는 문제 방지
+    return href
+      ? '<a class="ritem" href="'+href+'" target="_blank" rel="noopener">'+inner+'</a>'
+      : '<div class="ritem nolink">'+inner+'</div>';
   }).join('');
   var colhead='<div class="ritem rhd">'+
-    '<span>일자</span><span>제목</span><span>의견</span><span>적정가</span><span>작성자</span><span>제공처</span></div>';
+    '<span>일자</span><span>기업</span><span>제목</span><span>의견</span><span>적정가</span>'+
+    '<span>작성자</span><span>제공처</span></div>';
   out.innerHTML=head+'<div class="rlist">'+colhead+rows+'</div>'+
     '<div class="csrc">출처: '+(d.source||'-')+' · 작성자는 제공되는 리포트만 표시돼요</div>';
-  var btns='';
-  for(var i=1;i<=10;i++) btns+='<button data-pg="'+i+'"'+(i===RQ.page?' class="on"':'')+'>'+i+'</button>';
-  pg.innerHTML=btns;
+  var last=Math.max(1,Math.min(d.pages||1,20)), btns='';
+  for(var i=1;i<=last;i++) btns+='<button data-pg="'+i+'"'+(i===RQ.page?' class="on"':'')+'>'+i+'</button>';
+  pg.innerHTML=last>1?btns:'';
   [].slice.call(pg.querySelectorAll('button')).forEach(function(b){
     b.addEventListener('click',function(){ loadReports(+b.dataset.pg); });
   });
