@@ -355,11 +355,11 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 <section id="p-rpt" hidden>
  <p class="eyebrow">Research · 증권사 리포트</p>
  <h1>리포트 조회</h1>
- <p class="con-lead">증권사 리포트를 <b>최신순</b>으로 보여줍니다. 기업·작성자·제공처로 검색할 수 있고,
+ <p class="con-lead">증권사 리포트를 <b>최신순</b>으로 보여줍니다. 기업 또는 제공처로 검색할 수 있고,
    제목을 누르면 <b>리포트 원문(PDF)</b> 이 열려요.</p>
  <div class="cswitch" style="margin:14px 0 0">
   <span class="sw" id="rmode">
-   <button class="on" data-v="co">기업</button><button data-v="writer">작성자</button><button data-v="office">제공처</button>
+   <button class="on" data-v="co">기업</button><button data-v="office">제공처</button>
   </span>
  </div>
  <div class="search">
@@ -376,7 +376,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-28 15:58 · 평일 매일 자동 갱신</p>
+   생성 2026-07-28 16:04 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -566,7 +566,6 @@ function rSuggest(q){
     });
     return starts.concat(has).slice(0,8);
   }
-  if(RQ.mode==='writer') return [];           // 작성자는 목록이 없어 자동완성 없음
   return rankNames(q).slice(0,8);             // 기업명
 }
 function rEsc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
@@ -584,7 +583,7 @@ function renderReports(d){
       (RQ.q?'<br><span style="font-size:12.5px">검색어를 바꾸거나 다른 종류로 찾아보세요.</span>':'')+'</div>';
     pg.innerHTML=''; return;
   }
-  var label={co:'기업',writer:'작성자',office:'제공처'}[RQ.mode];
+  var label={co:'기업',office:'제공처'}[RQ.mode];
   // 실제로 받아온 리포트들의 날짜 범위를 보여준다
   // (기업 검색은 네이버 결과라 기간 필터가 없어, 조회 파라미터 기간과 다를 수 있음)
   var ds=d.items.map(function(x){return x.date}).sort();
@@ -653,8 +652,7 @@ function rlookup(q){ RQ.q=(q||'').trim(); loadReports(1); }
       sw.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b)});
       RQ.mode=b.dataset.v;
       var ph={co:'기업명 검색 (비워두면 전체 최신순)',
-              writer:'작성자 이름 검색 (예: 변용진)',
-              office:'증권사 검색 (예: iM증권)'}[RQ.mode];
+              office:'증권사 검색 (예: 신한투자증권)'}[RQ.mode];
       var rq=document.getElementById('rq'); rq.placeholder=ph; rq.value=''; RQ.q='';
       if(RQ.mode==='office') loadBrokers();
       rq.focus(); loadReports(1);
