@@ -288,7 +288,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
   <div class="ngrp">실적</div>
   <button class="nav on" data-p="cal" role="tab">📅 실적 일정</button>
   <button class="nav" data-p="con" role="tab">📊 컨센서스</button>
-  <button class="nav" data-p="rpt" role="tab">📄 리서치 조회</button>
+  <button class="nav" data-p="rpt" role="tab">📄 리포트 조회</button>
  </nav>
 
 <main class="main">
@@ -344,7 +344,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
 <section id="p-rpt" hidden>
  <p class="eyebrow">Research · 증권사 리포트</p>
- <h1>리서치 조회</h1>
+ <h1>리포트 조회</h1>
  <p class="con-lead">증권사 리포트를 <b>최신순</b>으로 보여줍니다. 기업·작성자·제공처로 검색할 수 있고,
    제목을 누르면 <b>리포트 원문(PDF)</b> 이 열려요.</p>
  <div class="cswitch" style="margin:14px 0 0">
@@ -366,7 +366,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-28 15:09 · 평일 매일 자동 갱신</p>
+   생성 2026-07-28 15:11 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -532,7 +532,7 @@ function lookup(q){
     .then(function(d){ renderConsensus(name,code,d); })
     .catch(function(){ out.innerHTML='<div class="cmsg">⚠️ 조회에 실패했어요. 잠시 후 다시 시도해주세요.</div>'; });
 }
-/* ── 리서치 조회 (증권사 리포트, 한경컨센서스) ───────── */
+/* ── 리포트 조회 (증권사 리포트, 한경컨센서스) ───────── */
 var RQ={mode:'co', q:'', page:1};
 function rEsc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 function opClass(o){
@@ -650,7 +650,7 @@ function attachAC(inputId, boxId, onPick){
   cq.addEventListener('blur',function(){ setTimeout(close,120); });
 }
 attachAC('cq','cac',lookup);      // 컨센서스
-attachAC('rq','rac',rlookup);     // 리서치 조회
+attachAC('rq','rac',rlookup);     // 리포트 조회
 
 /* ── 일정 탭 검색 ─────────────────────────── */
 (function(){
