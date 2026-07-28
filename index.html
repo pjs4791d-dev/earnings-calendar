@@ -366,7 +366,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-28 14:58 · 평일 매일 자동 갱신</p>
+   생성 2026-07-28 15:09 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -564,7 +564,8 @@ function renderReports(d){
   }).join('');
   var colhead='<div class="ritem rhd">'+
     '<span>일자</span><span>제목</span><span>의견</span><span>적정가</span><span>작성자</span><span>제공처</span></div>';
-  out.innerHTML=head+'<div class="rlist">'+colhead+rows+'</div>';
+  out.innerHTML=head+'<div class="rlist">'+colhead+rows+'</div>'+
+    '<div class="csrc">출처: '+(d.source||'-')+' · 작성자는 제공되는 리포트만 표시돼요</div>';
   var btns='';
   for(var i=1;i<=10;i++) btns+='<button data-pg="'+i+'"'+(i===RQ.page?' class="on"':'')+'>'+i+'</button>';
   pg.innerHTML=btns;
@@ -577,7 +578,13 @@ function loadReports(page){
   var out=document.getElementById('rout');
   out.innerHTML='<div class="cmsg">⏳ 리포트를 불러오는 중…</div>';
   document.getElementById('rpage').innerHTML='';
-  fetch(WORKER+'reports?mode='+RQ.mode+'&q='+encodeURIComponent(RQ.q)+'&page='+RQ.page)
+  var code='';
+  if(RQ.mode==='co'&&RQ.q){
+    if(/^[0-9]{6}$/.test(RQ.q)) code=RQ.q;
+    else if(CORPS&&CORPS[RQ.q]) code=CORPS[RQ.q];
+  }
+  fetch(WORKER+'reports?mode='+RQ.mode+'&q='+encodeURIComponent(RQ.q)+
+        '&page='+RQ.page+(code?'&code='+code:''))
    .then(function(r){return r.json()})
    .then(renderReports)
    .catch(function(){ out.innerHTML='<div class="cmsg">⚠️ 조회에 실패했어요. 잠시 후 다시 시도해주세요.</div>'; });
