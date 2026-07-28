@@ -373,7 +373,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-28 15:25 · 평일 매일 자동 갱신</p>
+   생성 2026-07-28 15:40 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -560,9 +560,13 @@ function renderReports(d){
     pg.innerHTML=''; return;
   }
   var label={co:'기업',writer:'작성자',office:'제공처'}[RQ.mode];
+  // 실제로 받아온 리포트들의 날짜 범위를 보여준다
+  // (기업 검색은 네이버 결과라 기간 필터가 없어, 조회 파라미터 기간과 다를 수 있음)
+  var ds=d.items.map(function(x){return x.date}).sort();
+  var range=ds.length ? (ds[0]===ds[ds.length-1] ? ds[0] : ds[0]+' ~ '+ds[ds.length-1]) : '';
   var head='<div class="rhead"><span class="rname">'+
     (RQ.q? rEsc(RQ.q)+' <span class="ccode">'+label+' 검색</span>' : '전체 최신 리포트')+
-    '</span><span class="rcnt">'+d.sdate+' ~ '+d.edate+' · '+RQ.page+'페이지 · '+d.items.length+'건</span></div>';
+    '</span><span class="rcnt">'+range+' · '+RQ.page+'페이지 · '+d.items.length+'건</span></div>';
   var rows=d.items.map(function(it){
     var href=it.pdf||it.link||'';                    // PDF 없으면 상세 페이지로
     var inner='<span class="rdt">'+it.date.slice(2)+'</span>'+
