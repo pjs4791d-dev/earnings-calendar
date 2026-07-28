@@ -376,7 +376,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-28 15:50 · 평일 매일 자동 갱신</p>
+   생성 2026-07-28 15:58 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -677,7 +677,9 @@ function attachAC(inputId, boxId, onPick, suggest){
     ac.innerHTML=items.map(function(n,i){
       var p=n.toLowerCase().indexOf(ql), hl=esc(n);
       if(p>-1) hl=esc(n.slice(0,p))+'<b>'+esc(n.slice(p,p+ql.length))+'</b>'+esc(n.slice(p+ql.length));
-      var side=(CORPS&&CORPS[n])?CORPS[n]:'';
+      // 종목코드는 기업 검색일 때만 (제공처 모드에선 증권사 이름만 보여줌)
+      var showCode=(inputId!=='rq')||RQ.mode==='co';
+      var side=(showCode&&CORPS&&CORPS[n])?CORPS[n]:'';
       return '<div role="option" data-i="'+i+'"><span>'+hl+'</span><span class="cd">'+side+'</span></div>';
     }).join('');
     ac.hidden=false; sel=-1; cq.setAttribute('aria-expanded','true');
