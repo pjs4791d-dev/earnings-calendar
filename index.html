@@ -251,6 +251,27 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 @media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}}
 
 /* ── 데스크톱: 왼쪽 사이드바 ───────────────────────── */
+/* 투자 전략 — 글 목록 */
+.plist{margin:22px 0 0;border-top:1px solid var(--line)}
+.post{display:grid;grid-template-columns:92px minmax(0,1fr);gap:18px;align-items:baseline;
+ padding:20px 10px;margin:0 -10px;border-bottom:1px solid var(--line);
+ text-decoration:none;color:inherit;border-radius:8px;transition:background .1s}
+.post:hover{background:var(--line2)}
+.post:hover .ptitle{color:var(--accent)}
+.pdate{font-size:12.5px;font-weight:700;color:var(--muted);white-space:nowrap;
+ font-variant-numeric:tabular-nums}
+.ptag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.02em;
+ color:var(--accent);background:var(--accent-soft);border-radius:4px;
+ padding:2px 7px;margin-bottom:8px}
+.ptitle{font-size:19px;font-weight:800;letter-spacing:-.025em;line-height:1.35;
+ margin-bottom:7px;transition:color .1s}
+.pdesc{font-size:13.5px;line-height:1.7;color:var(--ink2)}
+.pmore{font-size:12.5px;font-weight:700;color:var(--accent);margin-top:10px}
+@media(max-width:700px){
+ .post{grid-template-columns:1fr;gap:0;padding:18px 10px}
+ .pdate{margin-bottom:10px}
+ .ptitle{font-size:17px}
+}
 @media(min-width:960px){
  .wrap{max-width:1160px;padding:0 28px 84px}
  .topbar{padding:16px 0 15px;margin-bottom:0}
@@ -299,6 +320,8 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
   <button class="nav on" data-p="cal" role="tab">📅 실적 일정</button>
   <button class="nav" data-p="con" role="tab">📊 컨센서스</button>
   <button class="nav" data-p="rpt" role="tab">📄 리포트 조회</button>
+  <div class="ngrp">리서치</div>
+  <button class="nav" data-p="str" role="tab">📈 투자 전략</button>
  </nav>
 
 <main class="main">
@@ -371,12 +394,20 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
  <div id="rout" class="cout"></div>
  <div id="rpage" class="rpage"></div>
 </section>
+
+<section id="p-str" hidden>
+ <p class="eyebrow">Strategy · 데이터 리서치</p>
+ <h1>투자 전략</h1>
+ <p class="con-lead">시장 데이터를 직접 뒤져서 확인한 것들을 글로 정리합니다.
+   숫자는 모두 <b>전수 조사</b> 결과이고, 표본이 적으면 적다고 함께 적습니다.</p>
+ <div class="plist"><a class="post" href="kospi-panic.html"><div class="pdate">2026.07.29</div><div><span class="ptag">데이터 리포트</span><div class="ptitle">코스피가 급락한 날, 개인이 팔았을 때</div><div class="pdesc">1999~2026년 6,798거래일 전수 분석. 3% 넘게 빠진 222일 중 개인마저 순매도한 38일의 다음 날을 확인했습니다.</div><div class="pmore">자세히 보기 →</div></div></a></div>
+</section>
 </main>
 </div>
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-07-29 09:00 · 평일 매일 자동 갱신</p>
+   생성 2026-07-29 19:24 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -425,18 +456,30 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 /* ── 탭 전환 ─────────────────────────────── */
 (function(){
  var tabs=[].slice.call(document.querySelectorAll('.nav'));
- tabs.forEach(function(t){
-  t.addEventListener('click',function(){
+ function show(t){
    tabs.forEach(function(x){x.classList.toggle('on',x===t)});
-   ['cal','con','rpt'].forEach(function(k){
+   ['cal','con','rpt','str'].forEach(function(k){
      var sec=document.getElementById('p-'+k); if(sec) sec.hidden=(t.dataset.p!==k);
    });
    if(t.dataset.p==='con'||t.dataset.p==='rpt') loadCorps();
    if(t.dataset.p==='rpt'&&!window.__rptLoaded){    // 처음 열면 최신 리포트를 바로 보여줌
      window.__rptLoaded=true; loadReports(1);
    }
+ }
+ tabs.forEach(function(t){
+  t.addEventListener('click',function(){
+   show(t);
+   try{ history.replaceState(null,'','#'+t.dataset.p); }catch(e){}
   });
  });
+ /* 글에서 '← 투자 전략'으로 돌아오면(#str) 그 탭을 열어 준다.
+    같은 문서에서 해시만 바뀌는 경우(hashchange)도 함께 따라간다 */
+ function fromHash(){
+   var h=(location.hash||'').replace('#','');
+   tabs.forEach(function(t){ if(t.dataset.p===h) show(t); });
+ }
+ addEventListener('hashchange', fromHash);
+ fromHash();
 })();
 
 /* ── 컨센서스 (검색 시점에 실시간 조회) ────────── */

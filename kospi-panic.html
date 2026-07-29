@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>코스피 급락일에 개인이 팔았을 때 — 스파르탄 리서치</title>
+<meta name="description" content="1999~2026년 코스피 6,798거래일 전수 분석. 3% 이상 급락한 222일 중 개인이 순매도한 38일의 다음 날 평균 수익률은 +1.07%(중앙값 +0.55%)였습니다.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="코스피 급락일에 개인이 팔았을 때">
+<meta property="og:description" content="1999~2026년 코스피 6,798거래일 전수 분석. 3% 이상 급락한 222일 중 개인이 순매도한 38일의 다음 날 평균 수익률은 +1.07%(중앙값 +0.55%)였습니다.">
+<meta property="og:image" content="https://pjs4791d-dev.github.io/earnings-calendar/og-kospi.png">
+<meta property="og:url" content="https://pjs4791d-dev.github.io/earnings-calendar/kospi-panic.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="icon-180.png">
+<script>(function(){try{var t=localStorage.getItem('theme');
+document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');
+}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
+<style>
+:root{
+ --bg:#ffffff; --panel:#f8f9fd; --surface:#ffffff; --ink:#131722; --ink2:#434651;
+ --muted:#787b86; --faint:#9598a1; --line:#e0e3eb; --line2:#f0f3fa;
+ --accent:#2962ff; --accent-soft:#e8f0ff; --up:#089981; --down:#f23645;
+ --mark:#2962ff; --ctx:#8f95a3; --grid:#e8ebf2;
+ --shadow:0 1px 3px rgba(19,23,34,.06),0 8px 24px rgba(19,23,34,.05);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme]){
+ --bg:#131722; --panel:#1e222d; --surface:#1e222d; --ink:#d1d4dc; --ink2:#b2b5be;
+ --muted:#787b86; --faint:#5d606b; --line:#2a2e39; --line2:#22262f;
+ --accent:#2962ff; --accent-soft:#1c2b4a; --up:#26a69a; --down:#ef5350;
+ --mark:#5b8def; --ctx:#6b7280; --grid:#252935;
+ --shadow:0 1px 3px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.22);
+}}
+:root[data-theme="dark"]{
+ --bg:#131722; --panel:#1e222d; --surface:#1e222d; --ink:#d1d4dc; --ink2:#b2b5be;
+ --muted:#787b86; --faint:#5d606b; --line:#2a2e39; --line2:#22262f;
+ --accent:#2962ff; --accent-soft:#1c2b4a; --up:#26a69a; --down:#ef5350;
+ --mark:#5b8def; --ctx:#6b7280; --grid:#252935;
+ --shadow:0 1px 3px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.22);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",
+  "Trebuchet MS","Malgun Gothic",sans-serif;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:840px;margin:0 auto;padding:0 18px 96px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* 헤더 */
+.top{display:flex;align-items:center;gap:10px;padding:22px 0 0}
+.top img{width:26px;height:26px;border-radius:7px}
+.brand{font-size:13.5px;font-weight:800;letter-spacing:-.01em}
+.top .sp{flex:1}
+.sw{display:inline-flex;background:var(--panel);border:1px solid var(--line);
+ border-radius:999px;padding:2px}
+.sw button{border:0;background:none;color:var(--muted);font:inherit;font-size:11px;
+ font-weight:700;padding:4px 11px;border-radius:999px;cursor:pointer}
+.sw button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+
+.back{display:inline-block;margin:26px 0 0;font-size:12.5px;font-weight:700;
+ color:var(--muted);text-decoration:none}
+.back:hover{color:var(--accent);text-decoration:none}
+
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--accent);margin:18px 0 10px}
+.byline{font-size:12.5px;color:var(--muted);margin:0}
+.byline b{color:var(--ink2);font-weight:700}
+h1{font-size:34px;line-height:1.25;letter-spacing:-.03em;margin:0 0 12px;font-weight:800}
+h1 em{font-style:normal;color:var(--down)}
+.sub{font-size:15px;line-height:1.7;color:var(--ink2);margin:0 0 6px}
+.stamp{font-size:12px;color:var(--muted);margin:16px 0 0;
+ padding-top:14px;border-top:1px solid var(--line)}
+
+p.lead{font-size:15.5px;line-height:1.85;color:var(--ink2);margin:22px 0}
+p.lead b{color:var(--ink);font-weight:700}
+
+/* KPI */
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:26px 0 0}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px}
+.tile .k{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:7px;
+ letter-spacing:-.01em;white-space:nowrap}
+.tile .v{font-size:23px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.tile .s{font-size:11px;color:var(--faint);margin-top:5px}
+
+/* 히어로 */
+.hero{margin:28px 0 0;background:var(--panel);border:1px solid var(--line);
+ border-left:3px solid var(--accent);border-radius:12px;padding:22px 24px}
+.hero .cap{font-size:12.5px;font-weight:700;color:var(--ink2);margin-bottom:6px}
+.hero .big{font-size:58px;font-weight:800;letter-spacing:-.045em;line-height:1;
+ color:var(--up)}
+.hero .meta{font-size:13px;color:var(--ink2);margin-top:12px;line-height:1.7}
+.hero .meta b{color:var(--ink)}
+
+h2{font-size:20px;letter-spacing:-.025em;margin:52px 0 8px;font-weight:800}
+h2 .num{color:var(--accent);margin-right:8px}
+.note{font-size:13.5px;line-height:1.8;color:var(--ink2);margin:0 0 18px}
+.note b{color:var(--ink);font-weight:700}
+
+/* 카드 */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;
+ padding:18px 18px 14px;margin:0 0 10px}
+.card h3{font-size:14px;font-weight:800;margin:0 0 3px;letter-spacing:-.02em}
+.card .cs{font-size:11.5px;color:var(--muted);margin:0 0 14px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0 0;font-size:11.5px;color:var(--ink2)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;
+ margin-right:6px;vertical-align:-1px}
+.legend i.tick{width:2px;height:13px;border-radius:1px;vertical-align:-2px;margin-right:8px}
+.cap{font-size:11.5px;line-height:1.7;color:var(--muted);margin:12px 0 0}
+.chart{width:100%;position:relative}
+.chart svg{display:block;width:100%;overflow:visible}
+.chart text{font-family:inherit}
+
+/* 툴팁 */
+#tip{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .09s;
+ background:var(--surface);border:1px solid var(--line);border-radius:9px;
+ box-shadow:var(--shadow);padding:9px 11px;font-size:11.5px;line-height:1.65;
+ color:var(--ink);max-width:230px;font-feature-settings:"tnum"}
+#tip .t{font-weight:800;margin-bottom:4px}
+#tip .r{display:flex;justify-content:space-between;gap:14px}
+#tip .r span:first-child{color:var(--muted)}
+
+/* 표 */
+.tblbox{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:0}
+.tblscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:12.5px;
+ font-feature-settings:"tnum";min-width:620px}
+th,td{padding:8px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line2)}
+th{background:var(--panel);color:var(--muted);font-size:11px;font-weight:700;
+ position:sticky;top:0;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--line2)}
+td.pos{color:var(--up);font-weight:700}
+td.neg{color:var(--down);font-weight:700}
+td.na{color:var(--faint)}
+
+details.raw{margin:14px 0 0;border:1px solid var(--line);border-radius:12px;
+ background:var(--panel);overflow:hidden}
+details.raw>summary{cursor:pointer;padding:11px 14px;font-size:12.5px;font-weight:700;
+ color:var(--ink2);list-style:none}
+details.raw>summary::-webkit-details-marker{display:none}
+details.raw>summary::before{content:"▸ ";color:var(--muted)}
+details.raw[open]>summary::before{content:"▾ "}
+details.raw .in{padding:0 14px 14px}
+details.raw .tblbox{background:var(--surface)}
+
+/* 유의사항 */
+.warn{margin:44px 0 0;border:1px solid var(--line);border-radius:12px;
+ background:var(--panel);padding:18px 20px}
+.warn h3{font-size:13px;font-weight:800;margin:0 0 10px;letter-spacing:-.01em}
+.warn ul{margin:0;padding-left:17px}
+.warn li{font-size:12.5px;line-height:1.85;color:var(--ink2);margin-bottom:5px}
+.warn li b{color:var(--ink)}
+
+.foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+ font-size:12px;color:var(--muted);line-height:1.85}
+.foot a{font-weight:700}
+
+@media(max-width:700px){
+ h1{font-size:26px}
+ .hero .big{font-size:44px}
+ .kpi{grid-template-columns:repeat(2,1fr)}
+ .wrap{padding:0 14px 72px}
+}
+</style>
+</head>
+<body>
+<div id="tip" role="tooltip"></div>
+<div class="wrap">
+
+<div class="top">
+  <img src="icon-64.png" alt="">
+  <span class="brand">스파르탄 리서치</span>
+  <span class="sp"></span>
+  <span class="sw" role="group" aria-label="화면 테마">
+    <button data-t="light" aria-pressed="false">라이트</button>
+    <button data-t="dark" aria-pressed="true">다크</button>
+  </span>
+</div>
+
+<a class="back" href="./#str">← 투자 전략</a>
+
+<div class="eyebrow">데이터 리포트</div>
+<h1>코스피가 급락한 날,<br>개인이 <em>팔았을</em> 때</h1>
+<p class="sub">1999년부터 2026년까지 6,798거래일을 전수 조사했습니다.</p>
+<p class="byline"><b>2026.07.29</b> 게시 · 스파르탄 리서치</p>
+<p class="stamp">분석 기간 1999.01.04 ~ 2026.07.29 · 코스피 지수 기준 · 2026.07.29 집계</p>
+
+<p class="lead">
+코스피가 하루 <b>3% 넘게 빠진 날</b>은 27년 동안 222번 있었습니다.
+그런 날 개인 투자자는 대체로 지수를 <b>받아냅니다</b> — 222일 중 184일
+(83%)이 개인 순매수였습니다.
+개인마저 <b>순매도</b>로 돌아선 날은 38번뿐입니다.
+드물게 나타나는 그 38일의 <b>다음 날</b>은 어땠는지 확인했습니다.
+</p>
+
+<div class="kpi"><div class="tile"><div class="k">분석 기간</div><div class="v">27년</div><div class="s">1999.01.04 ~ 2026.07.29</div></div><div class="tile"><div class="k">전체 거래일</div><div class="v">6,798일</div><div class="s">하락일 3,127일</div></div><div class="tile"><div class="k">급락일 (-3%↓)</div><div class="v">222일</div><div class="s">전체의 3.3%</div></div><div class="tile"><div class="k">그중 개인 순매도</div><div class="v">38일</div><div class="s">급락일의 17.1%</div></div></div>
+
+<div class="hero">
+  <div class="cap">급락 + 개인 순매도 38일 · 다음 날(D+1) 평균 수익률</div>
+  <div class="big">+1.07%</div>
+  <div class="meta">
+    중앙값 <b>+0.55%</b> · 상승 확률 <b>62.2%</b> ·
+    표본 <b>37일</b><br>
+    같은 조건에서 개인이 <b>순매수</b>했던 184일은 +0.13%,
+    급락일 <b>전체</b> 222일은 +0.29%였습니다.
+  </div>
+</div>
+
+<h2><span class="num">01</span>조건이 좁아질수록 다음 날이 좋아진다</h2>
+<p class="note">
+가장 넓은 조건(전체 거래일)부터 가장 좁은 조건(급락 + 개인 순매도)까지 다음 날 수익률을
+나란히 놓았습니다. <b>막대는 평균</b>, <b>세로 눈금은 중앙값</b>입니다.
+평균과 중앙값이 벌어질수록 소수의 큰 반등이 평균을 끌어올렸다는 뜻입니다.
+</p>
+<div class="card">
+  <h3>조건별 다음 날(D+1) 수익률</h3>
+  <p class="cs">코스피 종가 기준 · 1999~2026</p>
+  <div class="chart" id="c1"></div>
+  <div class="legend">
+    <span><i style="background:var(--mark)"></i>급락 + 개인 순매도</span>
+    <span><i style="background:var(--ctx)"></i>비교 조건</span>
+    <span><i class="tick" style="background:var(--ink)"></i>중앙값</span>
+  </div>
+  <p class="cap">막대에 마우스를 올리면 표본 수와 상승 확률을 볼 수 있습니다.</p>
+</div>
+
+<h2><span class="num">02</span>더 들고 있으면 어떻게 되나</h2>
+<p class="note">
+같은 38일을 <b>7거래일·30거래일</b>까지 늘려 봤습니다. 격차는 시간이 갈수록
+벌어져 D+30에는 <b>+5.54%</b>로, 급락일 전체
+(+3.72%)와 전체 거래일 평균을 모두 앞섭니다.
+</p>
+<div class="card">
+  <h3>보유 기간별 평균 수익률</h3>
+  <p class="cs">모든 막대가 같은 축(%)을 씁니다</p>
+  <div class="chart" id="c2"></div>
+  <div class="legend">
+    <span><i style="background:var(--mark)"></i>급락 + 개인 순매도</span>
+    <span><i style="background:var(--ctx)"></i>급락일 전체</span>
+  </div>
+  <p class="cap">참고 — 같은 기간 전체 거래일 평균은 D+1 +0.04% ·
+    D+7 +0.33% · D+30 +1.51%입니다.</p>
+</div>
+
+<h2><span class="num">03</span>38일을 하나씩 펼쳐 보면</h2>
+<p class="note">
+가로축은 <b>그날의 낙폭</b>, 세로축은 <b>다음 날 수익률</b>입니다. 0% 선 위가 반등,
+아래가 추가 하락입니다. 평균 +1.07%라는 숫자 뒤에는
+<b>37일 중 23일만 올랐다</b>는 사실이 있습니다.
+</p>
+<div class="card">
+  <h3>급락 + 개인 순매도 37일의 다음 날</h3>
+  <p class="cs">점 하나가 하루 · D+1이 확정된 날만 표시</p>
+  <div class="chart" id="c3"></div>
+  <div class="legend">
+    <span><i style="background:var(--up)"></i>다음 날 상승 (0% 선 위)</span>
+    <span><i style="background:var(--down)"></i>다음 날 하락 (0% 선 아래)</span>
+  </div>
+  <p class="cap">색과 위치가 같은 정보를 나타냅니다 — 색을 구분하기 어려워도 0% 선 기준으로 읽을 수 있습니다.</p>
+</div>
+
+<h2><span class="num">04</span>시장 국면에 따라 결과가 갈린다</h2>
+<p class="note">
+38일을 시대별로 나눴습니다. <b>닷컴버블 붕괴기(1999~2002)에만 21일</b>이
+몰려 있고, 이 구간의 평균은 +0.61%로 전체 평균보다 낮습니다.
+나머지 구간은 표본이 2~7일에 불과해 <b>평균을 그대로 믿기 어렵습니다.</b>
+</p>
+<div class="card">
+  <h3>시대별 다음 날(D+1) 수익률</h3>
+  <p class="cs">괄호 안은 해당 구간의 표본 수</p>
+  <div class="chart" id="c4"></div>
+  <div class="legend">
+    <span><i style="background:var(--mark)"></i>0% 위 (반등)</span>
+    <span><i style="background:var(--down)"></i>0% 아래 (추가 하락)</span>
+    <span><i class="tick" style="background:var(--ink)"></i>중앙값</span>
+  </div>
+  <p class="cap">표본이 5일 미만인 구간(회복·성장기, 박스권, 코로나~현재)의 평균은 참고용입니다.</p>
+</div>
+
+<h2><span class="num">05</span>많이 팔수록, 많이 빠질수록 좋은가 — 아니다</h2>
+<p class="note">
+직관적으로는 개인이 크게 던질수록, 지수가 깊이 빠질수록 반등이 셀 것 같습니다.
+실제로는 <b>그렇지 않았습니다.</b> 개인 순매도가 5,000억을 넘긴 날들의 다음 날 평균은
+-0.08%(중앙값 -3.19%)로 오히려 가장 나빴습니다.
+</p>
+<div class="card">
+  <h3>개인 순매도 규모별</h3>
+  <p class="cs">다음 날(D+1) 평균 · 세로 눈금은 중앙값</p>
+  <div class="chart" id="c5"></div>
+  <div class="legend">
+    <span><i style="background:var(--mark)"></i>0% 위</span>
+    <span><i style="background:var(--down)"></i>0% 아래</span>
+    <span><i class="tick" style="background:var(--ink)"></i>중앙값</span>
+  </div>
+</div>
+<div class="card">
+  <h3>당일 낙폭별</h3>
+  <p class="cs">다음 날(D+1) 평균 · 세로 눈금은 중앙값</p>
+  <div class="chart" id="c6"></div>
+  <div class="legend">
+    <span><i style="background:var(--mark)"></i>0% 위</span>
+    <span><i style="background:var(--down)"></i>0% 아래</span>
+    <span><i class="tick" style="background:var(--ink)"></i>중앙값</span>
+  </div>
+  <p class="cap">구간마다 표본이 4~15일이라 순서를 의미 있게 읽기 어렵습니다.</p>
+</div>
+
+<h2><span class="num">06</span>38일 전체 기록</h2>
+<p class="note">
+최근 순입니다. 가장 마지막 줄이 <b>2026-07-29</b>(-5.98%, 개인
+−35,649억)로, 직전 3거래일 흐름은
+아래와 같았습니다.<br><span style="color:var(--muted)">07/24 -5.72% (개인 +61,062억) · 07/27 +0.97% (개인 +21,084억) · 07/28 -10.84% (개인 +49,889억) · 07/29 -5.98% (개인 −35,649억)</span>
+</p>
+<div class="tblbox"><div class="tblscroll">
+<table>
+<thead><tr>
+<th>날짜</th><th>등락률</th><th>종가</th><th>개인</th><th>외국인</th><th>기관</th>
+<th>D+1</th><th>D+7</th><th>D+30</th>
+</tr></thead>
+<tbody id="tb"></tbody>
+</table>
+</div></div>
+
+<div class="warn">
+  <h3>읽기 전에 — 이 숫자의 한계</h3>
+  <ul>
+    <li><b>표본이 매우 적습니다.</b> 27년을 뒤져도 38일(D+1 확정 37일)뿐입니다.
+        평균은 소수의 큰 반등에 크게 흔들립니다 — 그래서 중앙값
+        (+0.55%)을 함께 적었습니다.</li>
+    <li><b>10번 중 4번은 다음 날 떨어졌습니다.</b> 37일 중
+        14일이 하락했습니다. 표본이 적어
+        하루만 뒤집혀도 승률이 2.7%p씩 움직입니다.</li>
+    <li><b>지수 기준</b>이며 거래 비용·세금·슬리피지는 반영하지 않았습니다.
+        실제 매매 결과와 다릅니다.</li>
+    <li>과거에 그랬다는 기록일 뿐, <b>미래 수익을 보장하지 않습니다.</b>
+        투자 판단과 그 결과는 투자자 본인에게 있습니다.</li>
+  </ul>
+</div>
+
+<div class="foot">
+  <b>정의</b> — 급락일: 코스피 종가 등락률 -3% 이하 / 개인 순매도: 개인 순매수 금액 0 미만 /
+  D+N: 해당일 종가 대비 N거래일 뒤 종가 수익률.<br>
+  <b>데이터</b> — 코스피 종가·등락률: 네이버 금융 / 투자자별 매매동향:
+  키움증권 Open API(KRX+NXT 통합, 2003~) · KRX 정보데이터시스템(1999~2002).<br>
+  <a href="./#str">← 투자 전략 목록</a> ·
+  <a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 텔레그램</a>
+</div>
+
+</div>
+<script id="DATA" type="application/json">{"meta":{"from":"1999-01-04","to":"2026-07-29","days":6798,"down":3127,"crash":222,"sell":38,"buy":184},"groups":[{"label":"전체 거래일","n":6798,"d1":{"n":6797,"avg":0.04,"med":0.08,"win":53.8},"d7":{"n":6791,"avg":0.33,"med":0.38,"win":55.5},"d30":{"n":6768,"avg":1.51,"med":1.2,"win":58.1}},{"label":"하락일 전체","n":3127,"d1":{"n":3126,"avg":0.01,"med":0.07,"win":52.8},"d7":{"n":3124,"avg":0.28,"med":0.31,"win":54.5},"d30":{"n":3112,"avg":1.43,"med":1.14,"win":57.7}},{"label":"급락 + 개인 순매수","n":184,"d1":{"n":184,"avg":0.13,"med":0.26,"win":54.9},"d7":{"n":182,"avg":0.87,"med":0.56,"win":52.7},"d30":{"n":175,"avg":3.35,"med":1.37,"win":57.1}},{"label":"급락(-3%↓) 전체","n":222,"d1":{"n":221,"avg":0.29,"med":0.26,"win":56.1},"d7":{"n":219,"avg":1.37,"med":0.83,"win":54.3},"d30":{"n":211,"avg":3.72,"med":2.4,"win":57.8}},{"label":"급락 + 개인 순매도","n":38,"d1":{"n":37,"avg":1.07,"med":0.55,"win":62.2},"d7":{"n":37,"avg":3.81,"med":3.57,"win":62.2},"d30":{"n":36,"avg":5.54,"med":4.53,"win":61.1}}],"eras":[{"label":"닷컴버블 붕괴","n":21,"d1":{"n":21,"avg":0.61,"med":0.17,"win":52.4},"d7":{"n":21,"avg":2.65,"med":0.78,"win":52.4},"d30":{"n":21,"avg":6.31,"med":4.37,"win":57.1},"span":"1999~2002"},{"label":"회복·성장기","n":3,"d1":{"n":3,"avg":2.21,"med":1.78,"win":100.0},"d7":{"n":3,"avg":5.42,"med":7.68,"win":66.7},"d30":{"n":3,"avg":9.54,"med":10.44,"win":100.0},"span":"2003~2006"},{"label":"금융위기","n":7,"d1":{"n":7,"avg":2.18,"med":1.21,"win":71.4},"d7":{"n":7,"avg":9.67,"med":8.21,"win":100.0},"d30":{"n":7,"avg":2.11,"med":3.42,"win":57.1},"span":"2007~2009"},{"label":"박스권","n":2,"d1":{"n":2,"avg":-3.73,"med":-3.73,"win":0.0},"d7":{"n":2,"avg":-1.55,"med":-1.55,"win":0.0},"d30":{"n":2,"avg":-4.14,"med":-4.14,"win":0.0},"span":"2010~2019"},{"label":"코로나~현재","n":5,"d1":{"n":4,"avg":3.06,"med":1.25,"win":100.0},"d7":{"n":4,"avg":1.11,"med":3.39,"win":75.0},"d30":{"n":3,"avg":10.6,"med":9.16,"win":100.0},"span":"2020~2026"}],"mags":[{"label":"1,000억 미만","n":22,"d1":{"n":22,"avg":1.16,"med":0.41,"win":63.6}},{"label":"1,000~2,000억","n":6,"d1":{"n":6,"avg":1.18,"med":1.54,"win":66.7}},{"label":"2,000~5,000억","n":4,"d1":{"n":4,"avg":1.82,"med":1.42,"win":75.0}},{"label":"5,000억 이상","n":6,"d1":{"n":5,"avg":-0.08,"med":-3.19,"win":40.0}}],"deps":[{"label":"-3 ~ -4%","n":15,"d1":{"n":15,"avg":1.07,"med":0.27,"win":60.0}},{"label":"-4 ~ -5%","n":8,"d1":{"n":8,"avg":0.93,"med":0.88,"win":75.0}},{"label":"-5 ~ -6%","n":6,"d1":{"n":5,"avg":-0.71,"med":-0.03,"win":40.0}},{"label":"-6% 이하","n":9,"d1":{"n":9,"avg":2.17,"med":0.82,"win":66.7}}],"events":[{"d":"1999-01-14","c":604.42,"p":-4.52,"i":-525,"f":-123,"k":648,"d1":1.68,"d7":-10.7,"d30":-11.57},{"d":"1999-01-21","c":582.04,"p":-5.12,"i":-357,"f":738,"k":-382,"d1":-5.41,"d7":-0.06,"d30":-2.19},{"d":"1999-03-18","c":578.98,"p":-3.59,"i":-464,"f":306,"k":158,"d1":4.36,"d7":3.82,"d30":29.99},{"d":"1999-05-20","c":708.6,"p":-3.59,"i":-72,"f":-658,"k":730,"d1":0.27,"d7":3.87,"d30":29.83},{"d":"1999-07-26","c":872.94,"p":-3.54,"i":-987,"f":-1512,"k":2499,"d1":6.4,"d7":11.74,"d30":8.05},{"d":"1999-08-05","c":939.07,"p":-3.73,"i":-754,"f":-305,"k":1059,"d1":-0.09,"d7":-3.39,"d30":-2.44},{"d":"1999-10-18","c":826.25,"p":-4.22,"i":-625,"f":122,"k":503,"d1":-1.79,"d7":-3.97,"d30":16.7},{"d":"2000-01-25","c":891.22,"p":-3.84,"i":-739,"f":1085,"k":-346,"d1":-0.64,"d7":6.62,"d30":-0.74},{"d":"2000-02-21","c":845.32,"p":-3.85,"i":-144,"f":1120,"k":-976,"d1":0.56,"d7":5.84,"d30":-1.79},{"d":"2000-04-17","c":707.72,"p":-11.63,"i":-1036,"f":-1576,"k":2613,"d1":5.59,"d7":0.78,"d30":3.41},{"d":"2000-05-26","c":656.66,"p":-6.13,"i":-349,"f":1554,"k":-1206,"d1":-0.11,"d7":25.26,"d30":29.67},{"d":"2000-06-13","c":804.45,"p":-4.89,"i":-682,"f":222,"k":460,"d1":1.84,"d7":-2.76,"d30":-7.53},{"d":"2000-07-24","c":737.89,"p":-5.77,"i":-224,"f":-204,"k":428,"d1":-0.03,"d7":-1.3,"d30":-7.95},{"d":"2000-09-18","c":577.56,"p":-8.06,"i":-1309,"f":-604,"k":1913,"d1":-1.11,"d7":3.77,"d30":-10.92},{"d":"2000-10-17","c":512.85,"p":-6.77,"i":-405,"f":-378,"k":784,"d1":0.26,"d7":2.11,"d30":4.7},{"d":"2000-11-28","c":536.94,"p":-3.09,"i":-722,"f":112,"k":609,"d1":-3.82,"d7":-2.45,"d30":12.38},{"d":"2001-01-10","c":560.81,"p":-4.93,"i":-326,"f":2119,"k":-1794,"d1":0.17,"d7":10.52,"d30":4.37},{"d":"2001-09-12","c":475.6,"p":-12.02,"i":-2307,"f":-1116,"k":3423,"d1":4.97,"d7":-0.69,"d30":15.2},{"d":"2001-09-14","c":482.29,"p":-3.4,"i":-1134,"f":595,"k":539,"d1":-2.81,"d7":-2.11,"d30":11.51},{"d":"2001-11-28","c":632.02,"p":-5.68,"i":-100,"f":-190,"k":291,"d1":-0.5,"d7":11.47,"d30":17.72},{"d":"2002-05-21","c":837.56,"p":-3.26,"i":-257,"f":-404,"k":660,"d1":3.04,"d7":-2.62,"d30":-5.94},{"d":"2003-03-17","c":515.24,"p":-4.17,"i":-256,"f":-619,"k":78,"d1":4.28,"d7":7.68,"d30":10.44},{"d":"2003-09-22","c":714.89,"p":-4.46,"i":-186,"f":-620,"k":860,"d1":0.55,"d7":-1.48,"d30":11.35},{"d":"2004-05-17","c":728.98,"p":-5.14,"i":-679,"f":-424,"k":1013,"d1":1.78,"d7":10.08,"d30":6.82},{"d":"2007-08-16","c":1691.98,"p":-6.93,"i":-6988,"f":-10326,"k":14949,"d1":-3.19,"d7":6.56,"d30":19.04},{"d":"2007-10-22","c":1903.81,"p":-3.36,"i":-1091,"f":-1403,"k":1492,"d1":2.32,"d7":8.46,"d30":-0.07},{"d":"2008-01-22","c":1609.02,"p":-4.43,"i":-1570,"f":-8321,"k":8797,"d1":1.21,"d7":0.97,"d30":3.42},{"d":"2008-09-01","c":1414.43,"p":-4.06,"i":-3617,"f":-264,"k":3942,"d1":-0.52,"d7":3.57,"d30":-5.24},{"d":"2008-09-16","c":1387.75,"p":-6.1,"i":-2603,"f":-6040,"k":7683,"d1":2.7,"d7":8.21,"d30":-30.18},{"d":"2008-10-24","c":938.75,"p":-10.57,"i":-794,"f":-2781,"k":3497,"d1":0.82,"d7":22.86,"d30":9.52},{"d":"2008-10-29","c":968.97,"p":-3.02,"i":-61,"f":88,"k":226,"d1":11.95,"d7":17.08,"d30":18.26},{"d":"2011-08-05","c":1943.75,"p":-3.7,"i":-5722,"f":-4053,"k":8980,"d1":-3.82,"d7":-2.63,"d30":-4.6},{"d":"2011-08-08","c":1869.45,"p":-3.82,"i":-7333,"f":-816,"k":6458,"d1":-3.64,"d7":-0.47,"d30":-3.69},{"d":"2022-01-27","c":2614.49,"p":-3.5,"i":-1393,"f":-17142,"k":18478,"d1":1.87,"d7":6.02,"d30":3.06},{"d":"2022-09-26","c":2220.94,"p":-3.02,"i":-2421,"f":-34,"k":2767,"d1":0.13,"d7":0.76,"d30":9.16},{"d":"2026-03-04","c":5093.54,"p":-12.06,"i":-6508,"f":2405,"k":-593,"d1":9.63,"d7":7.73,"d30":19.59},{"d":"2026-07-08","c":7246.79,"p":-5.35,"i":-6914,"f":8110,"k":-1985,"d1":0.62,"d7":-10.08,"d30":null},{"d":"2026-07-29","c":5663.24,"p":-5.98,"i":-35649,"f":-5791,"k":40430,"d1":null,"d7":null,"d30":null}],"recent":[{"d":"2026-07-24","p":-5.72,"i":61062},{"d":"2026-07-27","p":0.97,"i":21084},{"d":"2026-07-28","p":-10.84,"i":49889},{"d":"2026-07-29","p":-5.98,"i":-35649}]}</script>
+<script>
+var D = JSON.parse(document.getElementById('DATA').textContent);
+var tip = document.getElementById('tip');
+var NS = 'http://www.w3.org/2000/svg';
+
+function el(t, a, txt){
+  var n = document.createElementNS(NS, t);
+  for (var k in a) if (a[k] !== null && a[k] !== undefined) n.setAttribute(k, a[k]);
+  if (txt !== undefined) n.textContent = txt;
+  return n;
+}
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function fmt(v, d){ if(v===null||v===undefined) return '—';
+  return (v>0?'+':'') + v.toFixed(d===undefined?2:d) + '%'; }
+function won(v){ var s=v<0?'−':'+'; return s + Math.abs(v).toLocaleString('ko-KR') + '억'; }
+
+/* 데이터 끝만 둥근 가로 막대 */
+function hPath(x0, x1, y, h, r){
+  var w = x1 - x0, s = w < 0 ? -1 : 1; r = Math.min(r, Math.abs(w));
+  var xe = x1 - s*r;
+  return 'M'+x0+','+y+'H'+xe
+       + 'A'+r+','+r+' 0 0 '+(s>0?1:0)+' '+x1+','+(y+r)
+       + 'V'+(y+h-r)
+       + 'A'+r+','+r+' 0 0 '+(s>0?1:0)+' '+xe+','+(y+h)
+       + 'H'+x0+'Z';
+}
+/* 데이터 끝만 둥근 세로 막대 */
+function vPath(x, y0, y1, w, r){
+  var hh = y1 - y0, s = hh < 0 ? -1 : 1; r = Math.min(r, Math.abs(hh));
+  var ye = y1 - s*r;
+  return 'M'+x+','+y0+'V'+ye
+       + 'A'+r+','+r+' 0 0 '+(s>0?0:1)+' '+(x+r)+','+y1
+       + 'H'+(x+w-r)
+       + 'A'+r+','+r+' 0 0 '+(s>0?0:1)+' '+(x+w)+','+ye
+       + 'V'+y0+'Z';
+}
+function showTip(e, html){
+  tip.innerHTML = html; tip.style.opacity = 1;
+  var r = tip.getBoundingClientRect();
+  var x = e.clientX + 14, y = e.clientY - r.height - 12;
+  if (x + r.width > innerWidth - 8) x = e.clientX - r.width - 14;
+  if (y < 8) y = e.clientY + 18;
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+}
+function hideTip(){ tip.style.opacity = 0; }
+function bind(node, html){
+  node.addEventListener('mousemove', function(e){ showTip(e, html); });
+  node.addEventListener('mouseleave', hideTip);
+  node.setAttribute('tabindex', '0');
+  node.addEventListener('focus', function(){
+    var b = node.getBoundingClientRect();
+    showTip({clientX: b.left + b.width/2, clientY: b.top}, html);
+  });
+  node.addEventListener('blur', hideTip);
+}
+
+/* ── 가로 막대 (강조형) ───────────────────────────── */
+function hbar(box, rows, opt){
+  opt = opt || {};
+  var W = box.clientWidth || 640;
+  var LW = opt.labelW || (W < 460 ? 108 : 152);
+  var RW = 76, BH = 26, GAP = 15, PT = 6;
+  var H = PT + rows.length*(BH+GAP) - GAP + 8;
+  var s = el('svg', {viewBox:'0 0 '+W+' '+H, height:H, role:'img'});
+  var pw = W - LW - RW;
+  var vals = rows.map(function(r){ return r.v; });
+  if (opt.medians) rows.forEach(function(r){ if(r.m!==null&&r.m!==undefined) vals.push(r.m); });
+  var lo = Math.min(0, Math.min.apply(null, vals)), hi = Math.max.apply(null, vals);
+  var pad = (hi - lo) * 0.06 || 0.1;
+  hi += pad; if (lo < 0) lo -= pad;
+  var X = function(v){ return LW + (v - lo) / (hi - lo) * pw; };
+  var x0 = X(0);
+
+  s.appendChild(el('line', {x1:x0, x2:x0, y1:PT-2, y2:H-6,
+    stroke:css('--line'), 'stroke-width':1}));
+
+  rows.forEach(function(r, i){
+    var y = PT + i*(BH+GAP);
+    /* emphasis = 강조 1개 + 나머지 회색 / sign = 0 기준 위아래 다이버징 */
+    var col = opt.mode === 'sign'
+      ? (r.v >= 0 ? css('--mark') : css('--down'))
+      : (r.hl ? css('--mark') : css('--ctx'));
+    var g = el('g', {});
+    s.appendChild(el('text', {x:LW-12, y:y+BH/2+4, 'text-anchor':'end',
+      'font-size':12, 'font-weight': r.hl?800:600,
+      fill: r.hl ? css('--ink') : css('--ink2')}, r.label));
+    g.appendChild(el('path', {d:hPath(x0, X(r.v), y, BH, 4), fill:col}));
+    if (r.m !== null && r.m !== undefined){
+      /* 중앙값이 막대 밖에 있으면 가는 연결선으로 같은 행임을 표시 */
+      if (X(r.m) < Math.min(x0, X(r.v)) || X(r.m) > Math.max(x0, X(r.v))){
+        g.appendChild(el('line', {x1:X(r.v), x2:X(r.m), y1:y+BH/2, y2:y+BH/2,
+          stroke:css('--line'), 'stroke-width':1}));
+      }
+      g.appendChild(el('line', {x1:X(r.m), x2:X(r.m), y1:y-3, y2:y+BH+3,
+        stroke:css('--ink'), 'stroke-width':2, 'stroke-linecap':'round'}));
+    }
+    /* 값 라벨은 늘 막대 바깥·표면 위에 — 양수는 막대(또는 중앙값 눈금) 오른쪽,
+       음수는 0선 오른쪽. 막대 안에 넣지 않아 대비 문제와 겹침을 함께 피한다 */
+    var end = X(r.v), mx = (r.m===null||r.m===undefined) ? end : X(r.m);
+    var txt = fmt(r.v), lx = r.v >= 0 ? Math.max(end, mx) + 11 : x0 + 11;
+    s.appendChild(g);                       /* 막대 먼저, 값 라벨은 항상 그 위에 */
+    s.appendChild(el('text', {x:lx, y:y+BH/2+4, 'text-anchor':'start', 'font-size':12.5,
+      'font-weight':800,
+      fill: (r.hl||opt.mode==='sign') ? css('--ink') : css('--ink2')}, txt));
+    var hit = el('rect', {x:0, y:y-GAP/2, width:W, height:BH+GAP, fill:'transparent'});
+    bind(hit, '<div class="t">'+r.label+'</div>' + (r.tip||''));
+    s.appendChild(hit);
+  });
+  box.innerHTML = ''; box.appendChild(s);
+}
+
+/* ── 세로 그룹 막대 ───────────────────────────────── */
+function gbar(box, groups, series){
+  var W = box.clientWidth || 640, H = 250;
+  var L = 44, R = 12, T = 22, B = 42;
+  var s = el('svg', {viewBox:'0 0 '+W+' '+H, height:H, role:'img'});
+  var pw = W-L-R, ph = H-T-B;
+  var all = []; groups.forEach(function(g){ g.v.forEach(function(x){ all.push(x); }); });
+  var lo = Math.min(0, Math.min.apply(null, all)), hi = Math.max.apply(null, all)*1.16;
+  var Y = function(v){ return T + ph - (v - lo)/(hi - lo)*ph; };
+  var y0 = Y(0);
+
+  [0, hi/2, hi].forEach(function(t){
+    s.appendChild(el('line', {x1:L, x2:W-R, y1:Y(t), y2:Y(t),
+      stroke: t===0?css('--line'):css('--grid'), 'stroke-width':1}));
+    s.appendChild(el('text', {x:L-9, y:Y(t)+4, 'text-anchor':'end', 'font-size':10.5,
+      fill:css('--muted')}, t.toFixed(0)+'%'));
+  });
+
+  var gw = pw/groups.length, n = series.length;
+  var bw = Math.min(46, (gw-30)/n);
+  groups.forEach(function(g, gi){
+    var cx = L + gw*gi + gw/2, tot = n*bw + (n-1)*2, sx = cx - tot/2;
+    g.v.forEach(function(v, si){
+      var x = sx + si*(bw+2);
+      var p = el('path', {d:vPath(x, y0, Y(v), bw, 4), fill:series[si].c()});
+      bind(p, '<div class="t">'+g.label+'</div>'
+        + '<div class="r"><span>'+series[si].name+'</span><b>'+fmt(v)+'</b></div>'
+        + '<div class="r"><span>표본</span><b>'+series[si].n[gi].toLocaleString('ko-KR')+'일</b></div>');
+      s.appendChild(p);
+      s.appendChild(el('text', {x:x+bw/2, y:Y(v)-7, 'text-anchor':'middle',
+        'font-size':11, 'font-weight':800,
+        fill: si===0?css('--ink'):css('--ink2')}, fmt(v, 1)));
+    });
+    s.appendChild(el('text', {x:cx, y:H-16, 'text-anchor':'middle', 'font-size':12,
+      'font-weight':700, fill:css('--ink2')}, g.label));
+  });
+  box.innerHTML = ''; box.appendChild(s);
+}
+
+/* ── 산점도 ───────────────────────────────────────── */
+function scatter(box, pts){
+  var W = box.clientWidth || 640, H = 300;
+  var L = 46, R = 14, T = 16, B = 44;
+  var s = el('svg', {viewBox:'0 0 '+W+' '+H, height:H, role:'img'});
+  var pw = W-L-R, ph = H-T-B;
+  var xs = pts.map(function(p){ return p.p; }), ys = pts.map(function(p){ return p.d1; });
+  var xlo = Math.min.apply(null, xs)-.6, xhi = Math.max.apply(null, xs)+.6;
+  var ylo = Math.min.apply(null, ys)-1.2, yhi = Math.max.apply(null, ys)+1.2;
+  var X = function(v){ return L + (v-xlo)/(xhi-xlo)*pw; };
+  var Y = function(v){ return T + ph - (v-ylo)/(yhi-ylo)*ph; };
+
+  [-10, -5, 0, 5, 10].forEach(function(t){
+    if (t < ylo || t > yhi) return;
+    s.appendChild(el('line', {x1:L, x2:W-R, y1:Y(t), y2:Y(t),
+      stroke: t===0?css('--line'):css('--grid'), 'stroke-width':1}));
+    s.appendChild(el('text', {x:L-9, y:Y(t)+4, 'text-anchor':'end', 'font-size':10.5,
+      fill:css('--muted')}, (t>0?'+':'')+t+'%'));
+  });
+  [-3,-6,-9,-12].forEach(function(t){
+    if (t < xlo || t > xhi) return;
+    s.appendChild(el('line', {x1:X(t), x2:X(t), y1:T, y2:T+ph,
+      stroke:css('--grid'), 'stroke-width':1}));
+    s.appendChild(el('text', {x:X(t), y:H-24, 'text-anchor':'middle', 'font-size':10.5,
+      fill:css('--muted')}, t+'%'));
+  });
+  s.appendChild(el('text', {x:L+pw/2, y:H-6, 'text-anchor':'middle', 'font-size':11,
+    fill:css('--muted')}, '당일 코스피 등락률'));
+
+  pts.forEach(function(p){
+    var up = p.d1 >= 0;
+    var c = el('circle', {cx:X(p.p), cy:Y(p.d1), r:5.5,
+      fill: up?css('--up'):css('--down'),
+      stroke:css('--surface'), 'stroke-width':2});
+    s.appendChild(c);
+    var hit = el('circle', {cx:X(p.p), cy:Y(p.d1), r:13, fill:'transparent'});
+    bind(hit, '<div class="t">'+p.d+'</div>'
+      + '<div class="r"><span>당일</span><b>'+fmt(p.p)+'</b></div>'
+      + '<div class="r"><span>개인</span><b>'+won(p.i)+'</b></div>'
+      + '<div class="r"><span>다음 날</span><b>'+fmt(p.d1)+'</b></div>');
+    s.appendChild(hit);
+  });
+  box.innerHTML = ''; box.appendChild(s);
+}
+
+/* ── 렌더 ─────────────────────────────────────────── */
+function G(name){ for (var i=0;i<D.groups.length;i++) if (D.groups[i].label===name) return D.groups[i]; }
+function gtip(g, key){
+  var a = g[key];
+  return '<div class="r"><span>평균</span><b>'+fmt(a.avg)+'</b></div>'
+       + '<div class="r"><span>중앙값</span><b>'+fmt(a.med)+'</b></div>'
+       + '<div class="r"><span>상승 확률</span><b>'+a.win.toFixed(1)+'%</b></div>'
+       + '<div class="r"><span>표본</span><b>'+a.n.toLocaleString('ko-KR')+'일</b></div>';
+}
+
+function draw(){
+  /* 1. 조건별 D+1 */
+  hbar(document.getElementById('c1'), D.groups.map(function(g){
+    return {label:g.label, v:g.d1.avg, m:g.d1.med, hl:g.label==='급락 + 개인 순매도',
+            tip:gtip(g,'d1')};
+  }), {medians:true});
+
+  /* 2. 보유기간별 */
+  var sell = G('급락 + 개인 순매도'), crash = G('급락(-3%↓) 전체');
+  gbar(document.getElementById('c2'), [
+    {label:'다음 날 (D+1)', v:[sell.d1.avg, crash.d1.avg]},
+    {label:'7거래일 (D+7)', v:[sell.d7.avg, crash.d7.avg]},
+    {label:'30거래일 (D+30)', v:[sell.d30.avg, crash.d30.avg]}
+  ], [
+    {name:'급락 + 개인 순매도', c:function(){return css('--mark');},
+     n:[sell.d1.n, sell.d7.n, sell.d30.n]},
+    {name:'급락일 전체', c:function(){return css('--ctx');},
+     n:[crash.d1.n, crash.d7.n, crash.d30.n]}
+  ]);
+
+  /* 3. 산점도 */
+  scatter(document.getElementById('c3'),
+    D.events.filter(function(e){ return e.d1 !== null; }));
+
+  /* 4. 시대별 */
+  hbar(document.getElementById('c4'), D.eras.map(function(e){
+    return {label:e.label+' ('+e.n+'일)', v:e.d1.avg, m:e.d1.med,
+            tip:'<div class="r"><span>기간</span><b>'+e.span+'</b></div>'+gtip(e,'d1')};
+  }), {medians:true, mode:'sign'});
+
+  /* 5. 매도 규모별 */
+  hbar(document.getElementById('c5'), D.mags.map(function(b){
+    return {label:b.label+' ('+b.n+'일)', v:b.d1.avg, m:b.d1.med, tip:gtip(b,'d1')};
+  }), {medians:true, mode:'sign', labelW:170});
+
+  /* 6. 낙폭별 */
+  hbar(document.getElementById('c6'), D.deps.map(function(b){
+    return {label:b.label+' ('+b.n+'일)', v:b.d1.avg, m:b.d1.med, tip:gtip(b,'d1')};
+  }), {medians:true, mode:'sign', labelW:150});
+}
+
+/* 표 */
+function cls(v){ return v===null?'na':(v>0?'pos':'neg'); }
+function table(){
+  var tb = document.getElementById('tb'), h = '';
+  D.events.slice().reverse().forEach(function(e){
+    h += '<tr><td>'+e.d+'</td>'
+      + '<td class="neg">'+fmt(e.p)+'</td>'
+      + '<td>'+e.c.toLocaleString('ko-KR',{minimumFractionDigits:2,
+                                           maximumFractionDigits:2})+'</td>'
+      + '<td class="'+(e.i>0?'pos':'neg')+'">'+won(e.i)+'</td>'
+      + '<td class="'+(e.f>0?'pos':'neg')+'">'+won(e.f)+'</td>'
+      + '<td class="'+(e.k>0?'pos':'neg')+'">'+won(e.k)+'</td>'
+      + '<td class="'+cls(e.d1)+'">'+fmt(e.d1)+'</td>'
+      + '<td class="'+cls(e.d7)+'">'+fmt(e.d7)+'</td>'
+      + '<td class="'+cls(e.d30)+'">'+fmt(e.d30)+'</td></tr>';
+  });
+  tb.innerHTML = h;
+}
+
+/* 테마 */
+(function(){
+  var root = document.documentElement;
+  function apply(t){
+    root.setAttribute('data-theme', t);
+    document.querySelectorAll('.sw button').forEach(function(b){
+      b.setAttribute('aria-pressed', b.dataset.t === t);
+    });
+    draw();
+  }
+  document.querySelectorAll('.sw button').forEach(function(b){
+    b.addEventListener('click', function(){
+      apply(b.dataset.t);
+      try { localStorage.setItem('theme', b.dataset.t); } catch(e){}
+    });
+  });
+  var saved = 'dark';
+  try { saved = localStorage.getItem('theme') === 'light' ? 'light' : 'dark'; } catch(e){}
+  root.setAttribute('data-theme', saved);
+  document.querySelectorAll('.sw button').forEach(function(b){
+    b.setAttribute('aria-pressed', b.dataset.t === saved);
+  });
+})();
+
+table();
+draw();
+var rt; addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(draw, 140); });
+</script>
+</body>
+</html>
