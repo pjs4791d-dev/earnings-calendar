@@ -183,7 +183,7 @@ details.raw .tblbox{background:var(--surface)}
 <div class="eyebrow">데이터 리포트</div>
 <h1>코스피가 급락한 날,<br>개인이 <em>팔았을</em> 때</h1>
 <p class="sub">1999년부터 2026년까지 6,798거래일을 전수 조사했습니다.</p>
-<p class="byline"><b>2026.07.29</b> 게시 · 스파르탄 리서치<span id="pv" data-ns="spartan-post-kospi"></span></p>
+<p class="byline"><b>2026.07.29</b> 게시 · 스파르탄 리서치<span id="pv" data-site="spartan-earnings" data-ns="spartan-post-kospi"></span></p>
 <p class="stamp">분석 기간 1999.01.04 ~ 2026.07.29 · 코스피 지수 기준 · 2026.07.29 집계</p>
 
 <p class="lead">
@@ -642,19 +642,29 @@ table();
 draw();
 var rt; addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(draw, 140); });
 
-/* ── 이 글의 조회수 (Abacus · 메인과 별도 네임스페이스) ──────────
-   메인 index.html 과 같은 규칙: 한국시각 기준 날짜, 세션당 1회만 증가. */
+/* ── 조회수 (Abacus) ────────────────────────────────────────────
+   ① 사이트 전체 방문자 — 메인(index.html)과 같은 네임스페이스로 올린다.
+      글 링크로만 들어온 사람도 메인 숫자에 잡히게 하려는 것.
+   ② 이 글의 조회수 — 글별로 따로 보려고 별도 네임스페이스.
+   둘 다 한국시각 날짜 기준, 세션당 1회만 증가. */
 (function(){
-  var el = document.getElementById('pv'); if (!el) return;
-  var A = 'https://abacus.jasoncameron.dev', ns = el.dataset.ns;
+  var A = 'https://abacus.jasoncameron.dev';
   var kst = new Date(Date.now() + 324e5).toISOString().slice(0,10).replace(/-/g,'');
-  var mark = 'pv_' + ns + '_' + kst;                 // 자정(KST) 넘으면 다시 카운트
-  var fresh = !sessionStorage.getItem(mark);
-  if (fresh){ try{ sessionStorage.setItem(mark,'1'); }catch(e){} }
-  var op = fresh ? '/hit/' : '/get/';                // 새로고침으로 중복 증가 방지
   function j(u){ return fetch(u).then(function(r){ return r.ok ? r.json() : null; })
                               .catch(function(){ return null; }); }
-  Promise.all([j(A+op+ns+'/total'), j(A+op+ns+'/d'+kst)]).then(function(x){
+  /* 네임스페이스 하나를 세션당 1회만 올리고 [누적, 오늘]을 돌려준다 */
+  function count(ns, mark){
+    var fresh = !sessionStorage.getItem(mark);       // 새로고침 중복 증가 방지
+    if (fresh){ try{ sessionStorage.setItem(mark,'1'); }catch(e){} }
+    var op = fresh ? '/hit/' : '/get/';
+    return Promise.all([j(A+op+ns+'/total'), j(A+op+ns+'/d'+kst)]);
+  }
+  var el = document.getElementById('pv'); if (!el) return;
+  /* ① 메인과 세션표시('v_'+날짜)까지 같게 써서, 글을 보고 메인으로 넘어가도
+        같은 사람이 두 번 세어지지 않는다 */
+  count(el.dataset.site, 'v_' + kst);
+  /* ② */
+  count(el.dataset.ns, 'pv_' + el.dataset.ns + '_' + kst).then(function(x){
     if (!x[0] || x[0].value == null) return;         // 실패하면 조용히 숨김
     var d = (x[1] && x[1].value != null) ? x[1].value : 0;
     el.innerHTML = ' · 오늘 <b>' + d + '</b>명 · 누적 <b>' +
