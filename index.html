@@ -513,7 +513,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-11 18:07 · 평일 매일 자동 갱신</p>
+   생성 2026-09-11 18:22 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -943,7 +943,8 @@ window.LLM=(function(){
         function ser(fn){ return keys.map(function(k){ var m=j.models[k]; return S(k,m.name,m.slug,mapVals(m.days||{},fn),m.default_on); }); }
         var ms=[
           M('tokens','토큰','단위: 토큰 (B=10억, T=1조) · 입력+출력 합계',fmtTok,fmtTok,fmtTok, ser(function(x){return x.total})),
-          M('spend','추정 지출','단위: USD/일 · 정가 기준 추정 (캐시된 입력은 캐시 단가, 나머지 입력·출력은 정가). 실제 청구액이 아니라 "정가로 환산한 지출"입니다',fmtUsd,fmtUsd,fmtUsd, ser(function(x){return x.spend})),
+          M('spend','추정 지출(정가)','단위: USD/일 · 입력·출력·캐시 토큰(실측)에 각각 공식 정가를 곱한 값. 공급자별 가격 차이·긴 문맥 할증·캐시 쓰기 비용은 빠져 있어 하한에 가깝습니다',fmtUsd,fmtUsd,fmtUsd, ser(function(x){return x.spend})),
+          M('spend_eff','추정 지출(실효단가)','단위: USD/일 · OpenRouter가 집계한 "실제 지불 가중 평균 단가"(공급자 믹스·캐시 할인 반영) × 입력·출력 토큰. 정가 기준과 함께 보면 지출의 대략적 범위가 됩니다',fmtUsd,fmtUsd,fmtUsd, ser(function(x){return x.spend_eff})),
           M('per_req','요청당 토큰','단위: 토큰/요청 · 커질수록 짧은 채팅보다 긴 에이전트 작업에 쓰인다는 뜻',fmtTok,fmtTok,fmtTok, ser(function(x){return x.requests?x.total/x.requests:null})),
           M('cache','캐시 적중률','단위: % · 입력 토큰 중 캐시로 처리된 비율. 높을수록 실제 지불액은 정가보다 훨씬 적음',fmtPct(1),fmtPct(1),fmtPct(0), ser(function(x){return x.prompt?x.cached/x.prompt*100:null}))
         ];
