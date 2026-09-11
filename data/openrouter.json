@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-11T18:07+09:00",
+ "checked": "2026-09-11T18:15+09:00",
  "first_seen": {
   "claude-fable-5.1": {},
   "claude-sonnet-5": {},
@@ -1392,7 +1392,7 @@
   ],
   "claude-sonnet-5": [
    {
-    "cache": 0.19999999999999998,
+    "cache": 0.2,
     "date": "2026-09-11",
     "in": 2.0,
     "out": 10.0
@@ -1426,7 +1426,7 @@
    {
     "cache": 0.02,
     "date": "2026-09-11",
-    "in": 0.19999999999999998,
+    "in": 0.2,
     "out": 1.2
    }
   ],
@@ -1449,6 +1449,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-11T18:07+09:00",
+ "updated": "2026-09-11T18:15+09:00",
  "url": "https://openrouter.ai/rankings"
 }
