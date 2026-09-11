@@ -397,6 +397,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
   <div class="ngrp">AI 데이터</div>
   <button class="nav" data-p="sd" role="tab">💵 LLM 토큰 가격</button>
   <button class="nav" data-p="or" role="tab">🔀 OpenRouter 사용량</button>
+  <button class="nav" data-p="gpu" role="tab">🖥️ GPU 임대료</button>
  </nav>
 
 <main class="main">
@@ -492,8 +493,19 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
  <h1>OpenRouter 모델별 토큰 사용량</h1>
  <p class="con-lead">OpenRouter를 거쳐 처리된 <b>하루 토큰 수(입력+출력)</b>입니다. 랭킹 페이지의 숫자는
    7일 합계라서, 모델 통계에서 <b>하루 단위 값</b>을 받아 기록합니다. 날짜는 UTC 기준이며
-   하루가 끝나(한국시간 오전 9시) 집계가 확정된 뒤에 추가됩니다.</p>
+   하루가 끝나(한국시간 오전 9시) 집계가 확정된 뒤에 추가됩니다.
+   <b>지표</b>를 바꾸면 점유율·요청당 토큰·추정 지출·캐시 적중률로 볼 수 있고, GPT-6 Astra 외에
+   전작(GPT-5.6 Luna)과 경쟁 모델은 이름을 눌러 켤 수 있습니다.</p>
  <div class="lx" id="lx-or"><div class="lmsg">불러오는 중…</div></div>
+</section>
+
+<section id="p-gpu" hidden>
+ <p class="eyebrow">Silicon Data · GPU Rental Price Index</p>
+ <h1>GPU 시간당 임대료 지수</h1>
+ <p class="con-lead">Silicon Data가 매일 발표하는 <b>GPU 1장 시간당 임대료(USD)</b>입니다. 추론 수요가 정말 늘면
+   임대료에 먼저 반영됩니다. <b>네오클라우드</b>는 GPU 전문 임대업체, <b>하이퍼스케일러</b>는 AWS·Azure·GCP 같은
+   대형 클라우드 가격이에요(둘 다 있는 GPU는 H100·A100). 토큰 가격 지수처럼 30분마다 확인해 이어 붙입니다.</p>
+ <div class="lx" id="lx-gpu"><div class="lmsg">불러오는 중…</div></div>
 </section>
 
 </main>
@@ -501,7 +513,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-11 17:47 · 평일 매일 자동 갱신</p>
+   생성 2026-09-11 18:07 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -552,11 +564,11 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
  var tabs=[].slice.call(document.querySelectorAll('.nav'));
  function show(t){
    tabs.forEach(function(x){x.classList.toggle('on',x===t)});
-   ['cal','con','rpt','str','sd','or'].forEach(function(k){
+   ['cal','con','rpt','str','sd','or','gpu'].forEach(function(k){
      var sec=document.getElementById('p-'+k); if(sec) sec.hidden=(t.dataset.p!==k);
    });
    if(t.dataset.p==='con'||t.dataset.p==='rpt') loadCorps();
-   if(t.dataset.p==='sd'||t.dataset.p==='or') window.LLM&&LLM.open(t.dataset.p);   // AI 데이터 탭
+   if(t.dataset.p==='sd'||t.dataset.p==='or'||t.dataset.p==='gpu') window.LLM&&LLM.open(t.dataset.p);   // AI 데이터 탭
    if(t.dataset.p==='rpt'&&!window.__rptLoaded){    // 처음 열면 최신 리포트를 바로 보여줌
      window.__rptLoaded=true; loadReports(1);
    }
@@ -878,44 +890,72 @@ attachAC('rq','rac',rlookup,rSuggest);   // 리포트 조회 (모드별 후보)
 
 
 <script>
-/* ── AI 데이터 탭: JSON 읽어서 선택형 라인차트 그리기 ─────────── */
+/* ── AI 데이터 탭: JSON 읽어서 선택형 라인차트 그리기 ───────────
+   탭마다 '지표(metric)' 여러 개 → 지표마다 시리즈 목록(날짜→값). 시리즈 켜고 끄면 y축이 다시 잡힌다. */
 window.LLM=(function(){
- var CFG={
-  sd:{src:'data/llm_index.json', unitNote:'단위: USD / 100만 토큰',
-      fmt:function(v){return '$'+v.toFixed(4)},
-      fmtShort:function(v){return '$'+v.toFixed(2)}, tick:function(v){return '$'+v.toFixed(2)},
-      norm:function(j){
-        var order=['llm','open','prop'], out=[];
-        order.concat(Object.keys(j.series||{})).forEach(function(k){
-          var s=j.series[k]; if(!s||out.some(function(o){return o.key===k})) return;
-          out.push({key:k,name:s.name,full:s.full,values:s.values||{}});
-        });
-        var fs=j.first_seen||{};
-        return {series:out, updated:j.updated, checked:j.checked, source:'Silicon Data', url:j.url,
-                log:Object.keys(fs).map(function(d){return {date:d,seen:fs[d]}}),
-                lagNote:'값은 보통 이틀쯤 늦게 발표됩니다 (예: 9일 값이 11일에 공개).'};
-      }},
-  or:{src:'data/openrouter.json', unitNote:'단위: 토큰 (B=10억, T=1조) · 입력+출력 합계',
-      fmt:fmtTok, fmtShort:fmtTok, tick:fmtTok,
-      norm:function(j){
-        var out=[], fs=j.first_seen||{}, seen={};
-        Object.keys(j.models||{}).forEach(function(k){
-          var m=j.models[k], vals={};
-          Object.keys(m.days||{}).forEach(function(d){vals[d]=m.days[d].total});
-          out.push({key:k,name:m.name,full:m.slug,values:vals});
-          Object.keys(fs[k]||{}).forEach(function(d){ if(!seen[d]||fs[k][d]<seen[d]) seen[d]=fs[k][d]; });
-        });
-        return {series:out, updated:j.updated, checked:j.checked, source:'OpenRouter', url:j.url,
-                log:Object.keys(seen).map(function(d){return {date:d,seen:seen[d]}}),
-                lagNote:'하루(UTC)가 끝난 뒤 확정값만 기록합니다.'};
-      }}
- };
  function fmtTok(v){
    if(v>=1e12) return (v/1e12).toFixed(2)+'T';
    if(v>=1e9) return (v/1e9).toFixed(1)+'B';
    if(v>=1e6) return (v/1e6).toFixed(1)+'M';
    return Math.round(v).toLocaleString();
  }
+ function fmtUsd(v){ return v>=1e6?'$'+(v/1e6).toFixed(2)+'M':v>=1e3?'$'+(v/1e3).toFixed(0)+'K':'$'+v.toFixed(0); }
+ function fmtPct(d){ return function(v){ return v.toFixed(d)+'%'; }; }
+ function fmtX(d){ return function(v){ return '$'+v.toFixed(d); }; }
+ function fx(v){ return v.toFixed(2)+'배'; }
+ function M(key,name,unitNote,fmt,fmtShort,tick,series){ return {key:key,name:name,unitNote:unitNote,fmt:fmt,fmtShort:fmtShort||fmt,tick:tick||fmtShort||fmt,series:series}; }
+ function S(key,name,full,values,on){ return {key:key,name:name,full:full,values:values,on:on!==false}; }
+ function mapVals(days,fn){ var o={}; Object.keys(days).forEach(function(d){ var v=fn(days[d],d); if(v!=null&&isFinite(v)) o[d]=v; }); return o; }
+
+ var CFG={
+  sd:{src:'data/llm_index.json', source:'Silicon Data',
+      lagNote:'값은 보통 이틀쯤 늦게 발표됩니다 (예: 9일 값이 11일에 공개).',
+      norm:function(j){
+        var order=['llm','open','prop'], ser=[];
+        order.concat(Object.keys(j.series||{})).forEach(function(k){
+          var s=j.series[k]; if(!s||ser.some(function(o){return o.key===k})) return;
+          ser.push(S(k,s.name,s.full,s.values||{}));
+        });
+        var o=j.series.open, p=j.series.prop, prem={};
+        if(o&&p) Object.keys(p.values||{}).forEach(function(d){ if(o.values[d]) prem[d]=p.values[d]/o.values[d]; });
+        var ms=[M('price','가격','단위: USD / 100만 토큰',fmtX(4),fmtX(2),fmtX(2),ser)];
+        if(Object.keys(prem).length) ms.push(M('prem','프리미엄 배율','Proprietary ÷ Open — 폐쇄형 모델이 오픈 모델보다 몇 배 비싼가. 벌어지면 프론티어에 돈을 더 내는 쪽, 좁혀지면 오픈 모델로 갈아타는 쪽',fx,fx,fx,
+                                              [S('prem','Proprietary ÷ Open','Proprietary LLM 지수 ÷ Open LLM 지수',prem)]));
+        var fs=j.first_seen||{};
+        return {metrics:ms, updated:j.updated, checked:j.checked, url:j.url,
+                log:Object.keys(fs).map(function(d){return {date:d,seen:fs[d]}})};
+      }},
+  gpu:{src:'data/gpu_index.json', source:'Silicon Data',
+      lagNote:'전날 값이 다음 날 발표됩니다.',
+      norm:function(j){
+        var ser=[]; Object.keys(j.series||{}).sort(function(a,b){return (j.series[a].order||0)-(j.series[b].order||0)})
+          .forEach(function(k){ var s=j.series[k]; ser.push(S(k,s.name,s.full,s.values||{},s.default_on)); });
+        var fs=j.first_seen||{};
+        return {metrics:[M('price','시간당 임대료','단위: USD / GPU 1장 / 시간',fmtX(2),fmtX(2),fmtX(2),ser)],
+                updated:j.updated, checked:j.checked, url:j.url,
+                log:Object.keys(fs).map(function(d){return {date:d,seen:fs[d]}})};
+      }},
+  or:{src:'data/openrouter.json', source:'OpenRouter',
+      lagNote:'하루(UTC)가 끝난 뒤 확정값만 기록합니다.',
+      norm:function(j){
+        var keys=Object.keys(j.models||{}).sort(function(a,b){return (j.models[a].order||0)-(j.models[b].order||0)});
+        var mk=j.market||{}, fs=j.first_seen||{}, seen={};
+        function ser(fn){ return keys.map(function(k){ var m=j.models[k]; return S(k,m.name,m.slug,mapVals(m.days||{},fn),m.default_on); }); }
+        var ms=[
+          M('tokens','토큰','단위: 토큰 (B=10억, T=1조) · 입력+출력 합계',fmtTok,fmtTok,fmtTok, ser(function(x){return x.total})),
+          M('spend','추정 지출','단위: USD/일 · 정가 기준 추정 (캐시된 입력은 캐시 단가, 나머지 입력·출력은 정가). 실제 청구액이 아니라 "정가로 환산한 지출"입니다',fmtUsd,fmtUsd,fmtUsd, ser(function(x){return x.spend})),
+          M('per_req','요청당 토큰','단위: 토큰/요청 · 커질수록 짧은 채팅보다 긴 에이전트 작업에 쓰인다는 뜻',fmtTok,fmtTok,fmtTok, ser(function(x){return x.requests?x.total/x.requests:null})),
+          M('cache','캐시 적중률','단위: % · 입력 토큰 중 캐시로 처리된 비율. 높을수록 실제 지불액은 정가보다 훨씬 적음',fmtPct(1),fmtPct(1),fmtPct(0), ser(function(x){return x.prompt?x.cached/x.prompt*100:null}))
+        ];
+        if(Object.keys(mk).length) ms.splice(1,0,M('share','점유율','단위: % · 그날 OpenRouter 전체 토큰 대비. 전체 토큰은 매일 하루치만 공개돼서 기록을 시작한 날부터 쌓입니다',fmtPct(2),fmtPct(2),fmtPct(1),
+                                              ser(function(x,d){return mk[d]&&mk[d].total?x.total/mk[d].total*100:null})));
+        keys.forEach(function(k){ Object.keys(fs[k]||{}).forEach(function(d){ if(!seen[d]||fs[k][d]<seen[d]) seen[d]=fs[k][d]; }); });
+        var ranks={}; keys.forEach(function(k){ var ds=Object.keys(j.models[k].days||{}).sort(); for(var i=ds.length-1;i>=0;i--){ var r=j.models[k].days[ds[i]].rank; if(r){ ranks[k]={rank:r,date:ds[i]}; break; } } });
+        var pl=[]; Object.keys(j.prices||{}).forEach(function(k){ (j.prices[k]||[]).forEach(function(p,i,a){ if(i>0) pl.push({date:p.date,name:j.models[k]?j.models[k].name:k,from:a[i-1],to:p}); }); });
+        return {metrics:ms, updated:j.updated, checked:j.checked, url:j.url, ranks:ranks, priceLog:pl,
+                log:Object.keys(seen).map(function(d){return {date:d,seen:seen[d]}})};
+      }}
+ };
  function md(d){return (+d.slice(5,7))+'/'+(+d.slice(8,10))}          // 2026-09-09 → 9/9
  function ymd(d){return d.slice(0,4)+'.'+d.slice(5,7)+'.'+d.slice(8,10)}
  function kt(ts){ if(!ts) return '-'; return ts.slice(5,7).replace(/^0/,'')+'/'+ts.slice(8,10).replace(/^0/,'')+' '+ts.slice(11,16); }
@@ -929,102 +969,120 @@ window.LLM=(function(){
    for(var v=t0; v<=hi+step*1e-9; v+=step) ticks.push(+v.toFixed(12));
    return ticks;
  }
+ function uniq(a){var o={},r=[]; a.forEach(function(x){if(!o[x]){o[x]=1;r.push(x)}}); return r;}
 
- var state={};   // key → {data, on:{}, mode, range, table}
+ var state={};   // key → {data, on:{}, metric, mode, range, table}
 
  function open(key){
    if(state[key]) return;                          // 이미 불러왔거나 불러오는 중
    var box=document.getElementById('lx-'+key); if(!box) return;
-   state[key]=st={on:{},mode:'raw',range:'all',table:false};
+   var st=state[key]={on:{},metric:0,mode:'raw',range:'all',table:false};
    fetch(CFG[key].src+'?v='+Math.floor(Date.now()/6e4)).then(function(r){ if(!r.ok) throw 0; return r.json(); })
    .then(function(j){
      st.data=CFG[key].norm(j);
-     st.data.series.forEach(function(s,i){ s.color='var(--s'+(i%8+1)+')'; st.on[s.key]=true; });
+     var colors={}, n=0;
+     st.data.metrics.forEach(function(m){ m.series.forEach(function(s){
+       if(!colors[s.key]) colors[s.key]='var(--s'+(n++%8+1)+')';
+       s.color=colors[s.key]; if(st.on[s.key]==null) st.on[s.key]=s.on;
+     }); });
      build(key);
    }).catch(function(){ box.innerHTML=''; box.appendChild(el('div','lmsg','아직 기록된 데이터가 없거나 불러오지 못했습니다.')); });
  }
 
  function build(key){
-   var st=state[key], D=st.data, C=CFG[key], box=document.getElementById('lx-'+key);
+   var st=state[key], D=st.data, C=CFG[key], box=document.getElementById('lx-'+key), MT=D.metrics[st.metric];
    box.innerHTML='';
-   // 최신값 카드
+   // 최신값 카드 (현재 지표 기준)
    var cards=el('div','lcards');
-   D.series.forEach(function(s){
+   MT.series.forEach(function(s){
      var ds=Object.keys(s.values).sort(), last=ds[ds.length-1]; if(!last) return;
      var v=s.values[last], prev=ds[ds.length-2], w=ds[ds.length-8];
-     var c=el('div','lcard'); c.style.setProperty('--sc',s.color);
-     c.appendChild(el('div','ln',s.name));
-     c.appendChild(el('div','lv',C.fmtShort(v)));
+     var c=el('div','lcard'); c.style.setProperty('--sc',s.color); if(!st.on[s.key]) c.style.opacity='.55';
+     var nm=el('div','ln',s.name); c.appendChild(nm);
+     c.appendChild(el('div','lv',MT.fmtShort(v)));
      var d=el('div','ld'); d.appendChild(document.createTextNode(ymd(last)+' · '));
-     var p=pct(v,s.values[prev]); var ch=el('span','lch'+(p==null?'':p>=0?' lup':' ldn'),
-        p==null?'전일 -':(p>=0?'▲':'▼')+Math.abs(p).toFixed(1)+'% 전일');
+     var p=pct(v,s.values[prev]); if(p!=null&&Math.abs(p)<0.05) p=0;
+     var ch=el('span','lch'+(p==null||p===0?'':p>0?' lup':' ldn'),
+        p==null?'전일 -':p===0?'전일 보합':(p>0?'▲':'▼')+Math.abs(p).toFixed(1)+'% 전일');
      d.appendChild(ch);
-     if(w!=null){ var p7=pct(v,s.values[w]); d.appendChild(document.createTextNode(' · 7일 '+(p7>=0?'+':'')+p7.toFixed(1)+'%')); }
+     if(w!=null){ var p7=pct(v,s.values[w]); if(p7!=null) d.appendChild(document.createTextNode(' · 7일 '+(p7>=0?'+':'')+p7.toFixed(1)+'%')); }
+     if(D.ranks&&D.ranks[s.key]) d.appendChild(document.createTextNode(' · 전체 '+D.ranks[s.key].rank+'위'));
      c.appendChild(d); cards.appendChild(c);
    });
    box.appendChild(cards);
    // 조작줄
-   var ctl=el('div','lctl'), g1=el('div','lgrp'); g1.appendChild(el('span','llab','지표'));
-   D.series.forEach(function(s){
-     var b=el('button','lgd'); b.type='button'; b.setAttribute('aria-pressed',st.on[s.key]?'true':'false');
-     b.style.setProperty('--sc',s.color); b.appendChild(el('span','lk')); b.appendChild(document.createTextNode(s.name));
-     b.title=s.full||s.name;
-     b.addEventListener('click',function(){
-       var n=D.series.filter(function(x){return st.on[x.key]}).length;
-       if(st.on[s.key]&&n<=1) return;               // 마지막 하나는 끌 수 없음
-       st.on[s.key]=!st.on[s.key]; b.setAttribute('aria-pressed',st.on[s.key]?'true':'false'); draw(key);
-     });
-     g1.appendChild(b);
-   });
-   ctl.appendChild(g1);
+   var ctl=el('div','lctl');
    function sw(label,opts,cur,set){
      var g=el('div','lgrp'); if(label) g.appendChild(el('span','llab',label));
      var w=el('span','lsw');
      opts.forEach(function(o){
-       var b=el('button',o[0]===cur?'on':'',o[1]); b.type='button';
-       b.addEventListener('click',function(){ [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); draw(key); });
+       var b=el('button',String(o[0])===String(cur)?'on':'',o[1]); b.type='button';
+       b.addEventListener('click',function(){ [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); });
        w.appendChild(b);
      });
      g.appendChild(w); return g;
    }
-   ctl.appendChild(sw('보기',[['raw','실제값'],['idx','첫날=100']],st.mode,function(v){st.mode=v}));
-   ctl.appendChild(sw('기간',[['30','30일'],['90','90일'],['all','전체']],st.range,function(v){st.range=v}));
-   ctl.appendChild(sw('',[['chart','그래프'],['table','표']],'chart',function(v){st.table=(v==='table')}));
+   if(D.metrics.length>1) ctl.appendChild(sw('지표',D.metrics.map(function(m,i){return [i,m.name]}),st.metric,function(v){st.metric=+v; build(key);}));
+   var g1=el('div','lgrp'); g1.appendChild(el('span','llab',key==='or'?'모델':'항목'));
+   MT.series.forEach(function(s){
+     var b=el('button','lgd'); b.type='button'; b.setAttribute('aria-pressed',st.on[s.key]?'true':'false');
+     b.style.setProperty('--sc',s.color); b.appendChild(el('span','lk')); b.appendChild(document.createTextNode(s.name));
+     b.title=s.full||s.name;
+     b.addEventListener('click',function(){
+       var n=MT.series.filter(function(x){return st.on[x.key]}).length;
+       if(st.on[s.key]&&n<=1) return;               // 마지막 하나는 끌 수 없음
+       st.on[s.key]=!st.on[s.key]; b.setAttribute('aria-pressed',st.on[s.key]?'true':'false');
+       [].forEach.call(cards.children,function(c,i){ if(MT.series[i]&&MT.series[i].key===s.key) c.style.opacity=st.on[s.key]?'':'.55'; });
+       draw(key);
+     });
+     g1.appendChild(b);
+   });
+   ctl.appendChild(g1);
+   ctl.appendChild(sw('보기',[['raw','실제값'],['idx','첫날=100']],st.mode,function(v){st.mode=v; draw(key);}));
+   ctl.appendChild(sw('기간',[['30','30일'],['90','90일'],['all','전체']],st.range,function(v){st.range=v; draw(key);}));
+   ctl.appendChild(sw('',[['chart','그래프'],['table','표']],st.table?'table':'chart',function(v){st.table=(v==='table'); draw(key);}));
    box.appendChild(ctl);
-   // 차트 + 툴팁
-   var ch=el('div','lchart'); ch.appendChild(el('div','ltip')); box.appendChild(ch);
-   st.chart=ch;
+   // 차트 + 툴팁 + 표
+   var ch=el('div','lchart'); ch.appendChild(el('div','ltip')); box.appendChild(ch); st.chart=ch;
    var tb=el('div','ltbl'); tb.hidden=true; box.appendChild(tb); st.tbl=tb;
    // 설명 · 갱신 기록
    var note=el('p','lnote');
-   var all=[]; D.series.forEach(function(s){all=all.concat(Object.keys(s.values))}); all.sort();
-   note.appendChild(el('b',null,C.unitNote)); note.appendChild(document.createTextNode(' · 기록 기간 '));
+   var all=[]; MT.series.forEach(function(s){all=all.concat(Object.keys(s.values))}); all.sort();
+   note.appendChild(el('b',null,MT.unitNote)); note.appendChild(document.createTextNode(' · 기록 기간 '));
    note.appendChild(el('b',null,all.length?ymd(all[0])+' ~ '+ymd(all[all.length-1])+' ('+uniq(all).length+'일)':'-'));
    note.appendChild(el('br'));
-   note.appendChild(document.createTextNode('30분마다 확인 · 마지막 확인 '+kt(D.checked)+' · 마지막 변경 '+kt(D.updated)+' (한국시간) · '+D.lagNote+' · 출처: '));
-   var a=el('a',null,D.source); a.href=D.url; a.target='_blank'; a.rel='noopener'; note.appendChild(a);
+   note.appendChild(document.createTextNode('30분마다 확인 · 마지막 확인 '+kt(D.checked)+' · 마지막 변경 '+kt(D.updated)+' (한국시간) · '+C.lagNote+' · 출처: '));
+   var a=el('a',null,C.source); a.href=D.url; a.target='_blank'; a.rel='noopener'; note.appendChild(a);
    box.appendChild(note);
    var log=document.createElement('details'); log.className='llog';
-   var sm=el('summary',null,'갱신 감지 기록 (원본 사이트가 언제 올라오는지)'); log.appendChild(sm);
+   log.appendChild(el('summary',null,'갱신 감지 기록 (원본 사이트가 언제 올라오는지)'));
    var ul=el('ul');
    var L=D.log.slice().sort(function(a,b){return a.date<b.date?1:-1}).slice(0,14);
    if(!L.length) ul.appendChild(el('li',null,'아직 새 갱신을 감지한 적이 없습니다. 첫 수집 이후 새 날짜가 올라오면 여기 쌓입니다.'));
    L.forEach(function(x){ ul.appendChild(el('li',null,ymd(x.date)+' 값 → '+kt(x.seen)+' 에 기록됨')); });
    log.appendChild(ul); box.appendChild(log);
+   if(D.priceLog){                                  // OpenRouter: 정가 변경 이력
+     var pl=document.createElement('details'); pl.className='llog';
+     pl.appendChild(el('summary',null,'정가 변경 이력 (입력 / 출력 / 캐시, USD per 1M tokens)'));
+     var pu=el('ul');
+     if(!D.priceLog.length) pu.appendChild(el('li',null,'기록 시작 후 정가가 바뀐 모델이 아직 없습니다.'));
+     D.priceLog.slice().sort(function(a,b){return a.date<b.date?1:-1}).forEach(function(x){
+       pu.appendChild(el('li',null,ymd(x.date)+' '+x.name+': $'+x.from.in+' / $'+x.from.out+' / $'+x.from.cache+' → $'+x.to.in+' / $'+x.to.out+' / $'+x.to.cache)); });
+     pl.appendChild(pu); box.appendChild(pl);
+   }
    draw(key);
    if(!st.ro){ var t; addEventListener('resize',function(){clearTimeout(t); t=setTimeout(function(){draw(key)},120)}); st.ro=true; }
  }
- function uniq(a){var o={},r=[]; a.forEach(function(x){if(!o[x]){o[x]=1;r.push(x)}}); return r;}
 
  function draw(key){
-   var st=state[key], D=st.data, C=CFG[key], ch=st.chart; if(!ch) return;
-   var vis=D.series.filter(function(s){return st.on[s.key]});
+   var st=state[key], D=st.data, ch=st.chart, MT=D.metrics[st.metric]; if(!ch) return;
+   var vis=MT.series.filter(function(s){return st.on[s.key]});
    var dates={}; vis.forEach(function(s){Object.keys(s.values).forEach(function(d){dates[d]=1})});
    dates=Object.keys(dates).sort();
    if(st.range!=='all') dates=dates.slice(-(+st.range));
    var base={}; vis.forEach(function(s){ var f=dates.filter(function(d){return s.values[d]!=null})[0]; base[s.key]=f?s.values[f]:null; });
    function val(s,d){ var v=s.values[d]; if(v==null) return null; return st.mode==='idx'?(base[s.key]?v/base[s.key]*100:null):v; }
-   var fmt=st.mode==='idx'?function(v){return v.toFixed(1)}:C.fmt, tick=st.mode==='idx'?function(v){return v.toFixed(0)}:C.tick;
+   var fmt=st.mode==='idx'?function(v){return v.toFixed(1)}:MT.fmt, tick=st.mode==='idx'?function(v){return v.toFixed(0)}:MT.tick;
    // 표
    st.tbl.hidden=!st.table; ch.hidden=st.table;
    if(st.table){
@@ -1035,6 +1093,10 @@ window.LLM=(function(){
        vis.forEach(function(s){var v=val(s,d); r.appendChild(el('td',null,v==null?'-':fmt(v)))}); tb.appendChild(r); });
      t.appendChild(tb); st.tbl.appendChild(t); return;
    }
+   var old=ch.querySelector('svg'); if(old) old.remove();
+   var tip=ch.querySelector('.ltip');
+   if(!dates.length){ ch.insertBefore(el('div','lmsg','이 지표는 아직 기록된 값이 없습니다.'),tip); return; }
+   var msg=ch.querySelector('.lmsg'); if(msg) msg.remove();
    // 차트 크기
    var W=Math.max(300,Math.floor(ch.getBoundingClientRect().width)-12), H=W<520?250:310;
    var labelW=vis.length>1&&vis.length<=4?Math.max.apply(null,vis.map(function(s){return s.name.length}))*6.6+14:8;
@@ -1071,7 +1133,6 @@ window.LLM=(function(){
    // 크로스헤어 + 툴팁
    var xh=sv('line',{x1:0,x2:0,y1:m.t,y2:m.t+ph,'class':'xh',visibility:'hidden'}); svg.appendChild(xh);
    var hit=sv('rect',{x:m.l,y:m.t,width:pw,height:ph,'class':'hit'}); svg.appendChild(hit);
-   var tip=ch.querySelector('.ltip');
    function at(px){
      var r=svg.getBoundingClientRect(), x=(px-r.left)*W/r.width, best=0, bd=1e9;
      dates.forEach(function(d,i){var dd=Math.abs(X(d)-x); if(dd<bd){bd=dd;best=i}});
@@ -1088,10 +1149,9 @@ window.LLM=(function(){
    hit.addEventListener('pointermove',function(e){at(e.clientX)});
    hit.addEventListener('pointerdown',function(e){at(e.clientX)});
    hit.addEventListener('pointerleave',off);
-   var old=ch.querySelector('svg'); if(old) old.remove();
    ch.insertBefore(svg,tip);
  }
- // 주소에 #sd/#or 를 달고 들어온 경우: 탭 스크립트가 먼저 돌아 여기가 아직 없었으므로 지금 연다
+ // 주소에 #sd/#or/#gpu 를 달고 들어온 경우: 탭 스크립트가 먼저 돌아 여기가 아직 없었으므로 지금 연다
  var h=(location.hash||'').replace('#',''); if(CFG[h]) open(h);
  return {open:open};
 })();
