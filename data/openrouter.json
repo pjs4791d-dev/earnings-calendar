@@ -1,0 +1,147 @@
+{
+ "checked": "2026-09-11T17:47+09:00",
+ "first_seen": {
+  "gpt-6-astra": {},
+  "gpt-6-astra-pro": {}
+ },
+ "models": {
+  "gpt-6-astra": {
+   "days": {
+    "2026-09-04": {
+     "cached": 3449987268,
+     "completion": 63315884,
+     "prompt": 3817166593,
+     "reasoning": 28170907,
+     "requests": 88097,
+     "total": 3880482477
+    },
+    "2026-09-05": {
+     "cached": 64881546091,
+     "completion": 599439906,
+     "prompt": 70302822544,
+     "reasoning": 210949600,
+     "requests": 893715,
+     "total": 70902262450
+    },
+    "2026-09-06": {
+     "cached": 57201672643,
+     "completion": 506839697,
+     "prompt": 62653080901,
+     "reasoning": 183762101,
+     "requests": 881529,
+     "total": 63159920598
+    },
+    "2026-09-07": {
+     "cached": 78005848124,
+     "completion": 715562217,
+     "prompt": 86583833153,
+     "reasoning": 271229395,
+     "requests": 1249637,
+     "total": 87299395370
+    },
+    "2026-09-08": {
+     "cached": 111679822045,
+     "completion": 928063139,
+     "prompt": 123371188086,
+     "reasoning": 338268165,
+     "requests": 1609079,
+     "total": 124299251225
+    },
+    "2026-09-09": {
+     "cached": 106576843931,
+     "completion": 1440092037,
+     "prompt": 120371141431,
+     "reasoning": 737525370,
+     "requests": 2369378,
+     "total": 121811233468
+    },
+    "2026-09-10": {
+     "cached": 112209722213,
+     "completion": 1846173739,
+     "prompt": 129531288571,
+     "reasoning": 954648309,
+     "requests": 2680400,
+     "total": 131377462310
+    }
+   },
+   "name": "GPT-6 Astra",
+   "permaslug": "openai/gpt-6-astra-20260903",
+   "slug": "openai/gpt-6-astra",
+   "variants": [
+    "batch",
+    "standard"
+   ]
+  },
+  "gpt-6-astra-pro": {
+   "days": {
+    "2026-09-04": {
+     "cached": 965124104,
+     "completion": 43102059,
+     "prompt": 1310249970,
+     "reasoning": 24029803,
+     "requests": 19662,
+     "total": 1353352029
+    },
+    "2026-09-05": {
+     "cached": 11040589121,
+     "completion": 213381041,
+     "prompt": 14268896688,
+     "reasoning": 109133107,
+     "requests": 87220,
+     "total": 14482277729
+    },
+    "2026-09-06": {
+     "cached": 13760400712,
+     "completion": 248518582,
+     "prompt": 16649435621,
+     "reasoning": 120200194,
+     "requests": 107419,
+     "total": 16897954203
+    },
+    "2026-09-07": {
+     "cached": 24605678021,
+     "completion": 307927244,
+     "prompt": 28383799622,
+     "reasoning": 152832177,
+     "requests": 151906,
+     "total": 28691726866
+    },
+    "2026-09-08": {
+     "cached": 8496603510,
+     "completion": 141861816,
+     "prompt": 11830197942,
+     "reasoning": 63377722,
+     "requests": 66925,
+     "total": 11972059758
+    },
+    "2026-09-09": {
+     "cached": 12777261449,
+     "completion": 269474925,
+     "prompt": 16254451658,
+     "reasoning": 110385197,
+     "requests": 110107,
+     "total": 16523926583
+    },
+    "2026-09-10": {
+     "cached": 12117970782,
+     "completion": 285412933,
+     "prompt": 15630427604,
+     "reasoning": 123199660,
+     "requests": 104399,
+     "total": 15915840537
+    }
+   },
+   "name": "GPT-6 Astra Pro",
+   "permaslug": "openai/gpt-6-astra-pro-20260903",
+   "slug": "openai/gpt-6-astra-pro",
+   "variants": [
+    "batch",
+    "standard"
+   ]
+  }
+ },
+ "source": "OpenRouter · 모델별 일일 토큰 사용량",
+ "unit": "tokens",
+ "updated": "2026-09-11T17:47+09:00",
+ "url": "https://openrouter.ai/rankings"
+}

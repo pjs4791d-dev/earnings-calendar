@@ -1,0 +1,52 @@
+{
+ "checked": "2026-09-11T17:47+09:00",
+ "first_seen": {},
+ "series": {
+  "llm": {
+   "full": "LLM Token Expenditure Index",
+   "latest": "2026-09-09",
+   "name": "LLM Token",
+   "values": {
+    "2026-09-03": 0.9718,
+    "2026-09-04": 0.9735,
+    "2026-09-05": 0.9861,
+    "2026-09-06": 0.9911,
+    "2026-09-07": 0.9805,
+    "2026-09-08": 0.973,
+    "2026-09-09": 1.081
+   }
+  },
+  "open": {
+   "full": "Open LLM Token Expenditure Index",
+   "latest": "2026-09-09",
+   "name": "Open LLM",
+   "values": {
+    "2026-09-03": 0.5266,
+    "2026-09-04": 0.5281,
+    "2026-09-05": 0.5338,
+    "2026-09-06": 0.5374,
+    "2026-09-07": 0.5398,
+    "2026-09-08": 0.5394,
+    "2026-09-09": 0.6447
+   }
+  },
+  "prop": {
+   "full": "Proprietary LLM Token Expenditure Index",
+   "latest": "2026-09-09",
+   "name": "Proprietary LLM",
+   "values": {
+    "2026-09-03": 1.999,
+    "2026-09-04": 1.9738,
+    "2026-09-05": 1.9822,
+    "2026-09-06": 1.9319,
+    "2026-09-07": 1.8569,
+    "2026-09-08": 1.816,
+    "2026-09-09": 1.9726
+   }
+  }
+ },
+ "source": "Silicon Data · LLM Token Expenditure Index",
+ "unit": "USD / M tokens",
+ "updated": "2026-09-11T17:47+09:00",
+ "url": "https://www.silicondata.com/products/silicon-index/llm-token-expenditure-index"
+}

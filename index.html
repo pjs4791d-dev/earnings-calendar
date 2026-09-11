@@ -300,6 +300,77 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 }
 </style>
 
+<style>
+/* ── AI 데이터 탭: 시리즈 색 (라이트/다크 각각 검증된 값) ── */
+:root{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#008300;--s7:#4a3aa7;--s8:#e34948}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767}}
+:root[data-theme="dark"]{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767}
+
+.lx{margin-top:18px}
+.lx .lmsg{color:var(--muted);font-size:14px;padding:26px 0;text-align:center}
+/* 최신값 카드 */
+.lcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:0 0 14px}
+.lcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;
+ border-top:3px solid var(--sc,var(--line))}
+.lcard .ln{font-size:11.5px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:6px}
+.lcard .lv{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-top:6px}
+.lcard .ld{font-size:11.5px;color:var(--faint);margin-top:6px;font-variant-numeric:tabular-nums}
+.lcard .lch{font-weight:700;color:var(--muted)}
+.lcard .lch.lup{color:var(--up)}.lcard .lch.ldn{color:var(--down)}
+/* 조작줄: 시리즈 선택 · 모드 · 기간 · 표 */
+.lctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:0 0 10px}
+.lctl .lgrp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.lctl .llab{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-right:2px}
+.lgd{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;
+ font-size:12.5px;font-weight:600;padding:5px 10px 5px 8px;border-radius:999px;cursor:pointer;
+ display:inline-flex;align-items:center;gap:7px;transition:opacity .12s,border-color .12s}
+.lgd .lk{width:16px;height:0;border-top:3px solid var(--sc);border-radius:2px}
+.lgd:hover{border-color:var(--accent)}
+.lgd[aria-pressed="false"]{opacity:.45}
+.lgd[aria-pressed="false"] .lk{border-top-style:dotted}
+.lgd:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lsw{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--surface)}
+.lsw button{appearance:none;border:0;background:none;font:inherit;font-size:12.5px;font-weight:600;
+ color:var(--muted);padding:6px 10px;cursor:pointer}
+.lsw button.on{background:var(--accent-soft);color:var(--accent)}
+.lsw button+button{border-left:1px solid var(--line)}
+/* 차트 */
+.lchart{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:10px;
+ padding:10px 6px 4px;box-shadow:var(--shadow)}
+.lchart svg{display:block;width:100%;height:auto;font-family:inherit;touch-action:pan-y}
+.lchart .grid{stroke:var(--line2);stroke-width:1}
+.lchart .ax{stroke:var(--line);stroke-width:1}
+.lchart .tk{fill:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.lchart .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.lchart .pt{stroke:var(--surface);stroke-width:2}
+.lchart .dl{font-size:11.5px;font-weight:700;fill:var(--ink2)}
+.lchart .xh{stroke:var(--ink2);stroke-width:1;opacity:.5;pointer-events:none}
+.lchart .hit{fill:transparent}
+.ltip{position:absolute;z-index:20;pointer-events:none;background:var(--surface);border:1px solid var(--line);
+ border-radius:8px;padding:8px 11px;box-shadow:var(--shadow);font-size:12.5px;min-width:150px;display:none}
+.ltip .td{font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:5px;font-variant-numeric:tabular-nums}
+.ltip .tr{display:flex;align-items:center;gap:8px;padding:2px 0;white-space:nowrap}
+.ltip .tk{width:14px;height:0;border-top:3px solid var(--sc);border-radius:2px;flex:none}
+.ltip .tv{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+.ltip .tn{color:var(--muted);font-size:11.5px}
+.lnote{font-size:11.5px;color:var(--faint);margin:10px 2px 0;line-height:1.7}
+.lnote b{color:var(--muted);font-weight:600}
+.lnote a{color:var(--accent);text-decoration:none;font-weight:600}
+/* 표 보기 */
+.ltbl{margin-top:12px;overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.ltbl table{border-collapse:collapse;width:100%;font-size:12.5px;font-variant-numeric:tabular-nums}
+.ltbl th,.ltbl td{padding:7px 12px;text-align:right;border-bottom:1px solid var(--line2);white-space:nowrap}
+.ltbl th{background:var(--panel);color:var(--muted);font-weight:600;font-size:11.5px;position:sticky;top:0}
+.ltbl th:first-child,.ltbl td:first-child{text-align:left}
+.ltbl tr:last-child td{border-bottom:0}
+/* 갱신 기록 */
+.llog{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.llog summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--muted)}
+.llog ul{margin:8px 0 0;padding-left:18px;font-size:12.5px;color:var(--ink2);line-height:1.8;font-variant-numeric:tabular-nums}
+@media(max-width:560px){.lcard .lv{font-size:19px}.lctl{gap:8px 10px}}
+</style>
+
 <a class="wm" href="https://t.me/SpartanResearch" target="_blank" rel="noopener"><span class="wd"></span>스파르탄 리서치</a>
 <div class="wrap">
  <div class="topbar">
@@ -322,6 +393,10 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
   <button class="nav" data-p="rpt" role="tab">📄 리포트 조회</button>
   <div class="ngrp">리서치</div>
   <button class="nav" data-p="str" role="tab">📈 투자 전략</button>
+
+  <div class="ngrp">AI 데이터</div>
+  <button class="nav" data-p="sd" role="tab">💵 LLM 토큰 가격</button>
+  <button class="nav" data-p="or" role="tab">🔀 OpenRouter 사용량</button>
  </nav>
 
 <main class="main">
@@ -402,12 +477,31 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
    숫자는 모두 <b>전수 조사</b> 결과이고, 표본이 적으면 적다고 함께 적습니다.</p>
  <div class="plist"><a class="post" href="kospi-panic.html"><div class="pdate">2026.07.29</div><div><span class="ptag">데이터 리포트</span><div class="ptitle">코스피가 급락한 날, 개인이 팔았을 때</div><div class="pdesc">1999~2026년 6,798거래일 전수 분석. 3% 넘게 빠진 222일 중 개인마저 순매도한 38일의 다음 날을 확인했습니다.</div><div class="pmore">자세히 보기 →</div></div></a></div>
 </section>
+
+<section id="p-sd" hidden>
+ <p class="eyebrow">Silicon Data · LLM Token Expenditure Index</p>
+ <h1>LLM 토큰 가격 지수</h1>
+ <p class="con-lead">Silicon Data가 매일 발표하는 <b>LLM 토큰 100만 개당 실효 가격(USD)</b>입니다.
+   원본 사이트는 최근 7일만 보여 주기 때문에, 30분마다 확인해 새 값이 올라오면 곧바로 기록해
+   그래프를 계속 이어 붙입니다. 지표를 눌러 켜고 끄면 y축이 선택한 것에 맞춰 다시 잡힙니다.</p>
+ <div class="lx" id="lx-sd"><div class="lmsg">불러오는 중…</div></div>
+</section>
+
+<section id="p-or" hidden>
+ <p class="eyebrow">OpenRouter · Daily Token Usage</p>
+ <h1>OpenRouter 모델별 토큰 사용량</h1>
+ <p class="con-lead">OpenRouter를 거쳐 처리된 <b>하루 토큰 수(입력+출력)</b>입니다. 랭킹 페이지의 숫자는
+   7일 합계라서, 모델 통계에서 <b>하루 단위 값</b>을 받아 기록합니다. 날짜는 UTC 기준이며
+   하루가 끝나(한국시간 오전 9시) 집계가 확정된 뒤에 추가됩니다.</p>
+ <div class="lx" id="lx-or"><div class="lmsg">불러오는 중…</div></div>
+</section>
+
 </main>
 </div>
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-11 09:01 · 평일 매일 자동 갱신</p>
+   생성 2026-09-11 17:47 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -458,10 +552,11 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
  var tabs=[].slice.call(document.querySelectorAll('.nav'));
  function show(t){
    tabs.forEach(function(x){x.classList.toggle('on',x===t)});
-   ['cal','con','rpt','str'].forEach(function(k){
+   ['cal','con','rpt','str','sd','or'].forEach(function(k){
      var sec=document.getElementById('p-'+k); if(sec) sec.hidden=(t.dataset.p!==k);
    });
    if(t.dataset.p==='con'||t.dataset.p==='rpt') loadCorps();
+   if(t.dataset.p==='sd'||t.dataset.p==='or') window.LLM&&LLM.open(t.dataset.p);   // AI 데이터 탭
    if(t.dataset.p==='rpt'&&!window.__rptLoaded){    // 처음 열면 최신 리포트를 바로 보여줌
      window.__rptLoaded=true; loadReports(1);
    }
@@ -778,6 +873,227 @@ attachAC('rq','rac',rlookup,rSuggest);   // 리포트 조회 (모드별 후보)
   cnt.textContent=total; empty.style.display=total?'none':'';
  }
  input.addEventListener('input',run);
+})();
+</script>
+
+
+<script>
+/* ── AI 데이터 탭: JSON 읽어서 선택형 라인차트 그리기 ─────────── */
+window.LLM=(function(){
+ var CFG={
+  sd:{src:'data/llm_index.json', unitNote:'단위: USD / 100만 토큰',
+      fmt:function(v){return '$'+v.toFixed(4)},
+      fmtShort:function(v){return '$'+v.toFixed(2)}, tick:function(v){return '$'+v.toFixed(2)},
+      norm:function(j){
+        var order=['llm','open','prop'], out=[];
+        order.concat(Object.keys(j.series||{})).forEach(function(k){
+          var s=j.series[k]; if(!s||out.some(function(o){return o.key===k})) return;
+          out.push({key:k,name:s.name,full:s.full,values:s.values||{}});
+        });
+        var fs=j.first_seen||{};
+        return {series:out, updated:j.updated, checked:j.checked, source:'Silicon Data', url:j.url,
+                log:Object.keys(fs).map(function(d){return {date:d,seen:fs[d]}}),
+                lagNote:'값은 보통 이틀쯤 늦게 발표됩니다 (예: 9일 값이 11일에 공개).'};
+      }},
+  or:{src:'data/openrouter.json', unitNote:'단위: 토큰 (B=10억, T=1조) · 입력+출력 합계',
+      fmt:fmtTok, fmtShort:fmtTok, tick:fmtTok,
+      norm:function(j){
+        var out=[], fs=j.first_seen||{}, seen={};
+        Object.keys(j.models||{}).forEach(function(k){
+          var m=j.models[k], vals={};
+          Object.keys(m.days||{}).forEach(function(d){vals[d]=m.days[d].total});
+          out.push({key:k,name:m.name,full:m.slug,values:vals});
+          Object.keys(fs[k]||{}).forEach(function(d){ if(!seen[d]||fs[k][d]<seen[d]) seen[d]=fs[k][d]; });
+        });
+        return {series:out, updated:j.updated, checked:j.checked, source:'OpenRouter', url:j.url,
+                log:Object.keys(seen).map(function(d){return {date:d,seen:seen[d]}}),
+                lagNote:'하루(UTC)가 끝난 뒤 확정값만 기록합니다.'};
+      }}
+ };
+ function fmtTok(v){
+   if(v>=1e12) return (v/1e12).toFixed(2)+'T';
+   if(v>=1e9) return (v/1e9).toFixed(1)+'B';
+   if(v>=1e6) return (v/1e6).toFixed(1)+'M';
+   return Math.round(v).toLocaleString();
+ }
+ function md(d){return (+d.slice(5,7))+'/'+(+d.slice(8,10))}          // 2026-09-09 → 9/9
+ function ymd(d){return d.slice(0,4)+'.'+d.slice(5,7)+'.'+d.slice(8,10)}
+ function kt(ts){ if(!ts) return '-'; return ts.slice(5,7).replace(/^0/,'')+'/'+ts.slice(8,10).replace(/^0/,'')+' '+ts.slice(11,16); }
+ function pct(a,b){ if(!b) return null; return (a/b-1)*100; }
+ function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
+ var NS='http://www.w3.org/2000/svg';
+ function sv(tag,attrs){var e=document.createElementNS(NS,tag); for(var k in attrs) e.setAttribute(k,attrs[k]); return e;}
+ function nice(lo,hi,n){                       // 보기 좋은 눈금
+   var span=hi-lo||Math.abs(hi)||1, raw=span/n, mag=Math.pow(10,Math.floor(Math.log10(raw))), r=raw/mag,
+       step=(r<1.5?1:r<3?2:r<7?5:10)*mag, t0=Math.ceil(lo/step)*step, ticks=[];
+   for(var v=t0; v<=hi+step*1e-9; v+=step) ticks.push(+v.toFixed(12));
+   return ticks;
+ }
+
+ var state={};   // key → {data, on:{}, mode, range, table}
+
+ function open(key){
+   if(state[key]) return;                          // 이미 불러왔거나 불러오는 중
+   var box=document.getElementById('lx-'+key); if(!box) return;
+   state[key]=st={on:{},mode:'raw',range:'all',table:false};
+   fetch(CFG[key].src+'?v='+Math.floor(Date.now()/6e4)).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+   .then(function(j){
+     st.data=CFG[key].norm(j);
+     st.data.series.forEach(function(s,i){ s.color='var(--s'+(i%8+1)+')'; st.on[s.key]=true; });
+     build(key);
+   }).catch(function(){ box.innerHTML=''; box.appendChild(el('div','lmsg','아직 기록된 데이터가 없거나 불러오지 못했습니다.')); });
+ }
+
+ function build(key){
+   var st=state[key], D=st.data, C=CFG[key], box=document.getElementById('lx-'+key);
+   box.innerHTML='';
+   // 최신값 카드
+   var cards=el('div','lcards');
+   D.series.forEach(function(s){
+     var ds=Object.keys(s.values).sort(), last=ds[ds.length-1]; if(!last) return;
+     var v=s.values[last], prev=ds[ds.length-2], w=ds[ds.length-8];
+     var c=el('div','lcard'); c.style.setProperty('--sc',s.color);
+     c.appendChild(el('div','ln',s.name));
+     c.appendChild(el('div','lv',C.fmtShort(v)));
+     var d=el('div','ld'); d.appendChild(document.createTextNode(ymd(last)+' · '));
+     var p=pct(v,s.values[prev]); var ch=el('span','lch'+(p==null?'':p>=0?' lup':' ldn'),
+        p==null?'전일 -':(p>=0?'▲':'▼')+Math.abs(p).toFixed(1)+'% 전일');
+     d.appendChild(ch);
+     if(w!=null){ var p7=pct(v,s.values[w]); d.appendChild(document.createTextNode(' · 7일 '+(p7>=0?'+':'')+p7.toFixed(1)+'%')); }
+     c.appendChild(d); cards.appendChild(c);
+   });
+   box.appendChild(cards);
+   // 조작줄
+   var ctl=el('div','lctl'), g1=el('div','lgrp'); g1.appendChild(el('span','llab','지표'));
+   D.series.forEach(function(s){
+     var b=el('button','lgd'); b.type='button'; b.setAttribute('aria-pressed',st.on[s.key]?'true':'false');
+     b.style.setProperty('--sc',s.color); b.appendChild(el('span','lk')); b.appendChild(document.createTextNode(s.name));
+     b.title=s.full||s.name;
+     b.addEventListener('click',function(){
+       var n=D.series.filter(function(x){return st.on[x.key]}).length;
+       if(st.on[s.key]&&n<=1) return;               // 마지막 하나는 끌 수 없음
+       st.on[s.key]=!st.on[s.key]; b.setAttribute('aria-pressed',st.on[s.key]?'true':'false'); draw(key);
+     });
+     g1.appendChild(b);
+   });
+   ctl.appendChild(g1);
+   function sw(label,opts,cur,set){
+     var g=el('div','lgrp'); if(label) g.appendChild(el('span','llab',label));
+     var w=el('span','lsw');
+     opts.forEach(function(o){
+       var b=el('button',o[0]===cur?'on':'',o[1]); b.type='button';
+       b.addEventListener('click',function(){ [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); draw(key); });
+       w.appendChild(b);
+     });
+     g.appendChild(w); return g;
+   }
+   ctl.appendChild(sw('보기',[['raw','실제값'],['idx','첫날=100']],st.mode,function(v){st.mode=v}));
+   ctl.appendChild(sw('기간',[['30','30일'],['90','90일'],['all','전체']],st.range,function(v){st.range=v}));
+   ctl.appendChild(sw('',[['chart','그래프'],['table','표']],'chart',function(v){st.table=(v==='table')}));
+   box.appendChild(ctl);
+   // 차트 + 툴팁
+   var ch=el('div','lchart'); ch.appendChild(el('div','ltip')); box.appendChild(ch);
+   st.chart=ch;
+   var tb=el('div','ltbl'); tb.hidden=true; box.appendChild(tb); st.tbl=tb;
+   // 설명 · 갱신 기록
+   var note=el('p','lnote');
+   var all=[]; D.series.forEach(function(s){all=all.concat(Object.keys(s.values))}); all.sort();
+   note.appendChild(el('b',null,C.unitNote)); note.appendChild(document.createTextNode(' · 기록 기간 '));
+   note.appendChild(el('b',null,all.length?ymd(all[0])+' ~ '+ymd(all[all.length-1])+' ('+uniq(all).length+'일)':'-'));
+   note.appendChild(el('br'));
+   note.appendChild(document.createTextNode('30분마다 확인 · 마지막 확인 '+kt(D.checked)+' · 마지막 변경 '+kt(D.updated)+' (한국시간) · '+D.lagNote+' · 출처: '));
+   var a=el('a',null,D.source); a.href=D.url; a.target='_blank'; a.rel='noopener'; note.appendChild(a);
+   box.appendChild(note);
+   var log=document.createElement('details'); log.className='llog';
+   var sm=el('summary',null,'갱신 감지 기록 (원본 사이트가 언제 올라오는지)'); log.appendChild(sm);
+   var ul=el('ul');
+   var L=D.log.slice().sort(function(a,b){return a.date<b.date?1:-1}).slice(0,14);
+   if(!L.length) ul.appendChild(el('li',null,'아직 새 갱신을 감지한 적이 없습니다. 첫 수집 이후 새 날짜가 올라오면 여기 쌓입니다.'));
+   L.forEach(function(x){ ul.appendChild(el('li',null,ymd(x.date)+' 값 → '+kt(x.seen)+' 에 기록됨')); });
+   log.appendChild(ul); box.appendChild(log);
+   draw(key);
+   if(!st.ro){ var t; addEventListener('resize',function(){clearTimeout(t); t=setTimeout(function(){draw(key)},120)}); st.ro=true; }
+ }
+ function uniq(a){var o={},r=[]; a.forEach(function(x){if(!o[x]){o[x]=1;r.push(x)}}); return r;}
+
+ function draw(key){
+   var st=state[key], D=st.data, C=CFG[key], ch=st.chart; if(!ch) return;
+   var vis=D.series.filter(function(s){return st.on[s.key]});
+   var dates={}; vis.forEach(function(s){Object.keys(s.values).forEach(function(d){dates[d]=1})});
+   dates=Object.keys(dates).sort();
+   if(st.range!=='all') dates=dates.slice(-(+st.range));
+   var base={}; vis.forEach(function(s){ var f=dates.filter(function(d){return s.values[d]!=null})[0]; base[s.key]=f?s.values[f]:null; });
+   function val(s,d){ var v=s.values[d]; if(v==null) return null; return st.mode==='idx'?(base[s.key]?v/base[s.key]*100:null):v; }
+   var fmt=st.mode==='idx'?function(v){return v.toFixed(1)}:C.fmt, tick=st.mode==='idx'?function(v){return v.toFixed(0)}:C.tick;
+   // 표
+   st.tbl.hidden=!st.table; ch.hidden=st.table;
+   if(st.table){
+     st.tbl.innerHTML=''; var t=el('table'), thead=el('thead'), tr=el('tr'); tr.appendChild(el('th',null,'날짜'));
+     vis.forEach(function(s){tr.appendChild(el('th',null,s.name))}); thead.appendChild(tr); t.appendChild(thead);
+     var tb=el('tbody');
+     dates.slice().reverse().forEach(function(d){ var r=el('tr'); r.appendChild(el('td',null,ymd(d)));
+       vis.forEach(function(s){var v=val(s,d); r.appendChild(el('td',null,v==null?'-':fmt(v)))}); tb.appendChild(r); });
+     t.appendChild(tb); st.tbl.appendChild(t); return;
+   }
+   // 차트 크기
+   var W=Math.max(300,Math.floor(ch.getBoundingClientRect().width)-12), H=W<520?250:310;
+   var labelW=vis.length>1&&vis.length<=4?Math.max.apply(null,vis.map(function(s){return s.name.length}))*6.6+14:8;
+   var m={t:14,r:Math.round(labelW)+6,b:26,l:8}, lo=Infinity, hi=-Infinity;
+   vis.forEach(function(s){dates.forEach(function(d){var v=val(s,d); if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v)}})});
+   if(lo===Infinity){ lo=0; hi=1; }
+   var pad=(hi-lo)*0.12||Math.abs(hi)*0.05||1; lo-=pad; hi+=pad;
+   var yt=nice(lo,hi,5); if(yt.length<2) yt=[lo,hi];
+   m.l=Math.max.apply(null,yt.map(function(v){return tick(v).length}))*6.8+14;
+   var pw=W-m.l-m.r, ph=H-m.t-m.b;
+   var x0=new Date(dates[0]+'T00:00:00Z').getTime(), x1=new Date(dates[dates.length-1]+'T00:00:00Z').getTime();
+   function X(d){ var t=new Date(d+'T00:00:00Z').getTime(); return x1===x0?m.l+pw/2:m.l+(t-x0)/(x1-x0)*pw; }
+   function Y(v){ return m.t+(1-(v-lo)/(hi-lo))*ph; }
+   var svg=sv('svg',{viewBox:'0 0 '+W+' '+H,width:W,height:H,role:'img','aria-label':vis.map(function(s){return s.name}).join(', ')+' 추이'});
+   yt.forEach(function(v){ var y=Y(v); svg.appendChild(sv('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,'class':'grid'}));
+     var t=sv('text',{x:m.l-6,y:y+4,'text-anchor':'end','class':'tk'}); t.textContent=tick(v); svg.appendChild(t); });
+   svg.appendChild(sv('line',{x1:m.l,x2:W-m.r,y1:m.t+ph,y2:m.t+ph,'class':'ax'}));
+   var nx=Math.max(2,Math.min(dates.length,Math.floor(pw/64))), step=Math.max(1,Math.ceil((dates.length-1)/(nx-1)));
+   for(var i=0;i<dates.length;i+=step){ var t=sv('text',{x:X(dates[i]),y:H-8,'text-anchor':i===0?'start':i>=dates.length-step?'end':'middle','class':'tk'}); t.textContent=md(dates[i]); svg.appendChild(t); }
+   if((dates.length-1)%step) { var t2=sv('text',{x:X(dates[dates.length-1]),y:H-8,'text-anchor':'end','class':'tk'}); t2.textContent=md(dates[dates.length-1]); svg.appendChild(t2); }
+   var ends=[];
+   vis.forEach(function(s){
+     var pts=dates.map(function(d){var v=val(s,d); return v==null?null:[X(d),Y(v),d,v]}).filter(Boolean);
+     if(!pts.length) return;
+     var p=sv('path',{d:pts.map(function(q,i){return (i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join(' '),'class':'ln'}); p.style.stroke=s.color; svg.appendChild(p);
+     if(dates.length<=60) pts.forEach(function(q){ var c=sv('circle',{cx:q[0],cy:q[1],r:3.5,'class':'pt'}); c.style.fill=s.color; svg.appendChild(c); });
+     ends.push({s:s,y:pts[pts.length-1][1]});
+   });
+   if(vis.length>1&&vis.length<=4){                                    // 선 끝 이름표 (겹치면 벌림)
+     ends.sort(function(a,b){return a.y-b.y});
+     for(var i=1;i<ends.length;i++) if(ends[i].y-ends[i-1].y<14) ends[i].y=ends[i-1].y+14;
+     ends.forEach(function(e){ var t=sv('text',{x:W-m.r+6,y:e.y+4,'class':'dl'}); t.style.fill=e.s.color; t.textContent=e.s.name; svg.appendChild(t); });
+   }
+   // 크로스헤어 + 툴팁
+   var xh=sv('line',{x1:0,x2:0,y1:m.t,y2:m.t+ph,'class':'xh',visibility:'hidden'}); svg.appendChild(xh);
+   var hit=sv('rect',{x:m.l,y:m.t,width:pw,height:ph,'class':'hit'}); svg.appendChild(hit);
+   var tip=ch.querySelector('.ltip');
+   function at(px){
+     var r=svg.getBoundingClientRect(), x=(px-r.left)*W/r.width, best=0, bd=1e9;
+     dates.forEach(function(d,i){var dd=Math.abs(X(d)-x); if(dd<bd){bd=dd;best=i}});
+     var d=dates[best], cx=X(d);
+     xh.setAttribute('x1',cx); xh.setAttribute('x2',cx); xh.setAttribute('visibility','visible');
+     tip.innerHTML=''; tip.appendChild(el('div','td',ymd(d)));
+     vis.forEach(function(s){ var v=val(s,d); if(v==null) return; var row=el('div','tr'); var k=el('span','tk'); k.style.setProperty('--sc',s.color);
+       row.appendChild(k); row.appendChild(el('span','tv',fmt(v))); row.appendChild(el('span','tn',s.name)); tip.appendChild(row); });
+     tip.style.display='block';
+     var left=cx*r.width/W+14; if(left+tip.offsetWidth>r.width-4) left=cx*r.width/W-tip.offsetWidth-14;
+     tip.style.left=Math.max(4,left)+'px'; tip.style.top=(m.t*r.height/H+6)+'px';
+   }
+   function off(){ xh.setAttribute('visibility','hidden'); tip.style.display='none'; }
+   hit.addEventListener('pointermove',function(e){at(e.clientX)});
+   hit.addEventListener('pointerdown',function(e){at(e.clientX)});
+   hit.addEventListener('pointerleave',off);
+   var old=ch.querySelector('svg'); if(old) old.remove();
+   ch.insertBefore(svg,tip);
+ }
+ // 주소에 #sd/#or 를 달고 들어온 경우: 탭 스크립트가 먼저 돌아 여기가 아직 없었으므로 지금 연다
+ var h=(location.hash||'').replace('#',''); if(CFG[h]) open(h);
+ return {open:open};
 })();
 </script>
 
