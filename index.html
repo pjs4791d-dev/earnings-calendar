@@ -722,7 +722,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-12 14:37 · 평일 매일 자동 갱신</p>
+   생성 2026-09-12 14:38 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1582,7 +1582,7 @@ window.HOME=(function(){
  function hm(ts){ return ts?ts.slice(11,16):''; }
  function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
  function sgn(v,d){ if(v==null) return '-'; return (v>0?'+':'')+n0(v,d); }
- function fmtEok(v){ if(v==null) return '-'; var a=Math.abs(v); var s=a>=10000?(a/10000).toFixed(1)+'조':n0(a); return (v<0?'-':'+')+s; }
+ function fmtEok(v,u){ if(v==null) return '-'; var a=Math.abs(v); var s=a>=10000?(a/10000).toFixed(1)+'조':n0(a)+(u?'억':''); return (v<0?'-':'+')+s; }
  function getJ(url){ return fetch(url+(url.indexOf('?')<0?'?':'&')+'t='+Math.floor(Date.now()/15e3)).then(function(r){ if(!r.ok) throw 0; return r.json(); }); }
  var visible={home:false,flow:false};
  function tabOn(k){ var s=document.getElementById('p-'+k); return s&&!s.hidden; }
@@ -1626,7 +1626,7 @@ window.HOME=(function(){
    var wrap=el('div','fs'), any=false;
    Object.keys(f.markets).forEach(function(k){ var m=f.markets[k]; var last=m.series[m.series.length-1]; if(!last) return; any=true;
      var r=el('div','fr'); r.appendChild(el('div','fm',m.name)); var b=el('div','fb');
-     ['개인','외국인','기관계'].forEach(function(s){ var v=last[s]; var x=el('span','fv'); x.appendChild(document.createTextNode(s.replace('기관계','기관')+' ')); x.appendChild(el('b',v>0?'pu':v<0?'pd':'',(m.unit==='계약'?sgn(v):fmtEok(v))+(m.unit==='계약'?'':'억'))); b.appendChild(x); });
+     ['개인','외국인','기관계'].forEach(function(s){ var v=last[s]; var x=el('span','fv'); x.appendChild(document.createTextNode(s.replace('기관계','기관')+' ')); x.appendChild(el('b',v>0?'pu':v<0?'pd':'',(m.unit==='계약'?sgn(v):fmtEok(v,true)))); b.appendChild(x); });
      r.appendChild(b); wrap.appendChild(r); });
    if(!any){ p.appendChild(el('div','lmsg','오늘은 아직 집계된 수급이 없습니다 (장중 09:00~ 갱신)')); return; }
    p.appendChild(wrap);
