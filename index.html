@@ -530,13 +530,14 @@ a.mke:hover .mkt{color:var(--accent)}
 .fl .live i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--up);margin-right:5px;vertical-align:1px}
 .fl .live.off i{background:var(--faint)}
 .fcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:0 0 12px}
-.fcards .grp{grid-column:1/-1;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:4px 0 -2px}
-.fcards .grp small{font-weight:500;letter-spacing:0;text-transform:none;color:var(--faint);margin-left:8px}
+.fgroups .grp{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:4px 0 6px}
+.fgroups .grp small{font-weight:500;letter-spacing:0;text-transform:none;color:var(--faint);margin-left:8px}
+.fgroups .fcards{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
 .fc{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;border-top:3px solid var(--sc,var(--line))}
 .fc .fn{font-size:11px;font-weight:600;color:var(--muted)}
 .fc .fv{font-size:19px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .fc .fv.pu{color:var(--up)}.fc .fv.pd{color:var(--down)}
-.fc .fu{font-size:10.5px;color:var(--faint);margin-top:2px}
+.fc .fm{font-size:10.5px;color:var(--faint);margin-top:2px}
 .fc .fx{color:var(--muted);font-variant-numeric:tabular-nums;white-space:normal;font-size:10px;letter-spacing:-.01em}
 .fchart{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 6px 4px;box-shadow:var(--shadow)}
 .fchart svg{display:block;width:100%;height:auto;touch-action:pan-y}
@@ -830,7 +831,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-12 19:07 · 평일 매일 자동 갱신</p>
+   생성 2026-09-12 19:14 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1847,7 +1848,7 @@ window.HOME=(function(){
      else b.addEventListener('click',function(){ if(b.disabled) return; [].forEach.call(mkw.children,function(x){x.classList.remove('on')}); b.classList.add('on'); F.mkt=o[0]; syncMarket(); drawFlow(); drawDaily(); });
      mkw.appendChild(b); }); g2.appendChild(mkw); c.appendChild(g2);
    var lv=el('span','live'); lv.id='fl-live'; lv.appendChild(document.createElement('i')); lv.appendChild(document.createTextNode('연결 중…')); c.appendChild(lv); box.appendChild(c);
-   box.appendChild(el('div','fcards')).id='fl-cards';
+   box.appendChild(el('div','fgroups')).id='fl-cards';
    var lg=el('div','lctl'); lg.id='fl-legend'; box.appendChild(lg);
    var ch=el('div','fchart'); ch.id='fl-chart'; ch.appendChild(el('div','ltip')); box.appendChild(ch);
    var h1=el('h3','', '일별 수급'); h1.appendChild(el('span',null,'순매수 · 기간을 골라 보세요 (2010년~)')); box.appendChild(h1);
@@ -1890,9 +1891,10 @@ window.HOME=(function(){
      var gl=el('div','grp',F.market==='nxt'?'NXT · '+mkName()+' 종목 일별'+(prov?' (잠정)':' (추정)'):'통합 '+mkName()+' 일별 · KRX 확정 + NXT 추정');
      var ex0=last&&last.exact; gl.appendChild(el('small',null,dlab+' · 억원 · '+(F.market==='nxt'?'종목별 합산 추정치, 공식 합계에 맞춰 보정'+(ex0?' · NXT 전체 공식: 개인 '+fmtEok(ex0['개인'])+' / 외국인 '+fmtEok(ex0['외국인'])+' / 기관 '+fmtEok(ex0['기관계']):''):
        (last&&last.krx?'KRX '+fmtEok(last.krx['개인'])+' + NXT '+fmtEok(last.nxt['개인'])+' (개인)':'NXT 시장별 분리는 종목별 합산 추정')))); cards.appendChild(gl);
+     var grid1=el('div','fcards'); cards.appendChild(grid1);
      MAIN.forEach(function(k){ var v=last?last[k]:null; var c=el('div','fc'); c.style.setProperty('--sc',COLOR[k]); c.appendChild(el('div','fn',k==='기관계'?'기관 합계':k));
-       c.appendChild(el('div','fv'+(v>0?' pu':v<0?' pd':''),v==null?'-':fmtEok(v))); c.appendChild(el('div','fu','억원 · 순매수 · '+dlab));
-       if(F.market==='all'&&last&&last.krx) c.appendChild(el('div','fu fx','KRX '+fmtEok(last.krx[k])+' · NXT '+fmtEok(last.nxt[k])+(prov?' 잠정':''))); cards.appendChild(c); });
+       c.appendChild(el('div','fv'+(v>0?' pu':v<0?' pd':''),v==null?'-':fmtEok(v))); c.appendChild(el('div','fm','억원 · 순매수 · '+dlab));
+       if(F.market==='all'&&last&&last.krx) c.appendChild(el('div','fm fx','KRX '+fmtEok(last.krx[k])+' · NXT '+fmtEok(last.nxt[k])+(prov?' 잠정':''))); grid1.appendChild(c); });
      if(F.market==='nxt'){
        var lg0=document.getElementById('fl-legend'); lg0.innerHTML='';
        var ch0=document.getElementById('fl-chart'); var old0=ch0.querySelector('svg'); if(old0) old0.remove(); var msg0=ch0.querySelector('.lmsg'); if(msg0) msg0.remove();
@@ -1904,8 +1906,9 @@ window.HOME=(function(){
    var m=F.today.markets[F.mkt]; if(!m) return; var ser=m.series, last=ser[ser.length-1];
    var gl2=el('div','grp',mkName()+' 장중 누적'+(F.market==='all'?' · KRX 체결분':''));
    gl2.appendChild(el('small',null,(last?last.t+' 기준 · ':'')+(F.market==='all'?'NXT 장중 집계는 공개 출처가 없어 마감 후 일별로 합산됩니다':F.market==='03'&&F.ex!=='krx'?'선물·옵션은 KRX에서만 거래 → 통합 = KRX':m.unit))); cards.appendChild(gl2);
+   var grid2=el('div','fcards'); cards.appendChild(grid2);
    (F.market==='all'?MAIN:MAIN.concat(['금융투자','투신사모','연기금'])).forEach(function(k){ var v=last?last[k]:null; var c=el('div','fc'); c.style.setProperty('--sc',COLOR[k]); c.appendChild(el('div','fn',k==='기관계'?'기관 합계':k==='투신사모'?'투신(사모)':k));
-     c.appendChild(el('div','fv'+(v>0?' pu':v<0?' pd':''),v==null?'-':(m.unit==='계약'?sgn(v):fmtEok(v)))); c.appendChild(el('div','fu',m.unit+' · 누적 순매수'+(last?' · '+last.t:''))); cards.appendChild(c); });
+     c.appendChild(el('div','fv'+(v>0?' pu':v<0?' pd':''),v==null?'-':(m.unit==='계약'?sgn(v):fmtEok(v)))); c.appendChild(el('div','fm',m.unit+' · 누적 순매수'+(last?' · '+last.t:''))); grid2.appendChild(c); });
    var lg=document.getElementById('fl-legend'); lg.innerHTML=''; lg.appendChild(el('span','llab','선 '));
    MAIN.concat(SUB).forEach(function(k){ var b=el('button','lgd'); b.type='button'; b.setAttribute('aria-pressed',F.on[k]?'true':'false'); b.style.setProperty('--sc',COLOR[k]); b.appendChild(el('span','lk')); b.appendChild(document.createTextNode(k==='기관계'?'기관':k==='투신사모'?'투신(사모)':k));
      b.addEventListener('click',function(){ F.on[k]=!F.on[k]; b.setAttribute('aria-pressed',F.on[k]?'true':'false'); drawChart(); }); lg.appendChild(b); });
