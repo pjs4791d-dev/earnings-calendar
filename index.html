@@ -731,7 +731,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-12 16:31 · 평일 매일 자동 갱신</p>
+   생성 2026-09-12 16:37 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1680,7 +1680,7 @@ window.HOME=(function(){
  }
 
  /* ═══ 수급 탭 ═══ */
- var F={built:false,market:'01',mode:'main',on:{},timer:null,today:null,daily:null,chart:null,hist:{},range:'20',from:null,to:null,dview:'cum',dloading:false};
+ var F={built:false,market:'01',mode:'main',on:{},timer:null,today:null,daily:null,chart:null,hist:{},range:'30',from:null,to:null,dview:'cum',dloading:false};
  var MAIN=['개인','외국인','기관계'], SUB=['금융투자','보험','투신사모','은행','기타금융','연기금','기타법인'];
  var COLOR={'개인':S1,'외국인':S2,'기관계':S3,'금융투자':S4,'보험':S5,'투신사모':S6,'은행':S7,'기타금융':S8,'연기금':S3,'기타법인':S1};
  function openFlow(){ visible.flow=true; if(!F.built) buildFlow(); tickFlow(); }
@@ -1697,7 +1697,7 @@ window.HOME=(function(){
    var ch=el('div','fchart'); ch.id='fl-chart'; ch.appendChild(el('div','ltip')); box.appendChild(ch);
    var h1=el('h3','', '일별 수급'); h1.appendChild(el('span',null,'순매수 · 기간을 골라 보세요 (2010년~)')); box.appendChild(h1);
    var rg=el('div','rng'); rg.appendChild(el('span','llab','기간'));
-   rg.appendChild(sw([['20','20일'],['60','60일'],['120','6개월'],['250','1년'],['750','3년'],['all','전체']],F.range,function(v){F.range=v; F.from=F.to=null; syncDates(); drawDaily();}));
+   rg.appendChild(sw([['30','30일'],['60','60일'],['120','6개월'],['250','1년'],['750','3년'],['all','전체']],F.range,function(v){F.range=v; F.from=F.to=null; syncDates(); drawDaily();}));
    var fi=el('input'); fi.type='date'; fi.id='fl-from'; var ti=el('input'); ti.type='date'; ti.id='fl-to';
    rg.appendChild(fi); rg.appendChild(document.createTextNode('~')); rg.appendChild(ti);
    var go=el('button','go','조회'); go.type='button'; go.addEventListener('click',function(){ if(fi.value&&ti.value){ F.from=fi.value; F.to=ti.value; F.range='custom'; [].forEach.call(rg.querySelectorAll('.lsw button'),function(b){b.classList.remove('on')}); drawDaily(); } });
