@@ -350,6 +350,69 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 @media(max-width:560px){.lcard .lv{font-size:19px}.lctl{gap:8px 10px}}
 </style>
 
+<style>
+/* ── 증시 캘린더 ── */
+.mk{margin-top:16px}
+.mk .lmsg{color:var(--muted);font-size:14px;padding:26px 0;text-align:center}
+.mkf{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:14px 0 6px}
+.mkf .llab{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.mkf .lgrp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.mkp{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;
+ font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;
+ transition:opacity .12s,border-color .12s}
+.mkp:hover{border-color:var(--accent)}
+.mkp[aria-pressed="false"]{opacity:.42}
+.mkp .kd{width:8px;height:8px;border-radius:50%;background:var(--kc)}
+.mk .lsw{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--surface)}
+.mk .lsw button{appearance:none;border:0;background:none;font:inherit;font-size:12.5px;font-weight:600;color:var(--muted);padding:6px 10px;cursor:pointer}
+.mk .lsw button.on{background:var(--accent-soft);color:var(--accent)}
+.mk .lsw button+button{border-left:1px solid var(--line)}
+.mk .search{margin:10px 0 4px}
+.mkinfo{font-size:12px;color:var(--muted);margin:6px 0 10px;display:flex;flex-wrap:wrap;gap:6px 16px}
+.mkinfo b{color:var(--ink2);font-weight:600}
+/* 날짜 블록 */
+.mkd{border-top:1px solid var(--line);padding:10px 0 6px}
+.mkd.today{border-top:2px solid var(--accent)}
+.mkd.past{opacity:.7}
+.mkdh{display:flex;align-items:baseline;gap:10px;margin:2px 0 8px;position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0}
+.mkdh .dm{font-size:17px;font-weight:800;letter-spacing:-.01em}
+.mkdh .dw{font-size:12.5px;color:var(--muted);font-weight:600}
+.mkdh .dw.sat{color:var(--accent)}.mkdh .dw.sun{color:var(--down)}
+.mkdh .dn{position:static;font-size:11.5px;color:var(--faint);font-weight:600}
+.mkdh .tdy{font-size:10.5px;font-weight:800;color:#fff;background:var(--accent);border-radius:4px;padding:2px 6px;letter-spacing:.04em}
+/* 행 */
+.mke{display:grid;grid-template-columns:58px 44px minmax(0,1fr);gap:4px 10px;align-items:start;padding:7px 8px;margin:0 -8px;border-radius:7px;
+ text-decoration:none;color:inherit}
+a.mke:hover{background:var(--line2)}
+a.mke:hover .mkt{color:var(--accent)}
+.mke .tm{font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink2);white-space:nowrap;padding-top:1px}
+.mke .tm.na{color:var(--faint);font-weight:500}
+.mke .cc{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;padding-top:1px}
+.mke .bd{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.03em;border-radius:4px;padding:1.5px 5px;margin-right:6px;
+ color:var(--kc);background:color-mix(in srgb,var(--kc) 14%,transparent);vertical-align:1px}
+.mke .mkt{font-size:14px;font-weight:600;line-height:1.4;letter-spacing:-.01em}
+.mke .mkt .pr{color:var(--muted);font-weight:500;font-size:12.5px;margin-left:4px}
+.mke .st{color:var(--yego);font-size:11px;letter-spacing:-1px;margin-left:6px;vertical-align:1px}
+.mke .st.s3{color:var(--down)}
+.mke .vals{font-size:12px;color:var(--muted);margin-top:2px;font-variant-numeric:tabular-nums;line-height:1.5}
+.mke .vals b{color:var(--ink);font-weight:700}
+.mke .vals .act{color:var(--up);font-weight:800}
+.mke .vals .cap{color:var(--faint)}
+.mkmore{display:block;width:100%;appearance:none;border:1px dashed var(--line);background:none;color:var(--muted);font:inherit;
+ font-size:12.5px;font-weight:600;padding:9px;border-radius:7px;cursor:pointer;margin:6px 0 10px}
+.mkmore:hover{color:var(--accent);border-color:var(--accent)}
+.mksrc{margin-top:18px;border-top:1px solid var(--line);padding-top:10px;font-size:11.5px;color:var(--faint);line-height:1.8}
+.mksrc b{color:var(--muted);font-weight:600}
+.mksrc a{color:var(--accent);text-decoration:none;font-weight:600}
+.mksrc .bad{color:var(--down);font-weight:700}
+@media(max-width:560px){
+ .mke{grid-template-columns:50px minmax(0,1fr)}
+ .mke .cc{grid-column:1;grid-row:2;font-size:11px}
+ .mke .body{grid-column:2;grid-row:1/3}
+ .mke .mkt{font-size:13.5px}
+}
+</style>
+
 <a class="wm" href="https://t.me/SpartanResearch" target="_blank" rel="noopener"><span class="wd"></span>스파르탄 리서치</a>
 <div class="wrap">
  <div class="topbar">
@@ -366,6 +429,9 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
 <div class="shell">
  <nav class="side" role="tablist">
+
+  <div class="ngrp">시장</div>
+  <button class="nav" data-p="mkt" role="tab">🗓️ 증시 캘린더</button>
   <div class="ngrp">실적</div>
   <button class="nav on" data-p="cal" role="tab">📅 실적 일정</button>
   <button class="nav" data-p="con" role="tab">📊 컨센서스</button>
@@ -448,6 +514,15 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
  <div id="rpage" class="rpage"></div>
 </section>
 
+<section id="p-mkt" hidden>
+ <p class="eyebrow">Market Calendar · 한국시간 기준</p>
+ <h1>증시 캘린더</h1>
+ <p class="con-lead">국내외 <b>경제지표 발표·기업 실적·IPO·증시 이슈·휴장</b>을 한 곳에, <b>모두 한국시간</b>으로 모았습니다.
+   미국 기업의 "장 마감 후" 실적은 한국에서는 다음 날 새벽에 나오므로 그 날짜에 넣었어요.
+   종류·국가를 눌러 골라 보고, 지표는 중요도로 걸러 볼 수 있습니다.</p>
+ <div class="mk" id="mk"><div class="lmsg">불러오는 중…</div></div>
+</section>
+
 
 <section id="p-sd" hidden>
  <p class="eyebrow">Silicon Data · LLM Token Expenditure Index</p>
@@ -483,7 +558,7 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-12 08:30 · 평일 매일 자동 갱신</p>
+   생성 2026-09-12 13:25 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -534,11 +609,12 @@ h1{font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.025em;margin
  var tabs=[].slice.call(document.querySelectorAll('.nav'));
  function show(t){
    tabs.forEach(function(x){x.classList.toggle('on',x===t)});
-   ['cal','con','rpt','sd','or','gpu'].forEach(function(k){
+   ['cal','con','rpt','sd','or','gpu','mkt'].forEach(function(k){
      var sec=document.getElementById('p-'+k); if(sec) sec.hidden=(t.dataset.p!==k);
    });
    if(t.dataset.p==='con'||t.dataset.p==='rpt') loadCorps();
    if(t.dataset.p==='sd'||t.dataset.p==='or'||t.dataset.p==='gpu') window.LLM&&LLM.open(t.dataset.p);   // AI 데이터 탭
+   if(t.dataset.p==='mkt') window.MKT&&MKT.open();   // 증시 캘린더
    if(t.dataset.p==='rpt'&&!window.__rptLoaded){    // 처음 열면 최신 리포트를 바로 보여줌
      window.__rptLoaded=true; loadReports(1);
    }
@@ -1134,6 +1210,132 @@ window.LLM=(function(){
  }
  // 주소에 #sd/#or/#gpu 를 달고 들어온 경우: 탭 스크립트가 먼저 돌아 여기가 아직 없었으므로 지금 연다
  var h=(location.hash||'').replace('#',''); if(CFG[h]) open(h);
+ return {open:open};
+})();
+</script>
+
+
+<script>
+/* ── 증시 캘린더: calendar.json → 날짜별 목록 ─────────────── */
+window.MKT=(function(){
+ var KINDS=[['econ','경제지표','#2a78d6',true],['earn','실적','#1baf7a',true],['ipo','IPO·청약','#eb6834',true],
+            ['issue','이슈','#9085e9',true],['holiday','휴장','#e34948',true],['listing','추가상장 등','#787b86',false],['etc','기타','#787b86',false]];
+ var KLAB={}; KINDS.forEach(function(k){KLAB[k[0]]=k});
+ var FLAG={KR:'🇰🇷',US:'🇺🇸',CN:'🇨🇳',JP:'🇯🇵',EU:'🇪🇺',DE:'🇩🇪',GB:'🇬🇧',HK:'🇭🇰',TW:'🇹🇼',CA:'🇨🇦',AU:'🇦🇺',IN:'🇮🇳',FR:'🇫🇷',CH:'🇨🇭',NZ:'🇳🇿',SG:'🇸🇬',XX:'🌐'};
+ var CGRP=[['KR','한국',['KR']],['US','미국',['US','CA']],['CN','중국',['CN','HK','TW']],['JP','일본',['JP']],['EU','유럽',['EU','DE','GB','FR','CH']],['XX','기타',['AU','IN','NZ','SG','XX']]];
+ var WD=['일','월','화','수','목','금','토'];
+ var st={kinds:{},cg:{},imp:2,big:true,q:'',past:false,data:null};
+ KINDS.forEach(function(k){st.kinds[k[0]]=k[3]}); CGRP.forEach(function(g){st.cg[g[0]]=true});
+ function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
+ function kstToday(){ return new Date(Date.now()+324e5).toISOString().slice(0,10); }
+ function ymd(d){return d.slice(0,4)+'.'+d.slice(5,7)+'.'+d.slice(8,10)}
+ function kt(ts){ if(!ts) return '-'; return ts.slice(5,7).replace(/^0/,'')+'/'+ts.slice(8,10).replace(/^0/,'')+' '+ts.slice(11,16); }
+ function cgOf(cc){ for(var i=0;i<CGRP.length;i++) if(CGRP[i][2].indexOf(cc)>=0) return CGRP[i][0]; return 'XX'; }
+
+ function open(){
+   if(st.data||st.loading) return;
+   var box=document.getElementById('mk'); if(!box) return; st.loading=true;
+   fetch('data/calendar.json?v='+Math.floor(Date.now()/6e4)).then(function(r){ if(!r.ok) throw 0; return r.json(); })
+   .then(function(j){ st.data=j; build(); })
+   .catch(function(){ box.innerHTML=''; box.appendChild(el('div','lmsg','캘린더 데이터를 불러오지 못했습니다.')); });
+ }
+
+ function pill(label,color,on,cb){
+   var b=el('button','mkp'); b.type='button'; b.setAttribute('aria-pressed',on?'true':'false');
+   if(color){ b.style.setProperty('--kc',color); b.appendChild(el('span','kd')); }
+   b.appendChild(document.createTextNode(label));
+   b.addEventListener('click',function(){ var v=b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',v?'true':'false'); cb(v); render(); });
+   return b;
+ }
+ function sw(opts,cur,set){
+   var w=el('span','lsw');
+   opts.forEach(function(o){ var b=el('button',String(o[0])===String(cur)?'on':'',o[1]); b.type='button';
+     b.addEventListener('click',function(){ [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); render(); }); w.appendChild(b); });
+   return w;
+ }
+
+ function build(){
+   var box=document.getElementById('mk'); box.innerHTML='';
+   var f1=el('div','mkf'), g=el('div','lgrp'); g.appendChild(el('span','llab','종류'));
+   KINDS.forEach(function(k){ g.appendChild(pill(k[1],k[2],st.kinds[k[0]],function(v){st.kinds[k[0]]=v})); }); f1.appendChild(g); box.appendChild(f1);
+   var f2=el('div','mkf'); g=el('div','lgrp'); g.appendChild(el('span','llab','국가'));
+   CGRP.forEach(function(c){ g.appendChild(pill(FLAG[c[0]]+' '+c[1],null,st.cg[c[0]],function(v){st.cg[c[0]]=v})); }); f2.appendChild(g); box.appendChild(f2);
+   var f3=el('div','mkf');
+   g=el('div','lgrp'); g.appendChild(el('span','llab','지표 중요도')); g.appendChild(sw([[3,'★★★만'],[2,'★★ 이상'],[1,'전체']],st.imp,function(v){st.imp=+v})); f3.appendChild(g);
+   g=el('div','lgrp'); g.appendChild(el('span','llab','실적')); g.appendChild(sw([[1,'대형주만 (시총 $100억↑)'],[0,'전체']],st.big?1:0,function(v){st.big=(+v===1)})); f3.appendChild(g);
+   g=el('div','lgrp'); g.appendChild(el('span','llab','지난 날짜')); g.appendChild(sw([[0,'숨김'],[1,'보기']],st.past?1:0,function(v){st.past=(+v===1)})); f3.appendChild(g);
+   box.appendChild(f3);
+   var s=el('div','search'); s.innerHTML='<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>';
+   var inp=el('input'); inp.type='text'; inp.placeholder='검색 (예: CPI, 금리, 엔비디아, 청약)'; inp.autocomplete='off'; s.appendChild(inp); box.appendChild(s);
+   var t; inp.addEventListener('input',function(){ clearTimeout(t); t=setTimeout(function(){ st.q=inp.value.trim().toLowerCase(); render(); },150); });
+   box.appendChild(el('div','mkinfo')); box.appendChild(el('div','mklist'));
+   // 출처
+   var src=el('div','mksrc'), S=st.data.sources||{};
+   var names={samsung:['삼성증권 일간이슈','https://www.samsungpop.com/ux/kor/invest/issue/day.do'],investing:['investing.com 경제지표','https://kr.investing.com/economic-calendar/'],
+              investing_earn:['investing.com 실적','https://kr.investing.com/earnings-calendar/'],investing_ipo:['investing.com IPO','https://kr.investing.com/ipo-calendar/'],forexfactory:['ForexFactory(예비)','https://www.forexfactory.com/calendar']};
+   src.appendChild(document.createTextNode('수집 '+kt(st.data.generated)+' (한국시간) · 매시간 갱신 · 기간 '+ymd(st.data.range[0])+' ~ '+ymd(st.data.range[1])));
+   src.appendChild(el('br'));
+   src.appendChild(document.createTextNode('출처: '));
+   Object.keys(names).forEach(function(k,i){ var x=S[k]; if(!x) return; if(i) src.appendChild(document.createTextNode(' · '));
+     var a=el('a',null,names[k][0]); a.href=names[k][1]; a.target='_blank'; a.rel='noopener'; src.appendChild(a);
+     if(x.error){ src.appendChild(el('span','bad',' ⚠ 수집 실패, 마지막 성공분 사용')); }
+     else src.appendChild(document.createTextNode(' '+(x.count||0)+'건')); });
+   src.appendChild(el('br'));
+   src.appendChild(document.createTextNode('경제지표의 예상·이전·실제값은 investing.com 기준. 실적의 시총은 현지통화이며 "대형주" 필터는 대략 환산한 달러 기준. 삼성증권 항목은 날짜만 있고 시각이 없습니다.'));
+   box.appendChild(src);
+   render();
+ }
+
+ function pass(e){
+   if(!st.kinds[e.kind]) return false;
+   if(!st.cg[cgOf(e.country)]) return false;
+   if(e.dup && e.src==='samsung') return false;                       // investing 에 같은 지표가 시각과 함께 있음
+   if(e.kind==='econ' && e.src!=='samsung' && (e.imp||0)<st.imp) return false;
+   if(e.kind==='earn' && st.big && e.src==='investing' && (e.mcap_usd||0)<1e10) return false;
+   if(st.q){ var h=(e.title+' '+(e.sym||'')+' '+(e.cat||'')).toLowerCase(); if(h.indexOf(st.q)<0) return false; }
+   return true;
+ }
+ function stars(n){ return n?'★★★'.slice(0,n):''; }
+ function vals(e){
+   var v=el('div','vals');
+   function add(l,val,cls){ if(val==null||val==='') return; if(v.childNodes.length) v.appendChild(document.createTextNode(' · ')); v.appendChild(document.createTextNode(l+' ')); v.appendChild(el('b',cls,val)); }
+   if(e.kind==='econ'||e.kind==='holiday'){ add('실제',e.actual,'act'); add('예상',e.forecast); add('이전',e.previous); }
+   else if(e.kind==='earn'){ add('EPS 실제',e.eps_a,'act'); add('EPS 예상',e.eps_f); add('매출 실제',e.rev_a,'act'); add('매출 예상',e.rev_f); add('시총',e.mcap,'cap');
+     if(e.when==='pre') v.appendChild(document.createTextNode(' · 현지 장전')); else if(e.when==='post') v.appendChild(document.createTextNode(' · 현지 '+e.local_date.slice(5).replace('-','/')+' 장 마감 후')); }
+   else if(e.kind==='ipo'){ add('',e.exch); add('공모가',e.price); add('규모',e.value); }
+   if(e.cat && e.src==='samsung') { if(v.childNodes.length) v.appendChild(document.createTextNode(' · ')); v.appendChild(el('span','cap',e.cat+(e.local?' · 현지시간 기준 날짜':''))); }
+   return v.childNodes.length?v:null;
+ }
+ function row(e){
+   var k=KLAB[e.kind]||KLAB.etc, a=el(e.url?'a':'div','mke'); if(e.url){ a.href=e.url; a.target='_blank'; a.rel='noopener'; }
+   a.appendChild(el('div','tm'+(e.time?'':' na'),e.time||(e.note||'—')));
+   a.appendChild(el('div','cc',(FLAG[e.country]||'🌐')+' '+(e.country==='XX'?'':e.country)));
+   var b=el('div','body'), t=el('div','mkt'); var bd=el('span','bd',k[1]); bd.style.setProperty('--kc',k[2]); t.appendChild(bd);
+   var title=e.title, m=title.match(/^(.*?)\s*(\([^()]*\))\s*$/); if(e.kind==='econ'&&m){ t.appendChild(document.createTextNode(m[1])); t.appendChild(el('span','pr',m[2])); } else t.appendChild(document.createTextNode(title));
+   if(e.sym) t.appendChild(el('span','pr',e.sym));
+   if(e.kind==='econ'&&e.imp) t.appendChild(el('span','st'+(e.imp===3?' s3':''),stars(e.imp)));
+   b.appendChild(t); var v=vals(e); if(v) b.appendChild(v); a.appendChild(b);
+   return a;
+ }
+ function render(){
+   var box=document.getElementById('mk'), list=box.querySelector('.mklist'), info=box.querySelector('.mkinfo'); if(!list) return;
+   list.innerHTML=''; var today=kstToday(), ev=st.data.events.filter(pass), by={}, n=0;
+   ev.forEach(function(e){ if(!st.past && e.date<today) return; (by[e.date]=by[e.date]||[]).push(e); n++; });
+   var dates=Object.keys(by).sort();
+   info.innerHTML=''; info.appendChild(document.createTextNode('표시 ')); info.appendChild(el('b',null,n+'건')); info.appendChild(document.createTextNode(' / 전체 '+st.data.events.length+'건 · 오늘 '+ymd(today)));
+   if(!dates.length){ list.appendChild(el('div','lmsg','조건에 맞는 일정이 없습니다.')); return; }
+   dates.forEach(function(d){
+     var dt=new Date(d+'T00:00:00Z'), w=dt.getUTCDay(), blk=el('div','mkd'+(d===today?' today':d<today?' past':''));
+     var h=el('div','mkdh'); h.appendChild(el('span','dm',(+d.slice(5,7))+'/'+(+d.slice(8,10)))); h.appendChild(el('span','dw'+(w===6?' sat':w===0?' sun':''),WD[w]+'요일'));
+     if(d===today) h.appendChild(el('span','tdy','오늘')); h.appendChild(el('span','dn',by[d].length+'건')); blk.appendChild(h);
+     var items=by[d], lim=40;
+     items.slice(0,lim).forEach(function(e){ blk.appendChild(row(e)); });
+     if(items.length>lim){ var mb=el('button','mkmore','+ '+(items.length-lim)+'건 더 보기'); mb.type='button';
+       mb.addEventListener('click',function(){ mb.remove(); items.slice(lim).forEach(function(e){ blk.appendChild(row(e)); }); }); blk.appendChild(mb); }
+     list.appendChild(blk);
+   });
+ }
+ var h=(location.hash||'').replace('#',''); if(h==='mkt') open();
  return {open:open};
 })();
 </script>
