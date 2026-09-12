@@ -553,6 +553,15 @@ a.mke:hover .mkt{color:var(--accent)}
 .ftbl tr:last-child td{border-bottom:0}
 .ftbl td .bar{display:inline-block;height:7px;border-radius:2px;vertical-align:middle;margin-right:5px;opacity:.55}
 .fl .note{font-size:11.5px;color:var(--faint);margin:12px 2px 0;line-height:1.7}
+.fl .rng{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:0 0 10px}
+.fl .rng input[type=date]{font:inherit;font-size:12.5px;padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:var(--field);color:var(--ink)}
+.fl .rng button.go{appearance:none;border:1px solid var(--accent);background:var(--accent);color:#fff;font:inherit;font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer}
+.fl .sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:0 0 10px}
+.fl .sum .sc{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 11px;border-top:3px solid var(--sc,var(--line))}
+.fl .sum .sn{font-size:10.5px;font-weight:600;color:var(--muted)}
+.fl .sum .sv{font-size:16px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.fl .sum .sv.pu{color:var(--up)}.fl .sum .sv.pd{color:var(--down)}
+.fl .dchart{margin:0 0 10px}
 .fl .note a{color:var(--accent);text-decoration:none;font-weight:600}
 </style>
 
@@ -722,7 +731,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-12 14:38 · 평일 매일 자동 갱신</p>
+   생성 2026-09-12 16:31 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1671,7 +1680,7 @@ window.HOME=(function(){
  }
 
  /* ═══ 수급 탭 ═══ */
- var F={built:false,market:'01',mode:'main',on:{},timer:null,today:null,daily:null,chart:null};
+ var F={built:false,market:'01',mode:'main',on:{},timer:null,today:null,daily:null,chart:null,hist:{},range:'20',from:null,to:null,dview:'cum',dloading:false};
  var MAIN=['개인','외국인','기관계'], SUB=['금융투자','보험','투신사모','은행','기타금융','연기금','기타법인'];
  var COLOR={'개인':S1,'외국인':S2,'기관계':S3,'금융투자':S4,'보험':S5,'투신사모':S6,'은행':S7,'기타금융':S8,'연기금':S3,'기타법인':S1};
  function openFlow(){ visible.flow=true; if(!F.built) buildFlow(); tickFlow(); }
@@ -1681,12 +1690,22 @@ window.HOME=(function(){
  function buildFlow(){
    F.built=true; var box=document.getElementById('fl'); box.innerHTML='';
    MAIN.forEach(function(k){F.on[k]=true}); SUB.forEach(function(k){F.on[k]=false});
-   var c=el('div','lctl'); var g=el('span'); g.appendChild(el('span','llab','시장 ')); g.appendChild(sw([['01','코스피'],['02','코스닥'],['03','K200 선물']],F.market,function(v){F.market=v; drawFlow();})); c.appendChild(g);
+   var c=el('div','lctl'); var g=el('span'); g.appendChild(el('span','llab','시장 ')); g.appendChild(sw([['01','코스피'],['02','코스닥'],['03','K200 선물']],F.market,function(v){F.market=v; drawFlow(); drawDaily();})); c.appendChild(g);
    var lv=el('span','live'); lv.id='fl-live'; lv.appendChild(document.createElement('i')); lv.appendChild(document.createTextNode('연결 중…')); c.appendChild(lv); box.appendChild(c);
    box.appendChild(el('div','fcards')).id='fl-cards';
    var lg=el('div','lctl'); lg.id='fl-legend'; box.appendChild(lg);
    var ch=el('div','fchart'); ch.id='fl-chart'; ch.appendChild(el('div','ltip')); box.appendChild(ch);
-   var h1=el('h3','', '일별 수급'); h1.appendChild(el('span',null,'최근 20일 · 순매수')); box.appendChild(h1);
+   var h1=el('h3','', '일별 수급'); h1.appendChild(el('span',null,'순매수 · 기간을 골라 보세요 (2010년~)')); box.appendChild(h1);
+   var rg=el('div','rng'); rg.appendChild(el('span','llab','기간'));
+   rg.appendChild(sw([['20','20일'],['60','60일'],['120','6개월'],['250','1년'],['750','3년'],['all','전체']],F.range,function(v){F.range=v; F.from=F.to=null; syncDates(); drawDaily();}));
+   var fi=el('input'); fi.type='date'; fi.id='fl-from'; var ti=el('input'); ti.type='date'; ti.id='fl-to';
+   rg.appendChild(fi); rg.appendChild(document.createTextNode('~')); rg.appendChild(ti);
+   var go=el('button','go','조회'); go.type='button'; go.addEventListener('click',function(){ if(fi.value&&ti.value){ F.from=fi.value; F.to=ti.value; F.range='custom'; [].forEach.call(rg.querySelectorAll('.lsw button'),function(b){b.classList.remove('on')}); drawDaily(); } });
+   rg.appendChild(go);
+   rg.appendChild(sw([['cum','누적 선'],['bar','일별 막대']],F.dview,function(v){F.dview=v; drawDaily();}));
+   box.appendChild(rg);
+   box.appendChild(el('div','sum')).id='fl-sum';
+   var dc=el('div','fchart dchart'); dc.id='fl-dchart'; dc.appendChild(el('div','ltip')); box.appendChild(dc);
    box.appendChild(el('div','ftbl')).id='fl-daily';
    var h2=el('h3','', '프로그램매매'); h2.appendChild(el('span',null,'코스피 · 억원 · 일별')); box.appendChild(h2);
    box.appendChild(el('div','ftbl')).id='fl-prog';
@@ -1745,25 +1764,89 @@ window.HOME=(function(){
    hit.addEventListener('pointermove',function(e){at(e.clientX)}); hit.addEventListener('pointerdown',function(e){at(e.clientX)}); hit.addEventListener('pointerleave',function(){ xh.setAttribute('visibility','hidden'); tip.style.display='none'; });
    ch.insertBefore(svg,tip);
  }
+ function rowsFor(cb){                    // 선택 시장의 일별 행(최신순). 120일 넘게 필요하면 이력 파일을 받아 온다
+   var need=F.range==='all'||F.range==='custom'||(+F.range)>120;
+   if(!need){ cb((F.daily.markets[F.market]||{}).rows||[], F.daily.program||[]); return; }
+   var h=F.hist[F.market];
+   if(h&&F.hist.program){ cb(h.rows,F.hist.program.rows); return; }
+   if(F.dloading) return; F.dloading=true;
+   Promise.all([getJ(LIVE+'flow_history_'+F.market+'.json'), F.hist.program?Promise.resolve(F.hist.program):getJ(LIVE+'program_history.json')])
+     .then(function(r){ F.hist[F.market]=r[0]; F.hist.program=r[1]; F.dloading=false; cb(r[0].rows,r[1].rows); })
+     .catch(function(){ F.dloading=false; cb((F.daily.markets[F.market]||{}).rows||[], F.daily.program||[]); });
+ }
+ function syncDates(){ var fi=document.getElementById('fl-from'), ti=document.getElementById('fl-to'); if(fi&&ti&&F.range!=='custom'){ fi.value=''; ti.value=''; } }
+ function inRange(rows){
+   if(F.range==='custom'&&F.from&&F.to) return rows.filter(function(r){return r.t>=F.from&&r.t<=F.to});
+   if(F.range==='all') return rows;
+   return rows.slice(0,+F.range);
+ }
  function drawDaily(){
-   var d=F.daily; if(!d) return;
-   var box=document.getElementById('fl-daily'); box.innerHTML='';
-   var t=el('table'), th=el('thead'), tr=el('tr'); ['날짜','시장','개인','외국인','기관','금융투자','투신(사모)','연기금','기타법인'].forEach(function(h){tr.appendChild(el('th',null,h))}); th.appendChild(tr); t.appendChild(th);
-   var tb=el('tbody'), mk=d.markets[F.market]; if(!mk) return;
-   var maxv=1; mk.rows.forEach(function(r){ ['개인','외국인','기관계'].forEach(function(k){ if(Math.abs(r[k]||0)>maxv) maxv=Math.abs(r[k]); }); });
-   mk.rows.forEach(function(r){ var row=el('tr'); row.appendChild(el('td',null,r.t.slice(2).replace(/-/g,'.'))); row.appendChild(el('td',null,mk.name));
-     ['개인','외국인','기관계','금융투자','투신사모','연기금','기타법인'].forEach(function(k){ var v=r[k]; var c=el('td',v>0?'pu':v<0?'pd':'');
-       if(['개인','외국인','기관계'].indexOf(k)>=0&&v!=null){ var bar=el('span','bar'); bar.style.width=Math.max(2,Math.abs(v)/maxv*50)+'px'; bar.style.background=v>0?'var(--up)':'var(--down)'; c.appendChild(bar); }
-       c.appendChild(document.createTextNode(v==null?'-':(mk.unit==='계약'?sgn(v):n0(v)))); row.appendChild(c); }); tb.appendChild(row); });
-   t.appendChild(tb); box.appendChild(t);
-   var pb=document.getElementById('fl-prog'); pb.innerHTML=''; var t2=el('table'), th2=el('thead'), tr2=el('tr'); ['날짜','차익 순매수','비차익 순매수','전체 순매수','전체 매수','전체 매도'].forEach(function(h){tr2.appendChild(el('th',null,h))}); th2.appendChild(tr2); t2.appendChild(th2);
-   var tb2=el('tbody'); (d.program||[]).forEach(function(r){ var row=el('tr'); row.appendChild(el('td',null,r.t.slice(2).replace(/-/g,'.')));
-     [r['차익']['순매수'],r['비차익']['순매수'],r['전체']['순매수']].forEach(function(v){ row.appendChild(el('td',v>0?'pu':v<0?'pd':'',v==null?'-':n0(v))); });
-     row.appendChild(el('td',null,n0(r['전체']['매수']))); row.appendChild(el('td',null,n0(r['전체']['매도']))); tb2.appendChild(row); });
-   t2.appendChild(tb2); pb.appendChild(t2);
+   var d=F.daily; if(!d) return; var mk=d.markets[F.market]; if(!mk) return;
+   rowsFor(function(allRows, progRows){
+     var rows=inRange(allRows), prog=inRange(progRows);
+     var box=document.getElementById('fl-daily'); box.innerHTML='';
+     var sumBox=document.getElementById('fl-sum'); sumBox.innerHTML='';
+     var keys=['개인','외국인','기관계','금융투자','투신사모','연기금','기타법인'];
+     var tot={}; keys.forEach(function(k){ tot[k]=0; rows.forEach(function(r){ tot[k]+=(r[k]||0); }); });
+     var lbl={'기관계':'기관','투신사모':'투신(사모)'};
+     ['개인','외국인','기관계','금융투자','투신사모','연기금'].forEach(function(k){ var c=el('div','sc'); c.style.setProperty('--sc',COLOR[k]);
+       c.appendChild(el('div','sn',(lbl[k]||k)+' · 기간 합계')); c.appendChild(el('div','sv'+(tot[k]>0?' pu':tot[k]<0?' pd':''),mk.unit==='계약'?sgn(tot[k]):fmtEok(tot[k]))); sumBox.appendChild(c); });
+     var first=rows.length?rows[rows.length-1].t:'', last=rows.length?rows[0].t:'';
+     var h3=box.parentNode.querySelector('h3 span'); if(h3) h3.textContent=(rows.length?ymd(first)+' ~ '+ymd(last)+' · '+rows.length+'거래일':'해당 기간 데이터 없음')+' · '+mk.unit+(allRows.length>120?' · 이력 '+allRows.length+'일 보유':'');
+     drawDailyChart(rows.slice().reverse(), mk);
+     // 표 (최신순, 100행씩)
+     var t=el('table'), th=el('thead'), tr=el('tr'); ['날짜','개인','외국인','기관','금융투자','투신(사모)','연기금','기타법인'].forEach(function(h){tr.appendChild(el('th',null,h))}); th.appendChild(tr); t.appendChild(th);
+     var tb=el('tbody'); var maxv=1; rows.forEach(function(r){ ['개인','외국인','기관계'].forEach(function(k){ if(Math.abs(r[k]||0)>maxv) maxv=Math.abs(r[k]); }); });
+     function addRows(from,to){ rows.slice(from,to).forEach(function(r){ var row=el('tr'); row.appendChild(el('td',null,r.t.slice(2).replace(/-/g,'.')));
+       keys.forEach(function(k){ var v=r[k]; var c=el('td',v>0?'pu':v<0?'pd':'');
+         if(['개인','외국인','기관계'].indexOf(k)>=0&&v!=null){ var bar=el('span','bar'); bar.style.width=Math.max(2,Math.abs(v)/maxv*50)+'px'; bar.style.background=v>0?'var(--up)':'var(--down)'; c.appendChild(bar); }
+         c.appendChild(document.createTextNode(v==null?'-':(mk.unit==='계약'?sgn(v):n0(v)))); row.appendChild(c); }); tb.appendChild(row); }); }
+     addRows(0,100); t.appendChild(tb); box.appendChild(t);
+     if(rows.length>100){ var mb=el('button','mkmore','+ '+(rows.length-100)+'일 더 보기'); mb.type='button'; mb.style.cssText='display:block;width:100%;appearance:none;border:1px dashed var(--line);background:none;color:var(--muted);font:inherit;font-size:12.5px;font-weight:600;padding:9px;border-radius:7px;cursor:pointer;margin-top:6px';
+       var shown=100; mb.addEventListener('click',function(){ addRows(shown,shown+300); shown+=300; if(shown>=rows.length) mb.remove(); else mb.textContent='+ '+(rows.length-shown)+'일 더 보기'; }); box.appendChild(mb); }
+     // 프로그램매매 (같은 기간)
+     var pb=document.getElementById('fl-prog'); pb.innerHTML=''; var t2=el('table'), th2=el('thead'), tr2=el('tr'); ['날짜','차익 순매수','비차익 순매수','전체 순매수','전체 매수','전체 매도'].forEach(function(h){tr2.appendChild(el('th',null,h))}); th2.appendChild(tr2); t2.appendChild(th2);
+     var tb2=el('tbody'); prog.slice(0,60).forEach(function(r){ var row=el('tr'); row.appendChild(el('td',null,r.t.slice(2).replace(/-/g,'.')));
+       [r['차익']['순매수'],r['비차익']['순매수'],r['전체']['순매수']].forEach(function(v){ row.appendChild(el('td',v>0?'pu':v<0?'pd':'',v==null?'-':n0(v))); });
+       row.appendChild(el('td',null,n0(r['전체']['매수']))); row.appendChild(el('td',null,n0(r['전체']['매도']))); tb2.appendChild(row); });
+     t2.appendChild(tb2); pb.appendChild(t2);
+   });
+ }
+ function drawDailyChart(rows, mk){                // rows: 오래된→최신
+   var ch=document.getElementById('fl-dchart'); if(!ch) return; var old=ch.querySelector('svg'); if(old) old.remove(); var msg=ch.querySelector('.lmsg'); if(msg) msg.remove(); var tip=ch.querySelector('.ltip');
+   if(!rows.length){ ch.insertBefore(el('div','lmsg','해당 기간에 데이터가 없습니다'),tip); return; }
+   var keys=['개인','외국인','기관계'], cum=F.dview==='cum';
+   var series={}; keys.forEach(function(k){ var acc=0; series[k]=rows.map(function(r){ var v=r[k]||0; acc+=v; return cum?acc:v; }); });
+   var W=Math.max(300,Math.floor(ch.getBoundingClientRect().width)-12), H=W<520?220:280, mg={t:14,r:60,b:26,l:8};
+   var lo=0,hi=0; keys.forEach(function(k){ series[k].forEach(function(v){ if(v<lo) lo=v; if(v>hi) hi=v; }); });
+   var pad=(hi-lo)*0.08||1; lo-=pad; hi+=pad; var yt=nice(lo,hi,5);
+   var fmtY=mk.unit==='계약'?function(v){return n0(v)}:function(v){return Math.abs(v)>=10000?(v/10000).toFixed(1)+'조':n0(v)};
+   mg.l=Math.max.apply(null,yt.map(function(v){return fmtY(v).length}))*6.8+14; var pw=W-mg.l-mg.r, ph=H-mg.t-mg.b, n=rows.length;
+   function X(i){ return mg.l+(n<2?pw/2:i/(n-1)*pw); } function Y(v){ return mg.t+(1-(v-lo)/(hi-lo))*ph; }
+   var svg=sv('svg',{viewBox:'0 0 '+W+' '+H,width:W,height:H,role:'img'});
+   yt.forEach(function(v){ var y=Y(v); svg.appendChild(sv('line',{x1:mg.l,x2:W-mg.r,y1:y,y2:y,'class':v===0?'zero':'grid'})); var t=sv('text',{x:mg.l-6,y:y+4,'text-anchor':'end','class':'tk'}); t.textContent=fmtY(v); svg.appendChild(t); });
+   svg.appendChild(sv('line',{x1:mg.l,x2:W-mg.r,y1:mg.t+ph,y2:mg.t+ph,'class':'ax'}));
+   var nx=Math.max(2,Math.min(n,Math.floor(pw/70))), step=Math.max(1,Math.ceil((n-1)/(nx-1)));
+   for(var i=0;i<n;i+=step){ var tx=sv('text',{x:X(i),y:H-8,'text-anchor':i===0?'start':'middle','class':'tk'}); tx.textContent=n>400?rows[i].t.slice(0,7):rows[i].t.slice(2); svg.appendChild(tx); }
+   if(cum){
+     keys.forEach(function(k){ var p=sv('path',{d:series[k].map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)}).join(' '),'class':'ln'}); p.style.stroke=COLOR[k]; svg.appendChild(p);
+       var t=sv('text',{x:W-mg.r+6,y:Y(series[k][n-1])+4,'class':'dl'}); t.style.fill=COLOR[k]; t.textContent=k==='기관계'?'기관':k; svg.appendChild(t); });
+   } else {
+     var bw=Math.max(1,pw/n/3.6);
+     keys.forEach(function(k,ki){ series[k].forEach(function(v,i){ var x=X(i)+(ki-1)*bw, y0=Y(0), y1=Y(v); var r=sv('rect',{x:x-bw/2,y:Math.min(y0,y1),width:bw,height:Math.max(1,Math.abs(y1-y0))}); r.style.fill=COLOR[k]; r.style.opacity='.85'; svg.appendChild(r); }); });
+     var lx=mg.l+4; keys.forEach(function(k){ var t=sv('text',{x:lx,y:mg.t+10,'class':'dl'}); t.style.fill=COLOR[k]; t.textContent=k==='기관계'?'기관':k; svg.appendChild(t); lx+=k.length*11+18; });
+   }
+   var xh=sv('line',{x1:0,x2:0,y1:mg.t,y2:mg.t+ph,'class':'xh',visibility:'hidden'}); svg.appendChild(xh);
+   var hit=sv('rect',{x:mg.l,y:mg.t,width:pw,height:ph,'class':'hit'}); svg.appendChild(hit);
+   function at(px){ var r=svg.getBoundingClientRect(), x=(px-r.left)*W/r.width, i=Math.round((x-mg.l)/pw*(n-1)); i=Math.max(0,Math.min(n-1,i)); var cx=X(i);
+     xh.setAttribute('x1',cx); xh.setAttribute('x2',cx); xh.setAttribute('visibility','visible'); tip.innerHTML=''; tip.appendChild(el('div','td',ymd(rows[i].t)+(cum?' 누적':'')));
+     keys.forEach(function(k){ var v=series[k][i]; var rr=el('div','tr'); var kk=el('span','tk'); kk.style.setProperty('--sc',COLOR[k]); rr.appendChild(kk); rr.appendChild(el('span','tv',(mk.unit==='계약'?sgn(v):fmtEok(v)))); rr.appendChild(el('span','tn',k)); tip.appendChild(rr); });
+     tip.style.display='block'; var left=cx*r.width/W+14; if(left+tip.offsetWidth>r.width-4) left=cx*r.width/W-tip.offsetWidth-14; tip.style.left=Math.max(4,left)+'px'; tip.style.top=(mg.t*r.height/H+6)+'px'; }
+   hit.addEventListener('pointermove',function(e){at(e.clientX)}); hit.addEventListener('pointerdown',function(e){at(e.clientX)}); hit.addEventListener('pointerleave',function(){ xh.setAttribute('visibility','hidden'); tip.style.display='none'; });
+   ch.insertBefore(svg,tip);
  }
  document.addEventListener('visibilitychange',function(){ if(!document.hidden){ if(visible.home) tickHome(); if(visible.flow) tickFlow(); } });
- addEventListener('resize',function(){ if(visible.flow) drawChart(); });
+ addEventListener('resize',function(){ if(visible.flow){ drawChart(); drawDaily(); } });
  var h=(location.hash||'').replace('#',''); if(h==='flow') openFlow(); else if(!h||h==='home') openHome();
  return {open:function(k){ if(k==='home') openHome(); else if(k==='flow') openFlow(); }, close:function(k){ if(k==='home') closeHome(); else if(k==='flow') closeFlow(); }};
 })();
