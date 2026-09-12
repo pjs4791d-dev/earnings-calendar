@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko" data-theme="dark">
+<html lang="ko" data-theme="terminal">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +18,9 @@
 <link rel="icon" type="image/png" sizes="64x64" href="icon-64.png">
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
-<script>(function(){try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();</script>
+<script>(function(){try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',(t==='light'||t==='dark')?t:'terminal');}catch(e){document.documentElement.setAttribute('data-theme','terminal');}})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -575,6 +577,72 @@ a.mke:hover .mkt{color:var(--accent)}
 .fl .note a{color:var(--accent);text-decoration:none;font-weight:600}
 </style>
 
+<style>
+/* ── 터미널 팔레트 ── */
+:root[data-theme="terminal"]{
+ --bg:#070a12; --panel:#0b101c; --surface:#0d1322; --ink:#e8eefb; --ink2:#b9c4d8; --muted:#7c889d;
+ --faint:#4e5970; --line:#1a2336; --line2:#131a2a; --field:#0a0f1b;
+ --accent:#22d3ee; --accent-soft:rgba(34,211,238,.12); --up:#ff4d6d; --down:#3b82f6;
+ --yego:#22d3ee; --yego-bg:rgba(34,211,238,.12); --ir:#34d399; --ir-bg:rgba(52,211,153,.12); --new:#ff4d6d;
+ --shadow:0 0 0 1px rgba(34,211,238,.04),0 12px 32px rgba(0,0,0,.45);
+ --s1:#22d3ee;--s2:#f97316;--s3:#34d399;--s4:#fbbf24;--s5:#f472b6;--s6:#4ade80;--s7:#a78bfa;--s8:#f87171;
+ --mono:"JetBrains Mono","SFMono-Regular",Menlo,Consolas,monospace;
+}
+:root[data-theme="terminal"] body{background:radial-gradient(1200px 600px at 20% -10%,rgba(34,211,238,.07),transparent 60%),radial-gradient(900px 500px at 100% 0,rgba(59,130,246,.06),transparent 55%),var(--bg);background-attachment:fixed}
+:root[data-theme="terminal"] .wrap{background:transparent}
+/* 숫자는 전부 모노 */
+:root[data-theme="terminal"] .qp,:root[data-theme="terminal"] .qd,:root[data-theme="terminal"] .mv,:root[data-theme="terminal"] .mc,
+:root[data-theme="terminal"] .lv,:root[data-theme="terminal"] .fv,:root[data-theme="terminal"] .sv,:root[data-theme="terminal"] .av,
+:root[data-theme="terminal"] .stat .num,:root[data-theme="terminal"] td,:root[data-theme="terminal"] .ltbl td,:root[data-theme="terminal"] .ftbl td,
+:root[data-theme="terminal"] .vals b,:root[data-theme="terminal"] .fs .fv b,:root[data-theme="terminal"] .mke .tm,:root[data-theme="terminal"] .he .tm,
+:root[data-theme="terminal"] .tape{font-family:var(--mono);letter-spacing:-.01em}
+/* 상단바·사이드바 */
+:root[data-theme="terminal"] .topbar{border-bottom:1px solid var(--line);position:relative}
+:root[data-theme="terminal"] .topbar:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,var(--accent),transparent 60%)}
+:root[data-theme="terminal"] .brand .bdot{box-shadow:0 0 12px rgba(34,211,238,.35)}
+:root[data-theme="terminal"] .ngrp{color:var(--accent);opacity:.75}
+:root[data-theme="terminal"] .nav{font-size:13px;letter-spacing:.01em}
+:root[data-theme="terminal"] .nav.on{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent);text-shadow:0 0 12px rgba(34,211,238,.35)}
+:root[data-theme="terminal"] .eyebrow{color:var(--accent);letter-spacing:.18em}
+:root[data-theme="terminal"] h1{letter-spacing:-.02em}
+/* 패널·카드 */
+:root[data-theme="terminal"] .hp,:root[data-theme="terminal"] .lchart,:root[data-theme="terminal"] .fchart,:root[data-theme="terminal"] .mkcal,
+:root[data-theme="terminal"] .ltbl,:root[data-theme="terminal"] .ftbl{border-radius:6px;border-color:var(--line);background:linear-gradient(180deg,rgba(255,255,255,.015),transparent 40%),var(--surface)}
+:root[data-theme="terminal"] .hp .ht{font-size:11.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent)}
+:root[data-theme="terminal"] .hp .ht .hs{text-transform:none;letter-spacing:0}
+:root[data-theme="terminal"] .qc,:root[data-theme="terminal"] .lcard,:root[data-theme="terminal"] .fc,:root[data-theme="terminal"] .stat,:root[data-theme="terminal"] .ai .ac,:root[data-theme="terminal"] .fl .sum .sc{border-radius:5px;background:var(--panel)}
+:root[data-theme="terminal"] .qc{position:relative;overflow:hidden;padding:9px 11px 8px}
+:root[data-theme="terminal"] .qc .qn{text-transform:uppercase;letter-spacing:.1em;font-size:10px}
+:root[data-theme="terminal"] .qc .qp{font-size:18px}
+:root[data-theme="terminal"] .qc .spark{position:absolute;right:8px;top:8px;width:64px;height:22px;opacity:.85}
+:root[data-theme="terminal"] .qc .spark polyline{fill:none;stroke-width:1.5}
+:root[data-theme="terminal"] .qc .spark.pu polyline{stroke:var(--up)}:root[data-theme="terminal"] .qc .spark.pd polyline{stroke:var(--down)}
+:root[data-theme="terminal"] .qc.flash-pu{animation:flashUp 1.1s ease-out}:root[data-theme="terminal"] .qc.flash-pd{animation:flashDn 1.1s ease-out}
+@keyframes flashUp{0%{box-shadow:inset 0 0 0 100px rgba(255,77,109,.28)}100%{box-shadow:inset 0 0 0 100px rgba(255,77,109,0)}}
+@keyframes flashDn{0%{box-shadow:inset 0 0 0 100px rgba(59,130,246,.28)}100%{box-shadow:inset 0 0 0 100px rgba(59,130,246,0)}}
+:root[data-theme="terminal"] .mr.hd,:root[data-theme="terminal"] .llab,:root[data-theme="terminal"] .mkf .llab{color:var(--accent);opacity:.8}
+:root[data-theme="terminal"] .mr{border-bottom-color:var(--line2)}
+:root[data-theme="terminal"] .lsw,:root[data-theme="terminal"] .mkp,:root[data-theme="terminal"] .lgd{border-radius:4px}
+:root[data-theme="terminal"] .lsw button.on{background:var(--accent-soft);color:var(--accent)}
+:root[data-theme="terminal"] .mkdh{background:var(--bg)}
+:root[data-theme="terminal"] .mkdh .dm{color:var(--accent)}
+:root[data-theme="terminal"] .foot{border-top-color:var(--line)}
+:root[data-theme="terminal"] .wm{border-radius:4px;background:var(--panel)}
+:root[data-theme="terminal"] .sw.theme button.on{background:var(--accent);color:#04121a;border-color:var(--accent)}
+/* 시세 테이프 (터미널 테마에서만) */
+.tape{display:none}
+:root[data-theme="terminal"] .tape{display:block;overflow:hidden;white-space:nowrap;border-bottom:1px solid var(--line);margin:0 -16px 8px;padding:6px 0;font-size:12px;
+ background:linear-gradient(90deg,var(--bg),transparent 6%,transparent 94%,var(--bg));position:relative}
+.tape .tk{display:inline-block;padding-left:100%;animation:tape 90s linear infinite}
+.tape:hover .tk{animation-play-state:paused}
+@keyframes tape{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+.tape .ti{display:inline-flex;gap:7px;align-items:baseline;margin-right:34px;color:var(--ink2)}
+.tape .ti b{color:var(--ink);font-weight:600}
+.tape .ti .pu{color:var(--up)}.tape .ti .pd{color:var(--down)}
+.tape .ti .tn{color:var(--muted);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+@media(min-width:960px){:root[data-theme="terminal"] .tape{margin:0 0 6px}}
+</style>
+
 <a class="wm" href="https://t.me/SpartanResearch" target="_blank" rel="noopener"><span class="wd"></span>스파르탄 리서치</a>
 <div class="wrap">
  <div class="topbar">
@@ -583,11 +651,14 @@ a.mke:hover .mkt{color:var(--accent)}
   <div class="tools">
    <span id="visits" class="visits">집계 중…</span>
    <div class="sw theme" role="group" aria-label="화면 테마">
-    <button type="button" data-t="dark" class="on">🌙 다크</button>
-    <button type="button" data-t="light">☀️ 라이트</button>
+    <button type="button" data-t="terminal" class="on">터미널</button>
+    <button type="button" data-t="dark">다크</button>
+    <button type="button" data-t="light">라이트</button>
    </div>
   </div>
  </div>
+
+ <div class="tape" id="tape" aria-hidden="true"><div class="tk" id="tape-tk"></div></div>
 
 <div class="shell">
  <nav class="side" role="tablist">
@@ -741,7 +812,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-12 16:46 · 평일 매일 자동 갱신</p>
+   생성 2026-09-12 16:57 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -758,7 +829,7 @@ a.mke:hover .mkt{color:var(--accent)}
      b.setAttribute('aria-pressed',on?'true':'false');
    });
  }
- apply(saved==='light' ? 'light' : 'dark');    // 기본값: 다크
+ apply(['light','dark','terminal'].indexOf(saved)>=0 ? saved : 'terminal');    // 기본값: 터미널
  btns.forEach(function(b){
    b.addEventListener('click',function(){
      apply(b.dataset.t); try{localStorage.setItem('theme',b.dataset.t)}catch(e){}
@@ -1630,14 +1701,24 @@ window.HOME=(function(){
  }
  function tickHome(){
    clearTimeout(H.timer); if(!visible.home||!tabOn('home')) return;
-   Promise.all([getJ(LIVE+'quotes.json').catch(function(){return null}), getJ(LIVE+'flow_today.json').catch(function(){return null}), getJ(LIVE+'macro.json').catch(function(){return null})])
-   .then(function(r){ if(r[0]) renderQuotes(r[0]); if(r[1]) renderFlowSummary(r[1]); if(r[2]) renderMacro(r[2], r[0]); })
+   Promise.all([getJ(LIVE+'quotes.json').catch(function(){return null}), getJ(LIVE+'flow_today.json').catch(function(){return null}), getJ(LIVE+'macro.json').catch(function(){return null}), getJ(LIVE+'quotes_hist.json').catch(function(){return null})])
+   .then(function(r){ if(r[0]) renderQuotes(r[0], r[3]); if(r[1]) renderFlowSummary(r[1]); if(r[2]) renderMacro(r[2], r[0]); })
    .finally(function(){ H.timer=setTimeout(tickHome,ivl(30000)); });
  }
- function renderQuotes(q){
+ var lastPx={};
+ function spark(hist,code,pct){
+   if(!hist||!hist.series||!hist.series[code]) return null; var v=hist.series[code].filter(function(x){return x!=null}); if(v.length<3) return null;
+   var lo=Math.min.apply(null,v), hi=Math.max.apply(null,v), W=64, H=22; if(hi===lo) hi=lo+1;
+   var pts=v.map(function(x,i){ return (i/(v.length-1)*W).toFixed(1)+','+((1-(x-lo)/(hi-lo))*(H-2)+1).toFixed(1); }).join(' ');
+   var svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.setAttribute('class','spark '+(pct>0?'pu':pct<0?'pd':''));
+   var pl=document.createElementNS('http://www.w3.org/2000/svg','polyline'); pl.setAttribute('points',pts); svg.appendChild(pl); return svg;
+ }
+ function renderQuotes(q,hist){
    var box=document.getElementById('hm-q'); if(!box) return; box.innerHTML='';
    var order=['KOSPI','KOSDAQ','FUT','.IXIC','.INX','.SOX','.DJI','.N225','FX_USDKRW'], by={}; q.items.forEach(function(i){by[i.code]=i});
    order.forEach(function(c){ var i=by[c]; if(!i) return; var card=el('div','qc'); card.appendChild(el('div','qn',i.name));
+     var sp=spark(hist,c,i.pct); if(sp) card.appendChild(sp);
+     if(lastPx[c]!=null&&lastPx[c]!==i.price) card.classList.add(i.price>lastPx[c]?'flash-pu':'flash-pd'); lastPx[c]=i.price;
      card.appendChild(el('div','qp',n0(i.price,i.group==='fx'||i.code==='FUT'||i.code==='KPI200'?2:2)));
      var d=el('div','qd'+(i.pct>0?' pu':i.pct<0?' pd':''),(i.pct>0?'▲':i.pct<0?'▼':'')+(i.chg!=null?n0(Math.abs(i.chg),2):'')+' ('+sgn(i.pct,2)+'%)'); card.appendChild(d);
      card.appendChild(el('div','qt',(i.state==='OPEN'?'거래 중 · ':'')+(i.at?i.at.slice(5,10).replace('-','/')+' '+hm(i.at):''))); box.appendChild(card); });
@@ -1885,6 +1966,34 @@ window.HOME=(function(){
  addEventListener('resize',function(){ if(visible.flow){ drawChart(); drawDaily(); } });
  var h=(location.hash||'').replace('#',''); if(h==='flow') openFlow(); else if(!h||h==='home') openHome();
  return {open:function(k){ if(k==='home') openHome(); else if(k==='flow') openFlow(); }, close:function(k){ if(k==='home') closeHome(); else if(k==='flow') closeFlow(); }};
+})();
+</script>
+
+
+<script>
+/* ── 시세 테이프: 홈 스크립트가 받은 quotes/macro 를 그대로 흘려보낸다 ── */
+(function(){
+ var LIVE='https://spartan.tail88a1c5.ts.net/pub/', last={}, timer=null;
+ function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d}); }
+ function item(name,price,pct,d){ var c=pct>0?'pu':pct<0?'pd':''; return '<span class="ti"><span class="tn">'+name+'</span><b>'+n0(price,d)+'</b><span class="'+c+'">'+(pct==null?'':(pct>0?'▲':pct<0?'▼':'')+Math.abs(pct).toFixed(2)+'%')+'</span></span>'; }
+ function build(){
+   if(document.documentElement.getAttribute('data-theme')!=='terminal') return;
+   Promise.all([fetch(LIVE+'quotes.json?t='+Math.floor(Date.now()/3e4)).then(function(r){return r.json()}).catch(function(){return null}),
+                fetch(LIVE+'macro.json?t='+Math.floor(Date.now()/3e5)).then(function(r){return r.json()}).catch(function(){return null})])
+   .then(function(r){
+     var q=r[0], m=r[1]; if(!q) return; var parts=[];
+     var nm={KOSPI:'코스피',KOSDAQ:'코스닥',KPI200:'K200',FUT:'K200 선물','.DJI':'다우','.IXIC':'나스닥','.INX':'S&P500','.SOX':'반도체','.N225':'니케이','.HSI':'항셍','.VIX':'VIX','.DXY':'달러인덱스',FX_USDKRW:'USD/KRW',FX_JPYKRW:'JPY100/KRW'};
+     q.items.forEach(function(i){ parts.push(item(nm[i.code]||i.name,i.price,i.pct,i.group==='fx'||i.code==='FUT'||i.code==='KPI200'||i.code==='.VIX'||i.code==='.DXY'?2:2)); });
+     if(m){ (m.energy||[]).slice(0,2).forEach(function(x){parts.push(item(x.name,x.price,x.pct,2))}); (m.metals||[]).slice(0,1).forEach(function(x){parts.push(item(x.name,x.price,x.pct,2))});
+       (m.bonds||[]).forEach(function(x){ if(x.code==='US10YT=RR'||x.code==='KR3YT=RR'||x.code==='KR10YT=RR') parts.push('<span class="ti"><span class="tn">'+x.name.replace(' 국채','')+'</span><b>'+x.price.toFixed(3)+'%</b><span class="'+(x.chg>0?'pu':x.chg<0?'pd':'')+'">'+(x.chg>0?'+':'')+Math.round(x.chg*100)+'bp</span></span>'); }); }
+     var html=parts.join('');
+     var tk=document.getElementById('tape-tk'); if(!tk) return;
+     if(tk.innerHTML!==html+html){ var keep=tk.getAnimations&&tk.getAnimations()[0]; var t=keep?keep.currentTime:0; tk.innerHTML=html+html; if(keep){ var a=tk.getAnimations()[0]; if(a) a.currentTime=t; } }
+   });
+ }
+ function start(){ clearInterval(timer); build(); timer=setInterval(build,30000); }
+ start();
+ document.querySelectorAll('.sw.theme button').forEach(function(b){ b.addEventListener('click',function(){ setTimeout(start,50); }); });
 })();
 </script>
 
