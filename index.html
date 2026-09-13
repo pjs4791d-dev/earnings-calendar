@@ -492,7 +492,10 @@ a.mke:hover .mkt{color:var(--accent)}
 .qc .qn{font-size:11.5px;font-weight:700;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.02em}
 .qc .qn small{font-weight:500;color:var(--faint);margin-left:6px;font-size:10px;letter-spacing:0}
 .qsrc{font-size:10px;color:var(--faint);margin:-2px 0 14px;opacity:.8}
-.qc .qp{font-size:17px;font-weight:800;letter-spacing:-.02em;margin-top:4px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.qc .qrow{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:4px;min-width:0}
+.qc .qp{font-size:17px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.qc .spark{width:56px;height:20px;flex:none;opacity:.85;margin-bottom:3px}.qc .spark polyline{fill:none;stroke-width:1.5}
+.qc .spark.pu polyline{stroke:var(--up)}.qc .spark.pd polyline{stroke:var(--down)}
 .qc .qd{font-size:11.5px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .qc .qd span{font-weight:600;opacity:.85;margin-left:5px}
 .qc .qd.pu{color:var(--up)}.qc .qd.pd{color:var(--down)}
@@ -673,7 +676,7 @@ a.mke:hover .mkt{color:var(--accent)}
 :root[data-term] .qc{position:relative;overflow:hidden;padding:9px 11px 8px}
 :root[data-term] .qc .qn{text-transform:uppercase;letter-spacing:.1em;font-size:10px}
 :root[data-term] .qc .qp{font-size:18px}
-:root[data-term] .qc .spark{position:absolute;right:8px;top:8px;width:64px;height:22px;opacity:.85}
+:root[data-term] .qc .spark{width:56px;height:20px;opacity:.85}
 :root[data-term] .qc .spark polyline{fill:none;stroke-width:1.5}
 :root[data-term] .qc .spark.pu polyline{stroke:var(--up)}:root[data-term] .qc .spark.pd polyline{stroke:var(--down)}
 :root[data-term] .qc.flash-pu{animation:flashUp 1.1s ease-out}:root[data-term] .qc.flash-pd{animation:flashDn 1.1s ease-out}
@@ -915,7 +918,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-13 16:42 · 평일 매일 자동 갱신</p>
+   생성 2026-09-13 16:45 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1896,9 +1899,8 @@ window.HOME=(function(){
    renderMap(by);
    QGROUPS.forEach(function(gr){ var h=el('div','qh',gr[0]); box.appendChild(h); var grid=el('div','qs'); box.appendChild(grid); var n=0;
    gr[1].forEach(function(c){ var i=by[c]; if(!i||i.price==null) return; n++; var card=el('div','qc'); var qn=el('div','qn',QTICK[c]||i.name); qn.appendChild(el('small',null,QNAME[c]||i.name)); card.appendChild(qn);
-     var sp=spark(hist,c,i.pct); if(sp) card.appendChild(sp);
      if(lastPx[c]!=null&&lastPx[c]!==i.price) card.classList.add(i.price>lastPx[c]?'flash-pu':'flash-pd'); lastPx[c]=i.price;
-     card.appendChild(el('div','qp',n0(i.price,i.group==='fx'||i.code==='FUT'||i.code==='KPI200'?2:2)));
+     var qrow=el('div','qrow'); qrow.appendChild(el('div','qp',n0(i.price,2))); var sp=spark(hist,c,i.pct); if(sp) qrow.appendChild(sp); card.appendChild(qrow);
      var d=el('div','qd'+(i.pct>0?' pu':i.pct<0?' pd':''),(i.pct>0?'▲':i.pct<0?'▼':'')+(i.chg!=null?n0(Math.abs(i.chg),2):'')); d.appendChild(el('span',null,sgn(i.pct,2)+'%')); card.appendChild(d);
      card.appendChild(el('div','qt',(i.state==='OPEN'?'거래 중 · ':'')+(i.at?i.at.slice(5,10).replace('-','/')+' '+hm(i.at):''))); tvable(card,c,QNAME[c]||i.name); grid.appendChild(card); });
    if(!n) h.remove(); });
