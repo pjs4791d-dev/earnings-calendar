@@ -7,13 +7,13 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="스파르탄 리서치">
 <meta property="og:title" content="다가오는 실적 발표 일정 · 스파르탄 리서치">
-<meta property="og:description" content="2026 2분기 시즌 · 총 15건 (예고 0 · 실적IR 15) · 2026-09-12 기준 · DART 공시 자동 집계">
+<meta property="og:description" content="2026 2분기 시즌 · 총 15건 (예고 0 · 실적IR 15) · 2026-09-13 기준 · DART 공시 자동 집계">
 <meta property="og:url" content="https://pjs4791d-dev.github.io/earnings-calendar/">
 <meta property="og:image" content="https://pjs4791d-dev.github.io/earnings-calendar/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="description" content="2026 2분기 시즌 · 총 15건 (예고 0 · 실적IR 15) · 2026-09-12 기준 · DART 공시 자동 집계">
+<meta name="description" content="2026 2분기 시즌 · 총 15건 (예고 0 · 실적IR 15) · 2026-09-13 기준 · DART 공시 자동 집계">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="icon-64.png">
 <link rel="shortcut icon" href="favicon.ico">
@@ -715,12 +715,11 @@ a.mke:hover .mkt{color:var(--accent)}
    <label for="mo-p">비밀번호</label><input id="mo-p" name="password" type="password" autocomplete="current-password" placeholder="8자 이상">
    <div id="mo-su" hidden>
     <label for="mo-p2">비밀번호 확인</label><input id="mo-p2" type="password" autocomplete="new-password">
-    <label for="mo-i">초대 코드</label><input id="mo-i" autocomplete="off" autocapitalize="off" placeholder="운영자에게 받은 코드">
    </div>
    <button type="submit" class="mgo" id="mo-go">로그인</button>
    <div class="merr" id="mo-e"></div>
   </form>
-  <p class="mnote">회원에게는 증권사 API 기반 정확치(통합·NXT 시장별 12주체, 콜·풋옵션, 주식선물)가 열립니다. 로그인 상태는 이 브라우저에 30일 유지됩니다.</p>
+  <p class="mnote">회원에게는 증권사 API 기반 정확치(통합·NXT 시장별 12주체, 콜·풋옵션, 주식선물)가 열립니다. 아이디·비밀번호만으로 가입되며(이메일 없음), 비밀번호를 잊으면 운영자에게 초기화를 요청하세요. 로그인 상태는 이 브라우저에 30일 유지됩니다.</p>
  </div>
 </div>
 
@@ -755,7 +754,7 @@ a.mke:hover .mkt{color:var(--accent)}
 <section id="p-cal" hidden>
  <p class="eyebrow">Earnings Calendar · KRX</p>
  <h1>다가오는 실적 발표 일정</h1>
- <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-09-12</b> 접수 공시<br>
+ <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-09-13</b> 접수 공시<br>
    실적공시예고와 실적 관련 IR개최만 자동 선별했습니다.</p>
 
  <div class="stats">
@@ -877,7 +876,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-12 20:32 · 평일 매일 자동 갱신</p>
+   생성 2026-09-13 09:02 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1277,7 +1276,7 @@ window.MEMBER=(function(){
    if(!/^[a-z0-9_]{4,20}$/.test(u)){ e.textContent='아이디는 영문 소문자·숫자·_ 4~20자'; return; }
    if(p.length<8){ e.textContent='비밀번호는 8자 이상'; return; }
    var body={username:u,password:p}, path='login';
-   if(mode==='signup'){ if(p!==document.getElementById('mo-p2').value){ e.textContent='비밀번호 확인이 다릅니다'; return; } body.invite=document.getElementById('mo-i').value.trim(); if(!body.invite){ e.textContent='초대 코드를 넣어 주세요'; return; } path='signup'; }
+   if(mode==='signup'){ if(p!==document.getElementById('mo-p2').value){ e.textContent='비밀번호 확인이 다릅니다'; return; } path='signup'; }
    go.disabled=true; req(path,{method:'POST',body:body}).then(function(j){ go.disabled=false; setAuth(j.token,j.username); close(); })
      .catch(function(err){ go.disabled=false; e.textContent=err.message||'실패'; }); }
  function logout(){ req('logout',{method:'POST'}).catch(function(){}); setAuth(null,null); }
