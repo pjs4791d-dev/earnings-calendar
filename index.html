@@ -462,11 +462,13 @@ a.mke:hover .mkt{color:var(--accent)}
 .hm{margin-top:14px}
 .hm .lmsg{color:var(--muted);font-size:13px;padding:16px 0;text-align:center}
 /* 시세 스트립 */
-.qs{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin:0 0 14px}
+.qs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:0 0 14px}
+@media(min-width:900px){.qs{grid-template-columns:repeat(5,1fr)}}
 .qc{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-width:0}
 .qc .qn{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .qc .qp{font-size:17px;font-weight:800;letter-spacing:-.02em;margin-top:4px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.qc .qd{font-size:11.5px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums}
+.qc .qd{font-size:11.5px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qc .qd span{font-weight:600;opacity:.85;margin-left:5px}
 .qc .qd.pu{color:var(--up)}.qc .qd.pd{color:var(--down)}
 .qc .qt{font-size:10px;color:var(--faint);margin-top:3px}
 /* 패널 그리드 */
@@ -479,14 +481,15 @@ a.mke:hover .mkt{color:var(--accent)}
 .hp .hs{font-size:11.5px;color:var(--faint);font-variant-numeric:tabular-nums}
 .hp .hl{font-size:12px;font-weight:700;color:var(--accent);text-decoration:none;white-space:nowrap}
 .hp .hl:hover{text-decoration:underline}
-/* 수급 요약 */
-.fs{display:grid;grid-template-columns:1fr;gap:6px}
-.fs .fr{display:grid;grid-template-columns:76px 1fr;gap:8px;align-items:center;font-size:12.5px}
-.fs .fm{font-weight:700;color:var(--ink2)}
-.fs .fb{display:flex;gap:6px;flex-wrap:wrap}
-.fs .fv{display:inline-flex;align-items:center;gap:4px;font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted)}
-.fs .fv b{font-weight:800}
-.fs .fv b.pu{color:var(--up)}.fs .fv b.pd{color:var(--down)}
+/* 수급 요약(표) */
+.fs{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+.fs th{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-align:right;padding:0 0 6px;border-bottom:1px solid var(--line)}
+.fs th:first-child{text-align:left}
+.fs td{padding:6px 0;text-align:right;font-weight:800;white-space:nowrap;border-bottom:1px solid var(--line)}
+.fs tr:last-child td{border-bottom:0}
+.fs td:first-child{text-align:left;font-weight:700;color:var(--ink2)}
+.fs td:first-child small{display:block;font-weight:500;color:var(--faint);font-size:10.5px}
+.fs td.pu{color:var(--up)}.fs td.pd{color:var(--down)}
 /* 일정 목록(홈) */
 .he{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:5px 0;border-bottom:1px solid var(--line2);font-size:12.5px;align-items:baseline}
 .he:last-child{border-bottom:0}
@@ -876,7 +879,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-13 09:02 · 평일 매일 자동 갱신</p>
+   생성 2026-09-13 15:03 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1819,27 +1822,26 @@ window.HOME=(function(){
  }
  function renderQuotes(q,hist){
    var box=document.getElementById('hm-q'); if(!box) return; box.innerHTML='';
-   var order=['KOSPI','KOSDAQ','FUT','.IXIC','.INX','.SOX','.DJI','.N225','FX_USDKRW'], by={}; q.items.forEach(function(i){by[i.code]=i});
+   var order=['KOSPI','KOSDAQ','FUT','FX_USDKRW','.VIX','.IXIC','.INX','.SOX','.DJI','.N225'], by={}; q.items.forEach(function(i){by[i.code]=i});
    order.forEach(function(c){ var i=by[c]; if(!i) return; var card=el('div','qc'); card.appendChild(el('div','qn',i.name));
      var sp=spark(hist,c,i.pct); if(sp) card.appendChild(sp);
      if(lastPx[c]!=null&&lastPx[c]!==i.price) card.classList.add(i.price>lastPx[c]?'flash-pu':'flash-pd'); lastPx[c]=i.price;
      card.appendChild(el('div','qp',n0(i.price,i.group==='fx'||i.code==='FUT'||i.code==='KPI200'?2:2)));
-     var d=el('div','qd'+(i.pct>0?' pu':i.pct<0?' pd':''),(i.pct>0?'▲':i.pct<0?'▼':'')+(i.chg!=null?n0(Math.abs(i.chg),2):'')+' ('+sgn(i.pct,2)+'%)'); card.appendChild(d);
+     var d=el('div','qd'+(i.pct>0?' pu':i.pct<0?' pd':''),(i.pct>0?'▲':i.pct<0?'▼':'')+(i.chg!=null?n0(Math.abs(i.chg),2):'')); d.appendChild(el('span',null,sgn(i.pct,2)+'%')); card.appendChild(d);
      card.appendChild(el('div','qt',(i.state==='OPEN'?'거래 중 · ':'')+(i.at?i.at.slice(5,10).replace('-','/')+' '+hm(i.at):''))); box.appendChild(card); });
    var st=el('div','qt'); st.style.gridColumn='1/-1'; st.textContent='네이버 금융 · '+q.updated.slice(11,19)+' 수집 · 30초 갱신'; box.appendChild(st);
  }
  function renderFlowSummary(f){
    var p=document.querySelector('#hm-flow .hb'); if(!p) return; p.innerHTML='';
-   var wrap=el('div','fs'), any=false;
+   var wrap=el('table','fs'), any=false, th=el('thead'), tr=el('tr'); ['시장','개인','외국인','기관'].forEach(function(h){tr.appendChild(el('th',null,h))}); th.appendChild(tr); wrap.appendChild(th);
+   var tb=el('tbody');
+   function row(name,sub,vals,unit){ var r=el('tr'); var c0=el('td',null,name); if(sub) c0.appendChild(el('small',null,sub)); r.appendChild(c0);
+     vals.forEach(function(v){ r.appendChild(el('td',v>0?'pu':v<0?'pd':'',v==null?'-':(unit==='계약'?sgn(v):fmtEok(v)))); }); tb.appendChild(r); }
    Object.keys(f.markets).forEach(function(k){ var m=f.markets[k]; var last=m.series[m.series.length-1]; if(!last) return; any=true;
-     var r=el('div','fr'); r.appendChild(el('div','fm',m.name)); var b=el('div','fb');
-     ['개인','외국인','기관계'].forEach(function(s){ var v=last[s]; var x=el('span','fv'); x.appendChild(document.createTextNode(s.replace('기관계','기관')+' ')); x.appendChild(el('b',v>0?'pu':v<0?'pd':'',(m.unit==='계약'?sgn(v):fmtEok(v,true)))); b.appendChild(x); });
-     r.appendChild(b); wrap.appendChild(r); });
+     row(m.name, m.unit==='계약'?'계약':null, ['개인','외국인','기관계'].map(function(s){return last[s]}), m.unit); });
    if(!any){ p.appendChild(el('div','lmsg','오늘은 아직 집계된 수급이 없습니다 (장중 09:00~ 갱신)')); return; }
-   if(H.nxt&&H.nxt.rows&&H.nxt.rows[0]){ var n=H.nxt.rows[0], r2=el('div','fr'); r2.appendChild(el('div','fm','NXT '+n.t.slice(5).replace('-','/'))); var b2=el('div','fb');
-     ['개인','외국인','기관계'].forEach(function(s){ var v=n[s]; var x=el('span','fv'); x.appendChild(document.createTextNode(s.replace('기관계','기관')+' ')); x.appendChild(el('b',v>0?'pu':v<0?'pd':'',fmtEok(v,true))); b2.appendChild(x); });
-     r2.appendChild(b2); wrap.appendChild(r2); }
-   p.appendChild(wrap);
+   if(H.nxt&&H.nxt.rows&&H.nxt.rows[0]){ var n=H.nxt.rows[0]; row('NXT', n.t.slice(5).replace('-','/')+' 확정치', ['개인','외국인','기관계'].map(function(s){return n[s]}), '억원'); }
+   wrap.appendChild(tb); p.appendChild(wrap);
    var l=f.markets['01'].series[f.markets['01'].series.length-1], dd=f.date?f.date.slice(4,6).replace(/^0/,'')+'/'+f.date.slice(6,8).replace(/^0/,''):'';
    var sub=document.querySelector('#hm-flow .hs'); if(sub) sub.textContent=dd+(l?' '+l.t+' 기준 · ':' · ')+'KRX 체결분 · 억원 / 선물은 계약'+(f.date&&f.date!==kstToday().replace(/-/g,'')?' · 마지막 거래일':'');
  }
