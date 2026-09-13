@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-14T03:10+09:00",
+ "checked": "2026-09-14T03:40+09:00",
  "first_seen": {
   "claude-fable-5.1": {
    "2026-09-11": "2026-09-12T09:10+09:00",
@@ -521,8 +521,8 @@
    "effective": {
     "asof": "2026-09-14",
     "cache_rate": 0.819,
-    "in": 0.5675,
-    "out": 10.0114
+    "in": 0.567,
+    "out": 10.0113
    },
    "name": "Claude Sonnet 5",
    "order": 4,
@@ -863,8 +863,8 @@
    "effective": {
     "asof": "2026-09-14",
     "cache_rate": 0.826,
-    "in": 0.0243,
-    "out": 0.191
+    "in": 0.0242,
+    "out": 0.1913
    },
    "name": "DeepSeek V4 Flash",
    "order": 6,
@@ -994,9 +994,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-14",
-    "cache_rate": 0.747,
+    "cache_rate": 0.746,
     "in": 0.2634,
-    "out": 3.9025
+    "out": 3.9031
    },
    "name": "Gemini 3.8 Flash",
    "order": 5,
@@ -1196,9 +1196,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-14",
-    "cache_rate": 0.801,
-    "in": 0.0482,
-    "out": 0.4832
+    "cache_rate": 0.802,
+    "in": 0.048,
+    "out": 0.4875
    },
    "name": "GLM 5.3 Flash",
    "order": 7,
@@ -1539,8 +1539,8 @@
    "effective": {
     "asof": "2026-09-14",
     "cache_rate": 0.945,
-    "in": 0.0359,
-    "out": 1.2553
+    "in": 0.0361,
+    "out": 1.2564
    },
    "name": "GPT-5.6 Luna",
    "order": 2,
@@ -1651,8 +1651,8 @@
    "effective": {
     "asof": "2026-09-14",
     "cache_rate": 0.893,
-    "in": 2.4121,
-    "out": 45.4252
+    "in": 2.4076,
+    "out": 45.4443
    },
    "name": "GPT-6 Astra",
    "order": 0,
@@ -1763,8 +1763,8 @@
    "effective": {
     "asof": "2026-09-14",
     "cache_rate": 0.677,
-    "in": 6.0256,
-    "out": 52.6902
+    "in": 6.02,
+    "out": 52.6456
    },
    "name": "GPT-6 Astra Pro",
    "order": 1,
@@ -1839,6 +1839,12 @@
     "date": "2026-09-13",
     "in": 0.075,
     "out": 0.25
+   },
+   {
+    "cache": 0.03,
+    "date": "2026-09-14",
+    "in": 0.15,
+    "out": 0.5
    }
   ],
   "gpt-5.6-luna": [
@@ -1868,6 +1874,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-14T03:10+09:00",
+ "updated": "2026-09-14T03:40+09:00",
  "url": "https://openrouter.ai/rankings"
 }
