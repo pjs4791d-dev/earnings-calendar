@@ -918,7 +918,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-13 17:07 · 평일 매일 자동 갱신</p>
+   생성 2026-09-13 18:03 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2010,7 +2010,7 @@ window.HOME=(function(){
  }
 
  /* ═══ 수급 탭 ═══ */
- var F={built:false,ex:'all',mkt:'01',market:'all',mode:'main',on:{},timer:null,today:null,daily:null,chart:null,hist:{},range:'30',from:null,to:null,dview:'cum',dloading:false};
+ var F={built:false,ex:'all',mkt:'01',market:'all',mode:'main',on:{},don:{'개인':true,'외국인':true,'기관계':true},timer:null,today:null,daily:null,chart:null,hist:{},range:'30',from:null,to:null,dview:'cum',dloading:false};
  /* 회원 전용(증권사 API 정확치): 키움 통합/NXT 시장별 12주체, 한투 콜·풋·주식선물 */
  function memberOn(){ return !!(window.MEMBER&&MEMBER.logged()); }
  var OPTM={optc:'K200C',optp:'K200P',stkf:'STKF'}, OPTN={optc:'K200 콜옵션',optp:'K200 풋옵션',stkf:'주식선물'};
@@ -2072,6 +2072,7 @@ window.HOME=(function(){
    rg.appendChild(sw([['cum','누적 선'],['bar','일별 막대']],F.dview,function(v){F.dview=v; drawDaily();}));
    box.appendChild(rg);
    box.appendChild(el('div','sum')).id='fl-sum';
+   var dlg=el('div','lctl'); dlg.id='fl-dlegend'; box.appendChild(dlg);
    var dc=el('div','fchart dchart'); dc.id='fl-dchart'; dc.appendChild(el('div','ltip')); box.appendChild(dc);
    box.appendChild(el('div','ftbl')).id='fl-daily';
    var h2=el('h3','', '프로그램매매'); h2.appendChild(el('span',null,'코스피 · 억원 · 일별')); box.appendChild(h2);
@@ -2277,8 +2278,14 @@ window.HOME=(function(){
  }
  function drawDailyChart(rows, mk){                // rows: 오래된→최신
    var ch=document.getElementById('fl-dchart'); if(!ch) return; var old=ch.querySelector('svg'); if(old) old.remove(); var msg=ch.querySelector('.lmsg'); if(msg) msg.remove(); var tip=ch.querySelector('.ltip');
+   F.dlast={rows:rows,mk:mk};
+   var avail=MAIN.concat(SUB).filter(function(k){ return rows.some(function(r){return r[k]!=null}); });
+   var lg=document.getElementById('fl-dlegend'); if(lg){ lg.innerHTML=''; lg.appendChild(el('span','llab','선 '));
+     avail.forEach(function(k){ var b=el('button','lgd'); b.type='button'; b.setAttribute('aria-pressed',F.don[k]?'true':'false'); b.style.setProperty('--sc',COLOR[k]); b.appendChild(el('span','lk')); b.appendChild(document.createTextNode(k==='기관계'?'기관':k==='투신사모'?'투신(사모)':k));
+       b.addEventListener('click',function(){ F.don[k]=!F.don[k]; b.setAttribute('aria-pressed',F.don[k]?'true':'false'); drawDailyChart(F.dlast.rows,F.dlast.mk); }); lg.appendChild(b); }); }
    if(!rows.length){ ch.insertBefore(el('div','lmsg','해당 기간에 데이터가 없습니다'),tip); return; }
-   var keys=['개인','외국인','기관계'], cum=F.dview==='cum';
+   var keys=avail.filter(function(k){return F.don[k]}), cum=F.dview==='cum';
+   if(!keys.length){ ch.insertBefore(el('div','lmsg','위에서 볼 주체를 하나 이상 켜 주세요'),tip); return; }
    var series={}; keys.forEach(function(k){ var acc=0; series[k]=rows.map(function(r){ var v=r[k]||0; acc+=v; return cum?acc:v; }); });
    var W=Math.max(300,Math.floor(ch.getBoundingClientRect().width)-12), H=W<520?220:280, mg={t:14,r:60,b:26,l:8};
    var lo=0,hi=0; keys.forEach(function(k){ series[k].forEach(function(v){ if(v<lo) lo=v; if(v>hi) hi=v; }); });
@@ -2295,8 +2302,8 @@ window.HOME=(function(){
      keys.forEach(function(k){ var p=sv('path',{d:series[k].map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)}).join(' '),'class':'ln'}); p.style.stroke=COLOR[k]; svg.appendChild(p);
        var t=sv('text',{x:W-mg.r+6,y:Y(series[k][n-1])+4,'class':'dl'}); t.style.fill=COLOR[k]; t.textContent=k==='기관계'?'기관':k; svg.appendChild(t); });
    } else {
-     var bw=Math.max(1,pw/n/3.6);
-     keys.forEach(function(k,ki){ series[k].forEach(function(v,i){ var x=X(i)+(ki-1)*bw, y0=Y(0), y1=Y(v); var r=sv('rect',{x:x-bw/2,y:Math.min(y0,y1),width:bw,height:Math.max(1,Math.abs(y1-y0))}); r.style.fill=COLOR[k]; r.style.opacity='.85'; svg.appendChild(r); }); });
+     var bw=Math.max(1,pw/n/(keys.length+0.6));
+     keys.forEach(function(k,ki){ series[k].forEach(function(v,i){ var x=X(i)+(ki-(keys.length-1)/2)*bw, y0=Y(0), y1=Y(v); var r=sv('rect',{x:x-bw/2,y:Math.min(y0,y1),width:bw,height:Math.max(1,Math.abs(y1-y0))}); r.style.fill=COLOR[k]; r.style.opacity='.85'; svg.appendChild(r); }); });
      var lx=mg.l+4; keys.forEach(function(k){ var t=sv('text',{x:lx,y:mg.t+10,'class':'dl'}); t.style.fill=COLOR[k]; t.textContent=k==='기관계'?'기관':k; svg.appendChild(t); lx+=k.length*11+18; });
    }
    var xh=sv('line',{x1:0,x2:0,y1:mg.t,y2:mg.t+ph,'class':'xh',visibility:'hidden'}); svg.appendChild(xh);
