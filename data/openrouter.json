@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-13T11:40+09:00",
+ "checked": "2026-09-13T12:10+09:00",
  "first_seen": {
   "claude-fable-5.1": {
    "2026-09-11": "2026-09-12T09:10+09:00",
@@ -178,8 +178,8 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-13",
-    "cache_rate": 0.895,
-    "in": 1.4091,
+    "cache_rate": 0.892,
+    "in": 1.4412,
     "out": 49.9996
    },
    "name": "Claude Fable 5.1",
@@ -520,9 +520,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-13",
-    "cache_rate": 0.801,
-    "in": 0.6043,
-    "out": 10.015
+    "cache_rate": 0.805,
+    "in": 0.597,
+    "out": 10.0156
    },
    "name": "Claude Sonnet 5",
    "order": 4,
@@ -862,9 +862,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-13",
-    "cache_rate": 0.827,
-    "in": 0.0259,
-    "out": 0.1796
+    "cache_rate": 0.828,
+    "in": 0.0258,
+    "out": 0.1791
    },
    "name": "DeepSeek V4 Flash",
    "order": 6,
@@ -994,9 +994,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-13",
-    "cache_rate": 0.739,
-    "in": 0.2696,
-    "out": 3.9278
+    "cache_rate": 0.734,
+    "in": 0.2716,
+    "out": 3.9177
    },
    "name": "Gemini 3.8 Flash",
    "order": 5,
@@ -1196,9 +1196,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-13",
-    "cache_rate": 0.824,
+    "cache_rate": 0.822,
     "in": 0.0468,
-    "out": 0.4686
+    "out": 0.4666
    },
    "name": "GLM 5.3 Flash",
    "order": 7,
@@ -1539,8 +1539,8 @@
    "effective": {
     "asof": "2026-09-13",
     "cache_rate": 0.942,
-    "in": 0.0353,
-    "out": 1.2218
+    "in": 0.0352,
+    "out": 1.2177
    },
    "name": "GPT-5.6 Luna",
    "order": 2,
@@ -1650,9 +1650,9 @@
    "default_on": true,
    "effective": {
     "asof": "2026-09-13",
-    "cache_rate": 0.88,
-    "in": 2.6973,
-    "out": 47.8995
+    "cache_rate": 0.878,
+    "in": 2.7123,
+    "out": 47.9333
    },
    "name": "GPT-6 Astra",
    "order": 0,
@@ -1762,9 +1762,9 @@
    "default_on": true,
    "effective": {
     "asof": "2026-09-13",
-    "cache_rate": 0.677,
-    "in": 6.4564,
-    "out": 51.6634
+    "cache_rate": 0.671,
+    "in": 6.3928,
+    "out": 52.5543
    },
    "name": "GPT-6 Astra Pro",
    "order": 1,
@@ -1862,6 +1862,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-13T11:40+09:00",
+ "updated": "2026-09-13T12:10+09:00",
  "url": "https://openrouter.ai/rankings"
 }
