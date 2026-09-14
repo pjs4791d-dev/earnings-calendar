@@ -1011,7 +1011,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-14 15:26 · 평일 매일 자동 갱신</p>
+   생성 2026-09-14 15:36 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2542,10 +2542,13 @@ window.HOME=(function(){
    m.addEventListener('click',function(ev){ if(ev.target===m) m.remove(); }); document.body.appendChild(m); loadChart();
  }
  function loadChart(){ var body=document.getElementById('ch-body'); if(!body) return; body.innerHTML=''; body.appendChild(el('div','cmsg','불러오는 중…'));
-   var code=CH.code, tf=CH.tf; MEMBER.get('chart?code='+encodeURIComponent(code)+'&tf='+tf).then(function(d){ if(CH.code!==code||CH.tf!==tf) return; CH.data=d.items||[]; drawCandles(); }).catch(function(e){ body.innerHTML=''; body.appendChild(el('div','cmsg','차트를 못 받았습니다 · '+e.message)); }); }
+   var code=CH.code, tf=CH.tf; MEMBER.get('chart?code='+encodeURIComponent(code)+'&tf='+tf).then(function(d){ if(CH.code!==code||CH.tf!==tf) return; CH.data=d.items||[]; CH.view=null; drawCandles(); }).catch(function(e){ body.innerHTML=''; body.appendChild(el('div','cmsg','차트를 못 받았습니다 · '+e.message)); }); }
  function drawCandles(){
-   var body=document.getElementById('ch-body'); if(!body) return; body.innerHTML=''; var rows=CH.data; if(!rows||!rows.length){ body.appendChild(el('div','cmsg','데이터 없음')); return; }
-   var tf=CH.tf, isMin=tf.indexOf('minute')===0, maxN=tf==='minute'?420:isMin?200:tf==='day'?160:tf==='week'?160:120; if(rows.length>maxN) rows=rows.slice(rows.length-maxN);
+   var body=document.getElementById('ch-body'); if(!body) return; body.innerHTML=''; var all=CH.data; if(!all||!all.length){ body.appendChild(el('div','cmsg','데이터 없음')); return; }
+   var tf=CH.tf, isMin=tf.indexOf('minute')===0, total=all.length, defN=Math.min(total,tf==='minute'?420:isMin?200:tf==='day'?160:tf==='week'?160:120);
+   if(!CH.view) CH.view={n:defN,end:total};                                  // 보기 창: 마지막 end 개 중 n 개(끌기·휠·핀치로 바뀜)
+   var V=CH.view; V.n=Math.max(15,Math.min(total,Math.round(V.n))); V.end=Math.max(V.n,Math.min(total,Math.round(V.end)));
+   var rows=all.slice(V.end-V.n,V.end);
    var multiDay=isMin&&rows.length>1&&rows[0].t.slice(0,8)!==rows[rows.length-1].t.slice(0,8);
    var W0=Math.max(320,Math.floor(body.getBoundingClientRect().width)||900), H=W0<600?300:380, mg={t:10,r:64,b:22,l:6}, vh=Math.round(H*0.18);
    var ph=H-mg.t-mg.b-vh-6, pw=W0-mg.l-mg.r, n=rows.length;
@@ -2564,14 +2567,30 @@ window.HOME=(function(){
    [[5,'ma5'],[20,'ma20'],[60,'ma60']].forEach(function(m){ if(n<m[0]) return; var d='', sum=0; for(var i=0;i<n;i++){ sum+=rows[i].c; if(i>=m[0]) sum-=rows[i-m[0]].c; if(i>=m[0]-1){ var y=Y(sum/m[0]); d+=(d?'L':'M')+X(i).toFixed(1)+' '+y.toFixed(1); } } svg.appendChild(sv('path',{d:d,'class':m[1]})); });
    var xh=sv('line',{x1:0,x2:0,y1:mg.t,y2:mg.t+ph+6+vh,'class':'xh',visibility:'hidden'}); svg.appendChild(xh); var yh=sv('line',{x1:mg.l,x2:W0-mg.r,y1:0,y2:0,'class':'xh',visibility:'hidden'}); svg.appendChild(yh);
    var hit=sv('rect',{x:mg.l,y:mg.t,width:pw,height:ph+6+vh,fill:'transparent'}); svg.appendChild(hit); body.appendChild(svg); var tip=el('div','ctip'); body.appendChild(tip);
-   var q=W.quotes[CH.code]; var last=rows[n-1]; var info=document.getElementById('ch-info'); if(info) info.textContent=lab(rows[0])+' ~ '+lab(last)+' · '+n+'봉'+' · '+(isMin?'현재가':'종가')+' '+n0(last.c,dec);
+   var q=W.quotes[CH.code]; var last=rows[n-1]; var info=document.getElementById('ch-info'); if(info) info.textContent=lab(rows[0])+' ~ '+lab(last)+' · '+n+'/'+total+'봉'+' · '+(isMin?'현재가':'종가')+' '+n0(last.c,dec)+(total>n||V.end<total?' · 끌기·휠·더블클릭':'');
+   // ── 끌기(이동) · 휠(확대/축소) · 핀치 · 더블클릭(초기화)
+   var barPx=pw/n; CH._ptrs=CH._ptrs||{};                                   // 끌기 상태는 CH 에 둬야 다시 그려도(SVG 교체) 이어진다
+   function redraw(){ if(CH._raf) return; CH._raf=requestAnimationFrame(function(){ CH._raf=null; drawCandles(); }); }
+   hit.addEventListener('pointerdown',function(ev){ CH._ptrs[ev.pointerId]=ev; var ks=Object.keys(CH._ptrs);
+     if(ks.length===1){ CH._drag={x:ev.clientX,end:V.end}; } else { CH._drag=null; CH._pinch={d:Math.abs(CH._ptrs[ks[0]].clientX-CH._ptrs[ks[1]].clientX)||1,n:V.n}; } });
+   hit.addEventListener('pointermove',function(ev){ if(CH._ptrs[ev.pointerId]) CH._ptrs[ev.pointerId]=ev; var ks=Object.keys(CH._ptrs);
+     if(ks.length>=2&&CH._pinch){ var d=Math.abs(CH._ptrs[ks[0]].clientX-CH._ptrs[ks[1]].clientX)||1; var nn=Math.max(15,Math.min(total,Math.round(CH._pinch.n*CH._pinch.d/d))); if(nn!==V.n){ V.n=nn; V.end=Math.max(nn,Math.min(total,V.end)); redraw(); } return; }
+     if(CH._drag&&ev.buttons){ var rc=svg.getBoundingClientRect(); var dx=(ev.clientX-CH._drag.x)*W0/rc.width; var shift=Math.round(-dx/barPx); var ne=Math.max(V.n,Math.min(total,CH._drag.end+shift)); if(ne!==V.end){ V.end=ne; redraw(); } return; }
+     at(ev); });
+   function endPtr(ev){ delete CH._ptrs[ev.pointerId]; if(!Object.keys(CH._ptrs).length){ CH._drag=null; CH._pinch=null; } }
+   hit.addEventListener('pointerup',endPtr); hit.addEventListener('pointercancel',endPtr); hit.addEventListener('lostpointercapture',endPtr);
+   document.addEventListener('pointerup',function(){ CH._ptrs={}; CH._drag=null; CH._pinch=null; },{once:true});
+   hit.addEventListener('wheel',function(ev){ ev.preventDefault(); var rc=svg.getBoundingClientRect(), x=(ev.clientX-rc.left)*W0/rc.width, frac=Math.max(0,Math.min(1,(x-mg.l)/pw));
+     var f=ev.deltaY>0?1.15:1/1.15, nn=Math.max(15,Math.min(total,Math.round(V.n*f))); var start=V.end-V.n, idx=start+frac*V.n; var ns=idx-frac*nn; V.n=nn; V.end=Math.max(nn,Math.min(total,Math.round(ns+nn))); redraw(); },{passive:false});
+   hit.addEventListener('dblclick',function(){ CH.view=null; drawCandles(); });
+   hit.style.cursor='grab'; hit.style.touchAction='none';
    function at(ev){ var rc=svg.getBoundingClientRect(), x=(ev.clientX-rc.left)*W0/rc.width, y=(ev.clientY-rc.top)*H/rc.height, i=Math.max(0,Math.min(n-1,Math.floor((x-mg.l)/pw*n))); var r=rows[i], cx=X(i);
      xh.setAttribute('x1',cx); xh.setAttribute('x2',cx); xh.setAttribute('visibility','visible'); yh.setAttribute('y1',y); yh.setAttribute('y2',y); yh.setAttribute('visibility','visible');
      tip.innerHTML=''; tip.appendChild(el('b',null,lab(r))); var chg=i?r.c-rows[i-1].c:0, pc=i&&rows[i-1].c?chg/rows[i-1].c*100:0;
      [['시가',r.o],['고가',r.h],['저가',r.l],[line?'현재가':'종가',r.c]].forEach(function(k){ if(k[1]==null) return; var d=el('div'); d.textContent=k[0]+' '+n0(k[1],dec); tip.appendChild(d); });
      var dd=el('div'); dd.style.color=chg>0?'var(--up)':chg<0?'var(--down)':''; dd.textContent=(chg>0?'▲':chg<0?'▼':'')+n0(Math.abs(chg),dec)+' ('+(pc>0?'+':'')+pc.toFixed(2)+'%)'; tip.appendChild(dd); if(r.v!=null){ var dv=el('div'); dv.textContent='거래량 '+n0(r.v); tip.appendChild(dv); }
      tip.style.display='block'; var left=cx*rc.width/W0+14; if(left+tip.offsetWidth>rc.width-4) left=cx*rc.width/W0-tip.offsetWidth-14; tip.style.left=Math.max(4,left)+'px'; tip.style.top=Math.max(4,y*rc.height/H-40)+'px'; }
-   hit.addEventListener('pointermove',at); hit.addEventListener('pointerdown',at); hit.addEventListener('pointerleave',function(){ xh.setAttribute('visibility','hidden'); yh.setAttribute('visibility','hidden'); tip.style.display='none'; });
+   hit.addEventListener('pointerleave',function(){ xh.setAttribute('visibility','hidden'); yh.setAttribute('visibility','hidden'); tip.style.display='none'; });
  }
  document.addEventListener('keydown',function(ev){ if(ev.key==='Escape'){ var t=document.getElementById('tvm'); if(t) t.remove(); } });
  function move(L,i,d){ var codes=L.items.map(function(x){return x.code}); var j=i+d; if(j<0||j>=codes.length) return; var tmp=codes[i]; codes[i]=codes[j]; codes[j]=tmp;
