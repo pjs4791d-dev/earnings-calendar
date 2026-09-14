@@ -794,6 +794,23 @@ a.mke:hover .mkt{color:var(--accent)}
 .wbd td .nx{display:inline-block;font-size:8.5px;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 3px;margin-left:4px;vertical-align:1px}
 .wbd .bdadd{font-size:11px;color:var(--faint);padding:6px 8px;cursor:pointer}.wbd .bdadd:hover{color:var(--accent)}
 .wbd .wempty{padding:14px 0;font-size:12px}
+.wbd tr.flash-pu td{animation:wflash-u .9s}.wbd tr.flash-pd td{animation:wflash-d .9s}
+.wbd .bdh{cursor:grab}.wbd .bd.drag{opacity:.4}.wbd .bd.over{outline:2px dashed var(--accent);outline-offset:2px}
+.wbd .bdh .gh{color:var(--faint);font-size:11px;margin-right:2px}
+.sch{position:relative;background:var(--panel,var(--surface));padding:6px 8px 2px}
+.sch svg{display:block;width:100%;height:auto}
+.sch .cbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:0 4px 6px}
+.sch .cbar .llab{font-size:10.5px;color:var(--faint);font-weight:700;letter-spacing:.06em}
+.sch .cbar .lsw button{padding:4px 10px;font-size:11.5px}
+.sch .cbar .cinfo{margin-left:auto;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.sch .cmsg{padding:60px 0;text-align:center;color:var(--muted);font-size:13px}
+.sch .grid{stroke:var(--line);stroke-width:1}.sch .tk{font-size:10px;fill:var(--faint);font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.sch .ma5{stroke:#eab308;fill:none;stroke-width:1}.sch .ma20{stroke:#22d3ee;fill:none;stroke-width:1}.sch .ma60{stroke:#a78bfa;fill:none;stroke-width:1}
+.sch .cu{fill:var(--up);stroke:var(--up)}.sch .cd{fill:var(--down);stroke:var(--down)}.sch .vu{fill:var(--up);opacity:.35}.sch .vd{fill:var(--down);opacity:.35}
+.sch .xh{stroke:var(--muted);stroke-dasharray:3 3;stroke-width:1}
+.sch .ctip{position:absolute;pointer-events:none;background:var(--panel,var(--surface));border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:11.5px;font-variant-numeric:tabular-nums;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;display:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:2}
+.sch .ctip b{display:block;margin-bottom:2px}.sch .lg{font-size:10.5px;color:var(--faint);padding:2px 4px 4px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.sch .lg i{display:inline-block;width:12px;height:2px;vertical-align:middle;margin:0 4px 0 8px}
 </style>
 
 <a class="wm" href="https://t.me/SpartanResearch" target="_blank" rel="noopener"><span class="wd"></span>스파르탄 리서치</a>
@@ -994,7 +1011,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-14 14:02 · 평일 매일 자동 갱신</p>
+   생성 2026-09-14 15:16 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2424,6 +2441,15 @@ window.HOME=(function(){
  var W={built:false,lists:[],sel:null,quotes:{},timer:null,vis:false,last:{},max:{lists:20,items:30},view:'grp'};
  try{ W.view=localStorage.getItem('wl_view')||'grp'; }catch(e){}
  function isWorld(code){ return code.indexOf('.')>=0; }
+ /* 즉시 검색: /pub/stocks.json(국내 상장사 코드·이름)을 한 번 받아 두고 이름 부분일치·초성·코드로 바로 찾는다. 네이버 자동완성(ETF·미국)은 뒤이어 합친다. */
+ var CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+ function cho(str){ var o=''; for(var i=0;i<str.length;i++){ var c=str.charCodeAt(i); o+=(c>=0xAC00&&c<=0xD7A3)?CHO[Math.floor((c-0xAC00)/588)]:str[i]; } return o; }
+ function isChoQuery(q){ return q.length>0&&[].every.call(q,function(ch){return CHO.indexOf(ch)>=0}); }
+ var IDX=null; function loadIdx(){ if(IDX||W.idxLoading) return; W.idxLoading=true; fetch('https://spartan.tail88a1c5.ts.net/pub/stocks.json?t='+Math.floor(Date.now()/3.6e6)).then(function(r){return r.json()}).then(function(d){ IDX=(d.items||[]).map(function(x){ return {code:x[0],name:x[1],lc:x[1].toLowerCase(),ch:cho(x[1])}; }); }).catch(function(){ W.idxLoading=false; }); }
+ function localSearch(q){ if(!IDX) return []; var lq=q.toLowerCase(), isC=isChoQuery(q), out=[], starts=[];
+   for(var i=0;i<IDX.length&&(out.length+starts.length)<40;i++){ var x=IDX[i]; var hit=isC?x.ch.indexOf(q)===0||x.ch.indexOf(q)>0:(x.lc.indexOf(lq)>=0||x.code.indexOf(lq.toUpperCase())===0);
+     if(!hit) continue; var first=isC?x.ch.indexOf(q)===0:(x.lc.indexOf(lq)===0||x.code.indexOf(lq.toUpperCase())===0); (first?starts:out).push({code:x.code,name:x.name,market:'',world:false}); }
+   return starts.concat(out).slice(0,10); }
  function fmtPx(q,v){ if(v==null) return '-'; return q.cur&&q.cur!=='KRW'?(q.cur==='USD'?'$':q.cur+' ')+n0(v,2):n0(v); }
  function openStock(code){ window.open(isWorld(code)?'https://m.stock.naver.com/worldstock/stock/'+code+'/total':'https://m.stock.naver.com/domestic/stock/'+code+'/total','_blank','noopener'); }
  function setView(v){ W.view=v; try{localStorage.setItem('wl_view',v)}catch(e){} [].forEach.call(document.querySelectorAll('#wl-view button'),function(b){ b.classList.toggle('on',b.dataset.v===v); }); render(); tick(true); }
@@ -2454,11 +2480,15 @@ window.HOME=(function(){
    h.appendChild(rn); h.appendChild(dl); p.appendChild(h);
    // 종목 검색
    var sr=el('div','wsrch'); var si=el('input'); si.placeholder='종목명·코드·티커로 검색해서 추가 (예: 삼성전자, 005930, NVDA)'; si.autocomplete='off'; var dd=el('div','wdd'); sr.appendChild(si); sr.appendChild(dd); p.appendChild(sr);
-   var sq=null, hi=-1, items=[];
+   var sq=null, hi=-1, items=[], acCache={}; loadIdx();
    function paintDD(){ dd.innerHTML=''; if(!items.length){ dd.classList.remove('on'); return; } items.forEach(function(x,i){ var b=el('button',i===hi?'hi':''); b.type='button'; b.appendChild(el('span',null,x.name)); b.appendChild(el('small',null,x.world?(x.ticker||x.code.split('.')[0]):x.code)); b.appendChild(el('em',null,x.market+(L.items.some(function(y){return y.code===x.code})?' · 담김':''))); b.addEventListener('mousedown',function(ev){ ev.preventDefault(); pick(x); }); dd.appendChild(b); }); dd.classList.add('on'); }
    function pick(x){ dd.classList.remove('on'); si.value=''; items=[]; if(L.items.some(function(y){return y.code===x.code})) return;
      MEMBER.get('watch/item',{method:'POST',body:{id:L.id,code:x.code,name:x.name,market:x.market}}).then(function(d){ W.lists=d.lists; render(); tick(true); var ni=document.querySelector('#wl .wsrch input'); if(ni) ni.focus(); }).catch(function(e){alert(e.message)}); }
-   si.addEventListener('input',function(){ var q=si.value.trim(); clearTimeout(sq); if(q.length<1){ items=[]; paintDD(); return; } sq=setTimeout(function(){ MEMBER.get('search?q='+encodeURIComponent(q)).then(function(d){ if(si.value.trim()!==q) return; items=d.items||[]; hi=items.length?0:-1; paintDD(); }).catch(function(){}); },180); });
+   function merge(loc,ac){ var seen={}, out=[]; loc.concat(ac||[]).forEach(function(x){ if(seen[x.code]) return; seen[x.code]=1; out.push(x); }); return out.slice(0,14); }
+   si.addEventListener('input',function(){ var q=si.value.trim(); clearTimeout(sq); if(q.length<1){ items=[]; paintDD(); return; }
+     var loc=localSearch(q); items=merge(loc,acCache[q]); hi=items.length?0:-1; paintDD();                        // 로컬 인덱스는 즉시
+     if(acCache[q]) return;
+     sq=setTimeout(function(){ MEMBER.get('search?q='+encodeURIComponent(q)).then(function(d){ acCache[q]=d.items||[]; if(si.value.trim()!==q) return; items=merge(localSearch(q),acCache[q]); if(hi<0&&items.length) hi=0; paintDD(); }).catch(function(){}); },120); });
    si.addEventListener('keydown',function(ev){ if(!items.length) return; if(ev.key==='ArrowDown'){ ev.preventDefault(); hi=(hi+1)%items.length; paintDD(); } else if(ev.key==='ArrowUp'){ ev.preventDefault(); hi=(hi-1+items.length)%items.length; paintDD(); } else if(ev.key==='Enter'){ ev.preventDefault(); if(hi>=0) pick(items[hi]); } else if(ev.key==='Escape'){ dd.classList.remove('on'); } });
    si.addEventListener('blur',function(){ setTimeout(function(){dd.classList.remove('on')},150); }); si.addEventListener('focus',function(){ if(items.length) dd.classList.add('on'); });
    // 표
@@ -2466,7 +2496,7 @@ window.HOME=(function(){
    var t=el('table'), th=el('thead'), tr=el('tr'); [['종목',''],['현재가',''],['등락',''],['등락률',''],['거래량','opt'],['고가/저가','opt'],['','']].forEach(function(c){ tr.appendChild(el('th',c[1],c[0])); }); th.appendChild(tr); t.appendChild(th);
    var tb=el('tbody'); tb.id='wl-rows';
    L.items.forEach(function(x,i){ var r=el('tr'); r.dataset.code=x.code;
-     var c0=el('td'); var nm=el('span','nm',x.name); nm.title='네이버 증권에서 보기'; nm.addEventListener('click',function(){ openStock(x.code); }); c0.appendChild(nm); c0.appendChild(el('span','cd',isWorld(x.code)?x.code.split('.')[0]+' · '+(x.market||'US'):x.code)); var nx=el('span','nx','NXT'); nx.style.display='none'; c0.appendChild(nx); r.appendChild(c0);
+     var c0=el('td'); var nm=el('span','nm',x.name); nm.title='차트 보기'; nm.addEventListener('click',function(){ openChart(x.code,x.name); }); c0.appendChild(nm); c0.appendChild(el('span','cd',isWorld(x.code)?x.code.split('.')[0]+' · '+(x.market||'US'):x.code)); var nx=el('span','nx','NXT'); nx.style.display='none'; c0.appendChild(nx); r.appendChild(c0);
      r.appendChild(el('td','px','-')); r.appendChild(el('td',null,'-')); r.appendChild(el('td',null,'-')); var cv=el('td','opt'); cv.appendChild(el('span','vol','-')); r.appendChild(cv); r.appendChild(el('td','opt','-'));
      var ca=el('td'); var up=el('button','mv','▲'); up.type='button'; up.title='위로'; up.disabled=i===0; up.addEventListener('click',function(){ move(L,i,-1); }); var dn=el('button','mv','▼'); dn.type='button'; dn.title='아래로'; dn.disabled=i===L.items.length-1; dn.addEventListener('click',function(){ move(L,i,1); });
      var rm=el('button','rm','×'); rm.type='button'; rm.title='빼기'; rm.addEventListener('click',function(){ MEMBER.get('watch/item/delete',{method:'POST',body:{id:L.id,code:x.code}}).then(function(d){ W.lists=d.lists; render(); }).catch(function(e){alert(e.message)}); });
@@ -2477,15 +2507,72 @@ window.HOME=(function(){
  function renderBoard(b){                       // HTS 식: 모든 그룹을 촘촘한 표로 여러 열에 흘려 보여 준다
    var wrap=el('div','wbd'); b.appendChild(wrap);
    if(!W.lists.length){ wrap.appendChild(el('div','wempty','그룹이 없습니다 — 그룹 보기에서 먼저 만드세요')); return; }
-   W.lists.forEach(function(L){ var bd=el('div','bd'); var h=el('div','bdh',L.name); h.appendChild(el('small',null,L.items.length+'종목')); bd.appendChild(h);
+   W.lists.forEach(function(L){ var bd=el('div','bd'); bd.dataset.id=L.id; var h=el('div','bdh'); h.appendChild(el('span','gh','⋮⋮')); h.appendChild(document.createTextNode(L.name)); h.appendChild(el('small',null,L.items.length+'종목')); bd.appendChild(h);
+     bd.draggable=true; h.title='끌어서 순서 바꾸기';
+     bd.addEventListener('dragstart',function(ev){ W.dragId=L.id; bd.classList.add('drag'); try{ ev.dataTransfer.setData('text/plain',String(L.id)); ev.dataTransfer.effectAllowed='move'; }catch(e){} });
+     bd.addEventListener('dragend',function(){ bd.classList.remove('drag'); [].forEach.call(wrap.querySelectorAll('.bd.over'),function(x){x.classList.remove('over')}); });
+     bd.addEventListener('dragover',function(ev){ if(W.dragId==null||W.dragId===L.id) return; ev.preventDefault(); ev.dataTransfer.dropEffect='move'; bd.classList.add('over'); });
+     bd.addEventListener('dragleave',function(){ bd.classList.remove('over'); });
+     bd.addEventListener('drop',function(ev){ ev.preventDefault(); bd.classList.remove('over'); var from=W.dragId; W.dragId=null; if(from==null||from===L.id) return;
+       var ids=W.lists.map(function(x){return x.id}); var fi=ids.indexOf(from), ti=ids.indexOf(L.id); if(fi<0||ti<0) return; ids.splice(fi,1); ids.splice(ti,0,from);
+       var byId={}; W.lists.forEach(function(x){byId[x.id]=x}); W.lists=ids.map(function(i){return byId[i]}); render(); MEMBER.get('watch/list/move',{method:'POST',body:{ids:ids}}).catch(function(){}); });
      if(!L.items.length){ var e=el('div','bdadd','+ 종목 담기 (그룹 보기)'); e.addEventListener('click',function(){ W.sel=L.id; setView('grp'); }); bd.appendChild(e); wrap.appendChild(bd); return; }
      var t=el('table'), th=el('thead'), tr=el('tr'); ['코드','종목명','등락률','현재가'].forEach(function(x){tr.appendChild(el('th',null,x))}); th.appendChild(tr); t.appendChild(th);
-     var tb=el('tbody'); L.items.forEach(function(x){ var r=el('tr'); r.dataset.code=x.code; r.title=x.name+' · 네이버 증권에서 보기'; r.addEventListener('click',function(){openStock(x.code)});
+     var tb=el('tbody'); L.items.forEach(function(x){ var r=el('tr'); r.dataset.code=x.code; r.title=x.name+' · 차트 보기'; r.addEventListener('click',function(){openChart(x.code,x.name)});
        r.appendChild(el('td','cd',isWorld(x.code)?x.code.split('.')[0]:x.code)); var nm=el('td','nm',x.name); var nx=el('span','nx','NXT'); nx.style.display='none'; nm.appendChild(nx); r.appendChild(nm);
        r.appendChild(el('td',null,'-')); r.appendChild(el('td',null,'-')); tb.appendChild(r); });
      t.appendChild(tb); bd.appendChild(t); wrap.appendChild(bd); });
    paintQuotes();
  }
+ /* 차트: 트레이딩뷰 위젯이 KRX 종목을 막아서(“TradingView 에서만 제공”) 네이버 차트 데이터(/m/chart)로 직접 그린다. 분·일·주·월, MA5/20/60, 거래량, 십자선. */
+ var CH={code:null,name:null,tf:'day',data:null};
+ function openChart(code,name){
+   CH.code=code; CH.name=name; if(isWorld(code)&&CH.tf==='minute') CH.tf='day';
+   var old=document.getElementById('tvm'); if(old) old.remove();
+   var m=el('div','tvm'); m.id='tvm'; var c=el('div','tvc'); var h=el('div','tvh'); h.appendChild(el('b',null,name)); h.appendChild(el('span','tvs',isWorld(code)?code.split('.')[0]:code));
+   var q=W.quotes[code]; if(q&&q.price!=null){ var sp=el('span','tvs'); sp.style.color=q.pct>0?'var(--up)':q.pct<0?'var(--down)':''; sp.textContent=fmtPx(q,q.price)+' '+(q.pct>0?'+':'')+(q.pct==null?'':q.pct.toFixed(2)+'%'); h.appendChild(sp); }
+   var a=el('a','tva','네이버 증권 ↗'); a.href=isWorld(code)?'https://m.stock.naver.com/worldstock/stock/'+code+'/total':'https://m.stock.naver.com/domestic/stock/'+code+'/total'; a.target='_blank'; a.rel='noopener'; h.appendChild(a);
+   var x=el('button','tvx','×'); x.type='button'; x.addEventListener('click',function(){m.remove()}); h.appendChild(x); c.appendChild(h);
+   var sch=el('div','sch'); var bar=el('div','cbar'); bar.appendChild(el('span','llab','기간 ')); var sw=el('span','lsw');
+   [['minute','분'],['day','일'],['week','주'],['month','월']].forEach(function(o){ var b=el('button',o[0]===CH.tf?'on':'',o[1]); b.type='button'; if(o[0]==='minute'&&isWorld(code)){ b.disabled=true; b.style.opacity='.4'; }
+     b.addEventListener('click',function(){ [].forEach.call(sw.children,function(z){z.classList.remove('on')}); b.classList.add('on'); CH.tf=o[0]; loadChart(); }); sw.appendChild(b); });
+   bar.appendChild(sw); var info=el('span','cinfo'); info.id='ch-info'; bar.appendChild(info); sch.appendChild(bar);
+   var body=el('div'); body.id='ch-body'; body.style.position='relative'; sch.appendChild(body); sch.appendChild(el('div','lg','MA5 노랑 · MA20 시안 · MA60 보라 · 아래 막대 = 거래량')); c.appendChild(sch);
+   c.appendChild(el('div','tvn','네이버 증권 차트 데이터 · 빨강 상승 / 파랑 하락')); m.appendChild(c);
+   m.addEventListener('click',function(ev){ if(ev.target===m) m.remove(); }); document.body.appendChild(m); loadChart();
+ }
+ function loadChart(){ var body=document.getElementById('ch-body'); if(!body) return; body.innerHTML=''; body.appendChild(el('div','cmsg','불러오는 중…'));
+   var code=CH.code, tf=CH.tf; MEMBER.get('chart?code='+encodeURIComponent(code)+'&tf='+tf).then(function(d){ if(CH.code!==code||CH.tf!==tf) return; CH.data=d.items||[]; drawCandles(); }).catch(function(e){ body.innerHTML=''; body.appendChild(el('div','cmsg','차트를 못 받았습니다 · '+e.message)); }); }
+ function drawCandles(){
+   var body=document.getElementById('ch-body'); if(!body) return; body.innerHTML=''; var rows=CH.data; if(!rows||!rows.length){ body.appendChild(el('div','cmsg','데이터 없음')); return; }
+   var tf=CH.tf, maxN=tf==='minute'?420:tf==='day'?160:tf==='week'?160:120; if(rows.length>maxN) rows=rows.slice(rows.length-maxN);
+   var W0=Math.max(320,Math.floor(body.getBoundingClientRect().width)||900), H=W0<600?300:380, mg={t:10,r:64,b:22,l:6}, vh=Math.round(H*0.18);
+   var ph=H-mg.t-mg.b-vh-6, pw=W0-mg.l-mg.r, n=rows.length;
+   var lo=Infinity,hi=-Infinity,vmax=0; rows.forEach(function(r){ var l=r.l!=null?r.l:r.c, h=r.h!=null?r.h:r.c; if(l<lo) lo=l; if(h>hi) hi=h; if(r.v>vmax) vmax=r.v; }); if(hi===lo) hi=lo*1.01||1; var pad=(hi-lo)*0.05; lo-=pad; hi+=pad;
+   function X(i){ return mg.l+(i+0.5)*pw/n; } function Y(v){ return mg.t+(1-(v-lo)/(hi-lo))*ph; } function VY(v){ return mg.t+ph+6+vh-(vmax?v/vmax*vh:0); }
+   var ns='http://www.w3.org/2000/svg'; function sv(t,a){ var e=document.createElementNS(ns,t); for(var k in a) e.setAttribute(k,a[k]); return e; }
+   var svg=sv('svg',{viewBox:'0 0 '+W0+' '+H,width:W0,height:H});
+   var step=Math.pow(10,Math.floor(Math.log10((hi-lo)/5))); var st=[1,2,2.5,5,10].map(function(m){return m*step}).filter(function(v){return (hi-lo)/v<=7})[0]||step; var dec=st<1?2:0;
+   for(var v=Math.ceil(lo/st)*st; v<=hi; v+=st){ svg.appendChild(sv('line',{x1:mg.l,x2:W0-mg.r,y1:Y(v),y2:Y(v),'class':'grid'})); var t=sv('text',{x:W0-mg.r+6,y:Y(v)+3.5,'class':'tk'}); t.textContent=n0(v,dec); svg.appendChild(t); }
+   var lab=function(r){ var s=r.t||''; return tf==='minute'?s.slice(8,10)+':'+s.slice(10,12):tf==='month'?s.slice(2,4)+'.'+s.slice(4,6):s.slice(2,4)+'.'+s.slice(4,6)+'.'+s.slice(6,8); };
+   var nx=Math.max(2,Math.floor(pw/80)); for(var i=0;i<n;i+=Math.max(1,Math.round(n/nx))){ var tx=sv('text',{x:X(i),y:H-6,'text-anchor':'middle','class':'tk'}); tx.textContent=lab(rows[i]); svg.appendChild(tx); }
+   var cw=Math.max(1,Math.min(14,pw/n*0.7)), line=tf==='minute'||rows.some(function(r){return r.o==null});
+   rows.forEach(function(r,i){ var x=X(i), up=r.c>=(r.o!=null?r.o:(i?rows[i-1].c:r.c)); if(r.v!=null) svg.appendChild(sv('rect',{x:x-cw/2,y:VY(r.v),width:cw,height:Math.max(0,mg.t+ph+6+vh-VY(r.v)),'class':up?'vu':'vd'}));
+     if(line) return; svg.appendChild(sv('line',{x1:x,x2:x,y1:Y(r.h),y2:Y(r.l),'class':up?'cu':'cd'})); var y0=Y(Math.max(r.o,r.c)), y1=Y(Math.min(r.o,r.c)); svg.appendChild(sv('rect',{x:x-cw/2,y:y0,width:cw,height:Math.max(1,y1-y0),'class':up?'cu':'cd'})); });
+   if(line){ svg.appendChild(sv('path',{d:rows.map(function(r,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(r.c).toFixed(1)}).join(' '),fill:'none',stroke:'var(--accent)','stroke-width':1.6})); }
+   [[5,'ma5'],[20,'ma20'],[60,'ma60']].forEach(function(m){ if(n<m[0]||line) return; var d='', sum=0; for(var i=0;i<n;i++){ sum+=rows[i].c; if(i>=m[0]) sum-=rows[i-m[0]].c; if(i>=m[0]-1){ var y=Y(sum/m[0]); d+=(d?'L':'M')+X(i).toFixed(1)+' '+y.toFixed(1); } } svg.appendChild(sv('path',{d:d,'class':m[1]})); });
+   var xh=sv('line',{x1:0,x2:0,y1:mg.t,y2:mg.t+ph+6+vh,'class':'xh',visibility:'hidden'}); svg.appendChild(xh); var yh=sv('line',{x1:mg.l,x2:W0-mg.r,y1:0,y2:0,'class':'xh',visibility:'hidden'}); svg.appendChild(yh);
+   var hit=sv('rect',{x:mg.l,y:mg.t,width:pw,height:ph+6+vh,fill:'transparent'}); svg.appendChild(hit); body.appendChild(svg); var tip=el('div','ctip'); body.appendChild(tip);
+   var q=W.quotes[CH.code]; var last=rows[n-1]; var info=document.getElementById('ch-info'); if(info) info.textContent=lab(rows[0])+' ~ '+lab(last)+' · '+n+(tf==='minute'?'분':'봉')+(line?'':' · 종가 '+n0(last.c,dec));
+   function at(ev){ var rc=svg.getBoundingClientRect(), x=(ev.clientX-rc.left)*W0/rc.width, y=(ev.clientY-rc.top)*H/rc.height, i=Math.max(0,Math.min(n-1,Math.floor((x-mg.l)/pw*n))); var r=rows[i], cx=X(i);
+     xh.setAttribute('x1',cx); xh.setAttribute('x2',cx); xh.setAttribute('visibility','visible'); yh.setAttribute('y1',y); yh.setAttribute('y2',y); yh.setAttribute('visibility','visible');
+     tip.innerHTML=''; tip.appendChild(el('b',null,lab(r))); var chg=i?r.c-rows[i-1].c:0, pc=i&&rows[i-1].c?chg/rows[i-1].c*100:0;
+     [['시가',r.o],['고가',r.h],['저가',r.l],[line?'현재가':'종가',r.c]].forEach(function(k){ if(k[1]==null) return; var d=el('div'); d.textContent=k[0]+' '+n0(k[1],dec); tip.appendChild(d); });
+     var dd=el('div'); dd.style.color=chg>0?'var(--up)':chg<0?'var(--down)':''; dd.textContent=(chg>0?'▲':chg<0?'▼':'')+n0(Math.abs(chg),dec)+' ('+(pc>0?'+':'')+pc.toFixed(2)+'%)'; tip.appendChild(dd); if(r.v!=null){ var dv=el('div'); dv.textContent='거래량 '+n0(r.v); tip.appendChild(dv); }
+     tip.style.display='block'; var left=cx*rc.width/W0+14; if(left+tip.offsetWidth>rc.width-4) left=cx*rc.width/W0-tip.offsetWidth-14; tip.style.left=Math.max(4,left)+'px'; tip.style.top=Math.max(4,y*rc.height/H-40)+'px'; }
+   hit.addEventListener('pointermove',at); hit.addEventListener('pointerdown',at); hit.addEventListener('pointerleave',function(){ xh.setAttribute('visibility','hidden'); yh.setAttribute('visibility','hidden'); tip.style.display='none'; });
+ }
+ document.addEventListener('keydown',function(ev){ if(ev.key==='Escape'){ var t=document.getElementById('tvm'); if(t) t.remove(); } });
  function move(L,i,d){ var codes=L.items.map(function(x){return x.code}); var j=i+d; if(j<0||j>=codes.length) return; var tmp=codes[i]; codes[i]=codes[j]; codes[j]=tmp;
    MEMBER.get('watch/item/move',{method:'POST',body:{id:L.id,codes:codes}}).then(function(dd){ W.lists=dd.lists; render(); }).catch(function(e){alert(e.message)}); }
  function paintQuotes(){
