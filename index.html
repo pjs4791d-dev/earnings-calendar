@@ -1014,7 +1014,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-14 15:45 · 평일 매일 자동 갱신</p>
+   생성 2026-09-14 15:57 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2540,7 +2540,7 @@ window.HOME=(function(){
    [['minute','1분'],['minute5','5분'],['minute10','10분'],['minute30','30분'],['minute60','60분'],['day','일'],['week','주'],['month','월']].forEach(function(o){ var b=el('button',o[0]===CH.tf?'on':'',o[1]); b.type='button'; if(o[0].indexOf('minute')===0&&isWorld(code)){ b.disabled=true; b.style.opacity='.4'; }
      b.addEventListener('click',function(){ [].forEach.call(sw.children,function(z){z.classList.remove('on')}); b.classList.add('on'); CH.tf=o[0]; loadChart(); }); sw.appendChild(b); });
    bar.appendChild(sw); var info=el('span','cinfo'); info.id='ch-info'; bar.appendChild(info); sch.appendChild(bar);
-   var body=el('div'); body.id='ch-body'; body.style.position='relative'; sch.appendChild(body); sch.appendChild(el('div','lg','끌기 이동 · 휠 확대/축소 · 가격축·시간축 끌기 = 배율 · 더블클릭 초기화 · 아래 막대 = 거래량')); c.appendChild(sch);
+   var body=el('div'); body.id='ch-body'; body.style.position='relative'; sch.appendChild(body); sch.appendChild(el('div','lg','끌기 이동 · 휠 확대/축소 · 가격축·시간축 끌기 = 배율 · 더블클릭 초기화 · 이평선 5·10·20·60·120·200 · 아래 막대 = 거래량')); c.appendChild(sch);
    c.appendChild(el('div','tvn','네이버 증권 차트 데이터 · 빨강 상승 / 파랑 하락')); m.appendChild(c);
    m.addEventListener('click',function(ev){ if(ev.target===m) m.remove(); }); document.body.appendChild(m); loadChart();
  }
@@ -2566,7 +2566,8 @@ window.HOME=(function(){
    function X(i){ return pw-(st.right-i-0.5)*st.barW; }                          // i 번째 봉 중심 x
    function I(x){ return st.right-(pw-x)/st.barW-0.5; }
    function visRange(){ var i0=Math.max(0,Math.floor(I(0))), i1=Math.min(total-1,Math.ceil(I(pw))); return [i0,i1]; }
-   var ma={}; [5,20,60].forEach(function(m){ var a=new Array(total), sum=0; for(var i=0;i<total;i++){ sum+=all[i].c; if(i>=m) sum-=all[i-m].c; if(i>=m-1) a[i]=sum/m; } ma[m]=a; });
+   var MAS=[[5,'#eab308'],[10,'#f97316'],[20,'#22d3ee'],[60,'#a78bfa'],[120,'#4ade80'],[200,'#f472b6']];
+   var ma={}; MAS.forEach(function(mm){ var m=mm[0], a=new Array(total), sum=0; for(var i=0;i<total;i++){ sum+=all[i].c; if(i>=m) sum-=all[i-m].c; if(i>=m-1) a[i]=sum/m; } ma[m]=a; });
    function draw(){
      clamp(); var vr=visRange(), i0=vr[0], i1=vr[1];
      if(st.auto){ var lo=Infinity,hi=-Infinity; for(var i=i0;i<=i1;i++){ var r=all[i]; var l=r.l!=null?r.l:r.c, h=r.h!=null?r.h:r.c; if(l<lo) lo=l; if(h>hi) hi=h; } if(!isFinite(lo)){ lo=all[total-1].c*0.9; hi=all[total-1].c*1.1; } if(hi===lo){ hi=lo*1.01||1; lo=lo*0.99; } var pad=(hi-lo)*0.06; st.yLo=lo-pad; st.yHi=hi+pad; }
@@ -2593,7 +2594,7 @@ window.HOME=(function(){
        g.beginPath(); g.moveTo(Math.round(x)+0.5,Y(r.h)); g.lineTo(Math.round(x)+0.5,Y(r.l)); g.stroke();
        var y0=Y(Math.max(r.o,r.c)), y1=Y(Math.min(r.o,r.c)); if(cw<=2){ g.fillRect(Math.round(x),y0,1,Math.max(1,y1-y0)); } else g.fillRect(x-cw/2,y0,cw,Math.max(1,y1-y0)); }
      // 이동평균
-     [[5,'#eab308'],[20,'#22d3ee'],[60,'#a78bfa']].forEach(function(m){ var a=ma[m[0]]; g.strokeStyle=m[1]; g.lineWidth=1; g.beginPath(); var on=false; for(var i=Math.max(0,i0-1);i<=Math.min(total-1,i1+1);i++){ if(a[i]==null) continue; var x=X(i), y=Y(a[i]); if(!on){ g.moveTo(x,y); on=true; } else g.lineTo(x,y); } g.stroke(); });
+     MAS.forEach(function(m){ var a=ma[m[0]]; g.strokeStyle=m[1]; g.lineWidth=m[0]>=120?1.3:1; g.beginPath(); var on=false; for(var i=Math.max(0,i0-1);i<=Math.min(total-1,i1+1);i++){ if(a[i]==null) continue; var x=X(i), y=Y(a[i]); if(!on){ g.moveTo(x,y); on=true; } else g.lineTo(x,y); } g.stroke(); });
      // 마지막 가격 점선 + 라벨
      var last=all[total-1], ly=Y(last.c); if(ly>=top&&ly<=top+ph){ var prevC=total>1?all[total-2].c:last.c; var col=last.c>=prevC?C.up:C.dn; g.setLineDash([3,3]); g.strokeStyle=col; g.beginPath(); g.moveTo(0,Math.round(ly)+0.5); g.lineTo(pw,Math.round(ly)+0.5); g.stroke(); g.setLineDash([]);
        g.fillStyle=col; g.fillRect(pw+1,ly-8,AX-2,16); g.fillStyle='#fff'; g.textAlign='left'; g.fillText(n0(last.c,dec),pw+6,ly); }
@@ -2603,7 +2604,7 @@ window.HOME=(function(){
        var tl=lab(r,isMin); g.font='10.5px JetBrains Mono, Menlo, monospace'; var tw=g.measureText(tl).width+12; g.fillStyle=C.ink; g.fillRect(Math.min(pw-tw,Math.max(0,x-tw/2)),H-TX+2,tw,TX-4); g.fillStyle=C.panel; g.textAlign='center'; g.fillText(tl,Math.min(pw-tw/2,Math.max(tw/2,x)),H-TX/2); }
      // 좌상단 범례(트레이딩뷰식): 호버 봉 or 마지막 봉
      var r=all[st.hover>=0&&st.hover<total?st.hover:total-1], pi=(st.hover>=0?st.hover:total-1)-1, pc=pi>=0?all[pi].c:r.o, chg=r.c-pc, pct=pc?chg/pc*100:0, col=chg>0?C.up:chg<0?C.dn:C.ink;
-     lgd.innerHTML='<b>'+lab(r,isMin)+'</b> <span>시 <i>'+n0(r.o,dec)+'</i></span><span>고 <i>'+n0(r.h,dec)+'</i></span><span>저 <i>'+n0(r.l,dec)+'</i></span><span>종 <i style="color:'+col+'">'+n0(r.c,dec)+'</i></span><span style="color:'+col+'">'+(chg>0?'+':'')+n0(chg,dec)+' ('+(pct>0?'+':'')+pct.toFixed(2)+'%)</span>'+(r.v!=null?'<span>거래량 <i>'+n0(r.v)+'</i></span>':'')+'<em>MA5 <i style="color:#eab308">'+(ma[5][st.hover>=0?st.hover:total-1]!=null?n0(ma[5][st.hover>=0?st.hover:total-1],dec):'-')+'</i> MA20 <i style="color:#22d3ee">'+(ma[20][st.hover>=0?st.hover:total-1]!=null?n0(ma[20][st.hover>=0?st.hover:total-1],dec):'-')+'</i> MA60 <i style="color:#a78bfa">'+(ma[60][st.hover>=0?st.hover:total-1]!=null?n0(ma[60][st.hover>=0?st.hover:total-1],dec):'-')+'</i></em>';
+     lgd.innerHTML='<b>'+lab(r,isMin)+'</b> <span>시 <i>'+n0(r.o,dec)+'</i></span><span>고 <i>'+n0(r.h,dec)+'</i></span><span>저 <i>'+n0(r.l,dec)+'</i></span><span>종 <i style="color:'+col+'">'+n0(r.c,dec)+'</i></span><span style="color:'+col+'">'+(chg>0?'+':'')+n0(chg,dec)+' ('+(pct>0?'+':'')+pct.toFixed(2)+'%)</span>'+(r.v!=null?'<span>거래량 <i>'+n0(r.v)+'</i></span>':'')+'<em>'+MAS.map(function(mm){ var hv=ma[mm[0]][st.hover>=0?st.hover:total-1]; return 'MA'+mm[0]+' <i style="color:'+mm[1]+'">'+(hv!=null?n0(hv,dec):'-')+'</i>'; }).join(' ')+'</em>';
      var info=document.getElementById('ch-info'); if(info) info.textContent=lab(all[i0],isMin)+' ~ '+lab(all[i1],isMin)+' · '+(i1-i0+1)+'/'+total+'봉';
    }
    var raf=null; function req(){ if(raf) return; raf=requestAnimationFrame(function(){ raf=null; draw(); }); }
