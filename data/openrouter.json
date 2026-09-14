@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-14T10:10+09:00",
+ "checked": "2026-09-14T10:40+09:00",
  "first_seen": {
   "claude-fable-5.1": {
    "2026-09-11": "2026-09-12T09:10+09:00",
@@ -187,22 +187,22 @@
      "total": 48658356602
     },
     "2026-09-13": {
-     "cached": 43437373422,
-     "completion": 512637969,
-     "prompt": 49047419764,
+     "cached": 48586740154,
+     "completion": 561631297,
+     "prompt": 55351460608,
      "rank": 36,
-     "reasoning": 238804913,
-     "requests": 409792,
-     "spend": 92023.22,
-     "spend_eff": 88631.92,
-     "total": 49560057733
+     "reasoning": 261032696,
+     "requests": 461541,
+     "spend": 107306.96,
+     "spend_eff": 97257.93,
+     "total": 55913091905
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-14",
-    "cache_rate": 0.908,
-    "in": 1.2853,
+    "cache_rate": 0.912,
+    "in": 1.2566,
     "out": 50.0
    },
    "name": "Claude Fable 5.1",
@@ -237,14 +237,14 @@
      "total": 196610844981
     },
     "2026-08-14": {
-     "cached": 126988068028,
-     "completion": 2864876584,
-     "prompt": 166268995369,
-     "reasoning": 1479380967,
-     "requests": 3106676,
-     "spend": 132506.7,
-     "spend_eff": 127413.98,
-     "total": 169133871953
+     "cached": 213898,
+     "completion": 8513667,
+     "prompt": 59154055,
+     "reasoning": 0,
+     "requests": 5594,
+     "spend": 101.53,
+     "spend_eff": 101.53,
+     "total": 67667722
     },
     "2026-08-15": {
      "cached": 80638803210,
@@ -540,23 +540,23 @@
      "total": 129347240014
     },
     "2026-09-13": {
-     "cached": 94149996718,
-     "completion": 1746168737,
-     "prompt": 114600229048,
+     "cached": 107570267204,
+     "completion": 1973014288,
+     "prompt": 130773204511,
      "rank": 21,
-     "reasoning": 823143209,
-     "requests": 2330282,
-     "spend": 77192.13,
-     "spend_eff": 99560.83,
-     "total": 116346397785
+     "reasoning": 936701099,
+     "requests": 2634389,
+     "spend": 87650.05,
+     "spend_eff": 91043.67,
+     "total": 132746218799
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-14",
-    "cache_rate": 0.827,
-    "in": 0.5526,
-    "out": 10.0097
+    "cache_rate": 0.831,
+    "in": 0.5452,
+    "out": 10.0081
    },
    "name": "Claude Sonnet 5",
    "order": 4,
@@ -893,23 +893,23 @@
      "total": 1344101555097
     },
     "2026-09-13": {
-     "cached": 1024183481536,
-     "completion": 51652462627,
-     "prompt": 1236925876932,
+     "cached": 1150537038346,
+     "completion": 55813543925,
+     "prompt": 1385993630772,
      "rank": 2,
-     "reasoning": 34888757837,
-     "requests": 59040549,
-     "spend": 20840.92,
-     "spend_eff": 48964.19,
-     "total": 1288578339559
+     "reasoning": 37262442532,
+     "requests": 65829791,
+     "spend": 34635.89,
+     "spend_eff": 58896.41,
+     "total": 1441807174697
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-14",
-    "cache_rate": 0.82,
-    "in": 0.0313,
-    "out": 0.2512
+    "cache_rate": 0.808,
+    "in": 0.0324,
+    "out": 0.2506
    },
    "name": "DeepSeek V4 Flash",
    "order": 6,
@@ -1036,23 +1036,23 @@
      "total": 227954377360
     },
     "2026-09-13": {
-     "cached": 131576747321,
-     "completion": 4416473961,
-     "prompt": 176855310801,
+     "cached": 145826943011,
+     "completion": 5027331855,
+     "prompt": 195451209181,
      "rank": 13,
-     "reasoning": 2326012543,
-     "requests": 5515817,
-     "spend": 60172.3,
-     "spend_eff": 59824.18,
-     "total": 181271784762
+     "reasoning": 2727763126,
+     "requests": 6131957,
+     "spend": 66791.06,
+     "spend_eff": 64312.61,
+     "total": 200478541036
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-14",
-    "cache_rate": 0.801,
-    "in": 0.2296,
-    "out": 3.7567
+    "cache_rate": 0.799,
+    "in": 0.2314,
+    "out": 3.8159
    },
    "name": "Gemini 3.8 Flash",
    "order": 5,
@@ -1249,23 +1249,23 @@
      "total": 1343349173039
     },
     "2026-09-13": {
-     "cached": 978476357800,
-     "completion": 27504658084,
-     "prompt": 1213210620007,
+     "cached": 1113285848679,
+     "completion": 32020111913,
+     "prompt": 1376281997878,
      "rank": 3,
-     "reasoning": 14616637932,
-     "requests": 30000755,
-     "spend": 78297.3,
-     "spend_eff": 66664.12,
-     "total": 1240715278091
+     "reasoning": 17285956609,
+     "requests": 33393813,
+     "spend": 88838.6,
+     "spend_eff": 77605.69,
+     "total": 1408302109791
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-14",
-    "cache_rate": 0.811,
-    "in": 0.0454,
-    "out": 0.5036
+    "cache_rate": 0.817,
+    "in": 0.0447,
+    "out": 0.5029
    },
    "name": "GLM 5.3 Flash",
    "order": 7,
@@ -1299,14 +1299,14 @@
      "total": 789864598141
     },
     "2026-08-14": {
-     "cached": 601370644800,
-     "completion": 12500551230,
-     "prompt": 733360536441,
-     "reasoning": 5548879415,
-     "requests": 28406099,
-     "spend": 53420.62,
-     "spend_eff": 65489.5,
-     "total": 745861087671
+     "cached": 4092809,
+     "completion": 5033523,
+     "prompt": 27775666,
+     "reasoning": 0,
+     "requests": 10512,
+     "spend": 5.43,
+     "spend_eff": 5.43,
+     "total": 32809189
     },
     "2026-08-15": {
      "cached": 546389246472,
@@ -1602,23 +1602,23 @@
      "total": 3880324178127
     },
     "2026-09-13": {
-     "cached": 3235628517118,
-     "completion": 29567258611,
-     "prompt": 3428213135997,
+     "cached": 3676291822561,
+     "completion": 33748710051,
+     "prompt": 3895428238403,
      "rank": 1,
-     "reasoning": 14418369499,
-     "requests": 63611249,
-     "spend": 138574.91,
-     "spend_eff": 159524.01,
-     "total": 3457780394608
+     "reasoning": 16370200777,
+     "requests": 72874648,
+     "spend": 157716.28,
+     "spend_eff": 183883.35,
+     "total": 3929176948454
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-14",
-    "cache_rate": 0.939,
-    "in": 0.0362,
-    "out": 1.2277
+    "cache_rate": 0.938,
+    "in": 0.0366,
+    "out": 1.2275
    },
    "name": "GPT-5.6 Luna",
    "order": 2,
@@ -1725,23 +1725,23 @@
      "total": 82933023956
     },
     "2026-09-13": {
-     "cached": 48544418516,
-     "completion": 582415923,
-     "prompt": 54428795371,
+     "cached": 55319895421,
+     "completion": 656880082,
+     "prompt": 61928887733,
      "rank": 31,
-     "reasoning": 245582039,
-     "requests": 681113,
-     "spend": 136269.86,
-     "spend_eff": 167941.29,
-     "total": 55011211294
+     "reasoning": 278533817,
+     "requests": 758338,
+     "spend": 154014.7,
+     "spend_eff": 163989.54,
+     "total": 62585767815
     }
    },
    "default_on": true,
    "effective": {
     "asof": "2026-09-14",
-    "cache_rate": 0.898,
-    "in": 2.1501,
-    "out": 44.2752
+    "cache_rate": 0.91,
+    "in": 2.1718,
+    "out": 45.1378
    },
    "name": "GPT-6 Astra",
    "order": 0,
@@ -1862,9 +1862,9 @@
    "default_on": true,
    "effective": {
     "asof": "2026-09-14",
-    "cache_rate": 0.684,
-    "in": 6.1717,
-    "out": 53.2771
+    "cache_rate": 0.691,
+    "in": 5.9947,
+    "out": 53.3411
    },
    "name": "GPT-6 Astra Pro",
    "order": 1,
@@ -1911,6 +1911,12 @@
     "date": "2026-09-14",
     "in": 0.065,
     "out": 0.18
+   },
+   {
+    "cache": 0.012,
+    "date": "2026-09-14",
+    "in": 0.06,
+    "out": 0.12
    }
   ],
   "gemini-3.8-flash": [
@@ -1992,6 +1998,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-14T10:10+09:00",
+ "updated": "2026-09-14T10:40+09:00",
  "url": "https://openrouter.ai/rankings"
 }
