@@ -923,7 +923,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-14 09:01 · 평일 매일 자동 갱신</p>
+   생성 2026-09-14 11:42 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2038,6 +2038,7 @@ window.HOME=(function(){
  }
  document.addEventListener('member-change',function(){ F.kw=null; F.kwAt=0; F.kwd={}; F.opt={}; if(F.built){ syncMarket(); drawFlow(); drawDaily(); loadMember(); } });
  function syncMarket(){
+   F.kwdEmpty=false;
    if(F.ex==='nxt'&&F.mkt==='03') F.mkt='01';
    if(OPTM[F.mkt]&&!memberOn()) F.mkt='01';
    F.market = (F.mkt==='03'||OPTM[F.mkt]) ? F.mkt : (F.ex==='krx' ? F.mkt : (F.ex==='nxt' ? 'nxt' : 'all'));
@@ -2071,6 +2072,7 @@ window.HOME=(function(){
    box.appendChild(el('div','fgroups')).id='fl-cards';
    var lg=el('div','lctl'); lg.id='fl-legend'; box.appendChild(lg);
    var ch=el('div','fchart'); ch.id='fl-chart'; ch.appendChild(el('div','ltip')); box.appendChild(ch);
+   box.appendChild(el('div','fgroups')).id='fl-dcards';
    var dsec=el('div'); dsec.id='fl-dsec'; box.appendChild(dsec); box=dsec;
    var h1=el('h3','', '일별 수급'); h1.appendChild(el('span',null,'순매수 · 기간을 골라 보세요 (2010년~)')); box.appendChild(h1);
    var rg=el('div','rng'); rg.appendChild(el('span','llab','기간'));
@@ -2110,10 +2112,12 @@ window.HOME=(function(){
  function drawFlow(){
    if(!F.today) return;
    var cards=document.getElementById('fl-cards'); cards.innerHTML=''; F.chartM=null;
+   var dcards=document.getElementById('fl-dcards'); if(dcards) dcards.innerHTML='';
    if(isOpt()){ drawOpt(cards); return; }
    var kwDone=false;
-   if(isDailyOnly()&&memberOn()&&kwToday()){ if(drawKw(cards)) return; kwDone=true; }
+   if(isDailyOnly()&&memberOn()&&kwToday()){ if(drawKw(cards,dcards)) return; kwDone=true; }
    if(isDailyOnly()&&!kwDone){
+     var cards0=cards; if(F.market==='all'&&dcards) cards=dcards;          // 통합: 일별 확정 카드는 장중 차트 아래(일별 수급 위)로
      var rows=dailyRows(F.market, (F.daily&&F.daily.markets['01'].rows)||[], (F.daily&&F.daily.markets['02'].rows)||[]);
      var last=rows[0], dlab=last?last.t.slice(5).replace('-','/'):'', prov=last&&last.cal===false;
      var gl=el('div','grp',F.market==='nxt'?'NXT · '+mkName()+' 종목 일별'+(prov?' (잠정)':' (추정)'):'통합 '+mkName()+' 일별 · KRX 확정 + NXT 추정');
@@ -2123,6 +2127,7 @@ window.HOME=(function(){
      MAIN.forEach(function(k){ var v=last?last[k]:null; var c=el('div','fc'); c.style.setProperty('--sc',COLOR[k]); c.appendChild(el('div','fn',k==='기관계'?'기관 합계':k));
        c.appendChild(el('div','fv'+(v>0?' pu':v<0?' pd':''),v==null?'-':fmtEok(v))); c.appendChild(el('div','fm','억원 · 순매수 · '+dlab));
        if(F.market==='all'&&last&&last.krx) c.appendChild(el('div','fm fx','KRX '+fmtEok(last.krx[k])+' · NXT '+fmtEok(last.nxt[k])+(prov?' 잠정':''))); grid1.appendChild(c); });
+     cards=cards0;
      if(F.market==='nxt'){
        var lg0=document.getElementById('fl-legend'); lg0.innerHTML='';
        var ch0=document.getElementById('fl-chart'); var old0=ch0.querySelector('svg'); if(old0) old0.remove(); var msg0=ch0.querySelector('.lmsg'); if(msg0) msg0.remove();
@@ -2147,13 +2152,13 @@ window.HOME=(function(){
  function legendFor(keys,mOverride){ var lg=document.getElementById('fl-legend'); lg.innerHTML=''; lg.appendChild(el('span','llab','선 '));
    keys.forEach(function(k){ var b=el('button','lgd'); b.type='button'; b.setAttribute('aria-pressed',F.on[k]?'true':'false'); b.style.setProperty('--sc',COLOR[k]||S1); b.appendChild(el('span','lk')); b.appendChild(document.createTextNode(k==='기관계'?'기관':k==='투신사모'?'투신(사모)':k));
      b.addEventListener('click',function(){ F.on[k]=!F.on[k]; b.setAttribute('aria-pressed',F.on[k]?'true':'false'); drawChart(mOverride); }); lg.appendChild(b); }); }
- function drawKw(cards){                                   // 회원: 키움 통합/NXT 시장별 정확치
+ function drawKw(cards,dcards){                            // 회원: 키움 통합/NXT 시장별 정확치
    var row=kwToday(), d=F.kw, lab=(F.ex==='all'?'통합 ':F.ex==='nxt'?'NXT ':'KRX ')+mkName();
    var dt=d.date?d.date.slice(4,6).replace(/^0/,'')+'/'+d.date.slice(6,8).replace(/^0/,''):'';
-   var gl=el('div','grp',lab+' · 증권사 집계 정확치'); gl.appendChild(el('span','mtag','회원')); gl.appendChild(el('small',null,dt+' · '+(d.updated||'')+' 수집 · 억원 · 12주체'+(d.open?' · 장중 60초 갱신':' · 장 마감'))); cards.appendChild(gl);
-   var grid=el('div','fcards'); cards.appendChild(grid);
+   var ser=kwSeries(); var target=(ser.length<2&&F.market==='all'&&dcards)?dcards:cards;     // 장중 시계열이 없으면 하루치 카드는 일별 수급 위로
+   var gl=el('div','grp',lab+' · 증권사 집계 정확치'); gl.appendChild(el('span','mtag','회원')); gl.appendChild(el('small',null,dt+' · '+(d.updated||'')+' 수집 · 억원 · 12주체'+(d.open?' · 장중 60초 갱신':' · 장 마감'))); target.appendChild(gl);
+   var grid=el('div','fcards'); target.appendChild(grid);
    cardsRow(grid,MAIN.concat(['금융투자','투신사모','연기금','기타법인']),row,'억원','억원 · 순매수 · '+dt);
-   var ser=kwSeries();
    if(ser.length>=2){ var m={unit:'억원',series:ser}; F.chartM=m; legendFor(MAIN,m); var gl2=el('div','grp',lab+' 장중 누적 · 증권사 집계'); gl2.appendChild(el('small',null,ser[ser.length-1].t+' 기준')); cards.appendChild(gl2); drawChart(m); return true; }
    if(F.ex==='nxt'){ legendFor([]); var ch=document.getElementById('fl-chart'); var old=ch.querySelector('svg'); if(old) old.remove(); var msg=ch.querySelector('.lmsg'); if(msg) msg.remove();
      ch.insertBefore(el('div','lmsg','NXT 장중 누적은 증권사 집계가 장중에 갱신되면 여기에 그려집니다(9/14 확인). 지금은 위 카드의 하루 확정치만 있습니다.'),ch.querySelector('.ltip')); return true; }
@@ -2213,12 +2218,13 @@ window.HOME=(function(){
  }
  function rowsFor(cb){
    if(isOpt()){ cb([], F.daily.program||[]); return; }
-   if(isDailyOnly()&&memberOn()){                          // 회원: 키움 일별(코스피/코스닥 × KRX/NXT/통합, 12주체)
+   if(isDailyOnly()&&memberOn()&&!F.kwdEmpty){             // 회원: 키움 일별(코스피/코스닥 × KRX/NXT/통합, 12주체) — 비어 있으면 추정치로 폴백
      var key=kwMrkt()+'|'+kwStex(); F.kwd=F.kwd||{}; var c=F.kwd[key];
-     if(c&&Date.now()-c.at<600000){ cb(c.rows, F.daily.program||[]); return; }
+     if(c&&Date.now()-c.at<600000){ if(c.rows.length){ cb(c.rows, F.daily.program||[]); return; } F.kwdEmpty=true; rowsFor(cb); return; }
      if(F.dloading) return; F.dloading=true;
-     MEMBER.get('kiwoom_daily?mrkt='+kwMrkt()+'&stex='+kwStex()+'&days=400').then(function(d){ F.dloading=false; var rows=(d.rows||[]).map(function(r){ var o=kwRow(r); o.t=r.date; o.kw=true; return o; }); F.kwd[key]={rows:rows,at:Date.now()}; cb(rows, F.daily.program||[]); })
-       .catch(function(){ F.dloading=false; cb([], F.daily.program||[]); });
+     MEMBER.get('kiwoom_daily?mrkt='+kwMrkt()+'&stex='+kwStex()+'&days=400').then(function(d){ F.dloading=false; var rows=(d.rows||[]).map(function(r){ var o=kwRow(r); o.t=r.date; o.kw=true; return o; }); F.kwd[key]={rows:rows,at:Date.now()};
+         if(!rows.length){ F.kwdEmpty=true; rowsFor(cb); return; } cb(rows, F.daily.program||[]); })
+       .catch(function(){ F.dloading=false; F.kwdEmpty=true; rowsFor(cb); });
      return;
    }
    if(isDailyOnly()){
@@ -2249,11 +2255,12 @@ window.HOME=(function(){
  }
  function drawDaily(){
    var d=F.daily; if(!d) return;
-   var mem=isDailyOnly()&&memberOn();
+   var mem=isDailyOnly()&&memberOn()&&!F.kwdEmpty;
    var mk=isOpt()?{name:OPTN[F.mkt],unit:'계약'}:isDailyOnly()?{name:(F.market==='nxt'?'NXT ':F.market==='all'?'통합 KRX+NXT ':'')+mkName()+(mem?' · 증권사 집계 정확치':' (NXT 시장별은 추정)'),unit:'억원'}:d.markets[F.market]; if(!mk) return;
    var lim3=isDailyOnly()&&!mem;
    var dsec=document.getElementById('fl-dsec'); if(dsec) dsec.style.display=isOpt()?'none':'';
    rowsFor(function(allRows, progRows){
+     mem=isDailyOnly()&&memberOn()&&!F.kwdEmpty; lim3=isDailyOnly()&&!mem;                       // 폴백이 일어났으면 라벨·열도 추정치 기준으로
      var rows=inRange(allRows), prog=inRange(progRows);
      var box=document.getElementById('fl-daily'); box.innerHTML='';
      var sumBox=document.getElementById('fl-sum'); sumBox.innerHTML='';
