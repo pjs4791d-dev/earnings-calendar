@@ -923,7 +923,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-14 12:24 · 평일 매일 자동 갱신</p>
+   생성 2026-09-14 13:31 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2036,17 +2036,22 @@ window.HOME=(function(){
    if(isDailyOnly()&&(!F.kwAt||Date.now()-F.kwAt>55000)){ MEMBER.get('kiwoom').then(function(d){ F.kw=d; F.kwAt=Date.now(); drawFlow(); }).catch(function(){}); }
    if(isOpt()){ var mk=OPTM[F.mkt]; Promise.all([MEMBER.get('latest?market='+mk),MEMBER.get('series?market='+mk)]).then(function(r){ F.opt=F.opt||{}; F.opt[mk]={latest:r[0],series:r[1],at:Date.now()}; drawFlow(); }).catch(function(){}); }
  }
- document.addEventListener('member-change',function(){ F.kw=null; F.kwAt=0; F.kwd={}; F.opt={}; if(F.built){ syncMarket(); drawFlow(); drawDaily(); loadMember(); } });
+ document.addEventListener('member-change',function(){ F.kw=null; F.kwAt=0; F.kwd={}; F.opt={}; F.exSaved=null; F.ex=memberOn()?'all':'krx'; if(F.built){ syncMarket(); drawFlow(); drawDaily(); loadMember(); } });
  function syncMarket(){
    F.kwdEmpty=false;
-   if(F.ex==='nxt'&&F.mkt==='03') F.mkt='01';
    if(OPTM[F.mkt]&&!memberOn()) F.mkt='01';
-   F.market = (F.mkt==='03'||OPTM[F.mkt]) ? F.mkt : (F.ex==='krx' ? F.mkt : (F.ex==='nxt' ? 'nxt' : 'all'));
-   var bs=F.mkBtns||{}; if(bs['03']){ var dis=F.ex==='nxt'; bs['03'].disabled=dis; bs['03'].style.opacity=dis?'.4':''; bs['03'].title=dis?'NXT는 현물(주식)만 거래합니다. 선물은 KRX 전용.':''; }
+   if(!memberOn()&&F.ex!=='krx') F.ex='krx';                                   // 비회원: 통합·NXT(증권사 집계)는 잠금 → KRX 만
+   var krxOnly=F.mkt==='03'||!!OPTM[F.mkt];                                   // 선물·옵션·주식선물은 KRX 에서만 거래
+   if(krxOnly){ if(F.ex!=='krx'){ F.exSaved=F.ex; F.ex='krx'; } } else if(F.exSaved){ F.ex=F.exSaved; F.exSaved=null; }
+   F.market = krxOnly ? F.mkt : (F.ex==='krx' ? F.mkt : (F.ex==='nxt' ? 'nxt' : 'all'));
+   var bs=F.mkBtns||{};
    Object.keys(OPTM).forEach(function(k){ var b=bs[k]; if(!b) return; var on=memberOn(); b.disabled=false; b.style.opacity=on?'':'.55'; b.classList.toggle('lock',!on);
      b.title=on?'':'회원 전용 — 증권사 API 수급(개인 이용 약관)이라 로그인한 회원에게만 보입니다'; });
    Object.keys(bs).forEach(function(k){ bs[k].classList.toggle('on',k===F.mkt); });
-   var ex=document.getElementById('fl-ex'); if(ex){ var off=!!OPTM[F.mkt]; ex.style.opacity=off?'.3':''; ex.style.pointerEvents=off?'none':''; ex.title=off?'옵션·주식선물은 KRX 전용':''; }
+   var ex=document.getElementById('fl-ex'); if(ex){ var on=memberOn();
+     [].forEach.call(ex.querySelectorAll('button'),function(b){ var v=b.dataset.v; b.classList.toggle('on',v===F.ex); var lock=v!=='krx'&&!on; b.classList.toggle('lock',lock); b.style.opacity=lock?'.55':'';
+       b.title=lock?'회원 전용 — 통합·NXT 시장별 수급은 증권사 집계라 로그인한 회원에게만 보입니다':''; });
+     ex.style.opacity=krxOnly?'.3':''; ex.style.pointerEvents=krxOnly?'none':''; ex.title=krxOnly?(F.mkt==='03'?'선물은 KRX 전용':'옵션·주식선물은 KRX 전용'):''; }
  }
  function splitRows(){                        // NXT 시장별(코스피/코스닥) 일별 추정치 → {t,개인,외국인,기관계,cal}
    var key=F.mkt==='02'?'KSQ':'STK'; return ((F.split&&F.split.rows)||[]).map(function(r){ var v=r[key]||{}; return {t:r.t,'개인':v['개인'],'외국인':v['외국인'],'기관계':v['기관계'],cal:r.cal,exact:r.exact}; });
@@ -2056,19 +2061,19 @@ window.HOME=(function(){
  var COLOR={'개인':S1,'외국인':S2,'기관계':S3,'금융투자':S4,'보험':S5,'투신사모':S6,'은행':S7,'기타금융':S8,'연기금':S3,'기타법인':S1};
  function openFlow(){ visible.flow=true; if(!F.built) buildFlow(); tickFlow(); }
  function closeFlow(){ visible.flow=false; }
- function sw(opts,cur,set){ var w=el('span','lsw'); opts.forEach(function(o){ var b=el('button',String(o[0])===String(cur)?'on':'',o[1]); b.type='button';
+ function sw(opts,cur,set){ var w=el('span','lsw'); opts.forEach(function(o){ var b=el('button',String(o[0])===String(cur)?'on':'',o[1]); b.type='button'; b.dataset.v=String(o[0]);
    b.addEventListener('click',function(){ [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); }); w.appendChild(b); }); return w; }
  function buildFlow(){
    F.built=true; var box=document.getElementById('fl'); box.innerHTML='';
    MAIN.forEach(function(k){F.on[k]=true}); SUB.forEach(function(k){F.on[k]=false}); syncMarket();
-   var c=el('div','lctl'); var g=el('span'); g.appendChild(el('span','llab','거래소 ')); g.appendChild(sw([['all','통합'],['krx','KRX'],['nxt','NXT']],F.ex,function(v){F.ex=v; syncMarket(); drawFlow(); drawDaily();}));
+   var c=el('div','lctl'); var g=el('span'); g.appendChild(el('span','llab','거래소 ')); g.appendChild(sw([['all','통합'],['krx','KRX'],['nxt','NXT']],F.ex,function(v){ if(v!=='krx'&&!memberOn()){ MEMBER.open('login'); syncMarket(); return; } F.ex=v; F.exSaved=null; syncMarket(); drawFlow(); drawDaily(); loadMember(); }));
    var g2=el('span'); g2.appendChild(el('span','llab','시장 ')); var mkw=el('span','lsw');
    F.mkBtns={}; g.id='fl-ex';
    [['01','거래소'],['02','코스닥'],['03','선물'],['optc','콜옵션'],['optp','풋옵션'],['stkf','주식선물']].forEach(function(o){ var b=el('button',o[0]===F.mkt?'on':'',o[1]); b.type='button'; F.mkBtns[o[0]]=b;
      b.addEventListener('click',function(){ if(b.disabled) return; if(OPTM[o[0]]&&!memberOn()){ MEMBER.open('login'); return; }
        [].forEach.call(mkw.children,function(x){x.classList.remove('on')}); b.classList.add('on'); F.mkt=o[0]; syncMarket(); drawFlow(); drawDaily(); loadMember(); });
-     mkw.appendChild(b); }); g2.appendChild(mkw); c.appendChild(g2); c.appendChild(g); syncMarket();   // 시장이 왼쪽, 거래소가 오른쪽(옵션 탭에서 거래소가 숨어도 시장 위치가 안 움직인다)
-   var lv=el('span','live'); lv.id='fl-live'; lv.appendChild(document.createElement('i')); lv.appendChild(document.createTextNode('연결 중…')); c.appendChild(lv); box.appendChild(c);
+     mkw.appendChild(b); }); g2.appendChild(mkw); c.appendChild(g2); c.appendChild(g);   // 시장이 왼쪽, 거래소가 오른쪽(옵션 탭에서 거래소가 흐려져도 시장 위치가 안 움직인다)
+   var lv=el('span','live'); lv.id='fl-live'; lv.appendChild(document.createElement('i')); lv.appendChild(document.createTextNode('연결 중…')); c.appendChild(lv); box.appendChild(c); syncMarket();
    box.appendChild(el('div','fgroups')).id='fl-cards';
    var lg=el('div','lctl'); lg.id='fl-legend'; box.appendChild(lg);
    var ch=el('div','fchart'); ch.id='fl-chart'; ch.appendChild(el('div','ltip')); box.appendChild(ch);
@@ -2095,7 +2100,7 @@ window.HOME=(function(){
      '코스피·코스닥·통합은 억원, 코스피200 선물은 계약 수. 기관계 = 금융투자+보험+투신(사모)+은행+기타금융+연기금. '+
      '<b>NXT 시장별(거래소/코스닥) 값은 추정치</b>: 넥스트레이드는 시장 구분 없이 합산만 공개하므로, NXT 거래 종목(약 600개) 각각의 투자자별 순매수 수량(네이버, NXT 체결분)에 그날 NXT 평균체결가를 곱해 시장별로 합산하고, '+
      '두 시장 합이 넥스트레이드 공식치와 같아지도록 차이를 나눠 보정합니다(검증: 9/11 통합 거래소 개인 24,272억 vs 증권사 HTS 24,262억). 통합 = 같은 시장의 KRX 확정치 + NXT 추정치이며 NXT 값이 나온 날만 계산됩니다. '+
-     '<b>회원</b>으로 로그인하면 통합·NXT 시장별 12주체 정확치(증권사 집계)와 콜옵션·풋옵션·주식선물 수급이 열립니다.';
+     '<b>회원</b>으로 로그인하면 통합·NXT 시장별 12주체(증권사 집계)와 콜옵션·풋옵션·주식선물 수급이 열립니다. 비회원은 KRX 체결분(네이버 집계)만 봅니다.';
    box.appendChild(note);
  }
  function tickFlow(){
