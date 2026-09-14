@@ -1011,7 +1011,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-14 15:16 · 평일 매일 자동 갱신</p>
+   생성 2026-09-14 15:26 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2527,14 +2527,14 @@ window.HOME=(function(){
  /* 차트: 트레이딩뷰 위젯이 KRX 종목을 막아서(“TradingView 에서만 제공”) 네이버 차트 데이터(/m/chart)로 직접 그린다. 분·일·주·월, MA5/20/60, 거래량, 십자선. */
  var CH={code:null,name:null,tf:'day',data:null};
  function openChart(code,name){
-   CH.code=code; CH.name=name; if(isWorld(code)&&CH.tf==='minute') CH.tf='day';
+   CH.code=code; CH.name=name; if(isWorld(code)&&CH.tf.indexOf('minute')===0) CH.tf='day';
    var old=document.getElementById('tvm'); if(old) old.remove();
    var m=el('div','tvm'); m.id='tvm'; var c=el('div','tvc'); var h=el('div','tvh'); h.appendChild(el('b',null,name)); h.appendChild(el('span','tvs',isWorld(code)?code.split('.')[0]:code));
    var q=W.quotes[code]; if(q&&q.price!=null){ var sp=el('span','tvs'); sp.style.color=q.pct>0?'var(--up)':q.pct<0?'var(--down)':''; sp.textContent=fmtPx(q,q.price)+' '+(q.pct>0?'+':'')+(q.pct==null?'':q.pct.toFixed(2)+'%'); h.appendChild(sp); }
    var a=el('a','tva','네이버 증권 ↗'); a.href=isWorld(code)?'https://m.stock.naver.com/worldstock/stock/'+code+'/total':'https://m.stock.naver.com/domestic/stock/'+code+'/total'; a.target='_blank'; a.rel='noopener'; h.appendChild(a);
    var x=el('button','tvx','×'); x.type='button'; x.addEventListener('click',function(){m.remove()}); h.appendChild(x); c.appendChild(h);
    var sch=el('div','sch'); var bar=el('div','cbar'); bar.appendChild(el('span','llab','기간 ')); var sw=el('span','lsw');
-   [['minute','분'],['day','일'],['week','주'],['month','월']].forEach(function(o){ var b=el('button',o[0]===CH.tf?'on':'',o[1]); b.type='button'; if(o[0]==='minute'&&isWorld(code)){ b.disabled=true; b.style.opacity='.4'; }
+   [['minute','1분'],['minute5','5분'],['minute10','10분'],['minute30','30분'],['minute60','60분'],['day','일'],['week','주'],['month','월']].forEach(function(o){ var b=el('button',o[0]===CH.tf?'on':'',o[1]); b.type='button'; if(o[0].indexOf('minute')===0&&isWorld(code)){ b.disabled=true; b.style.opacity='.4'; }
      b.addEventListener('click',function(){ [].forEach.call(sw.children,function(z){z.classList.remove('on')}); b.classList.add('on'); CH.tf=o[0]; loadChart(); }); sw.appendChild(b); });
    bar.appendChild(sw); var info=el('span','cinfo'); info.id='ch-info'; bar.appendChild(info); sch.appendChild(bar);
    var body=el('div'); body.id='ch-body'; body.style.position='relative'; sch.appendChild(body); sch.appendChild(el('div','lg','MA5 노랑 · MA20 시안 · MA60 보라 · 아래 막대 = 거래량')); c.appendChild(sch);
@@ -2545,7 +2545,8 @@ window.HOME=(function(){
    var code=CH.code, tf=CH.tf; MEMBER.get('chart?code='+encodeURIComponent(code)+'&tf='+tf).then(function(d){ if(CH.code!==code||CH.tf!==tf) return; CH.data=d.items||[]; drawCandles(); }).catch(function(e){ body.innerHTML=''; body.appendChild(el('div','cmsg','차트를 못 받았습니다 · '+e.message)); }); }
  function drawCandles(){
    var body=document.getElementById('ch-body'); if(!body) return; body.innerHTML=''; var rows=CH.data; if(!rows||!rows.length){ body.appendChild(el('div','cmsg','데이터 없음')); return; }
-   var tf=CH.tf, maxN=tf==='minute'?420:tf==='day'?160:tf==='week'?160:120; if(rows.length>maxN) rows=rows.slice(rows.length-maxN);
+   var tf=CH.tf, isMin=tf.indexOf('minute')===0, maxN=tf==='minute'?420:isMin?200:tf==='day'?160:tf==='week'?160:120; if(rows.length>maxN) rows=rows.slice(rows.length-maxN);
+   var multiDay=isMin&&rows.length>1&&rows[0].t.slice(0,8)!==rows[rows.length-1].t.slice(0,8);
    var W0=Math.max(320,Math.floor(body.getBoundingClientRect().width)||900), H=W0<600?300:380, mg={t:10,r:64,b:22,l:6}, vh=Math.round(H*0.18);
    var ph=H-mg.t-mg.b-vh-6, pw=W0-mg.l-mg.r, n=rows.length;
    var lo=Infinity,hi=-Infinity,vmax=0; rows.forEach(function(r){ var l=r.l!=null?r.l:r.c, h=r.h!=null?r.h:r.c; if(l<lo) lo=l; if(h>hi) hi=h; if(r.v>vmax) vmax=r.v; }); if(hi===lo) hi=lo*1.01||1; var pad=(hi-lo)*0.05; lo-=pad; hi+=pad;
@@ -2554,16 +2555,16 @@ window.HOME=(function(){
    var svg=sv('svg',{viewBox:'0 0 '+W0+' '+H,width:W0,height:H});
    var step=Math.pow(10,Math.floor(Math.log10((hi-lo)/5))); var st=[1,2,2.5,5,10].map(function(m){return m*step}).filter(function(v){return (hi-lo)/v<=7})[0]||step; var dec=st<1?2:0;
    for(var v=Math.ceil(lo/st)*st; v<=hi; v+=st){ svg.appendChild(sv('line',{x1:mg.l,x2:W0-mg.r,y1:Y(v),y2:Y(v),'class':'grid'})); var t=sv('text',{x:W0-mg.r+6,y:Y(v)+3.5,'class':'tk'}); t.textContent=n0(v,dec); svg.appendChild(t); }
-   var lab=function(r){ var s=r.t||''; return tf==='minute'?s.slice(8,10)+':'+s.slice(10,12):tf==='month'?s.slice(2,4)+'.'+s.slice(4,6):s.slice(2,4)+'.'+s.slice(4,6)+'.'+s.slice(6,8); };
+   var lab=function(r){ var s=r.t||''; return isMin?((multiDay?s.slice(4,6)+'/'+s.slice(6,8)+' ':'')+s.slice(8,10)+':'+s.slice(10,12)):tf==='month'?s.slice(2,4)+'.'+s.slice(4,6):s.slice(2,4)+'.'+s.slice(4,6)+'.'+s.slice(6,8); };
    var nx=Math.max(2,Math.floor(pw/80)); for(var i=0;i<n;i+=Math.max(1,Math.round(n/nx))){ var tx=sv('text',{x:X(i),y:H-6,'text-anchor':'middle','class':'tk'}); tx.textContent=lab(rows[i]); svg.appendChild(tx); }
-   var cw=Math.max(1,Math.min(14,pw/n*0.7)), line=tf==='minute'||rows.some(function(r){return r.o==null});
+   var cw=Math.max(1,Math.min(14,pw/n*0.7)), line=rows.some(function(r){return r.o==null||r.h==null||r.l==null});   // OHLC 가 다 있으면 분봉도 캔들
    rows.forEach(function(r,i){ var x=X(i), up=r.c>=(r.o!=null?r.o:(i?rows[i-1].c:r.c)); if(r.v!=null) svg.appendChild(sv('rect',{x:x-cw/2,y:VY(r.v),width:cw,height:Math.max(0,mg.t+ph+6+vh-VY(r.v)),'class':up?'vu':'vd'}));
      if(line) return; svg.appendChild(sv('line',{x1:x,x2:x,y1:Y(r.h),y2:Y(r.l),'class':up?'cu':'cd'})); var y0=Y(Math.max(r.o,r.c)), y1=Y(Math.min(r.o,r.c)); svg.appendChild(sv('rect',{x:x-cw/2,y:y0,width:cw,height:Math.max(1,y1-y0),'class':up?'cu':'cd'})); });
    if(line){ svg.appendChild(sv('path',{d:rows.map(function(r,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(r.c).toFixed(1)}).join(' '),fill:'none',stroke:'var(--accent)','stroke-width':1.6})); }
-   [[5,'ma5'],[20,'ma20'],[60,'ma60']].forEach(function(m){ if(n<m[0]||line) return; var d='', sum=0; for(var i=0;i<n;i++){ sum+=rows[i].c; if(i>=m[0]) sum-=rows[i-m[0]].c; if(i>=m[0]-1){ var y=Y(sum/m[0]); d+=(d?'L':'M')+X(i).toFixed(1)+' '+y.toFixed(1); } } svg.appendChild(sv('path',{d:d,'class':m[1]})); });
+   [[5,'ma5'],[20,'ma20'],[60,'ma60']].forEach(function(m){ if(n<m[0]) return; var d='', sum=0; for(var i=0;i<n;i++){ sum+=rows[i].c; if(i>=m[0]) sum-=rows[i-m[0]].c; if(i>=m[0]-1){ var y=Y(sum/m[0]); d+=(d?'L':'M')+X(i).toFixed(1)+' '+y.toFixed(1); } } svg.appendChild(sv('path',{d:d,'class':m[1]})); });
    var xh=sv('line',{x1:0,x2:0,y1:mg.t,y2:mg.t+ph+6+vh,'class':'xh',visibility:'hidden'}); svg.appendChild(xh); var yh=sv('line',{x1:mg.l,x2:W0-mg.r,y1:0,y2:0,'class':'xh',visibility:'hidden'}); svg.appendChild(yh);
    var hit=sv('rect',{x:mg.l,y:mg.t,width:pw,height:ph+6+vh,fill:'transparent'}); svg.appendChild(hit); body.appendChild(svg); var tip=el('div','ctip'); body.appendChild(tip);
-   var q=W.quotes[CH.code]; var last=rows[n-1]; var info=document.getElementById('ch-info'); if(info) info.textContent=lab(rows[0])+' ~ '+lab(last)+' · '+n+(tf==='minute'?'분':'봉')+(line?'':' · 종가 '+n0(last.c,dec));
+   var q=W.quotes[CH.code]; var last=rows[n-1]; var info=document.getElementById('ch-info'); if(info) info.textContent=lab(rows[0])+' ~ '+lab(last)+' · '+n+'봉'+' · '+(isMin?'현재가':'종가')+' '+n0(last.c,dec);
    function at(ev){ var rc=svg.getBoundingClientRect(), x=(ev.clientX-rc.left)*W0/rc.width, y=(ev.clientY-rc.top)*H/rc.height, i=Math.max(0,Math.min(n-1,Math.floor((x-mg.l)/pw*n))); var r=rows[i], cx=X(i);
      xh.setAttribute('x1',cx); xh.setAttribute('x2',cx); xh.setAttribute('visibility','visible'); yh.setAttribute('y1',y); yh.setAttribute('y2',y); yh.setAttribute('visibility','visible');
      tip.innerHTML=''; tip.appendChild(el('b',null,lab(r))); var chg=i?r.c-rows[i-1].c:0, pc=i&&rows[i-1].c?chg/rows[i-1].c*100:0;
