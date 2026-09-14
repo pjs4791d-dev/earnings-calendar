@@ -923,7 +923,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-14 11:42 · 평일 매일 자동 갱신</p>
+   생성 2026-09-14 12:24 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2046,7 +2046,7 @@ window.HOME=(function(){
    Object.keys(OPTM).forEach(function(k){ var b=bs[k]; if(!b) return; var on=memberOn(); b.disabled=false; b.style.opacity=on?'':'.55'; b.classList.toggle('lock',!on);
      b.title=on?'':'회원 전용 — 증권사 API 수급(개인 이용 약관)이라 로그인한 회원에게만 보입니다'; });
    Object.keys(bs).forEach(function(k){ bs[k].classList.toggle('on',k===F.mkt); });
-   var ex=document.getElementById('fl-ex'); if(ex) ex.style.display=OPTM[F.mkt]?'none':'';
+   var ex=document.getElementById('fl-ex'); if(ex){ var off=!!OPTM[F.mkt]; ex.style.opacity=off?'.3':''; ex.style.pointerEvents=off?'none':''; ex.title=off?'옵션·주식선물은 KRX 전용':''; }
  }
  function splitRows(){                        // NXT 시장별(코스피/코스닥) 일별 추정치 → {t,개인,외국인,기관계,cal}
    var key=F.mkt==='02'?'KSQ':'STK'; return ((F.split&&F.split.rows)||[]).map(function(r){ var v=r[key]||{}; return {t:r.t,'개인':v['개인'],'외국인':v['외국인'],'기관계':v['기관계'],cal:r.cal,exact:r.exact}; });
@@ -2061,13 +2061,13 @@ window.HOME=(function(){
  function buildFlow(){
    F.built=true; var box=document.getElementById('fl'); box.innerHTML='';
    MAIN.forEach(function(k){F.on[k]=true}); SUB.forEach(function(k){F.on[k]=false}); syncMarket();
-   var c=el('div','lctl'); var g=el('span'); g.appendChild(el('span','llab','거래소 ')); g.appendChild(sw([['all','통합'],['nxt','NXT'],['krx','KRX']],F.ex,function(v){F.ex=v; syncMarket(); drawFlow(); drawDaily();})); c.appendChild(g);
+   var c=el('div','lctl'); var g=el('span'); g.appendChild(el('span','llab','거래소 ')); g.appendChild(sw([['all','통합'],['krx','KRX'],['nxt','NXT']],F.ex,function(v){F.ex=v; syncMarket(); drawFlow(); drawDaily();}));
    var g2=el('span'); g2.appendChild(el('span','llab','시장 ')); var mkw=el('span','lsw');
    F.mkBtns={}; g.id='fl-ex';
    [['01','거래소'],['02','코스닥'],['03','선물'],['optc','콜옵션'],['optp','풋옵션'],['stkf','주식선물']].forEach(function(o){ var b=el('button',o[0]===F.mkt?'on':'',o[1]); b.type='button'; F.mkBtns[o[0]]=b;
      b.addEventListener('click',function(){ if(b.disabled) return; if(OPTM[o[0]]&&!memberOn()){ MEMBER.open('login'); return; }
        [].forEach.call(mkw.children,function(x){x.classList.remove('on')}); b.classList.add('on'); F.mkt=o[0]; syncMarket(); drawFlow(); drawDaily(); loadMember(); });
-     mkw.appendChild(b); }); g2.appendChild(mkw); c.appendChild(g2); syncMarket();
+     mkw.appendChild(b); }); g2.appendChild(mkw); c.appendChild(g2); c.appendChild(g); syncMarket();   // 시장이 왼쪽, 거래소가 오른쪽(옵션 탭에서 거래소가 숨어도 시장 위치가 안 움직인다)
    var lv=el('span','live'); lv.id='fl-live'; lv.appendChild(document.createElement('i')); lv.appendChild(document.createTextNode('연결 중…')); c.appendChild(lv); box.appendChild(c);
    box.appendChild(el('div','fgroups')).id='fl-cards';
    var lg=el('div','lctl'); lg.id='fl-legend'; box.appendChild(lg);
