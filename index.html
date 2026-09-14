@@ -779,6 +779,21 @@ a.mke:hover .mkt{color:var(--accent)}
 .wlogin{background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:34px 20px;text-align:center;color:var(--muted);font-size:13.5px}
 .wlogin button{margin-top:12px}
 @media(max-width:640px){.wl th.opt,.wl td.opt{display:none}.wl td{padding:8px 4px}}
+.wtop{margin:0 0 12px}.wtop .wst{font-size:11.5px;color:var(--faint);font-variant-numeric:tabular-nums;margin-left:8px}
+.wbd{column-width:250px;column-gap:10px}
+.wbd .bd{break-inside:avoid;background:var(--surface);border:1px solid var(--line);border-radius:6px;margin:0 0 10px;overflow:hidden}
+.wbd .bdh{display:flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--accent) 16%,var(--surface));color:var(--ink);font-size:12px;font-weight:800;padding:5px 8px;letter-spacing:.02em}
+.wbd .bdh small{margin-left:auto;font-weight:500;color:var(--faint);font-size:10.5px}
+.wbd table{width:100%;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.wbd th{font-size:10px;font-weight:600;color:var(--faint);padding:3px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;background:var(--panel)}
+.wbd th:nth-child(1),.wbd th:nth-child(2),.wbd td:nth-child(1),.wbd td:nth-child(2){text-align:left}
+.wbd td{padding:3px 6px;border-bottom:1px solid var(--line2);white-space:nowrap;text-align:right;cursor:pointer}
+.wbd tr:last-child td{border-bottom:0}.wbd tr:hover td{background:var(--line2)}
+.wbd td.cd{color:var(--muted);font-size:10.5px;width:52px}.wbd td.nm{color:var(--ink);font-weight:600;max-width:110px;overflow:hidden;text-overflow:ellipsis;font-family:inherit}
+.wbd td.pu{color:var(--up)}.wbd td.pd{color:var(--down)}
+.wbd td .nx{display:inline-block;font-size:8.5px;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 3px;margin-left:4px;vertical-align:1px}
+.wbd .bdadd{font-size:11px;color:var(--faint);padding:6px 8px;cursor:pointer}.wbd .bdadd:hover{color:var(--accent)}
+.wbd .wempty{padding:14px 0;font-size:12px}
 </style>
 
 <a class="wm" href="https://t.me/SpartanResearch" target="_blank" rel="noopener"><span class="wd"></span>스파르탄 리서치</a>
@@ -940,7 +955,7 @@ a.mke:hover .mkt{color:var(--accent)}
 <section id="p-watch" class="panel" role="tabpanel" hidden>
  <div class="hint">WATCHLIST · 회원별</div>
  <h2>관심종목</h2>
- <p class="lead">그룹을 만들고 종목을 담아 두면 실시간 시세를 한 번에 봅니다. 종목명을 누르면 네이버 종목 페이지, <b>NXT</b> 표시는 대체거래소 체결이 KRX보다 최신일 때(프리·애프터마켓)입니다. 시세는 실시간(1초 단위, 바뀔 때마다)으로 갱신됩니다.</p>
+ <div class="lctl wtop"><span class="llab">보기 </span><span class="lsw" id="wl-view"><button type="button" data-v="grp">그룹</button><button type="button" data-v="board">보드</button></span><span class="wst" id="wl-st2"></span></div>
  <div id="wl"></div>
 </section>
 
@@ -979,7 +994,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-14 13:49 · 평일 매일 자동 갱신</p>
+   생성 2026-09-14 14:02 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2406,7 +2421,13 @@ window.HOME=(function(){
 (function(){
  function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
  function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
- var W={built:false,lists:[],sel:null,quotes:{},timer:null,vis:false,last:{},max:{lists:20,items:30}};
+ var W={built:false,lists:[],sel:null,quotes:{},timer:null,vis:false,last:{},max:{lists:20,items:30},view:'grp'};
+ try{ W.view=localStorage.getItem('wl_view')||'grp'; }catch(e){}
+ function isWorld(code){ return code.indexOf('.')>=0; }
+ function fmtPx(q,v){ if(v==null) return '-'; return q.cur&&q.cur!=='KRW'?(q.cur==='USD'?'$':q.cur+' ')+n0(v,2):n0(v); }
+ function openStock(code){ window.open(isWorld(code)?'https://m.stock.naver.com/worldstock/stock/'+code+'/total':'https://m.stock.naver.com/domestic/stock/'+code+'/total','_blank','noopener'); }
+ function setView(v){ W.view=v; try{localStorage.setItem('wl_view',v)}catch(e){} [].forEach.call(document.querySelectorAll('#wl-view button'),function(b){ b.classList.toggle('on',b.dataset.v===v); }); render(); tick(true); }
+ document.addEventListener('DOMContentLoaded',function(){ [].forEach.call(document.querySelectorAll('#wl-view button'),function(b){ b.classList.toggle('on',b.dataset.v===W.view); b.addEventListener('click',function(){ setView(b.dataset.v); }); }); });
  function memberOn(){ return !!(window.MEMBER&&MEMBER.logged()); }
  function tabOn(){ var p=document.getElementById('p-watch'); return p&&!p.hidden; }
  function box(){ return document.getElementById('wl'); }
@@ -2414,6 +2435,7 @@ window.HOME=(function(){
    var b=box(); if(!b) return; b.innerHTML='';
    if(!memberOn()){ var lg=el('div','wlogin'); lg.appendChild(document.createTextNode('관심종목은 회원 기능입니다. 로그인하면 내 그룹과 종목이 이 브라우저와 폰에서 똑같이 보입니다.'));
      var bt=el('button','wb pri','로그인 / 회원가입'); bt.type='button'; bt.addEventListener('click',function(){MEMBER.open('login')}); lg.appendChild(document.createElement('br')); lg.appendChild(bt); b.appendChild(lg); return; }
+   if(W.view==='board'){ renderBoard(b); return; }
    var wrap=el('div','wl'); b.appendChild(wrap);
    // 왼쪽: 그룹
    var g=el('div','wg'); g.appendChild(el('h4',null,'내 그룹 · '+W.lists.length+'/'+W.max.lists));
@@ -2431,9 +2453,9 @@ window.HOME=(function(){
    var dl=el('button','wb dng','그룹 삭제'); dl.type='button'; dl.addEventListener('click',function(){ if(!confirm('"'+L.name+'" 그룹과 종목 '+L.items.length+'개를 지울까요?')) return; MEMBER.get('watch/list/delete',{method:'POST',body:{id:L.id}}).then(function(d){ W.lists=d.lists; W.sel=W.lists.length?W.lists[0].id:null; render(); tick(true); }).catch(function(e){alert(e.message)}); });
    h.appendChild(rn); h.appendChild(dl); p.appendChild(h);
    // 종목 검색
-   var sr=el('div','wsrch'); var si=el('input'); si.placeholder='종목명 또는 코드로 검색해서 추가 (예: 삼성전자, 005930)'; si.autocomplete='off'; var dd=el('div','wdd'); sr.appendChild(si); sr.appendChild(dd); p.appendChild(sr);
+   var sr=el('div','wsrch'); var si=el('input'); si.placeholder='종목명·코드·티커로 검색해서 추가 (예: 삼성전자, 005930, NVDA)'; si.autocomplete='off'; var dd=el('div','wdd'); sr.appendChild(si); sr.appendChild(dd); p.appendChild(sr);
    var sq=null, hi=-1, items=[];
-   function paintDD(){ dd.innerHTML=''; if(!items.length){ dd.classList.remove('on'); return; } items.forEach(function(x,i){ var b=el('button',i===hi?'hi':''); b.type='button'; b.appendChild(el('span',null,x.name)); b.appendChild(el('small',null,x.code)); b.appendChild(el('em',null,x.market+(L.items.some(function(y){return y.code===x.code})?' · 담김':''))); b.addEventListener('mousedown',function(ev){ ev.preventDefault(); pick(x); }); dd.appendChild(b); }); dd.classList.add('on'); }
+   function paintDD(){ dd.innerHTML=''; if(!items.length){ dd.classList.remove('on'); return; } items.forEach(function(x,i){ var b=el('button',i===hi?'hi':''); b.type='button'; b.appendChild(el('span',null,x.name)); b.appendChild(el('small',null,x.world?(x.ticker||x.code.split('.')[0]):x.code)); b.appendChild(el('em',null,x.market+(L.items.some(function(y){return y.code===x.code})?' · 담김':''))); b.addEventListener('mousedown',function(ev){ ev.preventDefault(); pick(x); }); dd.appendChild(b); }); dd.classList.add('on'); }
    function pick(x){ dd.classList.remove('on'); si.value=''; items=[]; if(L.items.some(function(y){return y.code===x.code})) return;
      MEMBER.get('watch/item',{method:'POST',body:{id:L.id,code:x.code,name:x.name,market:x.market}}).then(function(d){ W.lists=d.lists; render(); tick(true); var ni=document.querySelector('#wl .wsrch input'); if(ni) ni.focus(); }).catch(function(e){alert(e.message)}); }
    si.addEventListener('input',function(){ var q=si.value.trim(); clearTimeout(sq); if(q.length<1){ items=[]; paintDD(); return; } sq=setTimeout(function(){ MEMBER.get('search?q='+encodeURIComponent(q)).then(function(d){ if(si.value.trim()!==q) return; items=d.items||[]; hi=items.length?0:-1; paintDD(); }).catch(function(){}); },180); });
@@ -2444,7 +2466,7 @@ window.HOME=(function(){
    var t=el('table'), th=el('thead'), tr=el('tr'); [['종목',''],['현재가',''],['등락',''],['등락률',''],['거래량','opt'],['고가/저가','opt'],['','']].forEach(function(c){ tr.appendChild(el('th',c[1],c[0])); }); th.appendChild(tr); t.appendChild(th);
    var tb=el('tbody'); tb.id='wl-rows';
    L.items.forEach(function(x,i){ var r=el('tr'); r.dataset.code=x.code;
-     var c0=el('td'); var nm=el('span','nm',x.name); nm.title='네이버 증권에서 보기'; nm.addEventListener('click',function(){ window.open('https://m.stock.naver.com/domestic/stock/'+x.code+'/total','_blank','noopener'); }); c0.appendChild(nm); c0.appendChild(el('span','cd',x.code)); var nx=el('span','nx','NXT'); nx.style.display='none'; c0.appendChild(nx); r.appendChild(c0);
+     var c0=el('td'); var nm=el('span','nm',x.name); nm.title='네이버 증권에서 보기'; nm.addEventListener('click',function(){ openStock(x.code); }); c0.appendChild(nm); c0.appendChild(el('span','cd',isWorld(x.code)?x.code.split('.')[0]+' · '+(x.market||'US'):x.code)); var nx=el('span','nx','NXT'); nx.style.display='none'; c0.appendChild(nx); r.appendChild(c0);
      r.appendChild(el('td','px','-')); r.appendChild(el('td',null,'-')); r.appendChild(el('td',null,'-')); var cv=el('td','opt'); cv.appendChild(el('span','vol','-')); r.appendChild(cv); r.appendChild(el('td','opt','-'));
      var ca=el('td'); var up=el('button','mv','▲'); up.type='button'; up.title='위로'; up.disabled=i===0; up.addEventListener('click',function(){ move(L,i,-1); }); var dn=el('button','mv','▼'); dn.type='button'; dn.title='아래로'; dn.disabled=i===L.items.length-1; dn.addEventListener('click',function(){ move(L,i,1); });
      var rm=el('button','rm','×'); rm.type='button'; rm.title='빼기'; rm.addEventListener('click',function(){ MEMBER.get('watch/item/delete',{method:'POST',body:{id:L.id,code:x.code}}).then(function(d){ W.lists=d.lists; render(); }).catch(function(e){alert(e.message)}); });
@@ -2452,18 +2474,32 @@ window.HOME=(function(){
    t.appendChild(tb); p.appendChild(t);
    paintQuotes();
  }
+ function renderBoard(b){                       // HTS 식: 모든 그룹을 촘촘한 표로 여러 열에 흘려 보여 준다
+   var wrap=el('div','wbd'); b.appendChild(wrap);
+   if(!W.lists.length){ wrap.appendChild(el('div','wempty','그룹이 없습니다 — 그룹 보기에서 먼저 만드세요')); return; }
+   W.lists.forEach(function(L){ var bd=el('div','bd'); var h=el('div','bdh',L.name); h.appendChild(el('small',null,L.items.length+'종목')); bd.appendChild(h);
+     if(!L.items.length){ var e=el('div','bdadd','+ 종목 담기 (그룹 보기)'); e.addEventListener('click',function(){ W.sel=L.id; setView('grp'); }); bd.appendChild(e); wrap.appendChild(bd); return; }
+     var t=el('table'), th=el('thead'), tr=el('tr'); ['코드','종목명','등락률','현재가'].forEach(function(x){tr.appendChild(el('th',null,x))}); th.appendChild(tr); t.appendChild(th);
+     var tb=el('tbody'); L.items.forEach(function(x){ var r=el('tr'); r.dataset.code=x.code; r.title=x.name+' · 네이버 증권에서 보기'; r.addEventListener('click',function(){openStock(x.code)});
+       r.appendChild(el('td','cd',isWorld(x.code)?x.code.split('.')[0]:x.code)); var nm=el('td','nm',x.name); var nx=el('span','nx','NXT'); nx.style.display='none'; nm.appendChild(nx); r.appendChild(nm);
+       r.appendChild(el('td',null,'-')); r.appendChild(el('td',null,'-')); tb.appendChild(r); });
+     t.appendChild(tb); bd.appendChild(t); wrap.appendChild(bd); });
+   paintQuotes();
+ }
  function move(L,i,d){ var codes=L.items.map(function(x){return x.code}); var j=i+d; if(j<0||j>=codes.length) return; var tmp=codes[i]; codes[i]=codes[j]; codes[j]=tmp;
    MEMBER.get('watch/item/move',{method:'POST',body:{id:L.id,codes:codes}}).then(function(dd){ W.lists=dd.lists; render(); }).catch(function(e){alert(e.message)}); }
  function paintQuotes(){
-   var tb=document.getElementById('wl-rows'); if(!tb) return;
-   [].forEach.call(tb.querySelectorAll('tr'),function(r){ var q=W.quotes[r.dataset.code]; if(!q) return; var td=r.children;
+   var rows=document.querySelectorAll('#wl-rows tr, .wbd tr[data-code]'); var seen={};
+   [].forEach.call(rows,function(r){ var code=r.dataset.code, q=W.quotes[code]; if(!q) return; var td=r.children, board=r.parentNode.parentNode.parentNode.classList.contains('bd');
      var useNx=q.nxt&&q.nxt.price!=null&&q.nxt.at&&q.at&&q.nxt.at>q.at&&q.nxt.state==='OPEN'&&q.state!=='OPEN';
      var price=useNx?q.nxt.price:q.price, chg=useNx?q.nxt.chg:q.chg, pct=useNx?q.nxt.pct:q.pct;
-     var prev=W.last[r.dataset.code]; if(prev!=null&&price!=null&&prev!==price){ r.classList.remove('flash-pu','flash-pd'); void r.offsetWidth; r.classList.add(price>prev?'flash-pu':'flash-pd'); } W.last[r.dataset.code]=price;
-     var cls=pct>0?'pu':pct<0?'pd':''; td[0].querySelector('.nx').style.display=useNx?'':'none';
-     td[1].textContent=n0(price); td[1].className='px '+cls; td[2].textContent=(chg>0?'▲':chg<0?'▼':'')+n0(Math.abs(chg||0)); td[2].className=cls; td[3].textContent=(pct>0?'+':'')+(pct==null?'-':pct.toFixed(2)+'%'); td[3].className=cls;
-     td[4].firstChild.textContent=n0(useNx?q.nxt.vol:q.vol); td[5].textContent=(q.high!=null?n0(q.high):'-')+' / '+(q.low!=null?n0(q.low):'-'); });
-   var st=document.getElementById('wl-st'); if(st&&W.at) st.textContent=W.at+(W.live?' · 실시간(1초) · 네이버 증권':' · 10초 갱신 · 네이버 증권');
+     var prev=W.last[code]; if(prev!=null&&price!=null&&prev!==price){ r.classList.remove('flash-pu','flash-pd'); void r.offsetWidth; r.classList.add(price>prev?'flash-pu':'flash-pd'); } seen[code]=price;
+     var cls=pct>0?'pu':pct<0?'pd':''; var nx=r.querySelector('.nx'); if(nx) nx.style.display=useNx?'':'none';
+     if(board){ td[2].textContent=(pct>0?'+':'')+(pct==null?'-':pct.toFixed(2)); td[2].className=cls; td[3].textContent=fmtPx(q,price); td[3].className=cls; return; }
+     td[1].textContent=fmtPx(q,price); td[1].className='px '+cls; td[2].textContent=(chg>0?'▲':chg<0?'▼':'')+(q.cur&&q.cur!=='KRW'?n0(Math.abs(chg||0),2):n0(Math.abs(chg||0))); td[2].className=cls; td[3].textContent=(pct>0?'+':'')+(pct==null?'-':pct.toFixed(2)+'%'); td[3].className=cls;
+     td[4].firstChild.textContent=n0(useNx?q.nxt.vol:q.vol); td[5].textContent=(q.high!=null?fmtPx(q,q.high):'-')+' / '+(q.low!=null?fmtPx(q,q.low):'-'); });
+   Object.keys(seen).forEach(function(c){ W.last[c]=seen[c]; });
+   var txt=W.at?W.at+(W.live?' · 실시간 · 네이버 증권':' · 10초 갱신 · 네이버 증권'):''; var st=document.getElementById('wl-st'); if(st) st.textContent=txt; var st2=document.getElementById('wl-st2'); if(st2) st2.textContent=W.view==='board'?txt:'';
  }
  /* 실시간: /m/stream (SSE, 서버가 1초마다 네이버에서 받아 바뀐 것만 push). 끊기면 2초 뒤 다시 열고, 스트림이 안 되면 10초 폴링으로 내려간다. */
  function stopStream(){ if(W.ctl){ try{W.ctl.abort();}catch(e){} W.ctl=null; } W.live=false; }
@@ -2483,7 +2519,8 @@ window.HOME=(function(){
  function setLive(on){ var st=document.getElementById('wl-st'); if(st) st.dataset.live=on?'1':'0'; }
  function tick(force){
    clearTimeout(W.timer); if(!W.vis||!tabOn()||!memberOn()){ stopStream(); return; }
-   var L=W.lists.filter(function(x){return x.id===W.sel})[0]; var codes=L?L.items.map(function(x){return x.code}):[];
+   var codes=[]; if(W.view==='board'){ var seenC={}; W.lists.forEach(function(l){ l.items.forEach(function(x){ if(!seenC[x.code]){ seenC[x.code]=1; codes.push(x.code); } }); }); }
+   else { var L=W.lists.filter(function(x){return x.id===W.sel})[0]; codes=L?L.items.map(function(x){return x.code}):[]; }
    if(!codes.length){ stopStream(); return; }
    if(codes.join(',')!==W.streamCodes||!W.ctl){ startStream(codes); }
    if(!W.live){ MEMBER.get('quotes?codes='+codes.join(',')).then(function(d){ (d.items||[]).forEach(function(q){ W.quotes[q.code]=q; }); W.at=d.at; paintQuotes(); }).catch(function(){}); }
