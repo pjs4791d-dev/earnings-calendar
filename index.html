@@ -975,7 +975,8 @@ a.mke:hover .mkt{color:var(--accent)}
 <section id="p-watch" class="panel" role="tabpanel" hidden>
  <div class="hint">WATCHLIST · 회원별</div>
  <h2>관심종목</h2>
- <div class="lctl wtop"><span class="llab">보기 </span><span class="lsw" id="wl-view"><button type="button" data-v="grp">그룹</button><button type="button" data-v="board">보드</button></span><span class="wst" id="wl-st2"></span></div>
+ <div class="lctl wtop"><span class="llab">보기 </span><span class="lsw" id="wl-view"><button type="button" data-v="grp">그룹</button><button type="button" data-v="board">보드</button></span>
+  <span class="llab" style="margin-left:14px">시세 </span><span class="lsw" id="wl-venue"><button type="button" data-v="all" title="KRX·NXT 중 최근 체결가, 거래량은 합산">통합</button><button type="button" data-v="krx" title="한국거래소 체결만">KRX</button><button type="button" data-v="nxt" title="넥스트레이드 체결만">NXT</button></span><span class="wst" id="wl-st2"></span></div>
  <div id="wl"></div>
 </section>
 
@@ -1014,7 +1015,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-14 15:57 · 평일 매일 자동 갱신</p>
+   생성 2026-09-14 16:12 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2442,7 +2443,14 @@ window.HOME=(function(){
  function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
  function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
  var W={built:false,lists:[],sel:null,quotes:{},timer:null,vis:false,last:{},max:{lists:20,items:30},view:'grp'};
- try{ W.view=localStorage.getItem('wl_view')||'grp'; }catch(e){}
+ try{ W.view=localStorage.getItem('wl_view')||'grp'; W.venue=localStorage.getItem('wl_venue')||'all'; }catch(e){} W.venue=W.venue||'all';
+ function setVenue(v){ W.venue=v; try{localStorage.setItem('wl_venue',v)}catch(e){} [].forEach.call(document.querySelectorAll('#wl-venue button'),function(b){ b.classList.toggle('on',b.dataset.v===v); }); W.last={}; paintQuotes(); }
+ /* 표시할 값 고르기: 통합 = KRX·NXT 중 최근 체결(거래량 합산) / KRX / NXT */
+ function pick(q){ var nx=q.nxt, v=W.venue; if(isWorld(q.code)||!nx||nx.price==null){ return v==='nxt'&&!isWorld(q.code)?null:{price:q.price,chg:q.chg,pct:q.pct,vol:q.vol,src:'krx'}; }
+   if(v==='krx') return {price:q.price,chg:q.chg,pct:q.pct,vol:q.vol,src:'krx'};
+   if(v==='nxt') return {price:nx.price,chg:nx.chg,pct:nx.pct,vol:nx.vol,src:'nxt'};
+   var useNx=nx.at&&q.at?nx.at>q.at:(nx.state==='OPEN'&&q.state!=='OPEN');
+   return {price:useNx?nx.price:q.price,chg:useNx?nx.chg:q.chg,pct:useNx?nx.pct:q.pct,vol:(q.vol||0)+(nx.vol||0),src:useNx?'nxt':'krx'}; }
  function isWorld(code){ return code.indexOf('.')>=0; }
  /* 즉시 검색: /pub/stocks.json(국내 상장사 코드·이름)을 한 번 받아 두고 이름 부분일치·초성·코드로 바로 찾는다. 네이버 자동완성(ETF·미국)은 뒤이어 합친다. */
  var CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
@@ -2456,7 +2464,8 @@ window.HOME=(function(){
  function fmtPx(q,v){ if(v==null) return '-'; return q.cur&&q.cur!=='KRW'?(q.cur==='USD'?'$':q.cur+' ')+n0(v,2):n0(v); }
  function openStock(code){ window.open(isWorld(code)?'https://m.stock.naver.com/worldstock/stock/'+code+'/total':'https://m.stock.naver.com/domestic/stock/'+code+'/total','_blank','noopener'); }
  function setView(v){ W.view=v; try{localStorage.setItem('wl_view',v)}catch(e){} [].forEach.call(document.querySelectorAll('#wl-view button'),function(b){ b.classList.toggle('on',b.dataset.v===v); }); render(); tick(true); }
- document.addEventListener('DOMContentLoaded',function(){ [].forEach.call(document.querySelectorAll('#wl-view button'),function(b){ b.classList.toggle('on',b.dataset.v===W.view); b.addEventListener('click',function(){ setView(b.dataset.v); }); }); });
+ document.addEventListener('DOMContentLoaded',function(){ [].forEach.call(document.querySelectorAll('#wl-view button'),function(b){ b.classList.toggle('on',b.dataset.v===W.view); b.addEventListener('click',function(){ setView(b.dataset.v); }); });
+   [].forEach.call(document.querySelectorAll('#wl-venue button'),function(b){ b.classList.toggle('on',b.dataset.v===W.venue); b.addEventListener('click',function(){ setVenue(b.dataset.v); }); }); });
  function memberOn(){ return !!(window.MEMBER&&MEMBER.logged()); }
  function tabOn(){ var p=document.getElementById('p-watch'); return p&&!p.hidden; }
  function box(){ return document.getElementById('wl'); }
@@ -2636,15 +2645,16 @@ window.HOME=(function(){
  function paintQuotes(){
    var rows=document.querySelectorAll('#wl-rows tr, .wbd tr[data-code]'); var seen={};
    [].forEach.call(rows,function(r){ var code=r.dataset.code, q=W.quotes[code]; if(!q) return; var td=r.children, board=r.parentNode.parentNode.parentNode.classList.contains('bd');
-     var useNx=q.nxt&&q.nxt.price!=null&&q.nxt.at&&q.at&&q.nxt.at>q.at&&q.nxt.state==='OPEN'&&q.state!=='OPEN';
-     var price=useNx?q.nxt.price:q.price, chg=useNx?q.nxt.chg:q.chg, pct=useNx?q.nxt.pct:q.pct;
+     var p=pick(q); var nx=r.querySelector('.nx');
+     if(!p){ if(nx) nx.style.display='none'; if(board){ td[2].textContent='-'; td[2].className=''; td[3].textContent='-'; td[3].className=''; } else { td[1].textContent='-'; td[1].className='px'; td[2].textContent='-'; td[2].className=''; td[3].textContent='-'; td[3].className=''; td[4].firstChild.textContent='-'; } return; }
+     var price=p.price, chg=p.chg, pct=p.pct;
      var prev=W.last[code]; if(prev!=null&&price!=null&&prev!==price){ r.classList.remove('flash-pu','flash-pd'); void r.offsetWidth; r.classList.add(price>prev?'flash-pu':'flash-pd'); } seen[code]=price;
-     var cls=pct>0?'pu':pct<0?'pd':''; var nx=r.querySelector('.nx'); if(nx) nx.style.display=useNx?'':'none';
+     var cls=pct>0?'pu':pct<0?'pd':''; if(nx){ nx.style.display=(W.venue==='all'&&p.src==='nxt')?'':'none'; }
      if(board){ td[2].textContent=(pct>0?'+':'')+(pct==null?'-':pct.toFixed(2)); td[2].className=cls; td[3].textContent=fmtPx(q,price); td[3].className=cls; return; }
      td[1].textContent=fmtPx(q,price); td[1].className='px '+cls; td[2].textContent=(chg>0?'▲':chg<0?'▼':'')+(q.cur&&q.cur!=='KRW'?n0(Math.abs(chg||0),2):n0(Math.abs(chg||0))); td[2].className=cls; td[3].textContent=(pct>0?'+':'')+(pct==null?'-':pct.toFixed(2)+'%'); td[3].className=cls;
-     td[4].firstChild.textContent=n0(useNx?q.nxt.vol:q.vol); td[5].textContent=(q.high!=null?fmtPx(q,q.high):'-')+' / '+(q.low!=null?fmtPx(q,q.low):'-'); });
+     td[4].firstChild.textContent=n0(p.vol); td[5].textContent=(q.high!=null?fmtPx(q,q.high):'-')+' / '+(q.low!=null?fmtPx(q,q.low):'-'); });
    Object.keys(seen).forEach(function(c){ W.last[c]=seen[c]; });
-   var txt=W.at?W.at+(W.live?' · 실시간 · 네이버 증권':' · 10초 갱신 · 네이버 증권'):''; var st=document.getElementById('wl-st'); if(st) st.textContent=txt; var st2=document.getElementById('wl-st2'); if(st2) st2.textContent=W.view==='board'?txt:'';
+   var vn=W.venue==='all'?'통합(KRX+NXT)':W.venue==='krx'?'KRX':'NXT'; var txt=W.at?W.at+(W.live?' · 실시간':' · 10초 갱신')+' · '+vn+' · 네이버 증권':''; var st=document.getElementById('wl-st'); if(st) st.textContent=txt; var st2=document.getElementById('wl-st2'); if(st2) st2.textContent=W.view==='board'?txt:'';
  }
  /* 실시간: /m/stream (SSE, 서버가 1초마다 네이버에서 받아 바뀐 것만 push). 끊기면 2초 뒤 다시 열고, 스트림이 안 되면 10초 폴링으로 내려간다. */
  function stopStream(){ if(W.ctl){ try{W.ctl.abort();}catch(e){} W.ctl=null; } W.live=false; }
