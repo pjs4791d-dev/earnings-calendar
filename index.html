@@ -8,8 +8,8 @@
 <meta property="og:site_name" content="스파르탄 리서치">
 <meta property="og:title" content="다가오는 실적 발표 일정 · 스파르탄 리서치">
 <meta property="og:description" content="2026 2분기 시즌 · 총 20건 (예고 0 · 실적IR 20) · 2026-09-15 기준 · DART 공시 자동 집계">
-<meta property="og:url" content="https://pjs4791d-dev.github.io/earnings-calendar/">
-<meta property="og:image" content="https://pjs4791d-dev.github.io/earnings-calendar/og.png">
+<meta property="og:url" content="https://spartanterminal.com/">
+<meta property="og:image" content="https://spartanterminal.com/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -1291,10 +1291,15 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 23:01 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 23:25 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
+/* 데이터 서버 주소 이중화: 기본 api.spartanterminal.com(자체 도메인·Cloudflare DNS) → 연결 자체가 안 되면 예전 Tailscale Funnel 주소로 자동 폴백(60초간 폴백 우선). 2026-09-15 KT DNS 사고 후 도입 */
+(function(){ var P='https://api.spartanterminal.com', F='https://spartan.tail88a1c5.ts.net'; var nf=window.fetch.bind(window); var badUntil=0;
+  window.fetch=function(u,o){ var s=typeof u==='string'?u:(u&&u.url)||''; if(s.indexOf(P)!==0) return nf(u,o); var alt=s.replace(P,F);
+    if(Date.now()<badUntil) return nf(alt,o).catch(function(){ return nf(s,o); });
+    return nf(s,o).catch(function(e){ badUntil=Date.now()+60000; return nf(alt,o); }); }; window.API_PRIMARY=P; window.API_FALLBACK=F; })();
 (function(){
  var boot=document.getElementById('boot'), st=document.getElementById('boot-st'), bar=document.getElementById('boot-bar'); if(!boot) return;
  var t0=Date.now(), steps=[[0,'시스템 기동',8],[350,'시세 스트림 연결',30],[900,'수급 · 매크로 동기화',55],[1600,'지수 지도 구성',75],[2400,'화면 준비',90]], done=false;
@@ -1696,7 +1701,7 @@ attachAC('rq','rac',rlookup,rSuggest);   // 리포트 조회 (모드별 후보)
 
 <script>
 window.MEMBER=(function(){
- var BASE=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'http://localhost:8799/m/':'https://spartan.tail88a1c5.ts.net/m/';   // 로컬 미리보기는 로컬 앱(iflow-preview)
+ var BASE=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'http://localhost:8799/m/':'https://api.spartanterminal.com/m/';   // 로컬 미리보기는 로컬 앱(iflow-preview)
  try{ var ob=localStorage.getItem('m_base'); if(ob&&location.hostname==='localhost') BASE=ob; }catch(e){}                 // 로컬 점검용: localStorage m_base 로 VM API 직접 호출(키움은 VM 에서만 됨)
  var tok=null,user=null; try{ tok=localStorage.getItem('m_tok'); user=localStorage.getItem('m_user'); }catch(e){}
  function req(path,opts){ opts=opts||{}; var h={}; if(opts.body) h['Content-Type']='application/json'; if(tok) h['Authorization']='Bearer '+tok;
@@ -2207,7 +2212,7 @@ window.MKT=(function(){
 <script>
 /* ── 홈 오버뷰 + 수급 탭 ─────────────────────────────────────── */
 window.HOME=(function(){
- var LIVE='https://spartan.tail88a1c5.ts.net/pub/';
+ var LIVE='https://api.spartanterminal.com/pub/';
  var S1='var(--s1)',S2='var(--s2)',S3='var(--s3)',S4='var(--s4)',S5='var(--s5)',S6='var(--s6)',S7='var(--s7)',S8='var(--s8)';
  function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
  function kstToday(){ return new Date(Date.now()+324e5).toISOString().slice(0,10); }
@@ -2245,7 +2250,7 @@ window.HOME=(function(){
    renderCal(); renderEarn(); renderAI();
  }
  function netBanner(on){ var b=document.getElementById('netbn'); if(!on){ if(b) b.remove(); return; } if(b) return; b=el('div'); b.id='netbn'; b.style.cssText='position:fixed;left:50%;top:8px;transform:translateX(-50%);z-index:520;background:#7f1d1d;color:#fee2e2;border:1px solid #f87171;border-radius:8px;padding:8px 14px;font-size:12.5px;max-width:min(92vw,720px);box-shadow:0 8px 24px rgba(0,0,0,.4);line-height:1.5';
-   b.textContent='데이터 서버(spartan.tail88a1c5.ts.net)에 연결하지 못하고 있습니다. 서버는 정상인데 이용 중인 인터넷의 DNS 가 주소를 못 찾는 경우가 있습니다 — 휴대폰 데이터로 열거나 기기 DNS 를 1.1.1.1/8.8.8.8 로 바꾸면 바로 됩니다. 30초마다 자동 재시도합니다.'; document.body.appendChild(b); }
+   b.textContent='데이터 서버(api.spartanterminal.com, 예비 spartan.tail88a1c5.ts.net)에 모두 연결하지 못하고 있습니다. 인터넷 연결이나 DNS 문제일 수 있습니다 — 휴대폰 데이터로 열거나 기기 DNS 를 1.1.1.1/8.8.8.8 로 바꿔 보세요. 30초마다 자동 재시도합니다.'; document.body.appendChild(b); }
  function tickHome(){
    clearTimeout(H.timer); if(!visible.home||!tabOn('home')) return;
    Promise.all([getJ(LIVE+'quotes.json').catch(function(){return null}), getJ(LIVE+'flow_today.json').catch(function(){return null}), getJ(LIVE+'macro.json').catch(function(){return null}), getJ(LIVE+'quotes_hist.json').catch(function(){return null}), getJ(LIVE+'nxt_daily.json').catch(function(){return null})])
@@ -2797,7 +2802,7 @@ window.HOME=(function(){
  var CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
  function cho(str){ var o=''; for(var i=0;i<str.length;i++){ var c=str.charCodeAt(i); o+=(c>=0xAC00&&c<=0xD7A3)?CHO[Math.floor((c-0xAC00)/588)]:str[i]; } return o; }
  function isChoQuery(q){ return q.length>0&&[].every.call(q,function(ch){return CHO.indexOf(ch)>=0}); }
- var IDX=null; function loadIdx(){ if(IDX||W.idxLoading) return; W.idxLoading=true; fetch('https://spartan.tail88a1c5.ts.net/pub/stocks.json?t='+Math.floor(Date.now()/3.6e6)).then(function(r){return r.json()}).then(function(d){ IDX=(d.items||[]).map(function(x){ return {code:x[0],name:x[1],lc:x[1].toLowerCase(),ch:cho(x[1])}; }); }).catch(function(){ W.idxLoading=false; }); }
+ var IDX=null; function loadIdx(){ if(IDX||W.idxLoading) return; W.idxLoading=true; fetch('https://api.spartanterminal.com/pub/stocks.json?t='+Math.floor(Date.now()/3.6e6)).then(function(r){return r.json()}).then(function(d){ IDX=(d.items||[]).map(function(x){ return {code:x[0],name:x[1],lc:x[1].toLowerCase(),ch:cho(x[1])}; }); }).catch(function(){ W.idxLoading=false; }); }
  function localSearch(q){ if(!IDX) return []; var lq=q.toLowerCase(), isC=isChoQuery(q), out=[], starts=[];
    for(var i=0;i<IDX.length&&(out.length+starts.length)<40;i++){ var x=IDX[i]; var hit=isC?x.ch.indexOf(q)===0||x.ch.indexOf(q)>0:(x.lc.indexOf(lq)>=0||x.code.indexOf(lq.toUpperCase())===0);
      if(!hit) continue; var first=isC?x.ch.indexOf(q)===0:(x.lc.indexOf(lq)===0||x.code.indexOf(lq.toUpperCase())===0); (first?starts:out).push({code:x.code,name:x.name,market:'',world:false}); }
@@ -3009,7 +3014,7 @@ window.HOME=(function(){
  function stopStream(){ if(W.ctl){ try{W.ctl.abort();}catch(e){} W.ctl=null; } W.live=false; }
  function startStream(codes){
    stopStream(); if(!codes.length) return; var ctl=new AbortController(); W.ctl=ctl; W.streamCodes=codes.join(',');
-   var BASE=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'http://localhost:8799/m/':'https://spartan.tail88a1c5.ts.net/m/';
+   var BASE=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'http://localhost:8799/m/':'https://api.spartanterminal.com/m/';
    var tok=null; try{ tok=localStorage.getItem('m_tok'); }catch(e){}
    fetch(BASE+'stream?codes='+codes.join(','),{headers:{'Authorization':'Bearer '+tok},signal:ctl.signal}).then(function(r){
      if(!r.ok||!r.body) throw new Error('stream '+r.status);
@@ -3051,7 +3056,7 @@ window.HOME=(function(){
  function sgn(v,d){ if(v==null) return '-'; return (v>0?'+':'')+n0(v,d); }
  function fmtEok(v){ if(v==null) return '-'; var a=Math.abs(v); var s=a>=10000?(a/10000).toFixed(2)+'조':n0(a,a<100?1:0)+'억'; return (v<0?'-':v>0?'+':'')+s; }
  function fmtQty(v){ if(v==null) return '-'; var a=Math.abs(v); var s=a>=1e8?(a/1e8).toFixed(2)+'억주':a>=1e4?(a/1e4).toFixed(1)+'만주':n0(a)+'주'; return (v<0?'-':v>0?'+':'')+s; }
- var LIVE='https://spartan.tail88a1c5.ts.net/pub/', MB=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'http://localhost:8799/m/':'https://spartan.tail88a1c5.ts.net/m/';
+ var LIVE='https://api.spartanterminal.com/pub/', MB=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'http://localhost:8799/m/':'https://api.spartanterminal.com/m/';
  var NS='http://www.w3.org/2000/svg'; function sv(t,a){var e=document.createElementNS(NS,t); for(var k in a) e.setAttribute(k,a[k]); return e;}
  var S1='#22d3ee',S2='#f97316',S3='#4ade80',S4='#eab308',S5='#f472b6',S6='#a78bfa',S7='#94a3b8',S8='#fb7185';
  var SUBJ={pub:[['ind','개인',S1],['frg','외국인',S2],['org','기관',S3]],
@@ -3389,7 +3394,7 @@ window.HOME=(function(){
 
 <script>
 (function(){
- var BASE='https://spartan.tail88a1c5.ts.net/pub/';
+ var BASE='https://api.spartanterminal.com/pub/';
  var COLORS=['#22d3ee','#f59e0b','#a78bfa','#34d399','#f472b6','#60a5fa','#fb7185','#fbbf24','#2dd4bf','#c084fc'];
  var DRAM=[['DDR5 16Gb (2Gx8) 4800/5600','DDR5 16Gb 4800/5600','현재 DDR5 방향성'],['DDR4 16Gb (2Gx8) 3200','DDR4 16Gb 3200','DDR4 공급 부족 · 레거시 가격'],['DDR4 8Gb (1Gx8) 3200','DDR4 8Gb 3200','시장이 전통적으로 보는 대표 현물가']];
  var DRAM2=[['DDR5 16Gb (2Gx8) eTT','DDR5 16Gb eTT','저가 검사 미완 칩'],['DDR4 16Gb (2Gx8) eTT','DDR4 16Gb eTT',''],['DDR4 8Gb (1Gx8) eTT','DDR4 8Gb eTT',''],['4Gb 512Mx8 1600/1866','DDR3 4Gb 1600/1866','레거시']];
@@ -3498,7 +3503,7 @@ window.HOME=(function(){
 
 <script>
 (function(){
- var BASE='https://spartan.tail88a1c5.ts.net/pub/';
+ var BASE='https://api.spartanterminal.com/pub/';
  var C=['#22d3ee','#f59e0b','#a78bfa','#34d399','#f472b6','#60a5fa','#fb7185','#fbbf24','#2dd4bf','#c084fc','#f97316','#94a3b8'];
  var T={vis:false,data:null,mMetric:'amt',mSel:['전체','피부과','성형외과','약국'],vSel:['전체','중국','일본','대만','미국'],vMode:'n',pSel:['전체','피부과','성형외과','약국'],pMetric:'amt',from:null,to:null,timer:null};
  try{ var sv=JSON.parse(localStorage.getItem('tr_set')||'{}'); ['mMetric','mSel','vSel','vMode','pSel','pMetric','from','to','open'].forEach(function(k){ if(sv[k]!=null) T[k]=sv[k]; }); }catch(e){}
@@ -3619,7 +3624,7 @@ window.HOME=(function(){
 <script>
 /* ── 시세 테이프: 홈 스크립트가 받은 quotes/macro 를 그대로 흘려보낸다 ── */
 (function(){
- var LIVE='https://spartan.tail88a1c5.ts.net/pub/', last={}, timer=null;
+ var LIVE='https://api.spartanterminal.com/pub/', last={}, timer=null;
  function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d}); }
  function item(name,price,pct,d){ var c=pct>0?'pu':pct<0?'pd':''; return '<span class="ti"><span class="tn">'+name+'</span><b>'+n0(price,d)+'</b><span class="'+c+'">'+(pct==null?'':(pct>0?'▲':pct<0?'▼':'')+Math.abs(pct).toFixed(2)+'%')+'</span></span>'; }
  function build(){
