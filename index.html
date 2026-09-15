@@ -1132,7 +1132,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
 <section id="p-rank" class="panel rk" role="tabpanel" hidden>
  <div class="hint">NET BUY RANKING · 회원</div>
- <h2>순매수 비중 상위</h2>
+ <h2>순매수 상위</h2>
  <div id="rk-ctl" class="lctl"></div>
  <div id="rk-ctl2" class="lctl" style="margin-top:6px"></div>
  <div id="rk-body"></div>
@@ -1173,7 +1173,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 16:09 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 17:40 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3045,11 +3045,15 @@ window.HOME=(function(){
  function fmtEok(v){ if(v==null) return '-'; var a=Math.abs(v); return (v<0?'-':'+')+(a>=10000?(a/10000).toFixed(2)+'조':n0(a,a<100?1:0)); }
  function pctTxt(v){ return v==null?'-':(v>0?'+':'')+v.toFixed(2)+'%'; }
  function pdate(s){ return s?s.slice(0,4)+'.'+s.slice(4,6)+'.'+s.slice(6,8):''; }
- var R={vis:false,mode:'live',mrkt:'000',dir:'buy',sort:'ratio',minTv:30,noEtf:true,subjs:['frgn','orgn','fin','trust','pension','pe'],start:null,end:null,data:{},err:{},timer:null,seq:0};
- try{ var sv=JSON.parse(localStorage.getItem('rk_set')||'{}'); ['mode','mrkt','dir','sort','minTv','noEtf','subjs'].forEach(function(k){ if(sv[k]!=null) R[k]=sv[k]; }); }catch(e){}
- function save(){ try{ localStorage.setItem('rk_set',JSON.stringify({mode:R.mode,mrkt:R.mrkt,dir:R.dir,sort:R.sort,minTv:R.minTv,noEtf:R.noEtf,subjs:R.subjs})); }catch(e){} }
- var ETF_RE=/^(KODEX|TIGER|ACE|SOL|KBSTAR|RISE|HANARO|PLUS|ARIRANG|KOSEF|TIMEFOLIO|KIWOOM|WON|HK|BNK|DAISHIN|UNICORN|KoAct|1Q|ITF|KCGI|TRUSTON|WOORI|KINDEX|마이티|히어로즈|파워|에셋플러스|iSelect|FOCUS|VITA|KTOP|MASTER|smart|TREX|GIANT|KODEX)\b|ETN$|ETF|인버스|레버리지/i;   // ETF·ETN 은 LP 물량 때문에 비중이 튀어서 기본 제외
- function isEtf(r){ return ETF_RE.test(r.name||''); }
+ var RANKS={amt:['순매수대금','돈을 가장 많이 넣은 종목 · 순매수대금'],str:['순매수강도','순매수대금 ÷ 거래대금 · 그 주체가 거래를 지배하는 종목'],cap:['시총대비 순매수','순매수대금 ÷ 시가총액 · 들어온 돈이 주가에 미치는 영향이 큰 종목']};
+ var R={vis:false,mode:'live',mrkt:'000',dir:'buy',rank:'str',minTv:30,noEtf:true,subjs:['frgn','orgn','fin','trust','pension','pe'],start:null,end:null,data:{},err:{},timer:null,seq:0};
+ try{ var sv=JSON.parse(localStorage.getItem('rk_set')||'{}'); ['mode','mrkt','dir','rank','minTv','noEtf','subjs'].forEach(function(k){ if(sv[k]!=null) R[k]=sv[k]; }); if(!RANKS[R.rank]) R.rank='str'; }catch(e){}
+ function save(){ try{ localStorage.setItem('rk_set',JSON.stringify({mode:R.mode,mrkt:R.mrkt,dir:R.dir,rank:R.rank,minTv:R.minTv,noEtf:R.noEtf,subjs:R.subjs})); }catch(e){} }
+ function strength(r){ return r.tv>0?r.amt/r.tv*100:0; }                                  // ② 순매수강도 = 순매수대금 ÷ 거래대금(%)
+ function capRatio(r){ return r.mcap>0?r.amt/r.mcap*100:null; }                          // ③ 시총대비 = 순매수대금 ÷ 시가총액(%)
+ function metric(r){ return R.rank==='amt'?r.amt:R.rank==='str'?strength(r):(capRatio(r)||0); }
+ var ETF_RE=/스팩|^(KODEX|TIGER|ACE|SOL|KBSTAR|RISE|HANARO|PLUS|ARIRANG|KOSEF|TIMEFOLIO|KIWOOM|WON|HK|BNK|DAISHIN|UNICORN|KoAct|1Q|ITF|KCGI|TRUSTON|WOORI|KINDEX|마이티|히어로즈|파워|에셋플러스|iSelect|FOCUS|VITA|KTOP|MASTER|smart|TREX|GIANT|KODEX)\b|ETN$|ETF|인버스|레버리지/i;   // ETF·ETN 은 LP 물량 때문에 비중이 튀어서 기본 제외
+ function isEtf(r){ return r.etf!=null?!!r.etf:ETF_RE.test(r.name||''); }
  function memberOn(){ return !!(window.MEMBER&&MEMBER.logged()); }
  function tabOn(){ var p=document.getElementById('p-rank'); return p&&!p.hidden; }
  function kstNow(){ return new Date(Date.now()+9*3600e3); }
@@ -3066,10 +3070,10 @@ window.HOME=(function(){
    c.appendChild(grp('구분',sw([['live','장중 잠정'],['daily','일별 확정']],R.mode,function(v){R.mode=v; save(); ctl(); load();})));
    c.appendChild(grp('시장',sw([['000','전체'],['001','코스피'],['101','코스닥']],R.mrkt,function(v){R.mrkt=v; save(); load();})));
    c.appendChild(grp('방향',sw([['buy','순매수'],['sell','순매도']],R.dir,function(v){R.dir=v; save(); render();})));
-   c.appendChild(grp('정렬',sw([['ratio','비중'],['amt','금액']],R.sort,function(v){R.sort=v; save(); render();})));
+   var rk=sw([['amt','① 순매수대금'],['str','② 순매수강도'],['cap','③ 시총대비']],R.rank,function(v){R.rank=v; save(); ctl(); render();}); [].forEach.call(rk.children,function(b,i){ b.title=RANKS[['amt','str','cap'][i]][1]; }); c.appendChild(grp('랭킹',rk));
    var sel=el('select'); [[10,'거래대금 10억↑'],[30,'거래대금 30억↑'],[100,'거래대금 100억↑'],[300,'거래대금 300억↑'],[1000,'거래대금 1,000억↑']].forEach(function(o){ var op=el('option',null,o[1]); op.value=o[0]; if(+R.minTv===o[0]) op.selected=true; sel.appendChild(op); });
    sel.title='비중이 높아도 거래가 적은 종목은 잡음이라 거래대금(일평균) 기준으로 거릅니다'; sel.addEventListener('change',function(){ R.minTv=+sel.value; save(); render(); }); c.appendChild(grp('필터',sel));
-   c.appendChild(sw([[1,'ETF 제외'],[0,'ETF 포함']],R.noEtf?1:0,function(v){ R.noEtf=!!+v; save(); render(); }));
+   var et=sw([[1,'ETF 제외'],[0,'ETF 포함']],R.noEtf?1:0,function(v){ R.noEtf=!!+v; save(); render(); }); et.title='ETF·ETN·스팩·인버스/레버리지 상품 제외'; c.appendChild(et);
    if(R.mode==='daily'){
      var g=el('span','rkd'); g.appendChild(el('span','llab','기간 '));
      if(!R.end) R.end=lastTradingDay(); if(!R.start) R.start=R.end;
@@ -3104,24 +3108,25 @@ window.HOME=(function(){
  function pick(k){
    var d=R.data[k]; if(!d) return [];
    var rows=(R.dir==='buy'?d.buy:d.sell)||[]; var scale=R.mode==='daily'?wdCount(R.start,R.end):1, minTv=R.minTv*scale;
-   rows=rows.filter(function(r){ return r.tv>=minTv&&Math.abs(r.amt)>=1&&!(R.noEtf&&isEtf(r)); });
-   rows.sort(R.sort==='ratio'?function(a,b){ return Math.abs(b.ratio)-Math.abs(a.ratio); }:function(a,b){ return Math.abs(b.amt)-Math.abs(a.amt); });
+   rows=rows.filter(function(r){ return r.tv>=minTv&&Math.abs(r.amt)>=1&&!(R.noEtf&&isEtf(r))&&(R.rank!=='cap'||r.mcap>0); });
+   rows.sort(function(a,b){ return Math.abs(metric(b))-Math.abs(metric(a)); });
    return rows.slice(0,20);
  }
  function table(k,rows,hl){
-   var d=R.data[k]||{}, live=R.mode==='live'; var p=el('div','rkp'); var h=el('div','rkh '+R.dir,SNAME[k]+' · '+(R.dir==='buy'?'순매수':'순매도')+' '+(R.sort==='ratio'?'비중':'금액')+' 상위');
+   var d=R.data[k]||{}, live=R.mode==='live'; var p=el('div','rkp'); var h=el('div','rkh '+R.dir,SNAME[k]+' · '+(R.rank==='amt'?(R.dir==='buy'?'순매수대금':'순매도대금'):R.rank==='str'?(R.dir==='buy'?'순매수강도':'순매도강도'):(R.dir==='buy'?'시총대비 순매수':'시총대비 순매도'))+' TOP'); h.title=RANKS[R.rank][1];
    h.appendChild(el('small',null,live?'잠정 '+(d.at||''):(d.start===d.end?pdate(d.end):pdate(d.start)+'~'+pdate(d.end)))); p.appendChild(h);
    if(!rows.length){ p.appendChild(el('div','lmsg',R.err[k]?'못 받음 · '+R.err[k]:'조건에 맞는 종목 없음')); return p; }
    var t=el('table'), th=el('thead'), tr=el('tr');
-   [['#',''],['종목',''],['비중',''],['순매수(억)',''],[live?'등락률':'평단대비','opt']].forEach(function(c){ var x=el('th',c[1],c[0]); if(c[0]==='비중') x.title='주체 순매수 수량 ÷ 종목 거래량'; if(c[0]==='평단대비') x.title='이 주체의 추정 평균단가 대비 현재가'; tr.appendChild(x); }); th.appendChild(tr); t.appendChild(th);
-   var tb=el('tbody'); var mx=Math.max.apply(null,rows.map(function(r){return Math.abs(R.sort==='ratio'?r.ratio:r.amt)}))||1;
+   var sub=R.rank==='cap'?['시총비','순매수대금 ÷ 시가총액']:['강도','순매수대금 ÷ 거래대금'];
+   [['#',''],['종목',''],['순매수(억)','',R.rank==='amt'?'순매수대금(억원)':''],[sub[0],'',sub[1]],[live?'등락률':'평단대비','opt',live?'':'이 주체의 추정 평균단가 대비 현재가']].forEach(function(c){ var x=el('th',c[1],c[0]); if(c[2]) x.title=c[2]; tr.appendChild(x); }); th.appendChild(tr); t.appendChild(th);
+   var tb=el('tbody'); var mx=Math.max.apply(null,rows.map(function(r){return Math.abs(metric(r))}))||1;
    rows.forEach(function(r,i){ var row=el('tr'); var hs=indep(hl[r.code]); if(hs.length>=2) row.className='hl';
      row.appendChild(el('td','no',String(i+1)));
      var nm=el('td','nm'); if(hs.length>=2){ nm.appendChild(el('span','hb','×'+hs.length)); nm.title=hs.join('·')+' 동반 '+(R.dir==='buy'?'순매수':'순매도')+' · 클릭하면 투자자별 매매'; } else nm.title='투자자별 매매 보기';
      nm.appendChild(document.createTextNode(r.name)); nm.appendChild(el('span','cd',r.code));
      nm.addEventListener('click',function(){ if(window.SFLOW) SFLOW.popup(r.code,r.name); }); row.appendChild(nm);
-     var rt=el('td','rt '+(r.amt>0?'pu':'pd'),Math.abs(r.ratio).toFixed(1)+'%'); if(R.sort==='ratio') rt.style.setProperty('--w',Math.max(3,Math.abs(r.ratio)/mx*100).toFixed(0)+'%'); row.appendChild(rt);
-     var am=el('td',(R.sort==='amt'?'rt ':'')+(r.amt>0?'pu':'pd'),fmtEok(r.amt)); if(R.sort==='amt') am.style.setProperty('--w',Math.max(3,Math.abs(r.amt)/mx*100).toFixed(0)+'%'); row.appendChild(am);
+     var am=el('td',(R.rank==='amt'?'rt ':'')+(r.amt>0?'pu':'pd'),fmtEok(r.amt)); if(R.rank==='amt') am.style.setProperty('--w',Math.max(3,Math.abs(r.amt)/mx*100).toFixed(0)+'%'); row.appendChild(am);
+     var mv=R.rank==='cap'?capRatio(r):strength(r); var rt=el('td',(R.rank!=='amt'?'rt ':'')+(r.amt>0?'pu':'pd'),mv==null?'-':Math.abs(mv).toFixed(R.rank==='cap'?2:1)+'%'); if(R.rank!=='amt') rt.style.setProperty('--w',Math.max(3,Math.abs(mv||0)/mx*100).toFixed(0)+'%'); if(R.rank==='cap') rt.title='시가총액 '+(r.mcap>=10000?(r.mcap/10000).toFixed(1)+'조':n0(r.mcap)+'억'); else rt.title='거래대금 '+(r.tv>=10000?(r.tv/10000).toFixed(1)+'조':n0(r.tv)+'억'); row.appendChild(rt);
      if(live) row.appendChild(el('td','opt '+(r.pct>0?'pu':r.pct<0?'pd':''),pctTxt(r.pct)));
      else { var dv=r.avg?(r.price/r.avg-1)*100:null; row.appendChild(el('td','opt '+(dv>0?'pu':dv<0?'pd':''),dv==null?'-':pctTxt(dv))); }
      tb.appendChild(row); });
@@ -3134,15 +3139,15 @@ window.HOME=(function(){
    if(!live&&R.end===kst()&&kstNow().getUTCHours()<18) b.appendChild(el('div','warn','오늘('+kst()+') 확정치는 장 마감 후 저녁에 집계됩니다. 지금 보이는 오늘분은 일부만 반영된 중간 집계이니 오늘 흐름은 [장중 잠정]으로 보세요.'));
    Object.keys(hl).forEach(function(c){ hl[c]=indep(hl[c]); }); var dups=Object.keys(hl).filter(function(c){return hl[c].length>=2}); 
    if(dups.length){ var byCode={}; ks.forEach(function(k){ lists[k].forEach(function(r){ byCode[r.code]=r; }); });
-     dups.sort(function(a,b){ return hl[b].length-hl[a].length||Math.abs(byCode[b].ratio)-Math.abs(byCode[a].ratio); });
+     dups.sort(function(a,b){ return hl[b].length-hl[a].length||Math.abs(metric(byCode[b]))-Math.abs(metric(byCode[a])); });
      var dp=el('div','dup'); dp.appendChild(el('b',null,'동반 '+(R.dir==='buy'?'순매수':'순매도')+' · 2곳 이상'));
      dups.forEach(function(c){ var r=byCode[c]; var ch=el('button','dc',r.name); ch.type='button'; ch.appendChild(el('small',null,'×'+hl[c].length+' '+hl[c].join('·'))); ch.title='클릭하면 투자자별 매매'; ch.addEventListener('click',function(){ if(window.SFLOW) SFLOW.popup(r.code,r.name); }); dp.appendChild(ch); });
      b.appendChild(dp); }
    else b.appendChild(el('div','warn','2곳 이상의 주체 상위에 같이 오른 종목이 없습니다.'));
    var g=el('div','rkg'); ks.forEach(function(k){ g.appendChild(table(k,lists[k],hl)); }); b.appendChild(g);
    var st=document.getElementById('rk-st'); if(st) st.textContent=live?((any.at||'')+' 기준 · 전 종목 '+n0(any.n)+'개 잠정치 · 60초 갱신'+(any.open?'':' · 장 마감')):((R.start===R.end?pdate(R.start.replace(/-/g,'')):pdate(R.start.replace(/-/g,''))+'~'+pdate(R.end.replace(/-/g,'')))+' 확정 · '+wdCount(R.start,R.end)+'영업일 · KRX+NXT 통합');
-   b.appendChild(el('p','note',live?'비중 = 주체의 순매수 수량 ÷ 종목의 오늘 거래량. 거래소가 장중에 내보내는 투자자별 잠정 집계(전 종목, 증권사 경유)이며 마감 후 확정치와 차이가 날 수 있습니다. 노란 행은 2곳 이상의 주체가 함께 순매수(순매도)한 종목. 종목명을 누르면 투자자별 매매가 열립니다.'
-     :'비중 = 주체의 기간 순매수 수량 ÷ 종목의 기간 누적 거래량. 확정치(KRX+NXT 통합)는 시장별로 순매수 금액 상위 100종목(코스피·코스닥 각각) 안에서 비중순으로 다시 세운 것이라, 금액이 작은 종목은 비중이 높아도 빠질 수 있습니다. 필터의 거래대금은 일평균 기준(기간에 맞춰 환산). 평단대비 = 이 주체의 기간 추정 평균단가 대비 현재가. 노란 행은 2곳 이상의 주체가 함께 순매수(순매도)한 종목.'));
+   b.appendChild(el('p','note','① 순매수대금 = 돈을 가장 많이 넣은 종목 · ② 순매수강도 = 순매수대금 ÷ 거래대금(그 주체가 거래를 지배하는 종목) · ③ 시총대비 = 순매수대금 ÷ 시가총액(들어온 돈이 주가에 미치는 영향이 큰 종목; 시총 = 상장주식수 × 현재가). '+(live?'거래소가 장중에 내보내는 투자자별 잠정 집계(전 종목, 증권사 경유)이며 거래대금은 거래량×현재가 근사, 마감 후 확정치와 차이가 날 수 있습니다.'
+     :'확정치(KRX+NXT 통합)는 시장별 순매수 금액 상위 100종목(코스피·코스닥 각각) 안에서 다시 세운 것이라 금액이 작은 종목은 강도·시총비가 높아도 빠질 수 있습니다. 기간 거래대금은 기간 거래량×평균단가 근사, 필터의 거래대금은 일평균 기준(기간에 맞춰 환산). 평단대비 = 이 주체의 기간 추정 평균단가 대비 현재가.')+' 노란 행은 2곳 이상의 주체가 함께 순매수(순매도)한 종목. 종목명을 누르면 투자자별 매매가 열립니다.'));
  }
  function open(){ R.vis=true; ctl(); load(); }
  function close(){ R.vis=false; clearTimeout(R.timer); }
