@@ -48,7 +48,7 @@
  --shadow:0 1px 3px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.22);
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink)}
 .wrap{max-width:720px;margin:0 auto;padding:0 16px 72px;position:relative;
  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",
    "Trebuchet MS","Malgun Gothic",sans-serif;
@@ -850,6 +850,7 @@ a.mke:hover .mkt{color:var(--accent)}
 .sf td .prov{font-size:9.5px;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 4px;margin-left:5px}
 .sf .ftbl{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 8px}
 .sf .empty{padding:60px 0;text-align:center;color:var(--muted);font-size:13.5px}
+.sf .note{font-size:11.5px;color:var(--faint);line-height:1.6}
 .sf .lctl .lsw button.lock{opacity:.55}.sf .lctl .lsw button.lock::after{content:' 🔒';font-size:9px}
 @media(max-width:640px){.sf th.opt,.sf td.opt{display:none}}
 </style>
@@ -1173,7 +1174,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 17:40 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 17:48 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2981,7 +2982,7 @@ window.HOME=(function(){
      var px=el('span','px'+(chg>0?' pu':chg<0?' pd':''),n0(price)+' '+(chg>0?'▲':chg<0?'▼':'')+n0(Math.abs(chg||0))+' ('+(pct==null?'-':sgn(pct,2)+'%')+')'); h.appendChild(px);
      var at=(useNx?nx.at:q.at)||''; h.appendChild(el('span','cd',(at?at.slice(11,16):'')+' 현재가'+(useNx?' · NXT 체결':'')+(q.state==='OPEN'||(nx&&nx.state==='OPEN')?' · 거래 중':' · 마감'))); }
    else { var last=(F.pub&&F.pub.rows&&F.pub.rows[0])||null; if(last&&last.close!=null){ var pc=last.close&&last.chg!=null?last.chg/(last.close-last.chg)*100:null; var px2=el('span','px'+(last.chg>0?' pu':last.chg<0?' pd':''),n0(last.close)+' '+(last.chg>0?'▲':last.chg<0?'▼':'')+n0(Math.abs(last.chg||0))+(pc!=null?' ('+sgn(pc,2)+'%)':'')); h.appendChild(px2); h.appendChild(el('span','cd',last.date.slice(4,6)+'/'+last.date.slice(6,8)+' 종가')); } }
-   h.appendChild(el('span','src',mem?'증권사 집계 · KRX 체결 · 억원 · 회원':'네이버 · 순매수 수량(주) · '+(F.ex==='ALL'?'통합(KRX+NXT)':F.ex)));
+   h.appendChild(el('span','src',mem?'증권사 집계 · KRX 체결 · 억원 · 회원':'네이버 · 순매수 수량(주) · '+(F.ex==='ALL'?(F.pub&&F.pub.fallback?'KRX(NXT 미거래 종목)':'통합(KRX+NXT)'):F.ex)));
  }
  function drawChart(rows,subj,mem){
    var ch=root().querySelector('#sf-chart'); if(!ch) return; var old=ch.querySelector('svg'); if(old) old.remove(); var msg=ch.querySelector('.lmsg'); if(msg) msg.remove(); var tip=ch.querySelector('.ltip');
