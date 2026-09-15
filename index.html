@@ -1291,7 +1291,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 22:44 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 22:48 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3553,12 +3553,6 @@ window.HOME=(function(){
    t.appendChild(tb); tw.appendChild(t); tw.style.marginTop='0';
    var fw=el('div'); fw.appendChild(tw); fw.appendChild(el('p','note','표는 위 범례에서 켠 진료과목만, 기간 안의 월(최대 36개월)을 최신순으로. 지표 [소비액|소비건수|건당 소비액]에 따라 값이 바뀝니다.'));
    b.appendChild(fold('mtbl','월별 표',fw,false));
-   // 진료과목 비중(최근 월)
-   var s1b=el('div','sec'); s1b.appendChild(el('h3',null,'진료과목별 비중 · '+ymTxt(lm))); s1b.appendChild(el('small',null,'소비액 기준 · 전년 동월 비중과 비교')); b.appendChild(s1b);
-   var tw2=el('div','tw'); var t2=el('table'), th2=el('thead'), tr2=el('tr'); ['진료과목','소비액','비중','전년 비중','건수','건당 소비액','소비액 YoY','건수 YoY'].forEach(function(h){tr2.appendChild(el('th',null,h))}); th2.appendChild(tr2); t2.appendChild(th2); var tb2=el('tbody');
-   mNames.slice(1).forEach(function(n){ var c=m.cats[n]; var r=el('tr'); r.appendChild(el('td','nm',n)); r.appendChild(el('td',null,eok(c.amt[lm]))); r.appendChild(el('td',null,(c.amt_rate[lm]||0).toFixed(1)+'%')); r.appendChild(el('td',null,c.amt_rate[prevY(lm)]==null?'—':c.amt_rate[prevY(lm)].toFixed(1)+'%')); r.appendChild(el('td',null,man(c.cnt[lm])+'건')); r.appendChild(el('td',null,c.amt[lm]&&c.cnt[lm]?eok(c.amt[lm]/c.cnt[lm]):'-'));
-     var ya=yoy(c.amt,lm), yc=yoy(c.cnt,lm); r.appendChild(el('td',cls(ya),pct(ya))); r.appendChild(el('td',cls(yc),pct(yc))); tb2.appendChild(r); });
-   t2.appendChild(tb2); tw2.appendChild(t2); b.appendChild(tw2);
    // ── ② 방한 외래관광객
    var s2=el('div','sec'); s2.appendChild(el('h3',null,'② 방한 외래관광객')); s2.appendChild(el('small',null,'월별 · 국적별(55개국) · 승무원 포함 전체 기준')); b.appendChild(s2);
    var c2=el('div','lctl'); c2.appendChild(grp('보기',sw([['n','인원'],['yoy','전년 동월 대비 %']],T.vMode,function(x){T.vMode=x; save(); render();}))); b.appendChild(c2);
@@ -3573,7 +3567,7 @@ window.HOME=(function(){
    var tot12=sum(v.total,last12), totp12=sum(v.total,prev12);
    var r0=el('tr'); r0.appendChild(el('td',null,'')); r0.appendChild(el('td','nm','전체')); r0.appendChild(el('td',null,'')); r0.appendChild(el('td',null,n0(v.total[lv]))); r0.appendChild(el('td',null,'100%')); var y0=yoy(v.total,lv); r0.appendChild(el('td',cls(y0),pct(y0))); var mm0=v.total[pm]?(v.total[lv]/v.total[pm]-1)*100:null; r0.appendChild(el('td',cls(mm0),pct(mm0))); r0.appendChild(el('td',null,n0(tot12))); var cy0=tot12&&totp12?(tot12/totp12-1)*100:null; r0.appendChild(el('td',cls(cy0),pct(cy0))); tb3.appendChild(r0);
    v.rank.slice(0,20).forEach(function(n,i){ var s=v.by_nat[n]; var r=el('tr'); r.appendChild(el('td',null,String(i+1))); r.appendChild(el('td','nm',n)); r.appendChild(el('td',null,v.cont_of[n]||'')); r.appendChild(el('td',null,n0(s[lv]))); r.appendChild(el('td',null,(s[lv]/v.total[lv]*100).toFixed(1)+'%')); var y=yoy(s,lv); r.appendChild(el('td',cls(y),pct(y))); var mm=s[pm]?(s[lv]/s[pm]-1)*100:null; r.appendChild(el('td',cls(mm),pct(mm))); var a12=sum(s,last12), p12=sum(s,prev12); r.appendChild(el('td',null,n0(a12))); var cy=a12&&p12?(a12/p12-1)*100:null; r.appendChild(el('td',cls(cy),pct(cy))); tb3.appendChild(r); });
-   t3.appendChild(tb3); tw3.appendChild(t3); tw3.style.marginTop='0'; b.appendChild(fold('vtbl','국적별 표',tw3,true));
+   t3.appendChild(tb3); tw3.appendChild(t3); tw3.style.marginTop='0'; b.appendChild(fold('vtbl','국적별 표',tw3,false));
    // ── ③ 가공 지표 차트
    var s3=el('div','sec'); s3.appendChild(el('h3',null,'③ 가공 지표 · 방한객 1인당 의료 소비')); s3.appendChild(el('small',null,'월별 외국인 의료 소비 ÷ 월별 방한 외래관광객 — 방문객 수와 무관하게 의료 소비 강도가 오르는지 · 진료과목을 골라 비교')); b.appendChild(s3);
    var c3=el('div','lctl'); c3.appendChild(grp('지표',sw([['amt','1인당 소비액 (원)'],['cnt','방한객 대비 소비건수 (%)']],T.pMetric,function(x){T.pMetric=x; save(); render();}))); b.appendChild(c3);
@@ -3585,7 +3579,7 @@ window.HOME=(function(){
    var pmV=v.months[v.months.indexOf(lv)-1];
    mNames.forEach(function(n){ var A=n==='전체'?m.total_amt:(m.cats[n]||{}).amt||{}, K=n==='전체'?m.total_cnt:(m.cats[n]||{}).cnt||{}; function pa(ym){ return v.total[ym]&&A[ym]!=null?A[ym]/v.total[ym]:null; } function pk(ym){ return v.total[ym]&&K[ym]!=null?K[ym]/v.total[ym]*100:null; }
      var a=pa(lv), ap=pa(prevY(lv)), am=pa(pmV), k=pk(lv), kp=pk(prevY(lv)); if(a==null) return; var r=el('tr'); r.appendChild(el('td','nm',n)); var at=el('td',null,eok(a)); at.style.fontWeight='800'; r.appendChild(at); var y=a&&ap?(a/ap-1)*100:null; r.appendChild(el('td',cls(y),pct(y))); var mm=a&&am?(a/am-1)*100:null; r.appendChild(el('td',cls(mm),pct(mm))); r.appendChild(el('td',null,k==null?'-':k.toFixed(2)+'%')); r.appendChild(el('td',cls(k!=null&&kp!=null?k-kp:null),k!=null&&kp!=null?(k-kp>0?'+':'')+(k-kp).toFixed(2)+'%p':'—')); tb4.appendChild(r); });
-   t4.appendChild(tb4); tw4.appendChild(t4); b.appendChild(tw4);
+   t4.appendChild(tb4); tw4.appendChild(t4); tw4.style.marginTop='0'; b.appendChild(fold('ptbl','진료과목별 1인당 표',tw4,false));
    b.appendChild(el('p','note','출처: 한국관광 데이터랩(한국관광공사) — 의료 소비는 신용카드 데이터 기반 외국인 소비액·건수(진료과목별 비율 제공 → 소비액 = 전체 × 비율, 건당 소비액 = 소비액 ÷ 건수), 방한 외래관광객은 UN Tourism 기준 국적별 입국자(승무원 포함). 두 통계의 최신 월이 다를 수 있어 가공 지표는 둘 다 있는 달까지만 계산합니다. 6시간마다 갱신.'));
  }
  function legend(names,sel,onChange){ var lg=el('div','legend'); names.forEach(function(n,i){ var bt=el('button',sel.indexOf(n)>=0?'on':''); bt.type='button'; bt.style.setProperty('--c',C[i%C.length]); bt.appendChild(document.createElement('i')); bt.appendChild(document.createTextNode(n)); bt.addEventListener('click',function(){ var s=sel.slice(); var j=s.indexOf(n); if(j>=0){ if(s.length>1) s.splice(j,1); } else s.push(n); onChange(s); }); lg.appendChild(bt); }); return lg; }
