@@ -960,6 +960,39 @@ a.mke:hover .mkt{color:var(--accent)}
 @media(max-width:700px){.nh th.opt,.nh td.opt{display:none}}
 </style>
 
+<style>
+.mem .sec{margin:18px 0 8px;display:flex;align-items:baseline;gap:10px}.mem .sec h3{margin:0;font-size:14px;font-weight:800;letter-spacing:.02em}.mem .sec small{font-size:11px;color:var(--faint)}
+.mem .mc{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;border-top:3px solid var(--sc,var(--line));position:relative;min-width:0}
+.mem .mcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.mem .mc .mn{font-size:12px;font-weight:700;color:var(--ink)}.mem .mc .mr{font-size:10.5px;color:var(--faint);margin-top:2px;min-height:14px}
+.mem .mc .mv{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-top:6px;font-variant-numeric:tabular-nums}.mem .mc .mv small{font-size:12px;color:var(--faint);font-weight:600;margin-left:2px}
+.mem .mc .md{font-size:11.5px;margin-top:4px;font-variant-numeric:tabular-nums;color:var(--muted)}.mem .mc .md b{font-weight:800}
+.mem .pu{color:var(--up)}.mem .pd{color:var(--down)}
+.mem .mc svg{display:block;width:100%;height:36px;margin-top:8px}
+.mem .mc .star{position:absolute;right:10px;top:8px;font-size:10px;font-weight:800;color:#facc15;border:1px solid #facc15;border-radius:4px;padding:0 5px}
+.mem table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+.mem .tw{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:auto}
+.mem th{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-align:right;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.mem th:first-child,.mem td:first-child{text-align:left}.mem td{padding:7px 10px;border-bottom:1px solid var(--line2);text-align:right;white-space:nowrap}
+.mem tr:last-child td{border-bottom:0}.mem td.nm{font-weight:700;color:var(--ink)}.mem td .sub{font-size:10.5px;color:var(--faint);margin-left:5px;font-weight:500}
+.mem td.na{color:var(--faint)}
+.mem .bars{display:grid;grid-template-columns:max-content 1fr max-content;gap:4px 10px;align-items:center;font-size:12px;font-variant-numeric:tabular-nums;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.mem .bars .bl{color:var(--muted);white-space:nowrap}.mem .bars .bt{height:10px;position:relative;background:var(--line2);border-radius:3px}.mem .bars .bt i{position:absolute;top:0;bottom:0;border-radius:3px}
+.mem .bars .bv{font-weight:700;text-align:right;min-width:52px}
+.mem .sp{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.mem .sp .mc .mv{font-size:26px}.mem .tag{display:inline-block;font-size:10.5px;font-weight:700;border-radius:4px;padding:2px 7px;margin-top:8px}
+.mem .tag.hot{background:color-mix(in srgb,var(--up) 15%,transparent);color:var(--up)}.mem .tag.cold{background:color-mix(in srgb,var(--down) 15%,transparent);color:var(--down)}
+.mem .chart{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 6px 4px;position:relative}.mem .chart svg{display:block;width:100%;height:auto}
+.mem .chart .tk{font-size:10px;fill:var(--faint);font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}.mem .chart .grid{stroke:var(--line);stroke-width:1}
+.mem .chart .ltip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:11.5px;font-variant-numeric:tabular-nums;display:none;z-index:5;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.mem .chart .ltip b{display:block;margin-bottom:2px}.mem .chart .ltip i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.mem .legend{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.mem .legend button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.mem .legend button i{width:14px;height:3px;border-radius:2px;background:var(--c)}.mem .legend button.on{color:var(--ink);border-color:var(--c)}.mem .legend button:not(.on) i{opacity:.3}
+.mem .note{font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.65}
+.mem .lmsg{color:var(--muted);font-size:13px;padding:40px 0;text-align:center}
+.mem .why{font-size:12px;color:var(--muted);line-height:1.7;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-top:10px}.mem .why b{color:var(--ink)}
+</style>
+
 
 <div id="boot" aria-hidden="true">
  <i class="cr tl"></i><i class="cr tr"></i><i class="cr bl"></i><i class="cr br"></i>
@@ -1040,6 +1073,7 @@ a.mke:hover .mkt{color:var(--accent)}
   <button class="nav" data-p="sd" role="tab">LLM 토큰 가격</button>
   <button class="nav" data-p="or" role="tab">OpenRouter 사용량</button>
   <button class="nav" data-p="gpu" role="tab">GPU 임대료</button>
+  <button class="nav" data-p="mem" role="tab">Memory 가격</button>
  </nav>
 
 <main class="main">
@@ -1175,6 +1209,14 @@ a.mke:hover .mkt{color:var(--accent)}
 </section>
 
 
+<section id="p-mem" class="panel mem" role="tabpanel" hidden>
+ <div class="hint">MEMORY PRICE · DRAMeXchange (TrendForce)</div>
+ <h2>Memory 가격</h2>
+ <div id="mem-top" class="lctl"></div>
+ <div id="mem-body"></div>
+</section>
+
+
 <section id="p-sd" hidden>
  <p class="eyebrow">Silicon Data · LLM Token Expenditure Index</p>
  <h1>LLM 토큰 가격 지수</h1>
@@ -1209,7 +1251,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 20:26 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 20:32 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1279,7 +1321,7 @@ a.mke:hover .mkt{color:var(--accent)}
  var tabs=[].slice.call(document.querySelectorAll('.nav'));
  function show(t){
    tabs.forEach(function(x){x.classList.toggle('on',x===t)});
-   ['home','cal','con','rpt','sd','or','gpu','mkt','flow','watch','sflow','rank','nhigh'].forEach(function(k){
+   ['home','cal','con','rpt','sd','or','gpu','mkt','flow','watch','sflow','rank','nhigh','mem'].forEach(function(k){
      var sec=document.getElementById('p-'+k); if(sec) sec.hidden=(t.dataset.p!==k);
    });
    if(t.dataset.p==='con'||t.dataset.p==='rpt') loadCorps();
@@ -1290,6 +1332,7 @@ a.mke:hover .mkt{color:var(--accent)}
    if(window.SFLOW){ SFLOW.close(); if(t.dataset.p==='sflow') SFLOW.open(); }
    if(window.RANK){ RANK.close(); if(t.dataset.p==='rank') RANK.open(); }
    if(window.NHIGH){ NHIGH.close(); if(t.dataset.p==='nhigh') NHIGH.open(); }
+   if(window.MEMTAB){ MEMTAB.close(); if(t.dataset.p==='mem') MEMTAB.open(); }
    if(t.dataset.p==='rpt'&&!window.__rptLoaded){    // 처음 열면 최신 리포트를 바로 보여줌
      window.__rptLoaded=true; loadReports(1);
    }
@@ -3261,6 +3304,115 @@ window.HOME=(function(){
  document.addEventListener('member-change',function(){ N.data=null; if(N.vis){ ctl(); load(); } });
  var h=(location.hash||'').replace('#',''); if(h==='nhigh') open();
  window.NHIGH={open:open,close:close};
+})();
+</script>
+
+
+<script>
+(function(){
+ var BASE='https://spartan.tail88a1c5.ts.net/pub/';
+ var COLORS=['#22d3ee','#f59e0b','#a78bfa','#34d399','#f472b6','#60a5fa','#fb7185','#fbbf24','#2dd4bf','#c084fc'];
+ var DRAM=[['DDR5 16Gb (2Gx8) 4800/5600','DDR5 16Gb 4800/5600','현재 DDR5 방향성'],['DDR4 16Gb (2Gx8) 3200','DDR4 16Gb 3200','DDR4 공급 부족 · 레거시 가격'],['DDR4 8Gb (1Gx8) 3200','DDR4 8Gb 3200','시장이 전통적으로 보는 대표 현물가']];
+ var DRAM2=[['DDR5 16Gb (2Gx8) eTT','DDR5 16Gb eTT','저가 검사 미완 칩'],['DDR4 16Gb (2Gx8) eTT','DDR4 16Gb eTT',''],['DDR4 8Gb (1Gx8) eTT','DDR4 8Gb eTT',''],['4Gb 512Mx8 1600/1866','DDR3 4Gb 1600/1866','레거시']];
+ var NAND=[['512Gb TLC','512Gb TLC Wafer','가장 중요 — 주류 용량'],['256Gb TLC','256Gb TLC Wafer',''],['128Gb TLC','128Gb TLC Wafer','']];
+ var SPREAD=[['DDR4 16Gb (2Gx8) 3200','DDR4 16Gb 2Gx8','DDR4 16Gb'],['DDR4 8Gb (1Gx8) 3200','DDR4 8Gb 1Gx8','DDR4 8Gb']];   // [현물 항목, 계약 항목, 표시]
+ var M={vis:false,data:null,win:'1D',sel:null,timer:null};
+ function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
+ function f2(v){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:v<10?3:2,maximumFractionDigits:v<10?3:2}); }
+ function pct(v,d){ return v==null?'—':(v>0?'+':'')+(+v).toFixed(d==null?2:d)+'%'; }
+ function cls(v){ return v==null?'':v>0?'pu':v<0?'pd':''; }
+ function tabOn(){ var p=document.getElementById('p-mem'); return p&&!p.hidden; }
+ function hist(key){ return (M.data&&M.data.history&&M.data.history[key])||[]; }
+ function spotRow(grp,item){ var b=M.data.spot[grp]; return b&&b.rows.filter(function(r){return r.item===item})[0]; }
+ function contractRow(grp,item){ var b=M.data.contract[grp]||[]; return b.filter(function(r){return r.item===item})[0]; }
+ function spark(arr,color){ var ns='http://www.w3.org/2000/svg'; var s=document.createElementNS(ns,'svg'); s.setAttribute('viewBox','0 0 200 36'); s.setAttribute('preserveAspectRatio','none');
+   var v=arr.map(function(a){return a[1]}); if(v.length<2){ var ph=el('div',null,'이력 수집 중 · '+v.length+'일째 · 내일부터 선이 그려집니다'); ph.style.cssText='height:36px;margin-top:8px;display:flex;align-items:center;font-size:10.5px;color:var(--faint)'; return ph; }
+   var lo=Math.min.apply(null,v), hi=Math.max.apply(null,v), rg=(hi-lo)||1; var pts=v.map(function(y,i){ return (i/(v.length-1)*200).toFixed(1)+','+(32-(y-lo)/rg*28).toFixed(1); });
+   var p=document.createElementNS(ns,'polyline'); p.setAttribute('points',pts.join(' ')); p.setAttribute('fill','none'); p.setAttribute('stroke',color); p.setAttribute('stroke-width','1.6'); s.appendChild(p); return s; }
+ function perf(key,win){ var h=hist(key); if(!h.length) return null; var last=h[h.length-1]; if(win==='1D'){ var r=lastRow(key); return r&&r.chg!=null?r.chg:null; }
+   var d=new Date(last[0]+'T00:00:00Z'); var t;
+   if(win==='1W') d.setUTCDate(d.getUTCDate()-7); else if(win==='1M') d.setUTCMonth(d.getUTCMonth()-1); else if(win==='3M') d.setUTCMonth(d.getUTCMonth()-3); else if(win==='YTD') d=new Date(Date.UTC(d.getUTCFullYear()-1,11,31));
+   t=d.toISOString().slice(0,10); var base=null; for(var i=h.length-1;i>=0;i--){ if(h[i][0]<=t){ base=h[i]; break; } }
+   if(!base) return null; return base[1]?(last[1]/base[1]-1)*100:null; }
+ function lastRow(key){ var g=key.split('|')[0], it=key.split('|')[1]; return spotRow(g,it); }
+ function card(grp,def,color,star){ var r=spotRow(grp,def[0]); var c=el('div','mc'); c.style.setProperty('--sc',color); if(star) c.appendChild(el('span','star',star));
+   c.appendChild(el('div','mn',def[1])); c.appendChild(el('div','mr',def[2]||''));
+   if(!r){ c.appendChild(el('div','mv','—')); return c; }
+   var mv=el('div','mv','$'+f2(r.avg)); mv.appendChild(el('small',null,'avg')); c.appendChild(mv);
+   var md=el('div','md'); var ch=el('b',cls(r.chg),pct(r.chg)); md.appendChild(ch); md.appendChild(document.createTextNode(' 전 세션 · 고 '+f2(r.high)+' / 저 '+f2(r.low))); c.appendChild(md);
+   c.appendChild(spark(hist(grp+'|'+def[0]),color)); return c; }
+ function render(){
+   var b=document.getElementById('mem-body'), top=document.getElementById('mem-top'); if(!b) return; b.innerHTML=''; top.innerHTML=''; var d=M.data; if(!d){ b.appendChild(el('div','lmsg','불러오는 중…')); return; }
+   var st=el('span'); st.style.cssText='font-size:11.5px;color:var(--faint)'; st.textContent='DRAM 현물 '+((d.spot.dram||{}).update||'-')+' · NAND 웨이퍼 '+((d.spot.wafer||{}).update||'-')+' · 수집 '+(d.updated||'').slice(0,16).replace('T',' ')+' · USD'; top.appendChild(st);
+   // ① DRAM Spot
+   var s1=el('div','sec'); s1.appendChild(el('h3',null,'① DRAM 현물 (Spot)')); s1.appendChild(el('small',null,'매 거래일 18:10 GMT+8 갱신 · 세션 평균가')); b.appendChild(s1);
+   var g1=el('div','mcs'); DRAM.forEach(function(x,i){ g1.appendChild(card('dram',x,COLORS[i])); }); b.appendChild(g1);
+   var g1b=el('div','mcs'); g1b.style.marginTop='10px'; DRAM2.forEach(function(x,i){ g1b.appendChild(card('dram',x,COLORS[3+i])); }); b.appendChild(g1b);
+   // ② NAND Spot
+   var s2=el('div','sec'); s2.appendChild(el('h3',null,'② NAND 현물 (TLC Wafer)')); s2.appendChild(el('small',null,'주 1회(월요일) 갱신 · 세션 평균가')); b.appendChild(s2);
+   var g2=el('div','mcs'); NAND.forEach(function(x,i){ g2.appendChild(card('wafer',x,COLORS[7+i],i===0?'KEY':null)); }); b.appendChild(g2);
+   // ③ Performance
+   var s3=el('div','sec'); s3.appendChild(el('h3',null,'③ 기간 수익률 비교')); s3.appendChild(el('small',null,'1D는 DRAMeXchange 세션 변동, 나머지는 자체 수집 이력('+(d.since||'')+'부터)으로 계산')); b.appendChild(s3);
+   var wins=['1D','1W','1M','3M','YTD']; var all=DRAM.map(function(x){return ['dram',x]}).concat(DRAM2.map(function(x){return ['dram',x]})).concat(NAND.map(function(x){return ['wafer',x]}));
+   var tw=el('div','tw'), t=el('table'), th=el('thead'), tr=el('tr'); tr.appendChild(el('th',null,'항목')); tr.appendChild(el('th',null,'현물 avg')); wins.forEach(function(w){ var x=el('th',null,w); if(w===M.win) x.style.color='var(--accent)'; x.style.cursor='pointer'; x.addEventListener('click',function(){ M.win=w; render(); }); tr.appendChild(x); }); th.appendChild(tr); t.appendChild(th);
+   var tb=el('tbody'); var ready={}; wins.forEach(function(w){ready[w]=0});
+   all.forEach(function(a){ var key=a[0]+'|'+a[1][0]; var r=spotRow(a[0],a[1][0]); var row=el('tr'); var nm=el('td','nm',a[1][1]); nm.appendChild(el('span','sub',a[0]==='dram'?'DRAM':'NAND')); row.appendChild(nm); row.appendChild(el('td',null,r?'$'+f2(r.avg):'—'));
+     wins.forEach(function(w){ var v=perf(key,w); if(v!=null) ready[w]++; var td=el('td',v==null?'na':cls(v),v==null?'—':pct(v,1)); if(v==null) td.title=w==='1D'?'세션 변동 없음':'이력이 아직 '+w+'만큼 쌓이지 않음'; row.appendChild(td); }); tb.appendChild(row); });
+   t.appendChild(tb); tw.appendChild(t); b.appendChild(tw);
+   var bars=el('div','bars'); bars.style.marginTop='10px'; var vals=all.map(function(a){ return [a[1][1], perf(a[0]+'|'+a[1][0],M.win)]; }).filter(function(x){return x[1]!=null});
+   if(vals.length){ vals.sort(function(x,y){return y[1]-x[1]}); var mx=Math.max.apply(null,vals.map(function(x){return Math.abs(x[1])}))||1;
+     vals.forEach(function(x){ bars.appendChild(el('span','bl',x[0])); var bt=el('div','bt'); var i=document.createElement('i'); var w=Math.abs(x[1])/mx*50; i.style.width=w+'%'; i.style.left=(x[1]>=0?50:50-w)+'%'; i.style.background=x[1]>=0?'var(--up)':'var(--down)'; bt.appendChild(i); bars.appendChild(bt); bars.appendChild(el('span','bv '+cls(x[1]),pct(x[1],1))); });
+     var cap=el('div'); cap.style.cssText='grid-column:1/-1;font-size:10.5px;color:var(--faint)'; cap.textContent=M.win+' 기준 · 열 제목(1D/1W/1M/3M/YTD)을 누르면 기간이 바뀝니다'; bars.appendChild(cap); b.appendChild(bars); }
+   else { b.appendChild(el('div','why',M.win+' 수익률은 아직 이력이 부족합니다. DRAMeXchange 는 과거 시세 차트를 유료 회원에게만 열어서, '+(d.since||'오늘')+'부터 매일 수집한 값으로 채워집니다(1W 는 1주 뒤, 1M 은 한 달 뒤부터).')); }
+   // ④ Contract
+   var s4=el('div','sec'); s4.appendChild(el('h3',null,'④ 계약가 (Contract)')); s4.appendChild(el('small',null,'반월(1H/2H) 단위 · TrendForce 무료 공개분')); b.appendChild(s4);
+   var cw=el('div','tw'), ct=el('table'), cth=el('thead'), ctr=el('tr'); ['항목','구분','계약 avg','고 / 저','전기 대비','기준'].forEach(function(h){ctr.appendChild(el('th',null,h))}); cth.appendChild(ctr); ct.appendChild(cth); var ctb=el('tbody');
+   (d.contract.dram||[]).forEach(function(r){ var row=el('tr'); row.appendChild(el('td','nm',r.item)); row.appendChild(el('td',null,'DRAM')); row.appendChild(el('td',null,'$'+f2(r.avg))); row.appendChild(el('td',null,f2(r.high)+' / '+f2(r.low))); row.appendChild(el('td',cls(r.chg),pct(r.chg))); row.appendChild(el('td',null,(r.half?r.half+'H ':'')+(r.date||''))); ctb.appendChild(row); });
+   (d.contract.flash||[]).forEach(function(r){ var row=el('tr'); row.appendChild(el('td','nm',r.item)); row.appendChild(el('td',null,'NAND')); row.appendChild(el('td',null,'$'+f2(r.avg))); row.appendChild(el('td',null,f2(r.high)+' / '+f2(r.low))); row.appendChild(el('td',cls(r.chg),pct(r.chg))); row.appendChild(el('td',null,(r.half?r.half+'H ':'')+(r.date||''))); ctb.appendChild(row); });
+   if(!ctb.children.length){ var er=el('tr'); er.appendChild(el('td','na','계약가 데이터 없음')); ctb.appendChild(er); }
+   ct.appendChild(ctb); cw.appendChild(ct); b.appendChild(cw);
+   b.appendChild(el('p','note','DDR5 16Gb 와 NAND TLC 웨이퍼(512Gb 등) 계약가는 TrendForce 유료(MI) 회원에게만 공개돼 여기엔 없습니다. 무료 공개분은 DDR4 16Gb·8Gb·4Gb, DDR3, SO-DIMM 모듈과 NAND MLC 레거시 칩입니다. 계약가는 원칙적으로 월 2회(반월) 갱신되며 공개는 늦게 반영될 수 있습니다.'));
+   // ⑤ Spread
+   var s5=el('div','sec'); s5.appendChild(el('h3',null,'⑤ Spot ↔ Contract 스프레드')); s5.appendChild(el('small',null,'Spot Premium = Spot ÷ Contract − 1')); b.appendChild(s5);
+   var sp=el('div','sp');
+   SPREAD.forEach(function(x,i){ var s=spotRow('dram',x[0]), c=contractRow('dram',x[1]); var m=el('div','mc'); m.style.setProperty('--sc',COLORS[i+1]); m.appendChild(el('div','mn',x[2]+' · Spot Premium'));
+     if(!s||!c||!c.avg){ m.appendChild(el('div','mr','계약가 없음')); m.appendChild(el('div','mv','—')); sp.appendChild(m); return; }
+     var pr=(s.avg/c.avg-1)*100; m.appendChild(el('div','mr','현물 $'+f2(s.avg)+' vs 계약 $'+f2(c.avg)+' ('+(c.half?c.half+'H ':'')+(c.date||'')+')')); m.appendChild(el('div','mv '+cls(pr),pct(pr,1)));
+     m.appendChild(el('span','tag '+(pr>0?'hot':'cold'),pr>0?'Spot > Contract → 단기 수급 강세 · 향후 계약가 상승 압력':'Spot < Contract → 현물 수요 약화 · 계약가 모멘텀 둔화 가능')); sp.appendChild(m); });
+   var nm=el('div','mc'); nm.style.setProperty('--sc',COLORS[8]); nm.appendChild(el('div','mn','NAND 512Gb TLC · Spot Premium')); nm.appendChild(el('div','mr','TLC 웨이퍼 계약가가 무료로 공개되지 않아 계산 불가')); nm.appendChild(el('div','mv','—')); sp.appendChild(nm);
+   b.appendChild(sp);
+   b.appendChild(el('div','why','읽는 법 — <b>Spot > Contract</b>: 현물 시장의 단기 수급이 계약가보다 빠르게 강해진 상태. 다음 분기 계약가 협상에서 인상 압력. <b>Spot < Contract</b>: 현물 수요가 식었거나 재고 부담. 계약가 상승 모멘텀이 둔화될 수 있음. 현물은 전체 거래의 일부(주로 모듈·중소 수요)라 방향의 선행 지표로 보고, 절대 수준은 계약가가 결정합니다.'));
+   b.lastChild.innerHTML=b.lastChild.textContent.replace(/Spot > Contract/,'<b>Spot &gt; Contract</b>').replace(/Spot < Contract/,'<b>Spot &lt; Contract</b>');
+   // ⑥ Chart
+   var s6=el('div','sec'); s6.appendChild(el('h3',null,'⑥ 이력 차트')); s6.appendChild(el('small',null,'첫날=100 · 여러 항목 비교 · 자체 수집분')); b.appendChild(s6);
+   var keys=all.map(function(a){return [a[0]+'|'+a[1][0],a[1][1]]}); if(!M.sel) M.sel=[keys[0][0],keys[1][0],keys[2][0],keys[7][0]];
+   var lg=el('div','legend'); keys.forEach(function(k,i){ var bt=el('button',M.sel.indexOf(k[0])>=0?'on':''); bt.type='button'; bt.style.setProperty('--c',COLORS[i%COLORS.length]); bt.appendChild(document.createElement('i')); bt.appendChild(document.createTextNode(k[1])); bt.addEventListener('click',function(){ var j=M.sel.indexOf(k[0]); if(j>=0) M.sel.splice(j,1); else M.sel.push(k[0]); render(); }); lg.appendChild(bt); }); b.appendChild(lg);
+   b.appendChild(chart(keys));
+   b.appendChild(el('p','note','출처: DRAMeXchange(TrendForce) 홈 공개 표 — DRAM 현물은 거래일 18:10(GMT+8), NAND 웨이퍼·모듈 현물은 주 1회, 계약가는 반월. 단위 USD. 현물 평균은 세션 평균가(Session Average). 이력은 이 사이트가 '+(d.since||'')+'부터 매일 저장한 값이며 그 이전 과거치는 없습니다(DRAMeXchange 이력 차트는 MI 회원 전용).'));
+ }
+ function chart(keys){
+   var W=900,H=260,L=44,R=12,T=12,B=26; var wrap=el('div','chart'); var ns='http://www.w3.org/2000/svg'; var s=document.createElementNS(ns,'svg'); s.setAttribute('viewBox','0 0 '+W+' '+H);
+   var series=M.sel.map(function(k){ var i=keys.map(function(x){return x[0]}).indexOf(k); return {key:k,name:keys[i]?keys[i][1]:k,color:COLORS[i%COLORS.length],h:hist(k)}; }).filter(function(x){return x.h.length});
+   var dates={}; series.forEach(function(x){ x.h.forEach(function(a){ dates[a[0]]=1; }); }); var ds=Object.keys(dates).sort(); if(!ds.length||ds.length<2){ wrap.appendChild(el('div','lmsg',ds.length?'이력 '+ds.length+'일째 — 이틀째부터 선이 그려집니다 (수집 시작 '+ds[0]+')':'선택한 항목의 이력이 없습니다')); return wrap; }
+   var norm=series.map(function(x){ var b=x.h[0][1]||1; var m={}; x.h.forEach(function(a){ m[a[0]]=a[1]/b*100; }); return m; });
+   var lo=Infinity,hi=-Infinity; norm.forEach(function(m){ for(var k in m){ lo=Math.min(lo,m[k]); hi=Math.max(hi,m[k]); } }); var pad=(hi-lo)*0.08||2; lo-=pad; hi+=pad;
+   function X(i){ return L+i/(ds.length-1)*(W-L-R); } function Y(v){ return T+(hi-v)/(hi-lo)*(H-T-B); }
+   for(var g=0;g<=4;g++){ var v=lo+(hi-lo)*g/4; var ln=document.createElementNS(ns,'line'); ln.setAttribute('x1',L); ln.setAttribute('x2',W-R); ln.setAttribute('y1',Y(v)); ln.setAttribute('y2',Y(v)); ln.setAttribute('class','grid'); s.appendChild(ln); var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',L-6); tx.setAttribute('y',Y(v)+3); tx.setAttribute('text-anchor','end'); tx.setAttribute('class','tk'); tx.textContent=v.toFixed(0); s.appendChild(tx); }
+   var step=Math.max(1,Math.ceil(ds.length/8)); ds.forEach(function(dd,i){ if(i%step) return; var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',X(i)); tx.setAttribute('y',H-8); tx.setAttribute('text-anchor','middle'); tx.setAttribute('class','tk'); tx.textContent=dd.slice(2).replace(/-/g,'.'); s.appendChild(tx); });
+   series.forEach(function(x,si){ var pts=[]; ds.forEach(function(dd,i){ var v=norm[si][dd]; if(v!=null) pts.push(X(i).toFixed(1)+','+Y(v).toFixed(1)); }); var p=document.createElementNS(ns,'polyline'); p.setAttribute('points',pts.join(' ')); p.setAttribute('fill','none'); p.setAttribute('stroke',x.color); p.setAttribute('stroke-width','2'); p.setAttribute('stroke-linejoin','round'); s.appendChild(p); });
+   var tip=el('div','ltip'); wrap.appendChild(s); wrap.appendChild(tip);
+   s.addEventListener('mousemove',function(ev){ var r=s.getBoundingClientRect(); var x=(ev.clientX-r.left)/r.width*W; var i=Math.round((x-L)/(W-L-R)*(ds.length-1)); if(i<0||i>=ds.length){ tip.style.display='none'; return; } tip.innerHTML=''; tip.appendChild(el('b',null,ds[i]));
+     series.forEach(function(sr,si){ var v=norm[si][ds[i]]; if(v==null) return; var raw=sr.h.filter(function(a){return a[0]===ds[i]})[0]; var d=el('div'); var ic=document.createElement('i'); ic.style.background=sr.color; d.appendChild(ic); d.appendChild(document.createTextNode(sr.name+' '+v.toFixed(1)+(raw?' ($'+f2(raw[1])+')':''))); tip.appendChild(d); });
+     tip.style.display='block'; var tx=ev.clientX-r.left+12; if(tx+tip.offsetWidth>r.width) tx=ev.clientX-r.left-tip.offsetWidth-12; tip.style.left=tx+'px'; tip.style.top=(ev.clientY-r.top+10)+'px'; });
+   s.addEventListener('mouseleave',function(){ tip.style.display='none'; });
+   return wrap; }
+ function load(){ clearTimeout(M.timer); if(!M.vis||!tabOn()) return; if(window.LOADBAR) LOADBAR.start();
+   fetch(BASE+'memory.json?v='+Math.floor(Date.now()/3e5)).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }).then(function(d){ if(window.LOADBAR) LOADBAR.done(); M.data=d; render(); M.timer=setTimeout(load,15*60000); })
+     .catch(function(e){ if(window.LOADBAR) LOADBAR.done(); var b=document.getElementById('mem-body'); if(b){ b.innerHTML=''; b.appendChild(el('div','lmsg','데이터를 못 받았습니다 · '+e.message)); } }); }
+ function open(){ M.vis=true; render(); load(); }
+ function close(){ M.vis=false; clearTimeout(M.timer); }
+ var h=(location.hash||'').replace('#',''); if(h==='mem') open();
+ window.MEMTAB={open:open,close:close};
 })();
 </script>
 
