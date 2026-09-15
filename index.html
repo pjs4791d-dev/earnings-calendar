@@ -1002,6 +1002,27 @@ a.mke:hover .mkt{color:var(--accent)}
 .mem .why{font-size:12px;color:var(--muted);line-height:1.7;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-top:10px}.mem .why b{color:var(--ink)}
 </style>
 
+<style>
+.tr .sec{margin:18px 0 8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.tr .sec h3{margin:0;font-size:14px;font-weight:800}.tr .sec small{font-size:11px;color:var(--faint)}
+.tr .kc{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.tr .k{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:11px 13px;border-top:3px solid var(--sc,var(--line));min-width:0}
+.tr .k .kn{font-size:11.5px;font-weight:700;color:var(--muted)}.tr .k .kv{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-top:5px;font-variant-numeric:tabular-nums}.tr .k .kv small{font-size:11px;color:var(--faint);font-weight:600;margin-left:3px}
+.tr .k .kd{font-size:11.5px;margin-top:4px;color:var(--muted);font-variant-numeric:tabular-nums}.tr .k .kd b{font-weight:800}
+.tr .pu{color:var(--up)}.tr .pd{color:var(--down)}
+.tr .chart{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 6px 4px;position:relative}.tr .chart svg{display:block;width:100%;height:auto}
+.tr .chart .tk{font-size:10px;fill:var(--faint);font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}.tr .chart .grid{stroke:var(--line);stroke-width:1}
+.tr .chart .ltip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:11.5px;font-variant-numeric:tabular-nums;display:none;z-index:5;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.tr .chart .ltip b{display:block;margin-bottom:2px}.tr .chart .ltip i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.tr .legend{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.tr .legend button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.tr .legend button i{width:14px;height:3px;border-radius:2px;background:var(--c)}.tr .legend button.on{color:var(--ink);border-color:var(--c)}.tr .legend button:not(.on) i{opacity:.3}
+.tr table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}.tr .tw{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:auto}
+.tr th{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-align:right;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tr th:first-child,.tr td:first-child{text-align:left}.tr td{padding:6px 10px;border-bottom:1px solid var(--line2);text-align:right;white-space:nowrap}.tr tr:last-child td{border-bottom:0}
+.tr td.nm{font-weight:700;color:var(--ink)}.tr td .sub{font-size:10.5px;color:var(--faint);margin-left:5px;font-weight:500}
+.tr .note{font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.65}.tr .lmsg{color:var(--muted);font-size:13px;padding:40px 0;text-align:center}
+.tr .lctl{margin:0 0 8px}
+</style>
+
 
 <div id="boot" aria-hidden="true">
  <i class="cr tl"></i><i class="cr tr"></i><i class="cr bl"></i><i class="cr br"></i>
@@ -1083,6 +1104,7 @@ a.mke:hover .mkt{color:var(--accent)}
   <button class="nav" data-p="or" role="tab">OpenRouter 사용량</button>
   <button class="nav" data-p="gpu" role="tab">GPU 임대료</button>
   <button class="nav" data-p="mem" role="tab">Memory 가격</button>
+  <button class="nav" data-p="tour" role="tab">관광·의료 데이터</button>
  </nav>
 
 <main class="main">
@@ -1226,6 +1248,14 @@ a.mke:hover .mkt{color:var(--accent)}
 </section>
 
 
+<section id="p-tour" class="panel tr" role="tabpanel" hidden>
+ <div class="hint">INBOUND TOURISM · MEDICAL SPEND · 한국관광 데이터랩</div>
+ <h2>관광·의료 데이터</h2>
+ <div id="tr-top" class="lctl"></div>
+ <div id="tr-body"></div>
+</section>
+
+
 <section id="p-sd" hidden>
  <p class="eyebrow">Silicon Data · LLM Token Expenditure Index</p>
  <h1>LLM 토큰 가격 지수</h1>
@@ -1260,7 +1290,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 21:48 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 21:54 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1330,7 +1360,7 @@ a.mke:hover .mkt{color:var(--accent)}
  var tabs=[].slice.call(document.querySelectorAll('.nav'));
  function show(t){
    tabs.forEach(function(x){x.classList.toggle('on',x===t)});
-   ['home','cal','con','rpt','sd','or','gpu','mkt','flow','watch','sflow','rank','nhigh','mem'].forEach(function(k){
+   ['home','cal','con','rpt','sd','or','gpu','mkt','flow','watch','sflow','rank','nhigh','mem','tour'].forEach(function(k){
      var sec=document.getElementById('p-'+k); if(sec) sec.hidden=(t.dataset.p!==k);
    });
    if(t.dataset.p==='con'||t.dataset.p==='rpt') loadCorps();
@@ -1342,6 +1372,7 @@ a.mke:hover .mkt{color:var(--accent)}
    if(window.RANK){ RANK.close(); if(t.dataset.p==='rank') RANK.open(); }
    if(window.NHIGH){ NHIGH.close(); if(t.dataset.p==='nhigh') NHIGH.open(); }
    if(window.MEMTAB){ MEMTAB.close(); if(t.dataset.p==='mem') MEMTAB.open(); }
+   if(window.TOURTAB){ TOURTAB.close(); if(t.dataset.p==='tour') TOURTAB.open(); }
    if(t.dataset.p==='rpt'&&!window.__rptLoaded){    // 처음 열면 최신 리포트를 바로 보여줌
      window.__rptLoaded=true; loadReports(1);
    }
@@ -3446,6 +3477,110 @@ window.HOME=(function(){
  function close(){ M.vis=false; clearTimeout(M.timer); }
  var h=(location.hash||'').replace('#',''); if(h==='mem') open();
  window.MEMTAB={open:open,close:close};
+})();
+</script>
+
+
+<script>
+(function(){
+ var BASE='https://spartan.tail88a1c5.ts.net/pub/';
+ var C=['#22d3ee','#f59e0b','#a78bfa','#34d399','#f472b6','#60a5fa','#fb7185','#fbbf24','#2dd4bf','#c084fc','#f97316','#94a3b8'];
+ var T={vis:false,data:null,mMetric:'amt',mSel:['전체','피부과','성형외과','약국'],mYears:3,vSel:['전체','중국','일본','대만','미국'],vYears:3,vMode:'n',timer:null};
+ try{ var sv=JSON.parse(localStorage.getItem('tr_set')||'{}'); ['mMetric','mSel','mYears','vSel','vYears','vMode'].forEach(function(k){ if(sv[k]!=null) T[k]=sv[k]; }); }catch(e){}
+ function save(){ try{ localStorage.setItem('tr_set',JSON.stringify({mMetric:T.mMetric,mSel:T.mSel,mYears:T.mYears,vSel:T.vSel,vYears:T.vYears,vMode:T.vMode})); }catch(e){} }
+ function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
+ function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
+ function eok(v){ return v==null?'-':(Math.abs(v)>=1e12?(v/1e12).toFixed(2)+'조':Math.abs(v)>=1e8?n0(v/1e8,Math.abs(v)<1e10?1:0)+'억':n0(v/1e4)+'만')+'원'; }
+ function man(v){ return v==null?'-':Math.abs(v)>=1e4?n0(v/1e4,1)+'만':n0(v); }
+ function pct(v,d){ return v==null||!isFinite(v)?'—':(v>0?'+':'')+v.toFixed(d==null?1:d)+'%'; }
+ function cls(v){ return v==null||!isFinite(v)?'':v>0?'pu':v<0?'pd':''; }
+ function ymTxt(ym){ return ym.slice(0,4)+'.'+ym.slice(4,6); }
+ function prevY(ym){ return String(+ym.slice(0,4)-1)+ym.slice(4,6); }
+ function tabOn(){ var p=document.getElementById('p-tour'); return p&&!p.hidden; }
+ function sw(opts,cur,set){ var w=el('span','lsw'); opts.forEach(function(o){ var b=el('button',String(o[0])===String(cur)?'on':'',o[1]); b.type='button'; b.addEventListener('click',function(){ [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); }); w.appendChild(b); }); return w; }
+ function grp(label,node){ var g=el('span'); g.appendChild(el('span','llab',label+' ')); g.appendChild(node); return g; }
+ // 의료: 시리즈 값 (amt 원 / cnt 건 / per 원)
+ function mSeries(name){ var m=T.data.medical; var out={}; m.months.forEach(function(ym){ var a=name==='전체'?m.total_amt[ym]:(m.cats[name]||{amt:{}}).amt[ym], c=name==='전체'?m.total_cnt[ym]:(m.cats[name]||{cnt:{}}).cnt[ym]; out[ym]=T.mMetric==='amt'?a:T.mMetric==='cnt'?c:(a&&c?a/c:null); }); return out; }
+ function vSeries(name){ var v=T.data.visitors; return name==='전체'?v.total:(v.by_nat[name]||v.by_cont[name]||{}); }
+ function yoy(ser,ym){ var a=ser[ym], b=ser[prevY(ym)]; return a!=null&&b?(a/b-1)*100:null; }
+ function card(name,val,sub,color,c2){ var k=el('div','k'); k.style.setProperty('--sc',color); k.appendChild(el('div','kn',name)); var v=el('div','kv',val[0]); if(val[1]) v.appendChild(el('small',null,val[1])); k.appendChild(v); if(sub){ var d=el('div','kd'); d.appendChild(el('b',c2||'',sub[0])); d.appendChild(document.createTextNode(sub[1])); k.appendChild(d); } return k; }
+ function render(){
+   var b=document.getElementById('tr-body'), top=document.getElementById('tr-top'); if(!b) return; b.innerHTML=''; top.innerHTML=''; var d=T.data; if(!d){ b.appendChild(el('div','lmsg','불러오는 중…')); return; }
+   var m=d.medical, v=d.visitors, lm=m.months[m.months.length-1], lv=v.months[v.months.length-1];
+   var st=el('span'); st.style.cssText='font-size:11.5px;color:var(--faint)'; st.textContent='의료 소비 '+ymTxt(lm)+'까지 · 방한객 '+ymTxt(lv)+'까지 · 수집 '+(d.updated||'').slice(0,16).replace('T',' ')+' · 출처 한국관광 데이터랩'; top.appendChild(st);
+   // ── KPI
+   var s0=el('div','sec'); s0.appendChild(el('h3',null,'최근 월 요약')); s0.appendChild(el('small',null,'괄호 안은 전년 동월 대비')); b.appendChild(s0);
+   var kc=el('div','kc');
+   var vt=v.total[lv], vy=yoy(v.total,lv); kc.appendChild(card('방한 외래관광객 · '+ymTxt(lv),[man(vt),'명'],[pct(vy),' YoY · 전월 '+man(v.total[v.months[v.months.length-2]])],C[5],cls(vy)));
+   [['전체','외국인 의료 소비액',C[0]],['피부과','피부과 소비액',C[1]],['성형외과','성형외과 소비액',C[2]],['약국','약국 소비액',C[3]]].forEach(function(x){ T.mMetric='amt'; var s=mSeries(x[0]); var y=yoy(s,lm); var cnt=x[0]==='전체'?m.total_cnt[lm]:(m.cats[x[0]]||{cnt:{}}).cnt[lm]; var per=s[lm]&&cnt?s[lm]/cnt:null;
+     kc.appendChild(card(x[1]+' · '+ymTxt(lm),[eok(s[lm]),''],[pct(y),' YoY · '+man(cnt)+'건 · 건당 '+eok(per)],x[2],cls(y))); });
+   try{ var sv2=JSON.parse(localStorage.getItem('tr_set')||'{}'); T.mMetric=sv2.mMetric||'amt'; }catch(e){ T.mMetric='amt'; }
+   var per1=vt&&m.total_amt[lv]?m.total_amt[lv]/vt:null, per1p=v.total[prevY(lv)]&&m.total_amt[prevY(lv)]?m.total_amt[prevY(lv)]/v.total[prevY(lv)]:null; var py=per1&&per1p?(per1/per1p-1)*100:null;
+   kc.appendChild(card('방한객 1인당 의료 소비액 · '+ymTxt(lv),[eok(per1),''],[pct(py),' YoY · 의료 소비액 ÷ 방한객 (가공)'],C[8],cls(py)));
+   var pen=vt&&m.total_cnt[lv]?m.total_cnt[lv]/vt*100:null, penp=v.total[prevY(lv)]&&m.total_cnt[prevY(lv)]?m.total_cnt[prevY(lv)]/v.total[prevY(lv)]*100:null;
+   kc.appendChild(card('방한객 대비 의료 소비건수 · '+ymTxt(lv),[pen==null?'-':pen.toFixed(1)+'%',''],[penp==null?'—':(pen-penp>0?'+':'')+(pen-penp).toFixed(1)+'%p',' YoY · 소비건수 ÷ 방한객 (가공)'],C[9],cls(pen-penp)));
+   b.appendChild(kc);
+   // ── ① 의료 소비
+   var s1=el('div','sec'); s1.appendChild(el('h3',null,'① 외국인 의료 소비 (신용카드)')); s1.appendChild(el('small',null,'월별 · 진료과목별 · 소비액은 전체 소비액 × 진료과목 비율')); b.appendChild(s1);
+   var c1=el('div','lctl'); c1.appendChild(grp('지표',sw([['amt','소비액'],['cnt','소비건수'],['per','건당 소비액']],T.mMetric,function(x){T.mMetric=x; save(); render();}))); c1.appendChild(grp('기간',sw([[2,'2년'],[3,'3년'],[5,'5년'],[9,'전체']],T.mYears,function(x){T.mYears=+x; save(); render();}))); b.appendChild(c1);
+   var mNames=['전체'].concat(Object.keys(m.cats).sort(function(a,c){ return (m.cats[c].amt[lm]||0)-(m.cats[a].amt[lm]||0); }));
+   b.appendChild(legend(mNames,T.mSel,function(sel){T.mSel=sel; save(); render();}));
+   var mons=m.months.slice(-12*T.mYears); b.appendChild(chart(mons,T.mSel.map(function(n){ return {name:n,color:C[mNames.indexOf(n)%C.length],s:mSeries(n)}; }),T.mMetric==='cnt'?function(x){return man(x)+'건'}:function(x){return eok(x)}));
+   // 표: 최근 13개월
+   var tw=el('div','tw'); tw.style.marginTop='10px'; var t=el('table'), th=el('thead'), tr=el('tr'); tr.appendChild(el('th',null,'월')); ['전체','피부과','성형외과','약국'].forEach(function(n){ tr.appendChild(el('th',null,n)); tr.appendChild(el('th',null,'YoY')); }); th.appendChild(tr); t.appendChild(th); var tb=el('tbody');
+   var sers={}; ['전체','피부과','성형외과','약국'].forEach(function(n){ sers[n]=mSeries(n); });
+   m.months.slice(-13).reverse().forEach(function(ym){ var r=el('tr'); r.appendChild(el('td','nm',ymTxt(ym))); ['전체','피부과','성형외과','약국'].forEach(function(n){ var s=sers[n]; var y=yoy(s,ym); r.appendChild(el('td',null,T.mMetric==='cnt'?man(s[ym])+'건':eok(s[ym]))); r.appendChild(el('td',cls(y),pct(y))); }); tb.appendChild(r); });
+   t.appendChild(tb); tw.appendChild(t); b.appendChild(tw);
+   // 진료과목 비중(최근 월)
+   var s1b=el('div','sec'); s1b.appendChild(el('h3',null,'진료과목별 비중 · '+ymTxt(lm))); s1b.appendChild(el('small',null,'소비액 기준 · 전년 동월 비중과 비교')); b.appendChild(s1b);
+   var tw2=el('div','tw'); var t2=el('table'), th2=el('thead'), tr2=el('tr'); ['진료과목','소비액','비중','전년 비중','건수','건당 소비액','소비액 YoY','건수 YoY'].forEach(function(h){tr2.appendChild(el('th',null,h))}); th2.appendChild(tr2); t2.appendChild(th2); var tb2=el('tbody');
+   mNames.slice(1).forEach(function(n){ var c=m.cats[n]; var r=el('tr'); r.appendChild(el('td','nm',n)); r.appendChild(el('td',null,eok(c.amt[lm]))); r.appendChild(el('td',null,(c.amt_rate[lm]||0).toFixed(1)+'%')); r.appendChild(el('td',null,c.amt_rate[prevY(lm)]==null?'—':c.amt_rate[prevY(lm)].toFixed(1)+'%')); r.appendChild(el('td',null,man(c.cnt[lm])+'건')); r.appendChild(el('td',null,c.amt[lm]&&c.cnt[lm]?eok(c.amt[lm]/c.cnt[lm]):'-'));
+     var ya=yoy(c.amt,lm), yc=yoy(c.cnt,lm); r.appendChild(el('td',cls(ya),pct(ya))); r.appendChild(el('td',cls(yc),pct(yc))); tb2.appendChild(r); });
+   t2.appendChild(tb2); tw2.appendChild(t2); b.appendChild(tw2);
+   // ── ② 방한 외래관광객
+   var s2=el('div','sec'); s2.appendChild(el('h3',null,'② 방한 외래관광객')); s2.appendChild(el('small',null,'월별 · 국적별(55개국) · 승무원 포함 전체 기준')); b.appendChild(s2);
+   var c2=el('div','lctl'); c2.appendChild(grp('보기',sw([['n','인원'],['yoy','전년 동월 대비 %']],T.vMode,function(x){T.vMode=x; save(); render();}))); c2.appendChild(grp('기간',sw([[2,'2년'],[3,'3년'],[5,'5년'],[9,'전체']],T.vYears,function(x){T.vYears=+x; save(); render();}))); b.appendChild(c2);
+   var vNames=['전체'].concat(v.rank.slice(0,14)).concat(Object.keys(v.by_cont));
+   b.appendChild(legend(vNames,T.vSel,function(sel){T.vSel=sel; save(); render();}));
+   var vmons=v.months.slice(-12*T.vYears);
+   b.appendChild(chart(vmons,T.vSel.map(function(n){ var s=vSeries(n); var out=s; if(T.vMode==='yoy'){ out={}; Object.keys(s).forEach(function(ym){ var y=yoy(s,ym); if(y!=null) out[ym]=y; }); } return {name:n,color:C[vNames.indexOf(n)%C.length],s:out}; }),T.vMode==='yoy'?function(x){return pct(x)}:function(x){return man(x)+'명'}));
+   // 국적 표
+   var tw3=el('div','tw'); tw3.style.marginTop='10px'; var t3=el('table'), th3=el('thead'), tr3=el('tr'); ['순위','국적','대륙',ymTxt(lv)+' 인원','비중','YoY','전월비','12개월 누적','누적 YoY'].forEach(function(h){tr3.appendChild(el('th',null,h))}); th3.appendChild(tr3); t3.appendChild(th3); var tb3=el('tbody');
+   var pm=v.months[v.months.length-2]; var last12=v.months.slice(-12), prev12=last12.map(prevY);
+   function sum(s,ms){ var z=0, ok=false; ms.forEach(function(ym){ if(s[ym]!=null){ z+=s[ym]; ok=true; } }); return ok?z:null; }
+   var tot12=sum(v.total,last12), totp12=sum(v.total,prev12);
+   var r0=el('tr'); r0.appendChild(el('td',null,'')); r0.appendChild(el('td','nm','전체')); r0.appendChild(el('td',null,'')); r0.appendChild(el('td',null,n0(v.total[lv]))); r0.appendChild(el('td',null,'100%')); var y0=yoy(v.total,lv); r0.appendChild(el('td',cls(y0),pct(y0))); var mm0=v.total[pm]?(v.total[lv]/v.total[pm]-1)*100:null; r0.appendChild(el('td',cls(mm0),pct(mm0))); r0.appendChild(el('td',null,n0(tot12))); var cy0=tot12&&totp12?(tot12/totp12-1)*100:null; r0.appendChild(el('td',cls(cy0),pct(cy0))); tb3.appendChild(r0);
+   v.rank.slice(0,20).forEach(function(n,i){ var s=v.by_nat[n]; var r=el('tr'); r.appendChild(el('td',null,String(i+1))); r.appendChild(el('td','nm',n)); r.appendChild(el('td',null,v.cont_of[n]||'')); r.appendChild(el('td',null,n0(s[lv]))); r.appendChild(el('td',null,(s[lv]/v.total[lv]*100).toFixed(1)+'%')); var y=yoy(s,lv); r.appendChild(el('td',cls(y),pct(y))); var mm=s[pm]?(s[lv]/s[pm]-1)*100:null; r.appendChild(el('td',cls(mm),pct(mm))); var a12=sum(s,last12), p12=sum(s,prev12); r.appendChild(el('td',null,n0(a12))); var cy=a12&&p12?(a12/p12-1)*100:null; r.appendChild(el('td',cls(cy),pct(cy))); tb3.appendChild(r); });
+   t3.appendChild(tb3); tw3.appendChild(t3); b.appendChild(tw3);
+   // ── ③ 가공 지표 차트
+   var s3=el('div','sec'); s3.appendChild(el('h3',null,'③ 가공 지표 · 방한객 1인당 의료 소비액')); s3.appendChild(el('small',null,'월별 외국인 의료 소비액 ÷ 월별 방한 외래관광객 (원) — 방문객 수와 무관하게 의료 소비 강도가 오르는지')); b.appendChild(s3);
+   var per={}, perS={}, perP={}, perPh={}; v.months.forEach(function(ym){ if(v.total[ym]&&m.total_amt[ym]) per[ym]=m.total_amt[ym]/v.total[ym]; if(v.total[ym]&&m.cats['피부과']&&m.cats['피부과'].amt[ym]) perS[ym]=m.cats['피부과'].amt[ym]/v.total[ym]; if(v.total[ym]&&m.cats['성형외과']&&m.cats['성형외과'].amt[ym]) perP[ym]=m.cats['성형외과'].amt[ym]/v.total[ym]; if(v.total[ym]&&m.cats['약국']&&m.cats['약국'].amt[ym]) perPh[ym]=m.cats['약국'].amt[ym]/v.total[ym]; });
+   b.appendChild(chart(v.months.slice(-12*T.mYears),[{name:'전체 의료',color:C[0],s:per},{name:'피부과',color:C[1],s:perS},{name:'성형외과',color:C[2],s:perP},{name:'약국',color:C[3],s:perPh}],function(x){return eok(x)}));
+   b.appendChild(el('p','note','출처: 한국관광 데이터랩(한국관광공사) — 의료 소비는 신용카드 데이터 기반 외국인 소비액·건수(진료과목별 비율 제공 → 소비액 = 전체 × 비율, 건당 소비액 = 소비액 ÷ 건수), 방한 외래관광객은 UN Tourism 기준 국적별 입국자(승무원 포함). 두 통계의 최신 월이 다를 수 있어 가공 지표는 둘 다 있는 달까지만 계산합니다. 6시간마다 갱신.'));
+ }
+ function legend(names,sel,onChange){ var lg=el('div','legend'); names.forEach(function(n,i){ var bt=el('button',sel.indexOf(n)>=0?'on':''); bt.type='button'; bt.style.setProperty('--c',C[i%C.length]); bt.appendChild(document.createElement('i')); bt.appendChild(document.createTextNode(n)); bt.addEventListener('click',function(){ var s=sel.slice(); var j=s.indexOf(n); if(j>=0){ if(s.length>1) s.splice(j,1); } else s.push(n); onChange(s); }); lg.appendChild(bt); }); return lg; }
+ function chart(ds,series,fmt){
+   var W=900,H=280,L=58,R=12,Tp=12,B=26; var wrap=el('div','chart'); var ns='http://www.w3.org/2000/svg'; var s=document.createElementNS(ns,'svg'); s.setAttribute('viewBox','0 0 '+W+' '+H);
+   var lo=Infinity,hi=-Infinity; series.forEach(function(x){ ds.forEach(function(ym){ var v=x.s[ym]; if(v!=null&&isFinite(v)){ lo=Math.min(lo,v); hi=Math.max(hi,v); } }); });
+   if(!isFinite(lo)){ wrap.appendChild(el('div','lmsg','데이터 없음')); return wrap; } if(lo>0&&lo<hi*0.35) lo=0; var pad=(hi-lo)*0.06||1; lo=Math.min(lo,0)===lo?lo-(lo<0?pad:0):lo-pad; hi+=pad;
+   function X(i){ return L+i/Math.max(1,ds.length-1)*(W-L-R); } function Y(v){ return Tp+(hi-v)/(hi-lo)*(H-Tp-B); }
+   for(var g=0;g<=4;g++){ var v=lo+(hi-lo)*g/4; var ln=document.createElementNS(ns,'line'); ln.setAttribute('x1',L); ln.setAttribute('x2',W-R); ln.setAttribute('y1',Y(v)); ln.setAttribute('y2',Y(v)); ln.setAttribute('class','grid'); s.appendChild(ln); var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',L-6); tx.setAttribute('y',Y(v)+3); tx.setAttribute('text-anchor','end'); tx.setAttribute('class','tk'); tx.textContent=fmt(v).replace('원','').replace('명',''); s.appendChild(tx); }
+   if(lo<0&&hi>0){ var z=document.createElementNS(ns,'line'); z.setAttribute('x1',L); z.setAttribute('x2',W-R); z.setAttribute('y1',Y(0)); z.setAttribute('y2',Y(0)); z.setAttribute('stroke','var(--muted)'); z.setAttribute('stroke-width','1'); s.appendChild(z); }
+   var step=Math.max(1,Math.ceil(ds.length/10)); ds.forEach(function(ym,i){ if(i%step) return; var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',X(i)); tx.setAttribute('y',H-8); tx.setAttribute('text-anchor','middle'); tx.setAttribute('class','tk'); tx.textContent=ym.slice(2,4)+'.'+ym.slice(4,6); s.appendChild(tx); });
+   series.forEach(function(x){ var pts=[]; ds.forEach(function(ym,i){ var v=x.s[ym]; if(v!=null&&isFinite(v)) pts.push(X(i).toFixed(1)+','+Y(v).toFixed(1)); }); var p=document.createElementNS(ns,'polyline'); p.setAttribute('points',pts.join(' ')); p.setAttribute('fill','none'); p.setAttribute('stroke',x.color); p.setAttribute('stroke-width','2'); p.setAttribute('stroke-linejoin','round'); s.appendChild(p); });
+   var tip=el('div','ltip'); wrap.appendChild(s); wrap.appendChild(tip);
+   s.addEventListener('mousemove',function(ev){ var r=s.getBoundingClientRect(); var x=(ev.clientX-r.left)/r.width*W; var i=Math.round((x-L)/(W-L-R)*(ds.length-1)); if(i<0||i>=ds.length){ tip.style.display='none'; return; } tip.innerHTML=''; tip.appendChild(el('b',null,ymTxt(ds[i])));
+     series.forEach(function(sr){ var v=sr.s[ds[i]]; if(v==null) return; var d=el('div'); var ic=document.createElement('i'); ic.style.background=sr.color; d.appendChild(ic); d.appendChild(document.createTextNode(sr.name+' '+fmt(v))); tip.appendChild(d); });
+     tip.style.display='block'; var tx=ev.clientX-r.left+12; if(tx+tip.offsetWidth>r.width) tx=ev.clientX-r.left-tip.offsetWidth-12; tip.style.left=tx+'px'; tip.style.top=(ev.clientY-r.top+10)+'px'; });
+   s.addEventListener('mouseleave',function(){ tip.style.display='none'; });
+   return wrap; }
+ function load(){ clearTimeout(T.timer); if(!T.vis||!tabOn()) return; if(window.LOADBAR) LOADBAR.start();
+   fetch(BASE+'tourism.json?v='+Math.floor(Date.now()/36e5)).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }).then(function(d){ if(window.LOADBAR) LOADBAR.done(); T.data=d; render(); T.timer=setTimeout(load,3600e3); })
+     .catch(function(e){ if(window.LOADBAR) LOADBAR.done(); var b=document.getElementById('tr-body'); if(b){ b.innerHTML=''; b.appendChild(el('div','lmsg','데이터를 못 받았습니다 · '+e.message)); } }); }
+ function open(){ T.vis=true; render(); load(); }
+ function close(){ T.vis=false; clearTimeout(T.timer); }
+ var h=(location.hash||'').replace('#',''); if(h==='tour') open();
+ window.TOURTAB={open:open,close:close};
 })();
 </script>
 
