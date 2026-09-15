@@ -1291,7 +1291,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 22:55 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 22:57 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3260,7 +3260,7 @@ window.HOME=(function(){
    var fresh={}, ferr={}, left=subjs.length; R.subjOrder=subjs;
    function arrive(){ if(seq!==R.seq) return; R.data=fresh; R.err=ferr; render(); left--;      // 주체별로 도착하는 대로 그린다(키움 호출 간격 때문에 한 번에 몇 초 걸림)
      if(left<=0){ if(window.LOADBAR) LOADBAR.done(); if(!memberOn()){ load(); return; } R.timer=setTimeout(load,R.mode==='live'?60000:300000); } }
-   subjs.forEach(function(k){ MEMBER.get(qs+'&subj='+k).then(function(d){ fresh[k]=d; arrive(); }).catch(function(e){ ferr[k]=e&&e.message||'오류'; arrive(); }); });
+   subjs.forEach(function(k){ MEMBER.get(qs+'&subj='+k).then(function(d){ fresh[k]=d; arrive(); }).catch(function(e){ if(/fetch/i.test(e&&e.message||'')){ setTimeout(function(){ MEMBER.get(qs+'&subj='+k).then(function(d){ fresh[k]=d; arrive(); }).catch(function(e2){ ferr[k]=e2&&e2.message||'오류'; arrive(); }); },3000); return; } ferr[k]=e&&e.message||'오류'; arrive(); }); });   // 연결 실패(서버 재시작 순간 등)는 3초 뒤 한 번 더
  }
  function pick(k){
    var d=R.data[k]; if(!d) return [];
@@ -3341,8 +3341,10 @@ window.HOME=(function(){
    if(!memberOn()){ b.innerHTML=''; var lg=el('div','wlogin'); lg.appendChild(document.createTextNode('52주 신고가 종목은 증권사 집계 데이터라 회원에게만 열립니다. 오늘 종가(또는 장중 고가) 기준으로 52주·60일·20일 신고가에 닿은 종목을 등락률·거래량·저가 대비로 봅니다.')); var bt=el('button',null,'로그인 / 회원가입'); bt.type='button'; bt.addEventListener('click',function(){MEMBER.open('login')}); lg.appendChild(document.createElement('br')); lg.appendChild(bt); b.appendChild(lg); return; }
    if(!N.vis||!tabOn()) return;
    var seq=++N.seq; if(window.LOADBAR) LOADBAR.start(); if(!N.data){ b.innerHTML=''; b.appendChild(el('div','lmsg','불러오는 중…')); }
-   MEMBER.get('newhigh?mrkt='+N.mrkt+'&basis='+N.basis+'&dt='+N.dt).then(function(d){ if(seq!==N.seq) return; if(window.LOADBAR) LOADBAR.done(); N.data=d; render(); N.timer=setTimeout(load,60000); })
-     .catch(function(e){ if(seq!==N.seq) return; if(window.LOADBAR) LOADBAR.done(); if(!memberOn()){ load(); return; } b.innerHTML=''; b.appendChild(el('div','lmsg','데이터를 못 받았습니다 · '+e.message)); N.timer=setTimeout(load,60000); });
+   MEMBER.get('newhigh?mrkt='+N.mrkt+'&basis='+N.basis+'&dt='+N.dt).then(function(d){ if(seq!==N.seq) return; if(window.LOADBAR) LOADBAR.done(); N.fail=0; N.data=d; render(); N.timer=setTimeout(load,60000); })
+     .catch(function(e){ if(seq!==N.seq) return; if(window.LOADBAR) LOADBAR.done(); if(!memberOn()){ load(); return; }
+       N.fail=(N.fail||0)+1; b.innerHTML=''; if(N.fail<=2){ b.appendChild(el('div','lmsg','서버 연결이 잠시 끊겼습니다 · 다시 시도 중… ('+N.fail+'/2)')); N.timer=setTimeout(load,3000); return; }   // 서버 재시작 순간 등 일시 오류는 3초 뒤 자동 재시도
+       var m=el('div','lmsg'); m.appendChild(document.createTextNode('데이터를 못 받았습니다 · '+e.message+' ')); var rb=el('button','cb','다시 시도'); rb.type='button'; rb.style.opacity='1'; rb.addEventListener('click',function(){ N.fail=0; load(); }); m.appendChild(rb); b.appendChild(m); N.timer=setTimeout(load,60000); });
  }
  var COLS=[['pct','등락률',''],['price','현재가',''],['vol_pct','거래량 전일비','opt'],['from_high','고가 대비','opt'],['mcap','시총','opt']];
  function render(){
