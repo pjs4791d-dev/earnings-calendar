@@ -1291,7 +1291,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 23:25 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 23:49 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1932,7 +1932,9 @@ window.LLM=(function(){
      pl.appendChild(pu); box.appendChild(pl);
    }
    draw(key);
-   if(!st.ro){ var t; addEventListener('resize',function(){clearTimeout(t); t=setTimeout(function(){draw(key)},120)}); st.ro=true; }
+   if(!st.ro){ var t; addEventListener('resize',function(){clearTimeout(t); t=setTimeout(function(){draw(key)},120)}); st.ro=true;
+     // 컨테이너 폭이 바뀌면(탭이 숨겨진 채 그려졌다가 보일 때, 확대/축소, 사이드바 접힘) 다시 그린다 — 안 그러면 좁게 그린 SVG 가 늘어나 글자·점이 거대해진다
+     if(window.ResizeObserver){ var t2; new ResizeObserver(function(){ clearTimeout(t2); t2=setTimeout(function(){ var w=Math.floor(st.chart.getBoundingClientRect().width); if(w>60&&Math.abs(w-(st.lastW||0))>16) draw(key); },80); }).observe(st.chart); } }
  }
 
  function draw(key){
@@ -1959,7 +1961,8 @@ window.LLM=(function(){
    if(!dates.length){ ch.insertBefore(el('div','lmsg','이 지표는 아직 기록된 값이 없습니다.'),tip); return; }
    var msg=ch.querySelector('.lmsg'); if(msg) msg.remove();
    // 차트 크기
-   var W=Math.max(300,Math.floor(ch.getBoundingClientRect().width)-12), H=W<520?250:310;
+   var cw=Math.floor(ch.getBoundingClientRect().width); if(cw<60){ st.lastW=0; return; }                      // 숨겨진 상태(폭 0)면 그리지 않고, 보일 때 ResizeObserver 가 그린다
+   var W=Math.max(300,cw-12), H=W<520?250:310; st.lastW=cw;
    var labelW=vis.length>1&&vis.length<=4?Math.max.apply(null,vis.map(function(s){return s.name.length}))*6.6+14:8;
    var m={t:14,r:Math.round(labelW)+6,b:26,l:8}, lo=Infinity, hi=-Infinity;
    vis.forEach(function(s){dates.forEach(function(d){var v=val(s,d); if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v)}})});
