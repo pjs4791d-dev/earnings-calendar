@@ -1291,7 +1291,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 22:52 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 22:55 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3369,7 +3369,7 @@ window.HOME=(function(){
      row.appendChild(el('td','opt',eok(r.mcap)));
      tb.appendChild(row); });
    t.appendChild(tb); w.appendChild(t); b.appendChild(w);
-   b.appendChild(el('p','note','증권사 집계(KRX+NXT 통합). 기준 [종가] = 오늘 종가(장중엔 현재가)가 기간 내 모든 종가보다 높은 종목, [장중 고가] = 오늘 고가가 기간 내 고가를 넘은 종목. 고가 대비 = 기간 최고가에서 현재가가 얼마나 되밀렸는지(0%면 고가 그대로, 마우스를 올리면 저가 대비도 표시). 거래량 전일비 100% 초과는 붉게. 열 제목을 누르면 정렬, 종목명은 투자자별 매매, 차트 버튼은 캔들 차트.'));
+   b.appendChild(el('p','note','증권사 집계(KRX+NXT 통합). 기준 [종가] = 오늘 종가(장중엔 현재가)가 기간 내 모든 종가보다 높은 종목, [장중 고가] = 오늘 고가가 기간 내 고가를 넘은 종목. 고가 대비 = 기간의 장중 최고가(일봉 고가) 대비 현재가 — 종가 기준 목록에서도 장중 고가로 계산하니 종가는 신고가여도 장중 고가엔 못 미치면 음수가 나옵니다(마우스를 올리면 저가 대비도 표시). 거래량 전일비 100% 초과는 붉게. 열 제목을 누르면 정렬, 종목명은 투자자별 매매, 차트 버튼은 캔들 차트.'));
  }
  function open(){ N.vis=true; ctl(); load(); }
  function close(){ N.vis=false; clearTimeout(N.timer); }
