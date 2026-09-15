@@ -559,6 +559,15 @@ a.mke:hover .mkt{color:var(--accent)}
 .tvf{display:block;width:100%;height:min(70vh,640px);border:0;background:#0b1020}
 .tvn{font-size:10.5px;color:var(--faint);padding:6px 14px}
 .mr.hd{font-size:10.5px;font-weight:700;color:var(--faint);letter-spacing:.06em;border-bottom:0;padding:6px 0 0}
+.fw{margin-top:4px}.fw .fwr{display:grid;grid-template-columns:minmax(0,1fr) 92px auto;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line2);font-size:12px;cursor:pointer}.fw .fwr:hover{background:var(--line2)}
+.fw .fwr .mn{color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fw .fwr .mn small{color:var(--faint);margin-left:5px;font-size:10.5px}
+.fw .bar{display:flex;height:8px;border-radius:3px;overflow:hidden;background:var(--line2)}.fw .bar i{display:block;height:100%}.fw .bar .c{background:var(--down)}.fw .bar .h{background:var(--faint);opacity:.55}.fw .bar .u{background:var(--up)}
+.fw .fwr .mv{font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}.fw .fwr .mv small{font-weight:600;color:var(--faint);margin-left:4px}
+.fw .fwh{font-size:11px;color:var(--faint);padding:4px 0 2px;display:flex;gap:10px;flex-wrap:wrap}.fw .fwh b{color:var(--ink)}
+.fwm table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}.fwm th{font-size:10px;font-weight:700;color:var(--faint);letter-spacing:.05em;text-align:right;padding:6px 6px;border-bottom:1px solid var(--line);white-space:nowrap}.fwm th:first-child,.fwm td:first-child{text-align:left}
+.fwm td{padding:6px 6px;border-bottom:1px solid var(--line2);text-align:right;white-space:nowrap}.fwm td.top{font-weight:800;color:var(--accent)}.fwm td.z{color:var(--faint)}
+.fwm .cur{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.fwm .note{font-size:11.5px;color:var(--faint);line-height:1.6;margin-top:10px}
 .mr.hd:first-child{padding-top:0}
 /* 다가오는 실적 (홈에 복제) */
 .hp .ev{margin:0}
@@ -1251,7 +1260,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 20:32 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 21:48 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2209,7 +2218,7 @@ window.HOME=(function(){
    .then(function(r){ if(r[4]) H.nxt=r[4]; if(r[2]) H.macro=r[2];
      var good=r[0]&&r[0].items&&r[0].items.some(function(i){return i.code==='KOSPI'&&i.price!=null});     // 빈 응답이면 마지막 정상값으로 유지
      if(good){ H.lastQ=r[0]; H.lastHist=r[3]||H.lastHist; } if(H.lastQ) renderQuotes(H.lastQ, H.lastHist, H.macro);
-     if(r[1]) renderFlowSummary(r[1]); if(r[2]) renderMacro(r[2], H.lastQ||r[0]);
+     if(r[1]) renderFlowSummary(r[1]); if(r[2]) renderMacro(r[2], H.lastQ||r[0]); if(r[2]) renderFed();
      if(H.lastQ||r[2]) document.dispatchEvent(new CustomEvent('boot-ready')); })
    .finally(function(){ H.timer=setTimeout(tickHome,ivl(30000)); });
  }
@@ -2356,6 +2365,30 @@ window.HOME=(function(){
      head(c,'에너지'); (m.energy||[]).forEach(function(x){ var p=pc(x.pct); row(c,x.name,n0(x.price,2),p[0],p[1],x.unit,x.code); });
      head(c,'금속'); (m.metals||[]).forEach(function(x){ if(x.code==='CMCU0') return; var p=pc(x.pct); row(c,x.name,n0(x.price,x.price<10?3:2),p[0],p[1],x.unit,x.code); }); }
  }
+ var FED=null;
+ function renderFed(){
+   getJ(LIVE+'fedwatch.json').then(function(d){ FED=d; var b=document.querySelector('#hm-rate .hb'); if(!b||!d||!d.meetings) return; var old=b.querySelector('.fw'); if(old) old.remove();
+     var w=el('div','fw'); w.appendChild(el('div','mr hd','Fed 금리 컨센서스 · FedWatch 방식'));
+     var hd=el('div','fwh'); var t1=el('span'); t1.appendChild(document.createTextNode('현재 목표범위 ')); t1.appendChild(el('b',null,d.effr.lo.toFixed(2)+'–'+d.effr.hi.toFixed(2)+'%')); hd.appendChild(t1); var t2=el('span'); t2.appendChild(document.createTextNode('EFFR ')); t2.appendChild(el('b',null,d.effr.rate.toFixed(2)+'%')); hd.appendChild(t2); hd.appendChild(el('span',null,'ZQ 선물 '+(d.trade_date||'')+' · 10분 지연')); w.appendChild(hd);
+     d.meetings.slice(0,6).forEach(function(m){ var r=el('div','fwr'); var n=el('span','mn',m.date.slice(5).replace('-','/')+' FOMC'); if(m.tentative) n.appendChild(el('small',null,'잠정')); r.appendChild(n);
+       var bar=el('div','bar'); [['c',m.p_cut],['h',m.p_hold],['u',m.p_hike]].forEach(function(x){ var i=document.createElement('i'); i.className=x[0]; i.style.width=x[1]+'%'; bar.appendChild(i); }); bar.title='인하 '+m.p_cut+'% · 동결 '+m.p_hold+'% · 인상 '+m.p_hike+'%'; r.appendChild(bar);
+       var lead=m.p_hike>m.p_cut&&m.p_hike>m.p_hold?['인상 ',m.p_hike,'pu']:m.p_cut>m.p_hold?['인하 ',m.p_cut,'pd']:['동결 ',m.p_hold,''];
+       var v=el('span','mv '+lead[2],lead[0]+lead[1].toFixed(0)+'%'); v.appendChild(el('small',null,m.top)); r.appendChild(v); r.title='클릭: 회의별 목표범위 확률표'; r.addEventListener('click',openFed); w.appendChild(r); });
+     var more=el('div','mr hd','막대: 인하(파랑) · 동결(회색) · 인상(빨강) — 클릭하면 상세'); w.appendChild(more); b.appendChild(w); }).catch(function(){});
+ }
+ function openFed(){ var d=FED; if(!d) return; var old=document.getElementById('tvm'); if(old) old.remove();
+   var m=el('div','tvm'); m.id='tvm'; var c=el('div','tvc fwm'); c.style.maxHeight='92vh'; c.style.overflow='auto'; var h=el('div','tvh'); h.appendChild(el('b',null,'Fed 금리 컨센서스 · 회의별 목표범위 확률')); h.appendChild(el('span','tvs','CME 30일 연방기금 선물 내재 · '+(d.updated||'').slice(0,16).replace('T',' ')));
+   var x=el('button','tvx','×'); x.type='button'; x.addEventListener('click',function(){m.remove()}); h.appendChild(x); c.appendChild(h);
+   var body=el('div'); body.style.padding='10px 14px 14px';
+   var ranges={}; d.meetings.forEach(function(mt){ mt.ranges.forEach(function(r){ ranges[r.lo.toFixed(2)]=r; }); }); var los=Object.keys(ranges).sort(function(a,b){return +a-+b});
+   var wrap=el('div'); wrap.style.overflow='auto'; var t=el('table'), th=el('thead'), tr=el('tr'); tr.appendChild(el('th',null,'회의')); tr.appendChild(el('th',null,'내재 EFFR')); tr.appendChild(el('th',null,'인하')); tr.appendChild(el('th',null,'동결')); tr.appendChild(el('th',null,'인상'));
+   los.forEach(function(lo){ var r=ranges[lo]; var c2=el('th',null,r.lo.toFixed(2)+'–'+r.hi.toFixed(2)); if(Math.abs(r.lo-d.effr.lo)<1e-6) c2.className='cur'; tr.appendChild(c2); }); th.appendChild(tr); t.appendChild(th);
+   var tb=el('tbody'); d.meetings.forEach(function(mt){ var r=el('tr'); r.appendChild(el('td',null,mt.date.replace(/-/g,'.')+(mt.tentative?' (잠정)':''))); r.appendChild(el('td',null,mt.after.toFixed(3)+'%')); r.appendChild(el('td',mt.p_cut?'pd':'z',mt.p_cut.toFixed(1)+'%')); r.appendChild(el('td',mt.p_hold?'':'z',mt.p_hold.toFixed(1)+'%')); r.appendChild(el('td',mt.p_hike?'pu':'z',mt.p_hike.toFixed(1)+'%'));
+     var by={}; mt.ranges.forEach(function(z){by[z.lo.toFixed(2)]=z.p}); los.forEach(function(lo){ var p=by[lo]; var td=el('td',p==null?'z':(p===mt.top_p?'top':''),p==null?'·':p.toFixed(1)+'%'); if(Math.abs(+lo-d.effr.lo)<1e-6) td.classList.add('cur'); r.appendChild(td); }); tb.appendChild(r); });
+   t.appendChild(tb); wrap.appendChild(t); body.appendChild(wrap);
+   body.appendChild(el('p','note','계산: 각 월물 내재금리(100−가격)에서 회의 후 금리를 풀고(회의 전·후 일수 가중), 회의별 변화폭을 25bp 단위 확률로 나눠 회의를 차례로 곱한 확률 트리 — CME FedWatch 와 같은 방식이며 CME 도구 값과 소수점 차이가 있을 수 있습니다. 인하/동결/인상은 그 회의 한 번의 확률, 목표범위 열은 그 회의 후 범위의 누적 분포. 현재 범위 열은 파란 배경. 2027 일정은 연준 공표 잠정 일정. 출처: CME 30일 연방기금 선물(10분 지연), 뉴욕연은 EFFR·목표범위.'));
+   var cc=el('div'); cc.style.cssText='margin-top:10px;font-size:11.5px;color:var(--muted)'; cc.textContent='선물 월물: '+d.contracts.slice(0,10).map(function(z){return z.code+' '+z.price.toFixed(3)+' ('+z.implied.toFixed(2)+'%)'}).join(' · '); body.appendChild(cc);
+   c.appendChild(body); m.appendChild(c); m.addEventListener('click',function(ev){ if(ev.target===m) m.remove(); }); document.body.appendChild(m); }
  function renderEarn(){
    var p=document.querySelector('#hm-earn .hb'); if(!p) return; p.innerHTML='';
    var days=[].slice.call(document.querySelectorAll('#p-cal .list .day')).slice(0,3);
