@@ -1062,7 +1062,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 10:58 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 11:07 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1995,7 +1995,10 @@ window.HOME=(function(){
  function tickHome(){
    clearTimeout(H.timer); if(!visible.home||!tabOn('home')) return;
    Promise.all([getJ(LIVE+'quotes.json').catch(function(){return null}), getJ(LIVE+'flow_today.json').catch(function(){return null}), getJ(LIVE+'macro.json').catch(function(){return null}), getJ(LIVE+'quotes_hist.json').catch(function(){return null}), getJ(LIVE+'nxt_daily.json').catch(function(){return null})])
-   .then(function(r){ if(r[4]) H.nxt=r[4]; if(r[2]) H.macro=r[2]; if(r[0]) renderQuotes(r[0], r[3], H.macro); if(r[1]) renderFlowSummary(r[1]); if(r[2]) renderMacro(r[2], r[0]); })
+   .then(function(r){ if(r[4]) H.nxt=r[4]; if(r[2]) H.macro=r[2];
+     var good=r[0]&&r[0].items&&r[0].items.some(function(i){return i.code==='KOSPI'&&i.price!=null});     // 빈 응답이면 마지막 정상값으로 유지
+     if(good){ H.lastQ=r[0]; H.lastHist=r[3]||H.lastHist; } if(H.lastQ) renderQuotes(H.lastQ, H.lastHist, H.macro);
+     if(r[1]) renderFlowSummary(r[1]); if(r[2]) renderMacro(r[2], H.lastQ||r[0]); })
    .finally(function(){ H.timer=setTimeout(tickHome,ivl(30000)); });
  }
  var lastPx={};
@@ -2906,13 +2909,14 @@ window.HOME=(function(){
    Promise.all([fetch(LIVE+'quotes.json?t='+Math.floor(Date.now()/3e4)).then(function(r){return r.json()}).catch(function(){return null}),
                 fetch(LIVE+'macro.json?t='+Math.floor(Date.now()/3e5)).then(function(r){return r.json()}).catch(function(){return null})])
    .then(function(r){
-     var q=r[0], m=r[1]; if(!q) return; var parts=[];
+     var q=r[0], m=r[1]; if(!q||!q.items||!q.items.length) return; var parts=[];
      var nm={KOSPI:'코스피',KOSDAQ:'코스닥',KPI200:'K200',FUT:'K200 선물','.DJI':'다우','.IXIC':'나스닥','.INX':'S&P500','.SOX':'반도체','.N225':'니케이','.HSI':'항셍','.VIX':'VIX','.DXY':'달러인덱스',FX_USDKRW:'USD/KRW',FX_JPYKRW:'JPY100/KRW'};
      q.items.forEach(function(i){ parts.push(item(nm[i.code]||i.name,i.price,i.pct,i.group==='fx'||i.code==='FUT'||i.code==='KPI200'||i.code==='.VIX'||i.code==='.DXY'?2:2)); });
      if(m){ (m.energy||[]).slice(0,2).forEach(function(x){parts.push(item(x.name,x.price,x.pct,2))}); (m.metals||[]).slice(0,1).forEach(function(x){parts.push(item(x.name,x.price,x.pct,2))});
        (m.bonds||[]).forEach(function(x){ if(x.code==='US10YT=RR'||x.code==='KR3YT=RR'||x.code==='KR10YT=RR') parts.push('<span class="ti"><span class="tn">'+x.name.replace(' 국채','')+'</span><b>'+x.price.toFixed(3)+'%</b><span class="'+(x.chg>0?'pu':x.chg<0?'pd':'')+'">'+(x.chg>0?'+':'')+Math.round(x.chg*100)+'bp</span></span>'); }); }
      var html=parts.join('');
      var tk=document.getElementById('tape-tk'); if(!tk) return;
+     tk.style.animationDuration=Math.max(60,parts.length*7)+'s';                    // 항목 수에 비례 — 항목이 적어도 같은 속도로 흐른다
      if(tk.innerHTML!==html+html){ var keep=tk.getAnimations&&tk.getAnimations()[0]; var t=keep?keep.currentTime:0; tk.innerHTML=html+html; if(keep){ var a=tk.getAnimations()[0]; if(a) a.currentTime=t; } }
    });
  }
