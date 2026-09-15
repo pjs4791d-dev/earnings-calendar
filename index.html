@@ -7,13 +7,13 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="스파르탄 리서치">
 <meta property="og:title" content="다가오는 실적 발표 일정 · 스파르탄 리서치">
-<meta property="og:description" content="2026 2분기 시즌 · 총 20건 (예고 0 · 실적IR 20) · 2026-09-15 기준 · DART 공시 자동 집계">
+<meta property="og:description" content="2026 2분기 시즌 · 총 20건 (예고 0 · 실적IR 20) · 2026-09-16 기준 · DART 공시 자동 집계">
 <meta property="og:url" content="https://spartanterminal.com/">
 <meta property="og:image" content="https://spartanterminal.com/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="description" content="2026 2분기 시즌 · 총 20건 (예고 0 · 실적IR 20) · 2026-09-15 기준 · DART 공시 자동 집계">
+<meta name="description" content="2026 2분기 시즌 · 총 20건 (예고 0 · 실적IR 20) · 2026-09-16 기준 · DART 공시 자동 집계">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="icon-64.png">
 <link rel="shortcut icon" href="favicon.ico">
@@ -799,12 +799,13 @@ a.mke:hover .mkt{color:var(--accent)}
 .wbd .bd{break-inside:avoid;background:var(--surface);border:1px solid var(--line);border-radius:6px;margin:0 0 10px;overflow:hidden}
 .wbd .bdh{display:flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--accent) 16%,var(--surface));color:var(--ink);font-size:12px;font-weight:800;padding:5px 8px;letter-spacing:.02em}
 .wbd .bdh small{margin-left:auto;font-weight:500;color:var(--faint);font-size:10.5px}
-.wbd table{width:100%;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.wbd table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:11.5px;font-variant-numeric:tabular-nums;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.wbd th:nth-child(1){width:50px}.wbd th:nth-child(3){width:52px}.wbd th:nth-child(4){width:72px}
 .wbd th{font-size:10px;font-weight:600;color:var(--faint);padding:3px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;background:var(--panel)}
 .wbd th:nth-child(1),.wbd th:nth-child(2),.wbd td:nth-child(1),.wbd td:nth-child(2){text-align:left}
 .wbd td{padding:3px 6px;border-bottom:1px solid var(--line2);white-space:nowrap;text-align:right;cursor:pointer}
 .wbd tr:last-child td{border-bottom:0}.wbd tr:hover td{background:var(--line2)}
-.wbd td.cd{color:var(--muted);font-size:10.5px;width:52px}.wbd td.nm{color:var(--ink);font-weight:600;max-width:110px;overflow:hidden;text-overflow:ellipsis;font-family:inherit}
+.wbd td.cd{color:var(--muted);font-size:10.5px;overflow:hidden}.wbd td.nm{color:var(--ink);font-weight:600;overflow:hidden;text-overflow:ellipsis;font-family:inherit}.wbd td:nth-child(3),.wbd td:nth-child(4){overflow:hidden}
 .wbd td.pu{color:var(--up)}.wbd td.pd{color:var(--down)}
 .wbd td .nx{display:inline-block;font-size:8.5px;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 3px;margin-left:4px;vertical-align:1px}
 .wbd .bdadd{font-size:11px;color:var(--faint);padding:6px 8px;cursor:pointer}.wbd .bdadd:hover{color:var(--accent)}
@@ -1119,7 +1120,7 @@ a.mke:hover .mkt{color:var(--accent)}
 <section id="p-cal" hidden>
  <p class="eyebrow">Earnings Calendar · KRX</p>
  <h1>다가오는 실적 발표 일정</h1>
- <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-09-15</b> 접수 공시<br>
+ <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-09-16</b> 접수 공시<br>
    실적공시예고와 실적 관련 IR개최만 자동 선별했습니다.</p>
 
  <div class="stats">
@@ -1291,7 +1292,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 23:49 · 평일 매일 자동 갱신</p>
+   생성 2026-09-16 08:59 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2795,10 +2796,14 @@ window.HOME=(function(){
  try{ W.view=localStorage.getItem('wl_view')||'grp'; W.venue=localStorage.getItem('wl_venue')||'all'; }catch(e){} W.venue=W.venue||'all';
  function setVenue(v){ W.venue=v; try{localStorage.setItem('wl_venue',v)}catch(e){} [].forEach.call(document.querySelectorAll('#wl-venue button'),function(b){ b.classList.toggle('on',b.dataset.v===v); }); W.last={}; paintQuotes(); }
  /* 표시할 값 고르기: 통합 = KRX·NXT 중 최근 체결(거래량 합산) / KRX / NXT */
- function pick(q){ var nx=q.nxt, v=W.venue; if(isWorld(q.code)||!nx||nx.price==null){ return v==='nxt'&&!isWorld(q.code)?null:{price:q.price,chg:q.chg,pct:q.pct,vol:q.vol,src:'krx'}; }
+ function hhmm(){ var d=new Date(Date.now()+9*3600e3); return d.getUTCHours()*100+d.getUTCMinutes(); }
+ function pick(q){ var nx=q.nxt, v=W.venue, ex=q.exp, t=hhmm();
+   // 동시호가(08:30~09:00 시가, 15:20~15:30 종가): KRX 는 예상체결가(*). 통합은 NXT 프리마켓이 끝난 08:50 이후·15:20 이후에 예상체결가
+   if(ex&&ex.price!=null&&!isWorld(q.code)&&(v==='krx'||(v==='all'&&(t>=850||ex.win==='close')))) return {price:ex.price,chg:ex.chg,pct:ex.pct,vol:ex.vol,src:'exp',win:ex.win};
+   if(isWorld(q.code)||!nx||nx.price==null){ return v==='nxt'&&!isWorld(q.code)?null:{price:q.price,chg:q.chg,pct:q.pct,vol:q.vol,src:'krx'}; }
    if(v==='krx') return {price:q.price,chg:q.chg,pct:q.pct,vol:q.vol,src:'krx'};
    if(v==='nxt') return {price:nx.price,chg:nx.chg,pct:nx.pct,vol:nx.vol,src:'nxt'};
-   var useNx=nx.at&&q.at?nx.at>q.at:(nx.state==='OPEN'&&q.state!=='OPEN');
+   var useNx=nx.at&&q.at?nx.at>q.at:(nx.state==='OPEN'&&q.state!=='OPEN')||(!q.at&&!!nx.at);   // KRX 에 오늘 체결이 없으면(장전) NXT 프리마켓 우선
    return {price:useNx?nx.price:q.price,chg:useNx?nx.chg:q.chg,pct:useNx?nx.pct:q.pct,vol:(q.vol||0)+(nx.vol||0),src:useNx?'nxt':'krx'}; }
  function isWorld(code){ return code.indexOf('.')>=0; }
  /* 즉시 검색: /pub/stocks.json(국내 상장사 코드·이름)을 한 번 받아 두고 이름 부분일치·초성·코드로 바로 찾는다. 네이버 자동완성(ETF·미국)은 뒤이어 합친다. */
@@ -3007,11 +3012,13 @@ window.HOME=(function(){
      var price=p.price, chg=p.chg, pct=p.pct;
      var prev=W.last[code]; if(prev!=null&&price!=null&&prev!==price){ r.classList.remove('flash-pu','flash-pd'); void r.offsetWidth; r.classList.add(price>prev?'flash-pu':'flash-pd'); } seen[code]=price;
      var cls=pct>0?'pu':pct<0?'pd':''; if(nx){ nx.style.display=(W.venue==='all'&&p.src==='nxt')?'':'none'; }
-     if(board){ td[2].textContent=(pct>0?'+':'')+(pct==null?'-':pct.toFixed(2)); td[2].className=cls; td[3].textContent=fmtPx(q,price); td[3].className=cls; return; }
-     td[1].textContent=fmtPx(q,price); td[1].className='px '+cls; td[2].textContent=(chg>0?'▲':chg<0?'▼':'')+(q.cur&&q.cur!=='KRW'?n0(Math.abs(chg||0),2):n0(Math.abs(chg||0))); td[2].className=cls; td[3].textContent=(pct>0?'+':'')+(pct==null?'-':pct.toFixed(2)+'%'); td[3].className=cls;
+     var star=p.src==='exp'?'*':'', tip=p.src==='exp'?('예상체결가 · '+(p.win==='close'?'종가 동시호가(15:20~15:30)':'시가 동시호가(08:30~09:00)')+' · 예상 체결량 '+n0(p.vol)):'';
+     if(board){ td[2].textContent=(pct>0?'+':'')+(pct==null?'-':pct.toFixed(2)); td[2].className=cls; td[3].textContent=fmtPx(q,price)+star; td[3].className=cls; td[3].title=tip; return; }
+     td[1].textContent=fmtPx(q,price)+star; td[1].className='px '+cls; td[1].title=tip; td[2].textContent=(chg>0?'▲':chg<0?'▼':'')+(q.cur&&q.cur!=='KRW'?n0(Math.abs(chg||0),2):n0(Math.abs(chg||0))); td[2].className=cls; td[3].textContent=(pct>0?'+':'')+(pct==null?'-':pct.toFixed(2)+'%'); td[3].className=cls;
      td[4].firstChild.textContent=n0(p.vol); td[5].textContent=(q.high!=null?fmtPx(q,q.high):'-')+' / '+(q.low!=null?fmtPx(q,q.low):'-'); });
    Object.keys(seen).forEach(function(c){ W.last[c]=seen[c]; });
-   var vn=W.venue==='all'?'통합(KRX+NXT)':W.venue==='krx'?'KRX':'NXT'; var txt=W.at?W.at+(W.live?' · 실시간':' · 10초 갱신')+' · '+vn+' · 네이버 증권':''; var st=document.getElementById('wl-st'); if(st) st.textContent=txt; var st2=document.getElementById('wl-st2'); if(st2) st2.textContent=W.view==='board'?txt:'';
+   var anyExp=Object.keys(W.quotes).some(function(c){ return W.quotes[c].exp; });
+   var vn=W.venue==='all'?'통합(KRX+NXT)':W.venue==='krx'?'KRX':'NXT'; var txt=W.at?W.at+(W.live?' · 실시간':' · 10초 갱신')+' · '+vn+' · 네이버 증권'+(anyExp?' · *는 동시호가 예상체결가(한투, 10초)':''):''; var st=document.getElementById('wl-st'); if(st) st.textContent=txt; var st2=document.getElementById('wl-st2'); if(st2) st2.textContent=W.view==='board'?txt:'';
  }
  /* 실시간: /m/stream (SSE, 서버가 1초마다 네이버에서 받아 바뀐 것만 push). 끊기면 2초 뒤 다시 열고, 스트림이 안 되면 10초 폴링으로 내려간다. */
  function stopStream(){ if(W.ctl){ try{W.ctl.abort();}catch(e){} W.ctl=null; } W.live=false; }
