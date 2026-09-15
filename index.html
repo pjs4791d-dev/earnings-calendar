@@ -1291,7 +1291,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 22:57 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 23:01 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2244,10 +2244,12 @@ window.HOME=(function(){
    panel('hm-earn','다가오는 실적','DART 공시',['실적 일정 →','#cal'],true);
    renderCal(); renderEarn(); renderAI();
  }
+ function netBanner(on){ var b=document.getElementById('netbn'); if(!on){ if(b) b.remove(); return; } if(b) return; b=el('div'); b.id='netbn'; b.style.cssText='position:fixed;left:50%;top:8px;transform:translateX(-50%);z-index:520;background:#7f1d1d;color:#fee2e2;border:1px solid #f87171;border-radius:8px;padding:8px 14px;font-size:12.5px;max-width:min(92vw,720px);box-shadow:0 8px 24px rgba(0,0,0,.4);line-height:1.5';
+   b.textContent='데이터 서버(spartan.tail88a1c5.ts.net)에 연결하지 못하고 있습니다. 서버는 정상인데 이용 중인 인터넷의 DNS 가 주소를 못 찾는 경우가 있습니다 — 휴대폰 데이터로 열거나 기기 DNS 를 1.1.1.1/8.8.8.8 로 바꾸면 바로 됩니다. 30초마다 자동 재시도합니다.'; document.body.appendChild(b); }
  function tickHome(){
    clearTimeout(H.timer); if(!visible.home||!tabOn('home')) return;
    Promise.all([getJ(LIVE+'quotes.json').catch(function(){return null}), getJ(LIVE+'flow_today.json').catch(function(){return null}), getJ(LIVE+'macro.json').catch(function(){return null}), getJ(LIVE+'quotes_hist.json').catch(function(){return null}), getJ(LIVE+'nxt_daily.json').catch(function(){return null})])
-   .then(function(r){ if(r[4]) H.nxt=r[4]; if(r[2]) H.macro=r[2];
+   .then(function(r){ netBanner(!r[0]&&!r[1]&&!r[2]&&!r[3]); if(r[4]) H.nxt=r[4]; if(r[2]) H.macro=r[2];
      var good=r[0]&&r[0].items&&r[0].items.some(function(i){return i.code==='KOSPI'&&i.price!=null});     // 빈 응답이면 마지막 정상값으로 유지
      if(good){ H.lastQ=r[0]; H.lastHist=r[3]||H.lastHist; } if(H.lastQ) renderQuotes(H.lastQ, H.lastHist, H.macro);
      if(r[1]) renderFlowSummary(r[1]); if(r[2]) renderMacro(r[2], H.lastQ||r[0]); if(r[2]) renderFed();
@@ -3028,9 +3030,12 @@ window.HOME=(function(){
    if(!W.live){ MEMBER.get('quotes?codes='+codes.join(',')).then(function(d){ (d.items||[]).forEach(function(q){ W.quotes[q.code]=q; }); W.at=d.at; paintQuotes(); }).catch(function(){}); }
    W.timer=setTimeout(tick,document.hidden?60000:10000);
  }
- function load(){ if(!memberOn()){ render(); document.dispatchEvent(new CustomEvent('boot-ready')); return; } if(window.LOADBAR) LOADBAR.start(); MEMBER.get('watch').then(function(d){ if(window.LOADBAR) LOADBAR.done(); document.dispatchEvent(new CustomEvent('boot-ready')); W.lists=d.lists||[]; W.max={lists:d.max_lists||40,items:d.max_items||30}; if(W.sel==null||!W.lists.some(function(x){return x.id===W.sel})) W.sel=W.lists.length?W.lists[0].id:null; render(); tick(true); }).catch(function(){ if(window.LOADBAR) LOADBAR.done(); render(); }); }
+ function load(){ if(!memberOn()){ render(); document.dispatchEvent(new CustomEvent('boot-ready')); return; } if(window.LOADBAR) LOADBAR.start(); MEMBER.get('watch').then(function(d){ if(window.LOADBAR) LOADBAR.done(); document.dispatchEvent(new CustomEvent('boot-ready')); W.fail=0; W.lists=d.lists||[]; W.max={lists:d.max_lists||40,items:d.max_items||30}; if(W.sel==null||!W.lists.some(function(x){return x.id===W.sel})) W.sel=W.lists.length?W.lists[0].id:null; render(); tick(true); })
+   .catch(function(e){ if(window.LOADBAR) LOADBAR.done(); document.dispatchEvent(new CustomEvent('boot-ready')); W.fail=(W.fail||0)+1; var b=box(); var wait=Math.min(30,5*W.fail);   // 서버 연결 실패(DNS·재시작 등)면 목록을 지우지 말고 자동 재시도
+     if(b&&!W.lists.length){ b.innerHTML=''; var m=el('div','wempty','서버에 연결하지 못했습니다 ('+(e&&e.message||'네트워크')+') · '+wait+'초 뒤 다시 시도합니다'); var rb=el('button',null,'지금 다시 시도'); rb.type='button'; rb.className='sfb'; rb.style.opacity='1'; rb.style.marginLeft='8px'; rb.addEventListener('click',function(){ clearTimeout(W.retry2); load(); }); m.appendChild(rb); b.appendChild(m); }
+     clearTimeout(W.retry2); if(W.vis) W.retry2=setTimeout(load,wait*1000); }); }
  function open(){ W.vis=true; load(); }
- function close(){ W.vis=false; clearTimeout(W.timer); clearTimeout(W.retry); stopStream(); }
+ function close(){ W.vis=false; clearTimeout(W.timer); clearTimeout(W.retry); clearTimeout(W.retry2); stopStream(); }
  document.addEventListener('member-change',function(){ W.lists=[]; W.sel=null; W.quotes={}; W.last={}; stopStream(); if(W.vis) load(); });
  document.addEventListener('visibilitychange',function(){ if(document.hidden){ stopStream(); } else if(W.vis){ tick(true); } });
  var h=(location.hash||'').replace('#',''); if(h==='watch') open();
