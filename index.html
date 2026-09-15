@@ -891,30 +891,45 @@ a.mke:hover .mkt{color:var(--accent)}
 </style>
 
 <style>
-.rk .rkg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:1080px){.rk .rkg{grid-template-columns:1fr}}
-.rk .rkp{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:auto}
-.rk .rkh{display:flex;align-items:baseline;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);font-size:13px;font-weight:800}
+.rk .lctl{row-gap:8px}
+.rk .rkg{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:12px}
+@media(max-width:700px){.rk .rkg{grid-template-columns:1fr}}
+.rk .rkp{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:auto;min-width:0}
+.rk .rkh{display:flex;align-items:baseline;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);font-size:13px;font-weight:800;white-space:nowrap}
 .rk .rkh.buy{border-top:3px solid var(--up)}.rk .rkh.sell{border-top:3px solid var(--down)}
 .rk .rkh small{font-weight:500;color:var(--faint);font-size:11px;margin-left:auto;font-variant-numeric:tabular-nums}
 .rk table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
-.rk th{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-align:right;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.rk th{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-align:right;padding:6px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
 .rk th:nth-child(1),.rk th:nth-child(2),.rk td:nth-child(1),.rk td:nth-child(2){text-align:left}
-.rk td{padding:6px 10px;border-bottom:1px solid var(--line2);text-align:right;white-space:nowrap}
+.rk td{padding:5px 9px;border-bottom:1px solid var(--line2);text-align:right;white-space:nowrap}
 .rk tr:last-child td{border-bottom:0}.rk tr:hover td{background:var(--line2)}
-.rk td.no{color:var(--faint);width:28px}.rk td.nm{font-weight:700;color:var(--ink);cursor:pointer;max-width:170px;overflow:hidden;text-overflow:ellipsis}.rk td.nm:hover{color:var(--accent)}
-.rk td .cd{font-size:10.5px;color:var(--faint);margin-left:5px;font-weight:500}
+.rk td.no{color:var(--faint);width:24px}
+.rk td.nm{font-weight:700;color:var(--ink);cursor:pointer;max-width:0;width:100%;overflow:hidden;text-overflow:ellipsis}.rk td.nm:hover{color:var(--accent)}
+.rk td .cd{font-size:10px;color:var(--faint);margin-left:4px;font-weight:500}
 .rk td.pu{color:var(--up)}.rk td.pd{color:var(--down)}
-.rk td.amt{font-weight:700;background-repeat:no-repeat;background-position:right center;background-size:var(--w,0) 60%}
-.rk td.amt.pu{background-image:linear-gradient(rgba(255,77,109,.16),rgba(255,77,109,.16))}.rk td.amt.pd{background-image:linear-gradient(rgba(59,130,246,.18),rgba(59,130,246,.18))}
+.rk td.rt{font-weight:800;background-repeat:no-repeat;background-position:right center;background-size:var(--w,0) 62%}
+.rk td.rt.pu{background-image:linear-gradient(rgba(255,77,109,.17),rgba(255,77,109,.17))}.rk td.rt.pd{background-image:linear-gradient(rgba(59,130,246,.2),rgba(59,130,246,.2))}
+.rk tr.hl td{background:rgba(250,204,21,.09)}.rk tr.hl td:first-child{box-shadow:inset 3px 0 0 #facc15}.rk tr.hl:hover td{background:rgba(250,204,21,.16)}
+.rk .hb{display:inline-block;font-size:9.5px;font-weight:800;color:#1a1600;background:#facc15;border-radius:4px;padding:0 4px;margin-right:5px;vertical-align:1px;letter-spacing:.02em}
+.rk .dup{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 12px;padding:9px 12px;border:1px solid rgba(250,204,21,.45);background:rgba(250,204,21,.06);border-radius:8px;font-size:12px}
+.rk .dup b{font-size:11px;letter-spacing:.08em;color:#ca8a04;margin-right:4px;white-space:nowrap}
+.rk .dup .dc{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:12px;font-weight:700;padding:3px 8px;border-radius:14px;cursor:pointer}
+.rk .dup .dc small{font-weight:500;color:var(--muted);margin-left:4px;font-size:11px}
+.rk .dup .dc:hover{border-color:#facc15}
 .rk .lmsg{color:var(--muted);font-size:13px;padding:40px 0;text-align:center}
-.rk .rkd{display:inline-flex;align-items:center;gap:4px}
-.rk .rkd input{font:inherit;font-size:12px;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.rk .rkd{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
+.rk .rkd input{font:inherit;font-size:12px;padding:5px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
 .rk .rkd button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink2);font:inherit;font-size:12px;padding:5px 8px;border-radius:6px;cursor:pointer}
 .rk .rkd button:hover{border-color:var(--accent);color:var(--accent)}
+.rk select{font:inherit;font-size:12px;padding:5px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.rk .subj{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.rk .subj button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:14px;cursor:pointer}
+.rk .subj button.on{color:var(--accent);border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.rk .subj button:disabled{opacity:.35;cursor:default}
 .rk .wlogin{background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:34px 20px;text-align:center;color:var(--muted);font-size:13.5px}
 .rk .wlogin button{margin-top:12px;appearance:none;border:1px solid var(--accent);background:var(--accent);color:#fff;font:inherit;font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:7px;cursor:pointer}
 .rk .note{font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.6}
+.rk .warn{padding:10px 12px;margin-bottom:12px;border:1px dashed var(--line);border-radius:8px;font-size:12.5px;color:var(--muted)}
 @media(max-width:640px){.rk th.opt,.rk td.opt{display:none}}
 </style>
 
@@ -1117,8 +1132,9 @@ a.mke:hover .mkt{color:var(--accent)}
 
 <section id="p-rank" class="panel rk" role="tabpanel" hidden>
  <div class="hint">NET BUY RANKING · 회원</div>
- <h2>순매수 상위</h2>
+ <h2>순매수 비중 상위</h2>
  <div id="rk-ctl" class="lctl"></div>
+ <div id="rk-ctl2" class="lctl" style="margin-top:6px"></div>
  <div id="rk-body"></div>
 </section>
 
@@ -1157,7 +1173,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 15:36 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 16:09 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3020,67 +3036,117 @@ window.HOME=(function(){
 
 <script>
 (function(){
+ var SUBJ=[['frgn','외국인','ld'],['orgn','기관계','ld'],['fin','금융투자','d'],['trust','투신','ld'],['pension','연기금','ld'],['pe','사모펀드','l'],['ins','보험','ld'],['bank','은행','ld'],['ofin','기타금융','d'],['nat','국가','ld'],['corp','기타법인','ld'],['ind','개인','ld']];
+ var SNAME={}; SUBJ.forEach(function(s){SNAME[s[0]]=s[1]});
+ var INST=['금융투자','투신','연기금','사모펀드','보험','은행','기타금융','국가'];                      // 기관계에 포함되는 세부 주체
+ function indep(hs){ if(!hs) return []; var sub=hs.some(function(n){return INST.indexOf(n)>=0}); return sub?hs.filter(function(n){return n!=='기관계'}):hs; }   // 기관계+투신 처럼 겹치는 건 한 곳으로
  function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
  function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
  function fmtEok(v){ if(v==null) return '-'; var a=Math.abs(v); return (v<0?'-':'+')+(a>=10000?(a/10000).toFixed(2)+'조':n0(a,a<100?1:0)); }
- function fmtQty(v){ if(v==null) return '-'; var a=Math.abs(v); return (v<0?'-':'+')+(a>=1e6?(a/1e6).toFixed(2)+'백만':a>=1e4?(a/1e4).toFixed(1)+'만':n0(a)); }
- var R={vis:false,mode:'live',mrkt:'000',invsr:'6',date:null,timer:null,data:null};
- try{ R.mode=localStorage.getItem('rk_mode')||'live'; R.mrkt=localStorage.getItem('rk_mrkt')||'000'; R.invsr=localStorage.getItem('rk_invsr')||'6'; }catch(e){}
+ function pctTxt(v){ return v==null?'-':(v>0?'+':'')+v.toFixed(2)+'%'; }
+ function pdate(s){ return s?s.slice(0,4)+'.'+s.slice(4,6)+'.'+s.slice(6,8):''; }
+ var R={vis:false,mode:'live',mrkt:'000',dir:'buy',sort:'ratio',minTv:30,noEtf:true,subjs:['frgn','orgn','fin','trust','pension','pe'],start:null,end:null,data:{},err:{},timer:null,seq:0};
+ try{ var sv=JSON.parse(localStorage.getItem('rk_set')||'{}'); ['mode','mrkt','dir','sort','minTv','noEtf','subjs'].forEach(function(k){ if(sv[k]!=null) R[k]=sv[k]; }); }catch(e){}
+ function save(){ try{ localStorage.setItem('rk_set',JSON.stringify({mode:R.mode,mrkt:R.mrkt,dir:R.dir,sort:R.sort,minTv:R.minTv,noEtf:R.noEtf,subjs:R.subjs})); }catch(e){} }
+ var ETF_RE=/^(KODEX|TIGER|ACE|SOL|KBSTAR|RISE|HANARO|PLUS|ARIRANG|KOSEF|TIMEFOLIO|KIWOOM|WON|HK|BNK|DAISHIN|UNICORN|KoAct|1Q|ITF|KCGI|TRUSTON|WOORI|KINDEX|마이티|히어로즈|파워|에셋플러스|iSelect|FOCUS|VITA|KTOP|MASTER|smart|TREX|GIANT|KODEX)\b|ETN$|ETF|인버스|레버리지/i;   // ETF·ETN 은 LP 물량 때문에 비중이 튀어서 기본 제외
+ function isEtf(r){ return ETF_RE.test(r.name||''); }
  function memberOn(){ return !!(window.MEMBER&&MEMBER.logged()); }
  function tabOn(){ var p=document.getElementById('p-rank'); return p&&!p.hidden; }
- function kst(){ var d=new Date(Date.now()+9*3600e3); return d.toISOString().slice(0,10); }
- function kstHour(){ return new Date(Date.now()+9*3600e3).getUTCHours(); }
- function partial(){ return R.data&&R.data.date===kst().replace(/-/g,'')&&kstHour()<18; }   // 당일분은 저녁에야 확정 — 그 전엔 집계 중
- function lastTradingDay(){ var d=new Date(Date.now()+9*3600e3); var hh=d.getUTCHours(); if(hh<18) d.setUTCDate(d.getUTCDate()-1); while(d.getUTCDay()===0||d.getUTCDay()===6) d.setUTCDate(d.getUTCDate()-1); return d.toISOString().slice(0,10); }
+ function kstNow(){ return new Date(Date.now()+9*3600e3); }
+ function iso(d){ return d.toISOString().slice(0,10); }
+ function kst(){ return iso(kstNow()); }
+ function lastTradingDay(){ var d=kstNow(); if(d.getUTCHours()<18) d.setUTCDate(d.getUTCDate()-1); while(d.getUTCDay()===0||d.getUTCDay()===6) d.setUTCDate(d.getUTCDate()-1); return iso(d); }
+ function addWd(s,n){ var d=new Date(s+'T00:00:00Z'), step=n<0?-1:1, k=Math.abs(n); while(k>0){ d.setUTCDate(d.getUTCDate()+step); if(d.getUTCDay()!==0&&d.getUTCDay()!==6) k--; } return iso(d); }
+ function wdCount(a,b){ var d=new Date(a+'T00:00:00Z'), e=new Date(b+'T00:00:00Z'), n=0; while(d<=e){ if(d.getUTCDay()!==0&&d.getUTCDay()!==6) n++; d.setUTCDate(d.getUTCDate()+1); } return Math.max(1,n); }
+ function avail(k){ var s=SUBJ.filter(function(x){return x[0]===k})[0]; return s&&s[2].indexOf(R.mode==='live'?'l':'d')>=0; }
  function sw(opts,cur,set){ var w=el('span','lsw'); opts.forEach(function(o){ var b=el('button',String(o[0])===String(cur)?'on':'',o[1]); b.type='button'; b.addEventListener('click',function(){ [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); }); w.appendChild(b); }); return w; }
- function save(){ try{ localStorage.setItem('rk_mode',R.mode); localStorage.setItem('rk_mrkt',R.mrkt); localStorage.setItem('rk_invsr',R.invsr); }catch(e){} }
+ function grp(label,node){ var g=el('span'); g.appendChild(el('span','llab',label+' ')); g.appendChild(node); return g; }
  function ctl(){
-   var c=document.getElementById('rk-ctl'); if(!c) return; c.innerHTML=''; if(!memberOn()) return;
-   var g1=el('span'); g1.appendChild(el('span','llab','구분 ')); g1.appendChild(sw([['live','장중 잠정'],['daily','일별 확정']],R.mode,function(v){R.mode=v; save(); ctl(); load();})); c.appendChild(g1);
-   var g2=el('span'); g2.appendChild(el('span','llab','시장 ')); g2.appendChild(sw([['000','전체'],['001','코스피'],['101','코스닥']],R.mrkt,function(v){R.mrkt=v; save(); load();})); c.appendChild(g2);
-   if(R.mode==='live'){ var g3=el('span'); g3.appendChild(el('span','llab','주체 ')); g3.appendChild(sw([['6','외국인'],['7','기관계'],['1','투신'],['3','연기금'],['8','사모펀드'],['5','기타법인'],['9','개인']],R.invsr,function(v){R.invsr=v; save(); load();})); c.appendChild(g3); }
-   else { var g4=el('span','rkd'); g4.appendChild(el('span','llab','날짜 ')); var prev=el('button',null,'◀'); prev.type='button'; var inp=el('input'); inp.type='date'; inp.value=R.date||lastTradingDay(); inp.max=kst(); var next=el('button',null,'▶'); next.type='button';
-     function shift(n){ var d=new Date(inp.value+'T00:00:00Z'); do{ d.setUTCDate(d.getUTCDate()+n); }while(d.getUTCDay()===0||d.getUTCDay()===6); var v=d.toISOString().slice(0,10); if(v>kst()) return; inp.value=v; R.date=v; load(); }
-     prev.addEventListener('click',function(){shift(-1)}); next.addEventListener('click',function(){shift(1)}); inp.addEventListener('change',function(){ if(inp.value){ R.date=inp.value; load(); } });
-     g4.appendChild(prev); g4.appendChild(inp); g4.appendChild(next); c.appendChild(g4); }
-   var st=el('span','wst'); st.id='rk-st'; st.style.cssText='font-size:11.5px;color:var(--faint);margin-left:auto'; c.appendChild(st);
+   var c=document.getElementById('rk-ctl'), c2=document.getElementById('rk-ctl2'); if(!c) return; c.innerHTML=''; c2.innerHTML=''; if(!memberOn()) return;
+   c.appendChild(grp('구분',sw([['live','장중 잠정'],['daily','일별 확정']],R.mode,function(v){R.mode=v; save(); ctl(); load();})));
+   c.appendChild(grp('시장',sw([['000','전체'],['001','코스피'],['101','코스닥']],R.mrkt,function(v){R.mrkt=v; save(); load();})));
+   c.appendChild(grp('방향',sw([['buy','순매수'],['sell','순매도']],R.dir,function(v){R.dir=v; save(); render();})));
+   c.appendChild(grp('정렬',sw([['ratio','비중'],['amt','금액']],R.sort,function(v){R.sort=v; save(); render();})));
+   var sel=el('select'); [[10,'거래대금 10억↑'],[30,'거래대금 30억↑'],[100,'거래대금 100억↑'],[300,'거래대금 300억↑'],[1000,'거래대금 1,000억↑']].forEach(function(o){ var op=el('option',null,o[1]); op.value=o[0]; if(+R.minTv===o[0]) op.selected=true; sel.appendChild(op); });
+   sel.title='비중이 높아도 거래가 적은 종목은 잡음이라 거래대금(일평균) 기준으로 거릅니다'; sel.addEventListener('change',function(){ R.minTv=+sel.value; save(); render(); }); c.appendChild(grp('필터',sel));
+   c.appendChild(sw([[1,'ETF 제외'],[0,'ETF 포함']],R.noEtf?1:0,function(v){ R.noEtf=!!+v; save(); render(); }));
+   if(R.mode==='daily'){
+     var g=el('span','rkd'); g.appendChild(el('span','llab','기간 '));
+     if(!R.end) R.end=lastTradingDay(); if(!R.start) R.start=R.end;
+     var n=wdCount(R.start,R.end);
+     g.appendChild(sw([[1,'1일'],[5,'5일'],[20,'20일'],[60,'60일']],(R.start===addWd(R.end,-(n-1))?n:0),function(v){ R.start=addWd(R.end,-(v-1)); save(); ctl(); load(); }));
+     var prev=el('button',null,'◀'); prev.type='button'; prev.title='하루 앞으로'; var s=el('input'); s.type='date'; s.value=R.start; s.max=kst(); var e=el('input'); e.type='date'; e.value=R.end; e.max=kst(); var next=el('button',null,'▶'); next.type='button'; next.title='하루 뒤로';
+     function shift(k){ var ns=addWd(R.start,k), ne=addWd(R.end,k); if(ne>kst()) return; R.start=ns; R.end=ne; ctl(); load(); }
+     prev.addEventListener('click',function(){shift(-1)}); next.addEventListener('click',function(){shift(1)});
+     s.addEventListener('change',function(){ if(s.value){ R.start=s.value; if(R.start>R.end) R.end=R.start; ctl(); load(); } });
+     e.addEventListener('change',function(){ if(e.value){ R.end=e.value; if(R.end<R.start) R.start=R.end; ctl(); load(); } });
+     g.appendChild(prev); g.appendChild(s); g.appendChild(el('span',null,'~')); g.appendChild(e); g.appendChild(next); c2.appendChild(g);
+   }
+   var sj=el('span','subj'); sj.appendChild(el('span','llab','주체 '));
+   SUBJ.forEach(function(x){ var b=el('button',R.subjs.indexOf(x[0])>=0?'on':'',x[1]); b.type='button'; b.disabled=!avail(x[0]); if(b.disabled) b.title=(R.mode==='live'?'장중 잠정':'일별 확정')+'에는 없는 주체';
+     b.addEventListener('click',function(){ var i=R.subjs.indexOf(x[0]); if(i>=0){ if(R.subjs.length<=1) return; R.subjs.splice(i,1); b.classList.remove('on'); } else { R.subjs.push(x[0]); b.classList.add('on'); } save(); load(); }); sj.appendChild(b); });
+   c2.appendChild(sj);
+   var st=el('span'); st.id='rk-st'; st.style.cssText='font-size:11.5px;color:var(--faint);margin-left:auto'; c2.appendChild(st);
  }
  function load(){
    clearTimeout(R.timer); var b=document.getElementById('rk-body'); if(!b) return;
-   if(!memberOn()){ b.innerHTML=''; var lg=el('div','wlogin'); lg.appendChild(document.createTextNode('순매수 상위는 증권사 집계 데이터라 회원에게만 열립니다. 외국인·기관·투신·연기금별 순매수/순매도 상위 20종목을 일별·장중 잠정으로 봅니다.')); var bt=el('button',null,'로그인 / 회원가입'); bt.type='button'; bt.addEventListener('click',function(){MEMBER.open('login')}); lg.appendChild(document.createElement('br')); lg.appendChild(bt); b.appendChild(lg); return; }
+   if(!memberOn()){ b.innerHTML=''; var lg=el('div','wlogin'); lg.appendChild(document.createTextNode('순매수 상위는 증권사 집계 데이터라 회원에게만 열립니다. 외국인·기관계·투신·연기금 등 주체별 순매수/순매도 비중 상위 20종목을 장중 잠정·일별(기간) 확정으로 봅니다.')); var bt=el('button',null,'로그인 / 회원가입'); bt.type='button'; bt.addEventListener('click',function(){MEMBER.open('login')}); lg.appendChild(document.createElement('br')); lg.appendChild(bt); b.appendChild(lg); return; }
    if(!R.vis||!tabOn()) return;
-   if(window.LOADBAR) LOADBAR.start();
-   var p=R.mode==='live'?MEMBER.get('rank_live?mrkt='+R.mrkt+'&invsr='+R.invsr):MEMBER.get('rank?mrkt='+R.mrkt+'&date='+(R.date||lastTradingDay()).replace(/-/g,''));
-   p.then(function(d){ if(window.LOADBAR) LOADBAR.done(); R.data=d; render(); }).catch(function(e){ if(window.LOADBAR) LOADBAR.done(); if(!memberOn()){ load(); return; } b.innerHTML=''; b.appendChild(el('div','lmsg','데이터를 못 받았습니다 · '+e.message)); });
-   R.timer=setTimeout(load,R.mode==='live'?60000:300000);
+   var subjs=R.subjs.filter(avail); if(!subjs.length){ subjs=[R.mode==='live'?'pe':'fin']; }
+   var seq=++R.seq; if(window.LOADBAR) LOADBAR.start();
+   if(!Object.keys(R.data).length) { b.innerHTML=''; b.appendChild(el('div','lmsg','불러오는 중…')); }
+   var qs='rank?mode='+R.mode+'&mrkt='+R.mrkt+(R.mode==='daily'?'&start='+R.start.replace(/-/g,'')+'&end='+R.end.replace(/-/g,''):'');
+   var fresh={}, ferr={}, left=subjs.length; R.subjOrder=subjs;
+   function arrive(){ if(seq!==R.seq) return; R.data=fresh; R.err=ferr; render(); left--;      // 주체별로 도착하는 대로 그린다(키움 호출 간격 때문에 한 번에 몇 초 걸림)
+     if(left<=0){ if(window.LOADBAR) LOADBAR.done(); if(!memberOn()){ load(); return; } R.timer=setTimeout(load,R.mode==='live'?60000:300000); } }
+   subjs.forEach(function(k){ MEMBER.get(qs+'&subj='+k).then(function(d){ fresh[k]=d; arrive(); }).catch(function(e){ ferr[k]=e&&e.message||'오류'; arrive(); }); });
  }
- function table(title,cls,rows,live){
-   var p=el('div','rkp'); var h=el('div','rkh '+cls,title); h.appendChild(el('small',null,live?'잠정 · '+(R.data.at||''):(R.data.date?R.data.date.slice(0,4)+'.'+R.data.date.slice(4,6)+'.'+R.data.date.slice(6,8)+(partial()?' 집계 중':' 확정'):''))); p.appendChild(h);
-   if(!rows||!rows.length){ p.appendChild(el('div','lmsg','데이터 없음')); return p; }
-   var t=el('table'), th=el('thead'), tr=el('tr'); (live?[['#',''],['종목',''],['순매수(억)',''],['수량','opt'],['현재가','opt'],['등락률','']]:[['#',''],['종목',''],['순매수(억)',''],['수량','opt']]).forEach(function(c){tr.appendChild(el('th',c[1],c[0]))}); th.appendChild(tr); t.appendChild(th);
-   var tb=el('tbody'); var mx=Math.max.apply(null,rows.map(function(r){return Math.abs(r.amt)}))||1;
-   rows.slice(0,20).forEach(function(r,i){ var row=el('tr'); row.appendChild(el('td','no',String(i+1)));
-     var nm=el('td','nm',r.name); nm.appendChild(el('span','cd',r.code)); nm.title='투자자별 매매 보기'; nm.addEventListener('click',function(){ if(window.SFLOW) SFLOW.popup(r.code,r.name); }); row.appendChild(nm);
-     var am=el('td','amt '+(r.amt>0?'pu':'pd'),fmtEok(r.amt)); am.style.setProperty('--w',Math.max(3,Math.abs(r.amt)/mx*100).toFixed(0)+'%'); row.appendChild(am);
-     row.appendChild(el('td','opt',fmtQty(r.qty)));
-     if(live){ row.appendChild(el('td','opt',n0(r.price))); row.appendChild(el('td',r.pct>0?'pu':r.pct<0?'pd':'',(r.pct>0?'+':'')+(r.pct==null?'-':r.pct.toFixed(2)+'%'))); }
+ function pick(k){
+   var d=R.data[k]; if(!d) return [];
+   var rows=(R.dir==='buy'?d.buy:d.sell)||[]; var scale=R.mode==='daily'?wdCount(R.start,R.end):1, minTv=R.minTv*scale;
+   rows=rows.filter(function(r){ return r.tv>=minTv&&Math.abs(r.amt)>=1&&!(R.noEtf&&isEtf(r)); });
+   rows.sort(R.sort==='ratio'?function(a,b){ return Math.abs(b.ratio)-Math.abs(a.ratio); }:function(a,b){ return Math.abs(b.amt)-Math.abs(a.amt); });
+   return rows.slice(0,20);
+ }
+ function table(k,rows,hl){
+   var d=R.data[k]||{}, live=R.mode==='live'; var p=el('div','rkp'); var h=el('div','rkh '+R.dir,SNAME[k]+' · '+(R.dir==='buy'?'순매수':'순매도')+' '+(R.sort==='ratio'?'비중':'금액')+' 상위');
+   h.appendChild(el('small',null,live?'잠정 '+(d.at||''):(d.start===d.end?pdate(d.end):pdate(d.start)+'~'+pdate(d.end)))); p.appendChild(h);
+   if(!rows.length){ p.appendChild(el('div','lmsg',R.err[k]?'못 받음 · '+R.err[k]:'조건에 맞는 종목 없음')); return p; }
+   var t=el('table'), th=el('thead'), tr=el('tr');
+   [['#',''],['종목',''],['비중',''],['순매수(억)',''],[live?'등락률':'평단대비','opt']].forEach(function(c){ var x=el('th',c[1],c[0]); if(c[0]==='비중') x.title='주체 순매수 수량 ÷ 종목 거래량'; if(c[0]==='평단대비') x.title='이 주체의 추정 평균단가 대비 현재가'; tr.appendChild(x); }); th.appendChild(tr); t.appendChild(th);
+   var tb=el('tbody'); var mx=Math.max.apply(null,rows.map(function(r){return Math.abs(R.sort==='ratio'?r.ratio:r.amt)}))||1;
+   rows.forEach(function(r,i){ var row=el('tr'); var hs=indep(hl[r.code]); if(hs.length>=2) row.className='hl';
+     row.appendChild(el('td','no',String(i+1)));
+     var nm=el('td','nm'); if(hs.length>=2){ nm.appendChild(el('span','hb','×'+hs.length)); nm.title=hs.join('·')+' 동반 '+(R.dir==='buy'?'순매수':'순매도')+' · 클릭하면 투자자별 매매'; } else nm.title='투자자별 매매 보기';
+     nm.appendChild(document.createTextNode(r.name)); nm.appendChild(el('span','cd',r.code));
+     nm.addEventListener('click',function(){ if(window.SFLOW) SFLOW.popup(r.code,r.name); }); row.appendChild(nm);
+     var rt=el('td','rt '+(r.amt>0?'pu':'pd'),Math.abs(r.ratio).toFixed(1)+'%'); if(R.sort==='ratio') rt.style.setProperty('--w',Math.max(3,Math.abs(r.ratio)/mx*100).toFixed(0)+'%'); row.appendChild(rt);
+     var am=el('td',(R.sort==='amt'?'rt ':'')+(r.amt>0?'pu':'pd'),fmtEok(r.amt)); if(R.sort==='amt') am.style.setProperty('--w',Math.max(3,Math.abs(r.amt)/mx*100).toFixed(0)+'%'); row.appendChild(am);
+     if(live) row.appendChild(el('td','opt '+(r.pct>0?'pu':r.pct<0?'pd':''),pctTxt(r.pct)));
+     else { var dv=r.avg?(r.price/r.avg-1)*100:null; row.appendChild(el('td','opt '+(dv>0?'pu':dv<0?'pd':''),dv==null?'-':pctTxt(dv))); }
      tb.appendChild(row); });
    t.appendChild(tb); p.appendChild(t); return p;
  }
  function render(){
-   var b=document.getElementById('rk-body'); if(!b) return; b.innerHTML=''; var d=R.data; if(!d) return;
-   var g=el('div','rkg');
-   if(R.mode==='live'){ var nm=d.invsr_name||''; g.appendChild(table(nm+' 순매수 상위','buy',d.buy,true)); g.appendChild(table(nm+' 순매도 상위','sell',d.sell,true)); b.appendChild(g);
-     var st=document.getElementById('rk-st'); if(st) st.textContent=d.at+' 기준 · 전 종목 '+n0(d.n)+'개 잠정치 · 60초 갱신'+(d.open?'':' · 장 마감');
-     b.appendChild(el('p','note','거래소가 장중에 내보내는 투자자별 잠정 집계(증권사 경유) · KRX+NXT 통합 · 억원 · 마감 후 확정치와 차이가 날 수 있습니다. 종목명을 누르면 그 종목의 투자자별 매매가 열립니다.')); }
-   else { if(partial()){ var w=el('div','lmsg'); w.style.cssText='padding:12px;margin-bottom:12px;border:1px dashed var(--line);border-radius:8px;text-align:left;font-size:12.5px'; w.textContent='오늘('+kst()+') 확정치는 장 마감 후 저녁에 집계됩니다. 지금 보이는 값은 일부만 반영된 중간 집계이니 오늘 흐름은 [장중 잠정]으로 보세요.'; b.appendChild(w); }
-     g.appendChild(table('외국인 순매수 상위','buy',d.frgn_buy,false)); g.appendChild(table('외국인 순매도 상위','sell',d.frgn_sell,false)); g.appendChild(table('기관 순매수 상위','buy',d.orgn_buy,false)); g.appendChild(table('기관 순매도 상위','sell',d.orgn_sell,false)); b.appendChild(g);
-     var st2=document.getElementById('rk-st'); if(st2) st2.textContent=(d.date?d.date.slice(0,4)+'.'+d.date.slice(4,6)+'.'+d.date.slice(6,8):'')+(partial()?' 집계 중':' 확정')+' · KRX+NXT 통합 · 억원';
-     b.appendChild(el('p','note','증권사 집계 일별 확정치(KRX+NXT 통합 체결) · 억원 · 당일분은 장 마감 후 반영. 날짜를 바꿔 과거 어느 날이든 볼 수 있습니다.')); }
+   var b=document.getElementById('rk-body'); if(!b) return; b.innerHTML=''; var ks=(R.subjOrder||[]).filter(function(k){return R.data[k]||R.err[k]}); if(!ks.length) return;
+   var lists={}, hl={}; ks.forEach(function(k){ lists[k]=pick(k); lists[k].forEach(function(r){ (hl[r.code]=hl[r.code]||[]).push(SNAME[k]); }); });
+   var live=R.mode==='live', any=R.data[ks[0]]||{};
+   if(!live&&R.end===kst()&&kstNow().getUTCHours()<18) b.appendChild(el('div','warn','오늘('+kst()+') 확정치는 장 마감 후 저녁에 집계됩니다. 지금 보이는 오늘분은 일부만 반영된 중간 집계이니 오늘 흐름은 [장중 잠정]으로 보세요.'));
+   Object.keys(hl).forEach(function(c){ hl[c]=indep(hl[c]); }); var dups=Object.keys(hl).filter(function(c){return hl[c].length>=2}); 
+   if(dups.length){ var byCode={}; ks.forEach(function(k){ lists[k].forEach(function(r){ byCode[r.code]=r; }); });
+     dups.sort(function(a,b){ return hl[b].length-hl[a].length||Math.abs(byCode[b].ratio)-Math.abs(byCode[a].ratio); });
+     var dp=el('div','dup'); dp.appendChild(el('b',null,'동반 '+(R.dir==='buy'?'순매수':'순매도')+' · 2곳 이상'));
+     dups.forEach(function(c){ var r=byCode[c]; var ch=el('button','dc',r.name); ch.type='button'; ch.appendChild(el('small',null,'×'+hl[c].length+' '+hl[c].join('·'))); ch.title='클릭하면 투자자별 매매'; ch.addEventListener('click',function(){ if(window.SFLOW) SFLOW.popup(r.code,r.name); }); dp.appendChild(ch); });
+     b.appendChild(dp); }
+   else b.appendChild(el('div','warn','2곳 이상의 주체 상위에 같이 오른 종목이 없습니다.'));
+   var g=el('div','rkg'); ks.forEach(function(k){ g.appendChild(table(k,lists[k],hl)); }); b.appendChild(g);
+   var st=document.getElementById('rk-st'); if(st) st.textContent=live?((any.at||'')+' 기준 · 전 종목 '+n0(any.n)+'개 잠정치 · 60초 갱신'+(any.open?'':' · 장 마감')):((R.start===R.end?pdate(R.start.replace(/-/g,'')):pdate(R.start.replace(/-/g,''))+'~'+pdate(R.end.replace(/-/g,'')))+' 확정 · '+wdCount(R.start,R.end)+'영업일 · KRX+NXT 통합');
+   b.appendChild(el('p','note',live?'비중 = 주체의 순매수 수량 ÷ 종목의 오늘 거래량. 거래소가 장중에 내보내는 투자자별 잠정 집계(전 종목, 증권사 경유)이며 마감 후 확정치와 차이가 날 수 있습니다. 노란 행은 2곳 이상의 주체가 함께 순매수(순매도)한 종목. 종목명을 누르면 투자자별 매매가 열립니다.'
+     :'비중 = 주체의 기간 순매수 수량 ÷ 종목의 기간 누적 거래량. 확정치(KRX+NXT 통합)는 시장별로 순매수 금액 상위 100종목(코스피·코스닥 각각) 안에서 비중순으로 다시 세운 것이라, 금액이 작은 종목은 비중이 높아도 빠질 수 있습니다. 필터의 거래대금은 일평균 기준(기간에 맞춰 환산). 평단대비 = 이 주체의 기간 추정 평균단가 대비 현재가. 노란 행은 2곳 이상의 주체가 함께 순매수(순매도)한 종목.'));
  }
  function open(){ R.vis=true; ctl(); load(); }
  function close(){ R.vis=false; clearTimeout(R.timer); }
- document.addEventListener('member-change',function(){ if(R.vis){ ctl(); load(); } });
+ document.addEventListener('member-change',function(){ R.data={}; if(R.vis){ ctl(); load(); } });
  var h=(location.hash||'').replace('#',''); if(h==='rank') open();
  window.RANK={open:open,close:close};
 })();
