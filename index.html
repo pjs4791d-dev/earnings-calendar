@@ -1120,7 +1120,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 11:23 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 13:36 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2081,6 +2081,9 @@ window.HOME=(function(){
  var lastPx={};
  function spark(hist,code,pct){
    if(!hist||!hist.series||!hist.series[code]) return null; var v=hist.series[code].filter(function(x){return x!=null}); if(v.length<3) return null;
+   var a=0; while(a<v.length-1&&v[a]===v[a+1]) a++;                 // 장 시작 전(자정~개장) 같은 값이 이어지는 구간은 잘라서 오늘 장중만 보여 준다
+   var b=v.length-1; while(b>0&&v[b]===v[b-1]) b--;                 // 마감 뒤 같은 값이 이어지는 꼬리도 잘라낸다(해외 지수)
+   if(b-a>=3) v=v.slice(a,b+1); if(v.length<3) return null;
    var lo=Math.min.apply(null,v), hi=Math.max.apply(null,v), W=64, H=22; if(hi===lo) hi=lo+1;
    var pts=v.map(function(x,i){ return (i/(v.length-1)*W).toFixed(1)+','+((1-(x-lo)/(hi-lo))*(H-2)+1).toFixed(1); }).join(' ');
    var svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.setAttribute('class','spark '+(pct>0?'pu':pct<0?'pd':''));
