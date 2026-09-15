@@ -854,6 +854,64 @@ a.mke:hover .mkt{color:var(--accent)}
 @media(max-width:640px){.sf th.opt,.sf td.opt{display:none}}
 </style>
 
+<style>
+#boot{position:fixed;inset:0;z-index:500;background:radial-gradient(ellipse at 50% 45%,#0d1830 0%,#070b14 55%,#04060c 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#c7e6ee;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;transition:opacity .55s ease;overflow:hidden}
+#boot.off{opacity:0;pointer-events:none}
+#boot::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(34,211,238,.035) 0 1px,transparent 1px 4px);pointer-events:none}
+#boot::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(34,211,238,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.06) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(circle at 50% 50%,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 20%,transparent 75%);pointer-events:none}
+#boot .hud{position:relative;width:min(58vmin,340px);height:min(58vmin,340px)}
+#boot .hud svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#boot .r{fill:none;stroke:#22d3ee;transform-box:fill-box;transform-origin:center}
+#boot .r0{stroke-width:1;opacity:.35;animation:bspin 26s linear infinite}
+#boot .r1{stroke-width:2.2;opacity:.85;animation:bspin 9s linear infinite reverse}
+#boot .r2{stroke-width:1;opacity:.5;animation:bspin 14s linear infinite}
+#boot .r3{stroke-width:6;opacity:.22;animation:bspin 40s linear infinite reverse}
+#boot .r4{stroke-width:1.4;opacity:.9;stroke:#7dd3fc;animation:bspin 5.5s linear infinite}
+#boot .core{fill:#22d3ee;opacity:.9;filter:drop-shadow(0 0 10px #22d3ee);animation:bpulse 1.6s ease-in-out infinite}
+#boot .halo{fill:none;stroke:#22d3ee;opacity:.25;animation:bhalo 1.6s ease-out infinite}
+@keyframes bspin{to{transform:rotate(360deg)}}
+@keyframes bpulse{0%,100%{opacity:.7}50%{opacity:1}}
+@keyframes bhalo{0%{transform:scale(.6);opacity:.5}100%{transform:scale(1.6);opacity:0}}
+#boot .ttl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+#boot .ttl b{font-size:clamp(20px,4.6vmin,30px);font-weight:800;letter-spacing:.34em;margin-left:.34em;color:#e8fbff;text-shadow:0 0 18px rgba(34,211,238,.55)}
+#boot .ttl small{font-size:10.5px;letter-spacing:.42em;margin-left:.42em;color:#67e8f9;opacity:.85;margin-top:8px}
+#boot .st{margin-top:28px;font-size:11.5px;letter-spacing:.14em;color:#8fd8e6;min-height:16px;text-transform:uppercase}
+#boot .st::after{content:'▮';animation:bblink 1s steps(2) infinite;margin-left:6px;color:#22d3ee}
+@keyframes bblink{to{opacity:0}}
+#boot .bar{margin-top:14px;width:min(52vw,260px);height:2px;background:rgba(34,211,238,.15);position:relative;overflow:hidden}
+#boot .bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#22d3ee,#7dd3fc);box-shadow:0 0 8px #22d3ee;transition:width .35s ease}
+#boot .meta{position:absolute;left:18px;bottom:14px;font-size:10px;letter-spacing:.12em;color:#4f8f9c}
+#boot .meta2{position:absolute;right:18px;bottom:14px;font-size:10px;letter-spacing:.12em;color:#4f8f9c;text-align:right}
+#boot .cr{position:absolute;width:22px;height:22px;border:1.5px solid rgba(34,211,238,.6)}
+#boot .cr.tl{left:14px;top:14px;border-right:0;border-bottom:0}#boot .cr.tr{right:14px;top:14px;border-left:0;border-bottom:0}
+#boot .cr.bl{left:14px;bottom:14px;border-right:0;border-top:0}#boot .cr.br{right:14px;bottom:14px;border-left:0;border-top:0}
+@media(prefers-reduced-motion:reduce){#boot .r,#boot .core,#boot .halo{animation:none}}
+#loadbar{position:fixed;left:0;top:0;height:2px;width:0;background:linear-gradient(90deg,#22d3ee,#7dd3fc);box-shadow:0 0 8px #22d3ee;z-index:499;opacity:0;transition:width .3s ease,opacity .3s ease;pointer-events:none}
+#loadbar.on{opacity:1}
+</style>
+
+
+<div id="boot" aria-hidden="true">
+ <i class="cr tl"></i><i class="cr tr"></i><i class="cr bl"></i><i class="cr br"></i>
+ <div class="hud">
+  <svg viewBox="0 0 200 200">
+   <circle class="r r3" cx="100" cy="100" r="94" stroke-dasharray="40 26 6 26"/>
+   <circle class="r r0" cx="100" cy="100" r="86" stroke-dasharray="2 5"/>
+   <circle class="r r1" cx="100" cy="100" r="74" stroke-dasharray="118 62 24 62"/>
+   <circle class="r r2" cx="100" cy="100" r="60" stroke-dasharray="1 4"/>
+   <circle class="r r4" cx="100" cy="100" r="46" stroke-dasharray="70 40 12 40"/>
+   <circle class="halo" cx="100" cy="100" r="22"/>
+   <circle class="core" cx="100" cy="100" r="3.2"/>
+  </svg>
+  <div class="ttl"><b>SPARTAN</b><small>RESEARCH TERMINAL</small></div>
+ </div>
+ <div class="st" id="boot-st">시스템 기동</div>
+ <div class="bar"><i id="boot-bar"></i></div>
+ <div class="meta">KST · NAVER · KRX · NXT</div>
+ <div class="meta2" id="boot-meta2">v2026.09</div>
+</div>
+<div id="loadbar"></div>
+
 <a class="wm" href="https://t.me/SpartanResearch" target="_blank" rel="noopener"><span class="wd"></span>스파르탄 리서치</a>
 <div class="wrap">
  <div class="topbar">
@@ -1062,8 +1120,26 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 11:07 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 11:23 · 평일 매일 자동 갱신</p>
 </div>
+
+<script>
+(function(){
+ var boot=document.getElementById('boot'), st=document.getElementById('boot-st'), bar=document.getElementById('boot-bar'); if(!boot) return;
+ var t0=Date.now(), steps=[[0,'시스템 기동',8],[350,'시세 스트림 연결',30],[900,'수급 · 매크로 동기화',55],[1600,'지수 지도 구성',75],[2400,'화면 준비',90]], done=false;
+ steps.forEach(function(s){ setTimeout(function(){ if(done) return; st.textContent=s[1]; bar.style.width=s[2]+'%'; },s[0]); });
+ var m2=document.getElementById('boot-meta2'); if(m2){ var d=new Date(); m2.textContent=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+ function finish(){ if(done) return; done=true; st.textContent='준비 완료'; bar.style.width='100%'; var wait=Math.max(0,900-(Date.now()-t0)); setTimeout(function(){ boot.classList.add('off'); setTimeout(function(){ boot.remove(); },600); },wait+250); }
+ document.addEventListener('boot-ready',finish);                      // 홈이 첫 데이터를 그리면 신호
+ setTimeout(finish,4000);                                             // 데이터가 늦어도 4초면 걷는다
+ addEventListener('load',function(){ setTimeout(finish,2500); });
+ /* 상단 로딩 바: LOADBAR.start()/done() — 여러 로드가 겹쳐도 마지막 done 에 사라진다 */
+ var lb=document.getElementById('loadbar'), n=0, tmr=null;
+ window.LOADBAR={start:function(){ n++; if(!lb) return; lb.classList.add('on'); lb.style.width='35%'; clearTimeout(tmr); tmr=setTimeout(function(){ lb.style.width='70%'; },400); },
+   done:function(){ n=Math.max(0,n-1); if(n||!lb) return; clearTimeout(tmr); lb.style.width='100%'; setTimeout(function(){ if(!n){ lb.classList.remove('on'); setTimeout(function(){ if(!n) lb.style.width='0'; },300); } },250); }};
+})();
+</script>
+
 
 <script>
 /* ── 라이트/다크 전환 (선택은 기기에 저장) ───────── */
@@ -1998,7 +2074,8 @@ window.HOME=(function(){
    .then(function(r){ if(r[4]) H.nxt=r[4]; if(r[2]) H.macro=r[2];
      var good=r[0]&&r[0].items&&r[0].items.some(function(i){return i.code==='KOSPI'&&i.price!=null});     // 빈 응답이면 마지막 정상값으로 유지
      if(good){ H.lastQ=r[0]; H.lastHist=r[3]||H.lastHist; } if(H.lastQ) renderQuotes(H.lastQ, H.lastHist, H.macro);
-     if(r[1]) renderFlowSummary(r[1]); if(r[2]) renderMacro(r[2], H.lastQ||r[0]); })
+     if(r[1]) renderFlowSummary(r[1]); if(r[2]) renderMacro(r[2], H.lastQ||r[0]);
+     if(H.lastQ||r[2]) document.dispatchEvent(new CustomEvent('boot-ready')); })
    .finally(function(){ H.timer=setTimeout(tickHome,ivl(30000)); });
  }
  var lastPx={};
@@ -2250,9 +2327,10 @@ window.HOME=(function(){
  function tickFlow(){
    clearTimeout(F.timer); if(!visible.flow||!tabOn('flow')) return;
    var lv=document.getElementById('fl-live');
-   getJ(LIVE+'flow_today.json').then(function(t){ F.today=t; drawFlow(); if(lv){ var isT=t.date===kstToday().replace(/-/g,''); lv.className='live'+(isT?'':' off');
+   var first=!F.today; if(first&&window.LOADBAR) LOADBAR.start();
+   getJ(LIVE+'flow_today.json').then(function(t){ F.today=t; drawFlow(); if(first&&window.LOADBAR) LOADBAR.done(); document.dispatchEvent(new CustomEvent('boot-ready')); if(lv){ var isT=t.date===kstToday().replace(/-/g,''); lv.className='live'+(isT?'':' off');
        lv.lastChild.textContent=(isT?'오늘':t.date.slice(4,6).replace(/^0/,'')+'/'+t.date.slice(6,8).replace(/^0/,'')+' (마지막 거래일)')+' · 수집 '+t.updated.slice(11,16)+(isT?' · 60초 갱신':''); } })
-   .catch(function(){ if(lv){ lv.className='live off'; lv.lastChild.textContent='실시간 서버에 연결하지 못했습니다'; } });
+   .catch(function(){ if(first&&window.LOADBAR) LOADBAR.done(); if(lv){ lv.className='live off'; lv.lastChild.textContent='실시간 서버에 연결하지 못했습니다'; } });
    if(!F.daily||Date.now()-F.daily._at>600000){ Promise.all([getJ(LIVE+'flow_daily.json'), getJ(LIVE+'nxt_daily.json').catch(function(){return null}), getJ(LIVE+'nxt_split.json').catch(function(){return null})]).then(function(r){ r[0]._at=Date.now(); F.daily=r[0]; F.nxt=r[1]; F.split=r[2]; drawDaily(); drawFlow(); }).catch(function(){}); }
    loadMember();
    F.timer=setTimeout(tickFlow,ivl(60000));
@@ -2735,7 +2813,7 @@ window.HOME=(function(){
    if(!W.live){ MEMBER.get('quotes?codes='+codes.join(',')).then(function(d){ (d.items||[]).forEach(function(q){ W.quotes[q.code]=q; }); W.at=d.at; paintQuotes(); }).catch(function(){}); }
    W.timer=setTimeout(tick,document.hidden?60000:10000);
  }
- function load(){ if(!memberOn()){ render(); return; } MEMBER.get('watch').then(function(d){ W.lists=d.lists||[]; W.max={lists:d.max_lists||20,items:d.max_items||30}; if(W.sel==null||!W.lists.some(function(x){return x.id===W.sel})) W.sel=W.lists.length?W.lists[0].id:null; render(); tick(true); }).catch(function(){ render(); }); }
+ function load(){ if(!memberOn()){ render(); document.dispatchEvent(new CustomEvent('boot-ready')); return; } if(window.LOADBAR) LOADBAR.start(); MEMBER.get('watch').then(function(d){ if(window.LOADBAR) LOADBAR.done(); document.dispatchEvent(new CustomEvent('boot-ready')); W.lists=d.lists||[]; W.max={lists:d.max_lists||20,items:d.max_items||30}; if(W.sel==null||!W.lists.some(function(x){return x.id===W.sel})) W.sel=W.lists.length?W.lists[0].id:null; render(); tick(true); }).catch(function(){ if(window.LOADBAR) LOADBAR.done(); render(); }); }
  function open(){ W.vis=true; load(); }
  function close(){ W.vis=false; clearTimeout(W.timer); clearTimeout(W.retry); stopStream(); }
  document.addEventListener('member-change',function(){ W.lists=[]; W.sel=null; W.quotes={}; W.last={}; stopStream(); if(W.vis) load(); });
@@ -2788,8 +2866,8 @@ window.HOME=(function(){
  function tick(force){
    clearTimeout(F.timer); if(!F.code||(!F.popup&&(!F.vis||!tabOn()))) return; var code=F.code;
    fetch(LIVE+'quote?codes='+code+'&t='+Date.now()).then(function(r){return r.json()}).then(function(d){ if(F.code!==code) return; F.q=(d.items||[])[0]||null; paintHead(); }).catch(function(){});
-   var nd=needDays(), pages=Math.min(10,Math.ceil(nd/50));
-   fetch(LIVE+'trend?code='+code+'&ex='+F.ex+'&pages='+pages+'&t='+Math.floor(Date.now()/6e4)).then(function(r){return r.json()}).then(function(d){ if(F.code!==code) return; F.pub=d; render(); }).catch(function(){});
+   var nd=needDays(), pages=Math.min(10,Math.ceil(nd/50)); if(!F.pub&&window.LOADBAR) LOADBAR.start();
+   fetch(LIVE+'trend?code='+code+'&ex='+F.ex+'&pages='+pages+'&t='+Math.floor(Date.now()/6e4)).then(function(r){return r.json()}).then(function(d){ if(!F.pub&&window.LOADBAR) LOADBAR.done(); if(F.code!==code) return; F.pub=d; render(); document.dispatchEvent(new CustomEvent('boot-ready')); }).catch(function(){ if(!F.pub&&window.LOADBAR) LOADBAR.done(); });
    if(memberOn()){ MEMBER.get('stockflow?code='+code+'&days='+nd).then(function(d){ if(F.code!==code) return; F.mem=d; render(); }).catch(function(){ F.mem={rows:[],error:true}; render(); }); }
    F.timer=setTimeout(tick,document.hidden?300000:20000);
  }
