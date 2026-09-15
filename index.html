@@ -1291,7 +1291,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 22:48 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 22:52 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3344,7 +3344,7 @@ window.HOME=(function(){
    MEMBER.get('newhigh?mrkt='+N.mrkt+'&basis='+N.basis+'&dt='+N.dt).then(function(d){ if(seq!==N.seq) return; if(window.LOADBAR) LOADBAR.done(); N.data=d; render(); N.timer=setTimeout(load,60000); })
      .catch(function(e){ if(seq!==N.seq) return; if(window.LOADBAR) LOADBAR.done(); if(!memberOn()){ load(); return; } b.innerHTML=''; b.appendChild(el('div','lmsg','데이터를 못 받았습니다 · '+e.message)); N.timer=setTimeout(load,60000); });
  }
- var COLS=[['pct','등락률',''],['price','현재가',''],['vol_pct','거래량 전일비','opt'],['from_low','저가 대비','opt'],['mcap','시총','opt']];
+ var COLS=[['pct','등락률',''],['price','현재가',''],['vol_pct','거래량 전일비','opt'],['from_high','고가 대비','opt'],['mcap','시총','opt']];
  function render(){
    var b=document.getElementById('nh-body'); if(!b) return; b.innerHTML=''; var d=N.data; if(!d) return;
    var rows=(d.rows||[]).filter(function(r){ return !(N.noEtf&&r.etf); });
@@ -3365,11 +3365,11 @@ window.HOME=(function(){
      row.appendChild(el('td',r.pct>0?'pu':r.pct<0?'pd':'',pctTxt(r.pct)));
      row.appendChild(el('td',null,n0(r.price)));
      row.appendChild(el('td','opt '+(r.vol_pct>100?'pu':''),n0(r.vol)+' ('+(r.vol_pct==null?'-':(r.vol_pct>=0?'+':'')+r.vol_pct.toFixed(0)+'%')+')'));
-     var fl=el('td','opt pu',r.from_low==null?'-':'+'+r.from_low.toFixed(1)+'%'); fl.title='기간 저가 '+n0(r.low)+' → 현재 '+n0(r.price); row.appendChild(fl);
+     var fh=el('td','opt '+(r.from_high<0?'pd':''),r.from_high==null?'-':(r.from_high>=0?'0.00%':r.from_high.toFixed(2)+'%')); fh.title='기간 고가 '+n0(r.high)+' → 현재 '+n0(r.price)+' · 기간 저가 '+n0(r.low)+' 대비 +'+(r.from_low==null?'-':r.from_low.toFixed(1))+'%'; row.appendChild(fh);
      row.appendChild(el('td','opt',eok(r.mcap)));
      tb.appendChild(row); });
    t.appendChild(tb); w.appendChild(t); b.appendChild(w);
-   b.appendChild(el('p','note','증권사 집계(KRX+NXT 통합). 기준 [종가] = 오늘 종가(장중엔 현재가)가 기간 내 모든 종가보다 높은 종목, [장중 고가] = 오늘 고가가 기간 내 고가를 넘은 종목. 저가 대비 = 기간 최저가에서 얼마나 올라왔는지. 거래량 전일비 100% 초과는 붉게. 열 제목을 누르면 정렬, 종목명은 투자자별 매매, 차트 버튼은 캔들 차트.'));
+   b.appendChild(el('p','note','증권사 집계(KRX+NXT 통합). 기준 [종가] = 오늘 종가(장중엔 현재가)가 기간 내 모든 종가보다 높은 종목, [장중 고가] = 오늘 고가가 기간 내 고가를 넘은 종목. 고가 대비 = 기간 최고가에서 현재가가 얼마나 되밀렸는지(0%면 고가 그대로, 마우스를 올리면 저가 대비도 표시). 거래량 전일비 100% 초과는 붉게. 열 제목을 누르면 정렬, 종목명은 투자자별 매매, 차트 버튼은 캔들 차트.'));
  }
  function open(){ N.vis=true; ctl(); load(); }
  function close(){ N.vis=false; clearTimeout(N.timer); }
