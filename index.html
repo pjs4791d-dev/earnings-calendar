@@ -816,6 +816,41 @@ a.mke:hover .mkt{color:var(--accent)}
 .sch .lg i{display:inline-block;width:12px;height:2px;vertical-align:middle;margin:0 4px 0 8px}
 </style>
 
+<style>
+.sf .sfs{position:relative;display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 12px}
+.sf .sfs input{font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:260px;flex:1;max-width:420px}
+.sf .sfs input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.sf .wdd{position:absolute;left:0;top:100%;width:min(420px,100%);z-index:20;background:var(--panel,var(--surface));border:1px solid var(--line);border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.35);max-height:300px;overflow:auto;display:none}
+.sf .wdd.on{display:block}
+.sf .wdd button{display:flex;width:100%;gap:8px;align-items:center;appearance:none;border:0;background:none;color:var(--ink);font:inherit;font-size:13px;padding:8px 12px;cursor:pointer;text-align:left}
+.sf .wdd button:hover,.sf .wdd button.hi{background:var(--line2)}.sf .wdd button small{color:var(--faint);font-variant-numeric:tabular-nums}.sf .wdd button em{margin-left:auto;font-style:normal;font-size:10.5px;color:var(--faint)}
+.sf .recent{display:flex;gap:6px;flex-wrap:wrap}.sf .recent button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:11.5px;padding:4px 9px;border-radius:999px;cursor:pointer}.sf .recent button:hover{color:var(--accent);border-color:var(--accent)}
+.sf .sfh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 0 10px}
+.sf .sfh h3{margin:0;font-size:20px;font-weight:800}.sf .sfh .cd{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums}
+.sf .sfh .px{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}.sf .sfh .px.pu{color:var(--up)}.sf .sfh .px.pd{color:var(--down)}
+.sf .sfh .src{margin-left:auto;font-size:11.5px;color:var(--faint)}
+.sf .today{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:0 0 12px}
+.sf .today .tc{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;border-top:3px solid var(--sc,var(--line))}
+.sf .today .tn{font-size:11px;font-weight:600;color:var(--muted)}.sf .today .tv{font-size:19px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums}.sf .today .tv.pu{color:var(--up)}.sf .today .tv.pd{color:var(--down)}
+.sf .today .tm{font-size:10.5px;color:var(--faint);margin-top:2px}
+.sf .fchart{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 6px 4px;margin:0 0 12px}
+.sf .fchart svg{display:block;width:100%;height:auto}
+.sf .fchart .grid{stroke:var(--line);stroke-width:1}.sf .fchart .zero{stroke:var(--muted);stroke-width:1}.sf .fchart .tk{font-size:10px;fill:var(--faint);font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.sf .fchart .pxl{fill:none;stroke:var(--ink);stroke-width:1.2;opacity:.75}.sf .fchart .tkp{font-size:10px;fill:var(--muted);font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.sf .fchart .ltip{position:absolute;pointer-events:none;background:var(--panel,var(--surface));border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:11.5px;font-variant-numeric:tabular-nums;display:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:2;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.sf .fchart .ltip b{display:block;margin-bottom:2px}.sf .fchart .ltip i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.sf .lmsg{color:var(--muted);font-size:13px;padding:40px 0;text-align:center}
+.sf table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+.sf th{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-align:right;padding:6px;border-bottom:1px solid var(--line);white-space:nowrap}
+.sf th:first-child,.sf td:first-child{text-align:left}.sf td{padding:6px;border-bottom:1px solid var(--line2);text-align:right;white-space:nowrap}
+.sf td.pu{color:var(--up)}.sf td.pd{color:var(--down)}.sf td .bar{display:inline-block;height:8px;border-radius:2px;margin-right:6px;vertical-align:middle;opacity:.7}
+.sf td .prov{font-size:9.5px;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 4px;margin-left:5px}
+.sf .ftbl{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:4px 8px}
+.sf .empty{padding:60px 0;text-align:center;color:var(--muted);font-size:13.5px}
+.sf .lctl .lsw button.lock{opacity:.55}.sf .lctl .lsw button.lock::after{content:' 🔒';font-size:9px}
+@media(max-width:640px){.sf th.opt,.sf td.opt{display:none}}
+</style>
+
 <a class="wm" href="https://t.me/SpartanResearch" target="_blank" rel="noopener"><span class="wd"></span>스파르탄 리서치</a>
 <div class="wrap">
  <div class="topbar">
@@ -862,6 +897,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
   <button class="nav" data-p="flow" role="tab">수급</button>
   <button class="nav" data-p="watch" role="tab">관심종목</button>
+  <button class="nav" data-p="sflow" role="tab">종목 수급</button>
   <div class="ngrp">실적</div>
   <button class="nav" data-p="cal" role="tab">실적 일정</button>
   <button class="nav" data-p="con" role="tab">컨센서스</button>
@@ -981,6 +1017,14 @@ a.mke:hover .mkt{color:var(--accent)}
 </section>
 
 
+<section id="p-sflow" class="panel sf" role="tabpanel" hidden>
+ <div class="hint">STOCK FLOW · 종목별 투자자 매매</div>
+ <h2>종목 수급</h2>
+ <div class="sfs"><input id="sf-q" placeholder="종목명·코드·초성으로 검색 (예: 삼성전자, 005930, ㅅㅅㅈㅈ)" autocomplete="off"><div class="wdd" id="sf-dd"></div><div class="recent" id="sf-recent"></div></div>
+ <div id="sf-body"><div class="empty">위에서 종목을 검색하세요. 개인·외국인·기관의 일별 순매수와 누적 흐름을 봅니다.</div></div>
+</section>
+
+
 <section id="p-sd" hidden>
  <p class="eyebrow">Silicon Data · LLM Token Expenditure Index</p>
  <h1>LLM 토큰 가격 지수</h1>
@@ -1015,7 +1059,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-15 09:01 · 평일 매일 자동 갱신</p>
+   생성 2026-09-15 10:38 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1067,7 +1111,7 @@ a.mke:hover .mkt{color:var(--accent)}
  var tabs=[].slice.call(document.querySelectorAll('.nav'));
  function show(t){
    tabs.forEach(function(x){x.classList.toggle('on',x===t)});
-   ['home','cal','con','rpt','sd','or','gpu','mkt','flow','watch'].forEach(function(k){
+   ['home','cal','con','rpt','sd','or','gpu','mkt','flow','watch','sflow'].forEach(function(k){
      var sec=document.getElementById('p-'+k); if(sec) sec.hidden=(t.dataset.p!==k);
    });
    if(t.dataset.p==='con'||t.dataset.p==='rpt') loadCorps();
@@ -1075,6 +1119,7 @@ a.mke:hover .mkt{color:var(--accent)}
    if(t.dataset.p==='mkt') window.MKT&&MKT.open();   // 증시 캘린더
    if(window.HOME){ HOME.close('home'); HOME.close('flow'); if(t.dataset.p==='home'||t.dataset.p==='flow') HOME.open(t.dataset.p); }   // 홈·수급(폴링은 보일 때만)
    if(window.WATCH){ WATCH.close(); if(t.dataset.p==='watch') WATCH.open(); }
+   if(window.SFLOW){ SFLOW.close(); if(t.dataset.p==='sflow') SFLOW.open(); }
    if(t.dataset.p==='rpt'&&!window.__rptLoaded){    // 처음 열면 최신 리포트를 바로 보여줌
      window.__rptLoaded=true; loadReports(1);
    }
@@ -1088,7 +1133,7 @@ a.mke:hover .mkt{color:var(--accent)}
  /* 주소에 #탭이름 이 붙어 있으면 그 탭을 연다.
     같은 문서에서 해시만 바뀌는 경우(hashchange)도 함께 따라간다 */
  function fromHash(){
-   var h=(location.hash||'').replace('#','');
+   var h=(location.hash||'').replace('#','').split('=')[0];      // #sflow=005930 처럼 값이 붙어도 탭 이름만 본다
    tabs.forEach(function(t){ if(t.dataset.p===h) show(t); });
  }
  addEventListener('hashchange', fromHash);
@@ -2687,7 +2732,125 @@ window.HOME=(function(){
  document.addEventListener('member-change',function(){ W.lists=[]; W.sel=null; W.quotes={}; W.last={}; stopStream(); if(W.vis) load(); });
  document.addEventListener('visibilitychange',function(){ if(document.hidden){ stopStream(); } else if(W.vis){ tick(true); } });
  var h=(location.hash||'').replace('#',''); if(h==='watch') open();
- window.WATCH={open:open,close:close};
+ window.WATCH={open:open,close:close}; window.STOCKIDX={search:localSearch,ensure:loadIdx,ready:function(){return !!IDX}};
+})();
+</script>
+
+
+<script>
+(function(){
+ function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
+ function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
+ function sgn(v,d){ if(v==null) return '-'; return (v>0?'+':'')+n0(v,d); }
+ function fmtEok(v){ if(v==null) return '-'; var a=Math.abs(v); var s=a>=10000?(a/10000).toFixed(2)+'조':n0(a,a<100?1:0)+'억'; return (v<0?'-':v>0?'+':'')+s; }
+ function fmtQty(v){ if(v==null) return '-'; var a=Math.abs(v); var s=a>=1e8?(a/1e8).toFixed(2)+'억주':a>=1e4?(a/1e4).toFixed(1)+'만주':n0(a)+'주'; return (v<0?'-':v>0?'+':'')+s; }
+ var LIVE='https://spartan.tail88a1c5.ts.net/pub/', MB=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'http://localhost:8799/m/':'https://spartan.tail88a1c5.ts.net/m/';
+ var NS='http://www.w3.org/2000/svg'; function sv(t,a){var e=document.createElementNS(NS,t); for(var k in a) e.setAttribute(k,a[k]); return e;}
+ var S1='#22d3ee',S2='#f97316',S3='#4ade80',S4='#eab308',S5='#f472b6',S6='#a78bfa',S7='#94a3b8',S8='#fb7185';
+ var SUBJ={pub:[['ind','개인',S1],['frg','외국인',S2],['org','기관',S3]],
+           mem:[['ind','개인',S1],['frgnr','외국인',S2],['orgn','기관계',S3],['sc','금융투자',S4],['invtrt','투신',S5],['endw','연기금',S6],['samo_fund','사모펀드',S7],['insrnc','보험',S8],['bank','은행',S7],['jnsinkm','기타금융',S7],['natn','국가',S7]]};
+ var F={code:null,name:null,ex:'ALL',mode:'bar',range:60,unit:'amt',on:{ind:true,frg:true,org:true,frgnr:true,orgn:true},pub:null,mem:null,vis:false,timer:null,recent:[]};
+ try{ F.recent=JSON.parse(localStorage.getItem('sf_recent')||'[]'); F.ex=localStorage.getItem('sf_ex')||'ALL'; }catch(e){}
+ function memberOn(){ return !!(window.MEMBER&&MEMBER.logged()); }
+ function tabOn(){ var p=document.getElementById('p-sflow'); return p&&!p.hidden; }
+ /* ── 검색 */
+ var items=[], hi=-1, sq=null, acCache={};
+ function paintDD(){ var dd=document.getElementById('sf-dd'); dd.innerHTML=''; if(!items.length){ dd.classList.remove('on'); return; }
+   items.forEach(function(x,i){ var b=el('button',i===hi?'hi':''); b.type='button'; b.appendChild(el('span',null,x.name)); b.appendChild(el('small',null,x.code)); b.appendChild(el('em',null,x.market||'')); b.addEventListener('mousedown',function(ev){ ev.preventDefault(); pick(x); }); dd.appendChild(b); }); dd.classList.add('on'); }
+ function merge(a,b){ var seen={},out=[]; a.concat(b||[]).forEach(function(x){ if(x.world||seen[x.code]) return; seen[x.code]=1; out.push(x); }); return out.slice(0,12); }
+ function pick(x){ document.getElementById('sf-dd').classList.remove('on'); items=[]; var q=document.getElementById('sf-q'); q.value=''; q.blur(); load(x.code,x.name); }
+ function bindSearch(){ var q=document.getElementById('sf-q'); if(!q||q.dataset.b) return; q.dataset.b='1';
+   q.addEventListener('focus',function(){ window.STOCKIDX&&STOCKIDX.ensure(); });
+   q.addEventListener('input',function(){ var v=q.value.trim(); clearTimeout(sq); if(!v){ items=[]; paintDD(); return; }
+     var loc=window.STOCKIDX?STOCKIDX.search(v):[]; items=merge(loc,acCache[v]); hi=items.length?0:-1; paintDD(); if(acCache[v]) return;
+     sq=setTimeout(function(){ fetch(MB+'search?q='+encodeURIComponent(v),{headers:MEMBER&&MEMBER.logged()?{'Authorization':'Bearer '+(localStorage.getItem('m_tok')||'')}:{}}).then(function(r){return r.json()}).then(function(d){ acCache[v]=d.items||[]; if(q.value.trim()!==v) return; items=merge(window.STOCKIDX?STOCKIDX.search(v):[],acCache[v]); if(hi<0&&items.length) hi=0; paintDD(); }).catch(function(){}); },120); });
+   q.addEventListener('keydown',function(ev){ if(!items.length) return; if(ev.key==='ArrowDown'){ ev.preventDefault(); hi=(hi+1)%items.length; paintDD(); } else if(ev.key==='ArrowUp'){ ev.preventDefault(); hi=(hi-1+items.length)%items.length; paintDD(); } else if(ev.key==='Enter'){ ev.preventDefault(); if(hi>=0) pick(items[hi]); } else if(ev.key==='Escape'){ document.getElementById('sf-dd').classList.remove('on'); } });
+   q.addEventListener('blur',function(){ setTimeout(function(){document.getElementById('sf-dd').classList.remove('on')},150); });
+   paintRecent(); }
+ function paintRecent(){ var r=document.getElementById('sf-recent'); if(!r) return; r.innerHTML=''; F.recent.slice(0,8).forEach(function(x){ var b=el('button',null,x.name); b.type='button'; b.title=x.code; b.addEventListener('click',function(){ load(x.code,x.name); }); r.appendChild(b); }); }
+ /* ── 데이터 */
+ function load(code,name){
+   F.code=code; F.name=name||code; F.pub=null; F.mem=null; location.hash='sflow='+code;
+   F.recent=[{code:code,name:F.name}].concat(F.recent.filter(function(x){return x.code!==code})).slice(0,8); try{localStorage.setItem('sf_recent',JSON.stringify(F.recent))}catch(e){} paintRecent();
+   render(); tick(true);
+ }
+ function tick(force){
+   clearTimeout(F.timer); if(!F.vis||!tabOn()||!F.code) return; var code=F.code;
+   fetch(LIVE.replace(/pub\/$/,'pub/')+'trend?code='+code+'&ex='+F.ex+'&t='+Math.floor(Date.now()/6e4)).then(function(r){return r.json()}).then(function(d){ if(F.code!==code) return; F.pub=d; render(); }).catch(function(){});
+   if(memberOn()){ MEMBER.get('stockflow?code='+code).then(function(d){ if(F.code!==code) return; F.mem=d; render(); }).catch(function(){ F.mem={rows:[],error:true}; render(); }); }
+   F.timer=setTimeout(tick,document.hidden?300000:60000);
+ }
+ /* ── 화면 */
+ function sw(opts,cur,set){ var w=el('span','lsw'); opts.forEach(function(o){ var b=el('button',String(o[0])===String(cur)?'on':'',o[1]); b.type='button'; if(o[2]) { b.classList.add('lock'); b.title=o[2]; }
+   b.addEventListener('click',function(){ if(o[2]){ MEMBER.open('login'); return; } [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); }); w.appendChild(b); }); return w; }
+ function rowsNow(){ var mem=memberOn()&&F.mem&&F.mem.rows&&F.mem.rows.length&&F.unit==='amt'; var rows=mem?F.mem.rows:((F.pub&&F.pub.rows)||[]); return {rows:rows.slice(0,F.range),mem:!!mem}; }
+ function render(){
+   var b=document.getElementById('sf-body'); if(!b) return; b.innerHTML=''; if(!F.code) return;
+   var R=rowsNow(), rows=R.rows, mem=R.mem, subj=mem?SUBJ.mem:SUBJ.pub;
+   var h=el('div','sfh'); h.appendChild(el('h3',null,F.name)); h.appendChild(el('span','cd',F.code));
+   var last=(F.pub&&F.pub.rows&&F.pub.rows[0])||null; if(last&&last.close!=null){ var pct=last.close&&last.chg!=null?last.chg/(last.close-last.chg)*100:null; var px=el('span','px'+(last.chg>0?' pu':last.chg<0?' pd':''),n0(last.close)+' '+(last.chg>0?'▲':last.chg<0?'▼':'')+n0(Math.abs(last.chg||0))+(pct!=null?' ('+sgn(pct,2)+'%)':'')); px.title='최근 확정 종가 '+last.date; h.appendChild(px); }
+   h.appendChild(el('span','src',mem?'증권사 집계 · KRX 체결 · 억원 · 회원':'네이버 · 순매수 수량(주) · '+(F.ex==='ALL'?'통합(KRX+NXT)':F.ex))); b.appendChild(h);
+   var c=el('div','lctl');
+   var g1=el('span'); g1.appendChild(el('span','llab','단위 ')); g1.appendChild(sw([['amt','금액(억)',memberOn()?null:'회원 전용 — 증권사 집계 금액·12주체·장중 잠정치'],['qty','수량(주)']],memberOn()?F.unit:'qty',function(v){F.unit=v; render();})); c.appendChild(g1);
+   var g2=el('span'); g2.appendChild(el('span','llab','거래소 ')); var exw=sw([['ALL','통합'],['KRX','KRX'],['NXT','NXT']],F.ex,function(v){F.ex=v; try{localStorage.setItem('sf_ex',v)}catch(e){} tick(true);}); if(mem){ exw.style.opacity='.35'; exw.style.pointerEvents='none'; exw.title='증권사 집계는 KRX 체결 기준'; } g2.appendChild(exw); c.appendChild(g2);
+   var g3=el('span'); g3.appendChild(el('span','llab','기간 ')); g3.appendChild(sw([[30,'30일'],[60,'60일'],[100,'100일']],F.range,function(v){F.range=+v; render();})); c.appendChild(g3);
+   var g4=el('span'); g4.appendChild(el('span','llab','보기 ')); g4.appendChild(sw([['bar','일별 막대'],['cum','누적 선']],F.mode,function(v){F.mode=v; render();})); c.appendChild(g4);
+   b.appendChild(c);
+   // 오늘 잠정(회원)
+   if(mem&&F.mem.prov&&F.mem.rows[0]){ var t=F.mem.rows[0], tg=el('div','today'); [['frgnr','외국인',S2],['orgn','기관계',S3],['invtrt','투신',S5],['endw','연기금',S6]].forEach(function(k){ var v=t[k[0]]; var cc=el('div','tc'); cc.style.setProperty('--sc',k[2]); cc.appendChild(el('div','tn',k[1]+' · 오늘 잠정')); cc.appendChild(el('div','tv'+(v>0?' pu':v<0?' pd':''),fmtEok(v))); cc.appendChild(el('div','tm',F.mem.at+' 기준 · 개인은 마감 후 확정')); tg.appendChild(cc); }); b.appendChild(tg); }
+   // 주체 토글
+   var lg=el('div','lctl'); lg.appendChild(el('span','llab','선 ')); subj.forEach(function(k){ var on=F.on[k[0]]!==false&&(F.on[k[0]]||['ind','frg','org','frgnr','orgn'].indexOf(k[0])>=0); if(F.on[k[0]]===undefined) F.on[k[0]]=['ind','frg','org','frgnr','orgn'].indexOf(k[0])>=0;
+     var bt=el('button','lgd'); bt.type='button'; bt.setAttribute('aria-pressed',F.on[k[0]]?'true':'false'); bt.style.setProperty('--sc',k[2]); bt.appendChild(el('span','lk')); bt.appendChild(document.createTextNode(k[1])); bt.addEventListener('click',function(){ F.on[k[0]]=!F.on[k[0]]; bt.setAttribute('aria-pressed',F.on[k[0]]?'true':'false'); drawChart(rows,subj,mem); }); lg.appendChild(bt); }); b.appendChild(lg);
+   var ch=el('div','fchart'); ch.id='sf-chart'; ch.appendChild(el('div','ltip')); b.appendChild(ch);
+   if(!rows.length){ ch.insertBefore(el('div','lmsg',F.pub?(F.pub.error?'데이터를 못 받았습니다':'데이터 없음'):'불러오는 중…'),ch.firstChild); } else drawChart(rows,subj,mem);
+   // 표
+   if(rows.length){ var tb=el('div','ftbl'), t=el('table'), th=el('thead'), tr=el('tr');
+     var cols=[['날짜',''],['종가',''],['등락률',''],['거래량','opt']].concat(subj.filter(function(k){return mem?['ind','frgnr','orgn','sc','invtrt','endw','samo_fund'].indexOf(k[0])>=0:true}).map(function(k){return [k[1],k[0]==='ind'||k[0]==='frg'||k[0]==='frgnr'||k[0]==='org'||k[0]==='orgn'?'':'opt']}));
+     if(!mem) cols.push(['외인 보유율','opt']);
+     cols.forEach(function(cx){ tr.appendChild(el('th',cx[1],cx[0])); }); th.appendChild(tr); t.appendChild(th);
+     var body=el('tbody'); var mainKeys=mem?['ind','frgnr','orgn']:['ind','frg','org']; var maxv=1; rows.forEach(function(r){ mainKeys.forEach(function(k){ if(Math.abs(r[k]||0)>maxv) maxv=Math.abs(r[k]); }); });
+     rows.forEach(function(r,i){ var row=el('tr'); var d=r.date; var dt=el('td',null,d.slice(2,4)+'.'+d.slice(4,6)+'.'+d.slice(6,8)); if(mem&&i===0&&F.mem.prov) dt.appendChild(el('span','prov','잠정')); row.appendChild(dt);
+       var pct=r.close&&r.chg!=null?r.chg/(r.close-r.chg)*100:null; row.appendChild(el('td',null,n0(r.close))); row.appendChild(el('td',pct>0?'pu':pct<0?'pd':'',pct==null?'-':sgn(pct,2)+'%')); row.appendChild(el('td','opt',n0(r.vol)));
+       subj.forEach(function(k){ if(mem&&['ind','frgnr','orgn','sc','invtrt','endw','samo_fund'].indexOf(k[0])<0) return; var v=r[k[0]]; var c=el('td',(v>0?'pu':v<0?'pd':'')+(mainKeys.indexOf(k[0])>=0?'':' opt'));
+         if(mainKeys.indexOf(k[0])>=0&&v!=null){ var bar=el('span','bar'); bar.style.width=Math.max(2,Math.abs(v)/maxv*44)+'px'; bar.style.background=v>0?'var(--up)':'var(--down)'; c.appendChild(bar); }
+         c.appendChild(document.createTextNode(v==null?'-':(mem?n0(v,Math.abs(v)<100?1:0):n0(v)))); row.appendChild(c); });
+       if(!mem) row.appendChild(el('td','opt',r.frg_ratio!=null?r.frg_ratio.toFixed(2)+'%':'-')); body.appendChild(row); });
+     t.appendChild(body); tb.appendChild(t); b.appendChild(tb);
+     b.appendChild(el('p','note',mem?'증권사 집계(키움) · KRX 체결분 · 억원 · 당일은 장중 잠정치(개인은 마감 후 확정) · 100일. 수량·NXT/통합은 단위를 수량으로 바꾸면 네이버 집계로 보입니다.':'네이버 증권 종목별 투자자 매매동향 · 순매수 수량(주) · 통합=KRX+NXT · 당일분은 장 마감 후 반영. 회원으로 로그인하면 금액·12주체·장중 잠정치가 열립니다.')); }
+ }
+ function drawChart(rows,subj,mem){
+   var ch=document.getElementById('sf-chart'); if(!ch) return; var old=ch.querySelector('svg'); if(old) old.remove(); var msg=ch.querySelector('.lmsg'); if(msg) msg.remove(); var tip=ch.querySelector('.ltip');
+   var keys=subj.filter(function(k){return F.on[k[0]]}), asc=rows.slice().reverse(), n=asc.length, cum=F.mode==='cum'; if(!keys.length){ ch.insertBefore(el('div','lmsg','볼 주체를 하나 이상 켜 주세요'),tip); return; }
+   var ser={}; keys.forEach(function(k){ var acc=0; ser[k[0]]=asc.map(function(r){ var v=r[k[0]]||0; acc+=v; return cum?acc:v; }); });
+   var W=Math.max(320,Math.floor(ch.getBoundingClientRect().width)-12), H=W<520?240:300, mg={t:14,r:70,b:26,l:8};
+   var lo=0,hi=0; keys.forEach(function(k){ ser[k[0]].forEach(function(v){ if(v<lo) lo=v; if(v>hi) hi=v; }); }); var pad=(hi-lo)*0.08||1; lo-=pad; hi+=pad;
+   var fmt=mem?function(v){return Math.abs(v)>=10000?(v/10000).toFixed(1)+'조':n0(v)}:function(v){return Math.abs(v)>=1e4?(v/1e4).toFixed(0)+'만':n0(v)};
+   function nice(lo,hi,k){ var span=hi-lo||1, raw=span/k, mag=Math.pow(10,Math.floor(Math.log10(raw))), r=raw/mag, step=(r<1.5?1:r<3?2:r<7?5:10)*mag, t0=Math.ceil(lo/step)*step, t=[]; for(var v=t0; v<=hi+step*1e-9; v+=step) t.push(+v.toFixed(10)); return t; }
+   var yt=nice(lo,hi,5); mg.l=Math.max.apply(null,yt.map(function(v){return fmt(v).length}))*6.8+14; var pw=W-mg.l-mg.r, ph=H-mg.t-mg.b;
+   function X(i){ return mg.l+(n<2?pw/2:i/(n-1)*pw); } function Y(v){ return mg.t+(1-(v-lo)/(hi-lo))*ph; }
+   var svg=sv('svg',{viewBox:'0 0 '+W+' '+H,width:W,height:H,role:'img'});
+   yt.forEach(function(v){ var y=Y(v); svg.appendChild(sv('line',{x1:mg.l,x2:W-mg.r,y1:y,y2:y,'class':v===0?'zero':'grid'})); var t=sv('text',{x:mg.l-6,y:y+4,'text-anchor':'end','class':'tk'}); t.textContent=fmt(v); svg.appendChild(t); });
+   var nx=Math.max(2,Math.min(n,Math.floor(pw/70))), step=Math.max(1,Math.ceil((n-1)/(nx-1))); for(var i=0;i<n;i+=step){ var tx=sv('text',{x:X(i),y:H-8,'text-anchor':i===0?'start':'middle','class':'tk'}); var d=asc[i].date; tx.textContent=d.slice(2,4)+'.'+d.slice(4,6)+'.'+d.slice(6,8); svg.appendChild(tx); }
+   // 주가(오른쪽 축)
+   var px=asc.map(function(r){return r.close}).filter(function(v){return v!=null}); if(px.length>1){ var plo=Math.min.apply(null,px), phi=Math.max.apply(null,px); if(phi===plo) phi=plo+1; function PY(v){ return mg.t+(1-(v-plo)/(phi-plo))*ph; }
+     svg.appendChild(sv('path',{d:asc.map(function(r,i){return (i?'L':'M')+X(i).toFixed(1)+' '+PY(r.close).toFixed(1)}).join(' '),'class':'pxl'}));
+     [plo,phi].forEach(function(v){ var t=sv('text',{x:W-mg.r+6,y:PY(v)+4,'class':'tkp'}); t.textContent=n0(v); svg.appendChild(t); }); var tl=sv('text',{x:W-mg.r+6,y:mg.t+ph/2,'class':'tkp'}); tl.textContent='주가'; svg.appendChild(tl); }
+   if(cum){ keys.forEach(function(k){ var p=sv('path',{d:ser[k[0]].map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)}).join(' '),fill:'none','stroke-width':1.8}); p.style.stroke=k[2]; svg.appendChild(p); }); }
+   else { var bw=Math.max(1,pw/n/(keys.length+0.6)); keys.forEach(function(k,ki){ ser[k[0]].forEach(function(v,i){ var x=X(i)+(ki-(keys.length-1)/2)*bw, y0=Y(0), y1=Y(v); var r=sv('rect',{x:x-bw/2,y:Math.min(y0,y1),width:bw,height:Math.max(1,Math.abs(y1-y0))}); r.style.fill=k[2]; r.style.opacity='.85'; svg.appendChild(r); }); }); }
+   var xh=sv('line',{x1:0,x2:0,y1:mg.t,y2:mg.t+ph,stroke:'var(--muted)','stroke-dasharray':'3 3',visibility:'hidden'}); svg.appendChild(xh); var hit=sv('rect',{x:mg.l,y:mg.t,width:pw,height:ph,fill:'transparent'}); svg.appendChild(hit);
+   function at(px0){ var rc=svg.getBoundingClientRect(), x=(px0-rc.left)*W/rc.width, i=Math.round((x-mg.l)/pw*(n-1)); i=Math.max(0,Math.min(n-1,i)); var r=asc[i], cx=X(i); xh.setAttribute('x1',cx); xh.setAttribute('x2',cx); xh.setAttribute('visibility','visible');
+     tip.innerHTML=''; var d=r.date; tip.appendChild(el('b',null,d.slice(2,4)+'.'+d.slice(4,6)+'.'+d.slice(6,8)+(cum?' 누적':'')+' · 종가 '+n0(r.close)));
+     keys.forEach(function(k){ var v=ser[k[0]][i]; var row=el('div'); var ic=el('i'); ic.style.background=k[2]; row.appendChild(ic); row.appendChild(document.createTextNode(k[1]+' '+(mem?fmtEok(v):fmtQty(v)))); row.style.color=v>0?'var(--up)':v<0?'var(--down)':''; tip.appendChild(row); });
+     tip.style.display='block'; var left=cx*rc.width/W+14; if(left+tip.offsetWidth>rc.width-4) left=cx*rc.width/W-tip.offsetWidth-14; tip.style.left=Math.max(4,left)+'px'; tip.style.top=(mg.t*rc.height/H+6)+'px'; }
+   hit.addEventListener('pointermove',function(e){at(e.clientX)}); hit.addEventListener('pointerdown',function(e){at(e.clientX)}); hit.addEventListener('pointerleave',function(){ xh.setAttribute('visibility','hidden'); tip.style.display='none'; });
+   ch.insertBefore(svg,tip);
+ }
+ function open(){ F.vis=true; bindSearch(); if(window.STOCKIDX) STOCKIDX.ensure(); var m=(location.hash||'').match(/sflow=([0-9A-Z]{6})/); if(m&&!F.code){ var rc=F.recent.filter(function(x){return x.code===m[1]})[0]; load(m[1],rc?rc.name:m[1]); } else if(F.code) tick(true); }
+ function close(){ F.vis=false; clearTimeout(F.timer); }
+ document.addEventListener('member-change',function(){ F.mem=null; if(F.vis&&F.code) tick(true); });
+ addEventListener('resize',function(){ if(F.vis&&F.code) render(); });
+ var h=(location.hash||'').replace('#',''); if(h.indexOf('sflow')===0) open();
+ window.SFLOW={open:open,close:close,load:load};
 })();
 </script>
 
