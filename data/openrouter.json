@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-16T12:10+09:00",
+ "checked": "2026-09-16T12:40+09:00",
  "first_seen": {
   "claude-fable-5.1": {
    "2026-09-11": "2026-09-12T09:10+09:00",
@@ -81,7 +81,7 @@
   },
   "2026-09-15": {
    "models": 488,
-   "total": 17750422973427
+   "total": 17750424011492
   }
  },
  "models": {
@@ -247,8 +247,8 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-16",
-    "cache_rate": 0.9,
-    "in": 1.3916,
+    "cache_rate": 0.898,
+    "in": 1.4145,
     "out": 49.9998
    },
    "name": "Claude Fable 5.1",
@@ -608,23 +608,23 @@
      "total": 243970848904
     },
     "2026-09-15": {
-     "cached": 201732860133,
-     "completion": 3683957398,
-     "prompt": 249263615770,
+     "cached": 201735780419,
+     "completion": 3684484683,
+     "prompt": 249267425071,
      "rank": 14,
-     "reasoning": 1734810964,
-     "requests": 4818943,
-     "spend": 172247.65,
-     "spend_eff": 164697.32,
-     "total": 252947573168
+     "reasoning": 1735074622,
+     "requests": 4818973,
+     "spend": 172255.29,
+     "spend_eff": 167895.54,
+     "total": 252951909754
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-16",
-    "cache_rate": 0.84,
-    "in": 0.5263,
-    "out": 10.0096
+    "cache_rate": 0.841,
+    "in": 0.5256,
+    "out": 10.0097
    },
    "name": "Claude Sonnet 5",
    "order": 4,
@@ -997,9 +997,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-16",
-    "cache_rate": 0.738,
-    "in": 0.0434,
-    "out": 0.266
+    "cache_rate": 0.734,
+    "in": 0.0437,
+    "out": 0.2669
    },
    "name": "DeepSeek V4 Flash",
    "order": 6,
@@ -1162,9 +1162,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-16",
-    "cache_rate": 0.803,
-    "in": 0.2295,
-    "out": 3.948
+    "cache_rate": 0.795,
+    "in": 0.2366,
+    "out": 3.943
    },
    "name": "Gemini 3.8 Flash",
    "order": 5,
@@ -1384,22 +1384,22 @@
     },
     "2026-09-15": {
      "cached": 1244705763411,
-     "completion": 52271118536,
-     "prompt": 1533690914968,
+     "completion": 52271166419,
+     "prompt": 1533691116738,
      "rank": 3,
      "reasoning": 23527506558,
-     "requests": 54913127,
-     "spend": 71204.32,
-     "spend_eff": 101775.4,
-     "total": 1585962033504
+     "requests": 54913136,
+     "spend": 71204.35,
+     "spend_eff": 102146.74,
+     "total": 1585962283157
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-16",
-    "cache_rate": 0.784,
-    "in": 0.0486,
-    "out": 0.5273
+    "cache_rate": 0.782,
+    "in": 0.0487,
+    "out": 0.5257
    },
    "name": "GLM 5.3 Flash",
    "order": 7,
@@ -1758,23 +1758,23 @@
      "total": 2568617833309
     },
     "2026-09-15": {
-     "cached": 1053754683369,
-     "completion": 19028583177,
-     "prompt": 1246011768874,
+     "cached": 1053754699949,
+     "completion": 19028728144,
+     "prompt": 1246011806550,
      "rank": 5,
      "reasoning": 7937932126,
-     "requests": 40676181,
-     "spend": 82222.55,
-     "spend_eff": 107021.12,
-     "total": 1265040352051
+     "requests": 40676185,
+     "spend": 82222.73,
+     "spend_eff": 107399.67,
+     "total": 1265040534694
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-16",
     "cache_rate": 0.829,
-    "in": 0.0673,
-    "out": 1.2367
+    "in": 0.0675,
+    "out": 1.2385
    },
    "name": "GPT-5.6 Luna",
    "order": 2,
@@ -1917,9 +1917,9 @@
    "default_on": true,
    "effective": {
     "asof": "2026-09-16",
-    "cache_rate": 0.877,
-    "in": 2.6926,
-    "out": 48.825
+    "cache_rate": 0.876,
+    "in": 2.7195,
+    "out": 49.2582
    },
    "name": "GPT-6 Astra",
    "order": 0,
@@ -2062,9 +2062,9 @@
    "default_on": true,
    "effective": {
     "asof": "2026-09-16",
-    "cache_rate": 0.7,
-    "in": 6.9618,
-    "out": 61.0908
+    "cache_rate": 0.699,
+    "in": 6.844,
+    "out": 60.3973
    },
    "name": "GPT-6 Astra Pro",
    "order": 1,
@@ -2234,6 +2234,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-16T12:10+09:00",
+ "updated": "2026-09-16T12:40+09:00",
  "url": "https://openrouter.ai/rankings"
 }
