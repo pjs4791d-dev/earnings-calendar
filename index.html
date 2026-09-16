@@ -1027,6 +1027,29 @@ a.mke:hover .mkt{color:var(--accent)}
 .tr .tgl{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:7px;cursor:pointer;margin-top:10px}.tr .tgl:hover{color:var(--accent);border-color:var(--accent)}
 </style>
 
+<style>
+.ind .sec{margin:18px 0 8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.ind .sec h3{margin:0;font-size:14px;font-weight:800}.ind .sec small{font-size:11px;color:var(--faint)}
+.ind .kc{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px}
+.ind .k{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:11px 13px;border-top:3px solid var(--sc,var(--line));min-width:0;cursor:pointer}.ind .k:hover{border-color:var(--accent)}.ind .k.on{outline:1px solid var(--accent)}
+.ind .k .kn{font-size:11.5px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ind .k .kv{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-top:5px;font-variant-numeric:tabular-nums}.ind .k .kv small{font-size:11px;color:var(--faint);font-weight:600;margin-left:3px}
+.ind .k .kd{font-size:11px;margin-top:4px;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;gap:8px;flex-wrap:wrap}.ind .k .kd b{font-weight:800}.ind .k .kd span{white-space:nowrap}
+.ind .pu{color:var(--up)}.ind .pd{color:var(--down)}
+.ind .chart{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 6px 4px;position:relative}.ind .chart svg{display:block;width:100%;height:auto}
+.ind .chart .tk{font-size:10px;fill:var(--faint);font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}.ind .chart .grid{stroke:var(--line);stroke-width:1}
+.ind .chart .ltip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:11.5px;font-variant-numeric:tabular-nums;display:none;z-index:5;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.ind .chart .ltip b{display:block;margin-bottom:2px}.ind .chart .ltip i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.ind .legend{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.ind .legend button{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.ind .legend button i{width:14px;height:3px;border-radius:2px;background:var(--c)}.ind .legend button.on{color:var(--ink);border-color:var(--c)}.ind .legend button:not(.on) i{opacity:.3}
+.ind table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}.ind .tw{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:auto}
+.ind th{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-align:right;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.ind th:first-child,.ind td:first-child{text-align:left}.ind td{padding:6px 10px;border-bottom:1px solid var(--line2);text-align:right;white-space:nowrap}.ind tr:last-child td{border-bottom:0}
+.ind td.nm{font-weight:700;color:var(--ink)}.ind td .sub{font-size:10.5px;color:var(--faint);margin-left:5px;font-weight:500}
+.ind .why{font-size:12px;color:var(--muted);line-height:1.7;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-top:10px}.ind .why b{color:var(--ink)}
+.ind .note{font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.65}.ind .lmsg{color:var(--muted);font-size:13px;padding:40px 0;text-align:center}
+.ind .tgl{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:7px;cursor:pointer;margin-top:10px}.ind .tgl:hover{color:var(--accent);border-color:var(--accent)}
+.ind .lctl{margin:0 0 8px}
+</style>
+
 
 <div id="boot" aria-hidden="true">
  <i class="cr tl"></i><i class="cr tr"></i><i class="cr bl"></i><i class="cr br"></i>
@@ -1102,6 +1125,15 @@ a.mke:hover .mkt{color:var(--accent)}
   <button class="nav" data-p="cal" role="tab">실적 일정</button>
   <button class="nav" data-p="con" role="tab">컨센서스</button>
   <button class="nav" data-p="rpt" role="tab">리포트 조회</button>
+
+  <div class="ngrp">산업 지표</div>
+  <button class="nav" data-p="ind-shipping" role="tab">해운</button>
+  <button class="nav" data-p="ind-refining" role="tab">정유</button>
+  <button class="nav" data-p="ind-steel" role="tab">철강</button>
+  <button class="nav" data-p="ind-battery" role="tab">2차전지</button>
+  <button class="nav" data-p="ind-solar" role="tab">태양광</button>
+  <button class="nav" data-p="ind-securities" role="tab">증권</button>
+  <button class="nav" data-p="ind-exports" role="tab">수출</button>
 
   <div class="ngrp">AI 데이터</div>
   <button class="nav" data-p="sd" role="tab">LLM 토큰 가격</button>
@@ -1260,6 +1292,49 @@ a.mke:hover .mkt{color:var(--accent)}
 </section>
 
 
+<section id="p-ind-shipping" class="panel ind" role="tabpanel" hidden>
+ <div class="hint">SHIPPING · SCFI · FBX · BDI</div>
+ <h2>해운 운임</h2>
+ <div id="ind-shipping-top" class="lctl"></div>
+ <div id="ind-shipping-body"></div>
+</section>
+<section id="p-ind-refining" class="panel ind" role="tabpanel" hidden>
+ <div class="hint">REFINING · SINGAPORE CRACK SPREAD</div>
+ <h2>정유 크랙 스프레드</h2>
+ <div id="ind-refining-top" class="lctl"></div>
+ <div id="ind-refining-body"></div>
+</section>
+<section id="p-ind-steel" class="panel ind" role="tabpanel" hidden>
+ <div class="hint">STEEL · CHINA HRC/REBAR · IRON ORE · COKING COAL</div>
+ <h2>철강 마진</h2>
+ <div id="ind-steel-top" class="lctl"></div>
+ <div id="ind-steel-body"></div>
+</section>
+<section id="p-ind-battery" class="panel ind" role="tabpanel" hidden>
+ <div class="hint">BATTERY MATERIALS · LITHIUM · NICKEL · COBALT</div>
+ <h2>2차전지 원재료</h2>
+ <div id="ind-battery-top" class="lctl"></div>
+ <div id="ind-battery-body"></div>
+</section>
+<section id="p-ind-solar" class="panel ind" role="tabpanel" hidden>
+ <div class="hint">SOLAR · POLY → WAFER → CELL → MODULE</div>
+ <h2>태양광 밸류체인</h2>
+ <div id="ind-solar-top" class="lctl"></div>
+ <div id="ind-solar-body"></div>
+</section>
+<section id="p-ind-securities" class="panel ind" role="tabpanel" hidden>
+ <div class="hint">SECURITIES · TRADING VALUE</div>
+ <h2>증권 거래대금</h2>
+ <div id="ind-securities-top" class="lctl"></div>
+ <div id="ind-securities-body"></div>
+</section>
+<section id="p-ind-exports" class="panel ind" role="tabpanel" hidden>
+ <div class="hint">KOREA EXPORTS · 관세청 1~10일 · 1~20일 · 월간</div>
+ <h2>수출 잠정치</h2>
+ <div id="ind-exports-top" class="lctl"></div>
+ <div id="ind-exports-body"></div>
+</section>
+
 <section id="p-sd" hidden>
  <p class="eyebrow">Silicon Data · LLM Token Expenditure Index</p>
  <h1>LLM 토큰 가격 지수</h1>
@@ -1294,7 +1369,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-16 09:17 · 평일 매일 자동 갱신</p>
+   생성 2026-09-16 10:07 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -1369,7 +1444,7 @@ a.mke:hover .mkt{color:var(--accent)}
  var tabs=[].slice.call(document.querySelectorAll('.nav'));
  function show(t){
    tabs.forEach(function(x){x.classList.toggle('on',x===t)});
-   ['home','cal','con','rpt','sd','or','gpu','mkt','flow','watch','sflow','rank','nhigh','mem','tour'].forEach(function(k){
+   ['home','cal','con','rpt','sd','or','gpu','mkt','flow','watch','sflow','rank','nhigh','mem','tour','ind-shipping','ind-refining','ind-steel','ind-battery','ind-solar','ind-securities','ind-exports'].forEach(function(k){
      var sec=document.getElementById('p-'+k); if(sec) sec.hidden=(t.dataset.p!==k);
    });
    if(t.dataset.p==='con'||t.dataset.p==='rpt') loadCorps();
@@ -1382,6 +1457,7 @@ a.mke:hover .mkt{color:var(--accent)}
    if(window.NHIGH){ NHIGH.close(); if(t.dataset.p==='nhigh') NHIGH.open(); }
    if(window.MEMTAB){ MEMTAB.close(); if(t.dataset.p==='mem') MEMTAB.open(); }
    if(window.TOURTAB){ TOURTAB.close(); if(t.dataset.p==='tour') TOURTAB.open(); }
+   if(window.INDTAB){ INDTAB.close(); if(t.dataset.p.indexOf('ind-')===0) INDTAB.open(t.dataset.p.slice(4)); }
    if(t.dataset.p==='rpt'&&!window.__rptLoaded){    // 처음 열면 최신 리포트를 바로 보여줌
      window.__rptLoaded=true; loadReports(1);
    }
@@ -3751,6 +3827,136 @@ window.HOME=(function(){
  function close(){ T.vis=false; clearTimeout(T.timer); }
  var h=(location.hash||'').replace('#',''); if(h==='tour') open();
  window.TOURTAB={open:open,close:close};
+})();
+</script>
+
+
+<script>
+(function(){
+ var BASE='https://api.spartanterminal.com/pub/';
+ var C=['#22d3ee','#f59e0b','#a78bfa','#34d399','#f472b6','#60a5fa','#fb7185','#fbbf24','#2dd4bf','#c084fc','#f97316','#94a3b8','#e879f9','#4ade80'];
+ /* 탭별 구성: cards = 카드 순서, sel = 기본 차트 시리즈, guide = 읽는 법 */
+ var CFG={
+  shipping:{cards:['scfi','fbx','bdi','scfi_eu','scfi_usw','scfi_use','fbx01','fbx11'],sel:['scfi','fbx','bdi'],
+   guide:'<b>SCFI</b>(상하이발 컨테이너 현물운임, 매주 금요일)·<b>FBX</b>(글로벌 40ft 컨테이너 현물, 주간)는 HMM 같은 컨테이너선사 매출과 거의 직결되고, <b>BDI</b>(건화물, 매일)는 팬오션·대한해운 등 벌크선사의 실적 선행지표입니다. 운임이 오르면 선사 이익이 먼저 좋아지고, 몇 분기 뒤 신조선 발주(조선사)로 이어지는 흐름을 봅니다. 항로별로는 유럽·미서안 운임이 SCFI 를 끌고 갑니다.'},
+  refining:{cards:['crack_complex','crack_gasoline95','crack_diesel','crack_jet','crack_naphtha','crack_hsfo','dubai','brent','wti'],sel:['crack_gasoline95','crack_diesel','crack_jet','crack_complex'],
+   guide:'정유사 이익은 유가가 아니라 <b>제품 가격 − 원유 가격(크랙 스프레드)</b>입니다. 싱가포르 현물 제품가(오피넷 MOPS)에서 두바이유를 뺀 값이며, <b>복합 크랙</b>은 휘발유 3 : 경유 5 : 항공유 2 로 가중해 국내 정유사 제품 구성에 가깝게 만든 값입니다(SK이노베이션·S-Oil·GS칼텍스 정제마진 방향). 4주 평균이 12주 평균을 넘어서면 마진 개선 국면. <b>나프타 크랙</b>이 마이너스로 깊어지면 정유사엔 부담, 석유화학(NCC)엔 원가 완화입니다.'},
+  steel:{cards:['margin','hrc','rebar','iron_ore','coking_coal','usdcny'],sel:['hrc','rebar','margin'],
+   guide:'<b>중국 열연(HRC)·철근</b> 선물가는 아시아 철강 가격의 기준이고, <b>철광석·원료탄</b>은 원가입니다. <b>마진 프록시</b> = 열연(USD 환산) − 1.6×철광석 − 0.5×원료탄 로, 고로사(POSCO홀딩스·현대제철)의 스프레드 방향을 매일 보는 용도입니다(절대값보다 방향·추세). 열연이 오르는데 원료가 따라오지 않으면 마진 확대, 원료만 오르면 축소. 철근은 중국 건설 경기의 온도계입니다.'},
+  battery:{cards:['li_carb','li_hydrox','spodumene','nickel','cobalt'],sel:['li_carb','li_hydrox','nickel'],
+   guide:'<b>탄산·수산화리튬</b>은 양극재(에코프로비엠·포스코퓨처엠·엘앤에프) 판가에 1~3개월 시차로 반영되고(판가 연동), <b>니켈·코발트</b>는 NCM 양극재 원가입니다. 리튬이 오르면 양극재 매출·재고평가이익이 먼저 좋아지고, 내리면 재고평가손실이 납니다. 셀 가격(LG엔솔·삼성SDI ASP)은 유료 데이터라 여기엔 없으니, 원재료 방향 + 완성차 판매를 함께 보세요. <b>스포듀민</b>(리튬 정광)은 리튬 가격의 상류 선행지표입니다.'},
+  solar:{cards:['poly','wafer182','wafer_n','cell182','cell_n','module182','module_n','module_cn'],sel:['poly','wafer182','cell182','module182'],
+   guide:'<b>폴리실리콘 → 웨이퍼 → 셀 → 모듈</b> 순으로 가격이 전가됩니다. 단위가 달라(kg·장·W) 차트는 첫값=100 으로 맞춰 어느 단계가 먼저 움직이는지 봅니다. 폴리가 오르는데 웨이퍼·셀이 못 따라가면 하류 마진 압박(한화솔루션·OCI 등 위치에 따라 반대). 주 1회(수요일) 갱신되는 현물이며 중국 내수(VAT 제외 환산) 기준입니다.'},
+  securities:{cards:['total_tv','kospi_tv','kosdaq_tv'],sel:['kospi_tv','kosdaq_tv'],
+   guide:'<b>거래대금</b>은 증권사 브로커리지 수익의 직접 변수입니다(키움·미래·삼성·NH 등). 20일 평균이 60일 평균을 넘어서면 브로커리지 이익 개선 국면. 신용융자 잔고·고객예탁금(금융투자협회)은 수집원이 막혀 있어 확보되는 대로 추가합니다.'},
+  exports:{guide:'관세청은 매월 11일(1~10일), 21일(1~20일), 1일(전월 잠정), 15일(전월 확정)에 통관 기준 수출입을 냅니다. <b>1~10일·1~20일 잠정치</b>는 그 달 실적을 3주 먼저 보여 주는 셈이라, 반도체·자동차·선박·석유제품 등 품목별 증감률이 해당 업종 분기 실적의 방향을 미리 알려 줍니다. 단, 조업일수 차이가 커서 <b>일평균 수출액</b>과 같이 봐야 합니다(연휴가 낀 달은 총액이 줄어도 일평균은 늘 수 있음).'}
+ };
+ var I={data:null,sel:{},win:{},open:{},timer:null,vis:null};
+ try{ var sv=JSON.parse(localStorage.getItem('ind_set')||'{}'); if(sv.sel) I.sel=sv.sel; if(sv.win) I.win=sv.win; if(sv.open) I.open=sv.open; }catch(e){}
+ function save(){ try{ localStorage.setItem('ind_set',JSON.stringify({sel:I.sel,win:I.win,open:I.open})); }catch(e){} }
+ function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
+ function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
+ function fmt(v,unit){ if(v==null) return '-'; var a=Math.abs(v); var d=a>=1000?0:a>=100?1:a>=10?2:3; if(unit==='억원') return a>=10000?n0(v/10000,1)+'조':n0(v,0)+'억'; if(unit==='pt') d=a>=1000?0:1; return n0(v,d); }
+ function pct(v,d){ return v==null||!isFinite(v)?'—':(v>0?'+':'')+v.toFixed(d==null?1:d)+'%'; }
+ function cls(v){ return v==null||!isFinite(v)?'':v>0?'pu':v<0?'pd':''; }
+ function dtxt(d){ return d?d.slice(2).replace(/-/g,'.'):''; }
+ function tabOn(k){ var p=document.getElementById('p-ind-'+k); return p&&!p.hidden; }
+ function sw(opts,cur,set){ var w=el('span','lsw'); opts.forEach(function(o){ var b=el('button',String(o[0])===String(cur)?'on':'',o[1]); b.type='button'; b.addEventListener('click',function(){ [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); }); w.appendChild(b); }); return w; }
+ function grp(label,node){ var g=el('span'); g.appendChild(el('span','llab',label+' ')); g.appendChild(node); return g; }
+ function atOrBefore(ser,date){ var v=null; for(var i=ser.length-1;i>=0;i--){ if(ser[i][0]<=date){ v=ser[i][1]; break; } } return v; }
+ function shiftDate(d,days){ var x=new Date(d+'T00:00:00Z'); x.setUTCDate(x.getUTCDate()-days); return x.toISOString().slice(0,10); }
+ function avgLast(ser,n){ var a=ser.slice(-n); if(!a.length) return null; return a.reduce(function(s,p){return s+p[1]},0)/a.length; }
+ function card(key,it,idx,k){ var ser=it.series||[]; var c=el('div','k'+(I.sel[k]&&I.sel[k].indexOf(key)>=0?' on':'')); c.style.setProperty('--sc',C[idx%C.length]); c.title=it.src||''; c.appendChild(el('div','kn',it.name));
+   if(!ser.length){ c.appendChild(el('div','kv','—')); return c; }
+   var last=ser[ser.length-1], prev=ser.length>1?ser[ser.length-2]:null; var v=el('div','kv',fmt(last[1],it.unit)); v.appendChild(el('small',null,it.unit==='억원'?'':(it.unit||''))); c.appendChild(v);
+   var d=el('div','kd'); var ch=prev?(it.derived&&/크랙|마진/.test(it.name)?last[1]-prev[1]:(prev[1]?(last[1]/prev[1]-1)*100:null)):null; var isDiff=!!(prev&&it.derived&&/크랙|마진/.test(it.name));
+   var s1=el('span'); s1.appendChild(el('b',cls(ch),isDiff?(ch>0?'+':'')+ch.toFixed(2):pct(ch))); s1.appendChild(document.createTextNode(' 전기('+dtxt(prev?prev[0]:'')+'→'+dtxt(last[0])+')')); d.appendChild(s1);
+   [['1M',30],['3M',91]].forEach(function(w){ var b=atOrBefore(ser,shiftDate(last[0],w[1])); if(b==null) return; var x=isDiff?last[1]-b:(b?(last[1]/b-1)*100:null); var s=el('span'); s.appendChild(el('b',cls(x),isDiff?(x>0?'+':'')+x.toFixed(2):pct(x))); s.appendChild(document.createTextNode(' '+w[0])); d.appendChild(s); });
+   c.appendChild(d);
+   if(/크랙/.test(it.name)){ var a4=avgLast(ser,20), a12=avgLast(ser,60); var s3=el('div','kd'); s3.appendChild(document.createTextNode('4주 '+n0(a4,1)+' · 12주 '+n0(a12,1)+' → ')); s3.appendChild(el('b',a4>a12?'pu':'pd',a4>a12?'개선':'둔화')); c.appendChild(s3); }
+   c.addEventListener('click',function(){ var s=I.sel[k]||CFG[k].sel.slice(); var j=s.indexOf(key); if(j>=0){ if(s.length>1) s.splice(j,1); } else s.push(key); I.sel[k]=s; save(); render(k); });
+   return c; }
+ function legend(k,items,keys){ var lg=el('div','legend'); var sel=I.sel[k]||CFG[k].sel; keys.forEach(function(key,i){ var it=items[key]; if(!it) return; var bt=el('button',sel.indexOf(key)>=0?'on':''); bt.type='button'; bt.style.setProperty('--c',C[i%C.length]); bt.appendChild(document.createElement('i')); bt.appendChild(document.createTextNode(it.name)); bt.addEventListener('click',function(){ var s=(I.sel[k]||CFG[k].sel).slice(); var j=s.indexOf(key); if(j>=0){ if(s.length>1) s.splice(j,1); } else s.push(key); I.sel[k]=s; save(); render(k); }); lg.appendChild(bt); }); return lg; }
+ function fold(k,id,label,node,defOpen){ var on=I.open[id]!=null?I.open[id]:!!defOpen; var bt=el('button','tgl',(on?'▴ ':'▾ ')+label+(on?' 접기':' 보기')); bt.type='button'; node.hidden=!on; node.style.marginTop='8px'; bt.addEventListener('click',function(){ on=!on; I.open[id]=on; save(); node.hidden=!on; bt.textContent=(on?'▴ ':'▾ ')+label+(on?' 접기':' 보기'); }); var w=el('div'); w.appendChild(bt); w.appendChild(node); return w; }
+ function chart(ds,series,fmtV){
+   var W=900,H=280,L=58,R=12,Tp=12,B=26; var wrap=el('div','chart'); var ns='http://www.w3.org/2000/svg'; var s=document.createElementNS(ns,'svg'); s.setAttribute('viewBox','0 0 '+W+' '+H);
+   var lo=Infinity,hi=-Infinity; series.forEach(function(x){ ds.forEach(function(d){ var v=x.s[d]; if(v!=null&&isFinite(v)){ lo=Math.min(lo,v); hi=Math.max(hi,v); } }); });
+   if(!isFinite(lo)){ wrap.appendChild(el('div','lmsg','데이터 없음')); return wrap; } if(hi===lo){ hi=lo+1; lo=lo-1; } var pad=(hi-lo)*0.06; lo-=pad; hi+=pad;
+   function X(i){ return L+i/Math.max(1,ds.length-1)*(W-L-R); } function Y(v){ return Tp+(hi-v)/(hi-lo)*(H-Tp-B); }
+   for(var g=0;g<=4;g++){ var v=lo+(hi-lo)*g/4; var ln=document.createElementNS(ns,'line'); ln.setAttribute('x1',L); ln.setAttribute('x2',W-R); ln.setAttribute('y1',Y(v)); ln.setAttribute('y2',Y(v)); ln.setAttribute('class','grid'); s.appendChild(ln); var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',L-6); tx.setAttribute('y',Y(v)+3); tx.setAttribute('text-anchor','end'); tx.setAttribute('class','tk'); tx.textContent=fmtV(v); s.appendChild(tx); }
+   if(lo<0&&hi>0){ var z=document.createElementNS(ns,'line'); z.setAttribute('x1',L); z.setAttribute('x2',W-R); z.setAttribute('y1',Y(0)); z.setAttribute('y2',Y(0)); z.setAttribute('stroke','var(--muted)'); z.setAttribute('stroke-width','1'); s.appendChild(z); }
+   var step=Math.max(1,Math.ceil(ds.length/9)); ds.forEach(function(d,i){ if(i%step) return; var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',X(i)); tx.setAttribute('y',H-8); tx.setAttribute('text-anchor','middle'); tx.setAttribute('class','tk'); tx.textContent=d.slice(2,4)+'.'+d.slice(5,7)+'.'+d.slice(8,10); s.appendChild(tx); });
+   series.forEach(function(x){ var pts=[]; ds.forEach(function(d,i){ var v=x.s[d]; if(v!=null&&isFinite(v)) pts.push(X(i).toFixed(1)+','+Y(v).toFixed(1)); }); var p=document.createElementNS(ns,'polyline'); p.setAttribute('points',pts.join(' ')); p.setAttribute('fill','none'); p.setAttribute('stroke',x.color); p.setAttribute('stroke-width','1.8'); p.setAttribute('stroke-linejoin','round'); s.appendChild(p); });
+   var tip=el('div','ltip'); wrap.appendChild(s); wrap.appendChild(tip);
+   s.addEventListener('mousemove',function(ev){ var r=s.getBoundingClientRect(); var x=(ev.clientX-r.left)/r.width*W; var i=Math.round((x-L)/(W-L-R)*(ds.length-1)); if(i<0||i>=ds.length){ tip.style.display='none'; return; } tip.innerHTML=''; tip.appendChild(el('b',null,ds[i]));
+     series.forEach(function(sr){ var v=sr.s[ds[i]]; if(v==null) return; var d=el('div'); var ic=document.createElement('i'); ic.style.background=sr.color; d.appendChild(ic); d.appendChild(document.createTextNode(sr.name+' '+(sr.raw&&sr.raw[ds[i]]!=null?fmt(sr.raw[ds[i]],sr.unit)+(sr.norm?' ('+v.toFixed(1)+')':''):fmtV(v)))); tip.appendChild(d); });
+     tip.style.display='block'; var tx=ev.clientX-r.left+12; if(tx+tip.offsetWidth>r.width) tx=ev.clientX-r.left-tip.offsetWidth-12; tip.style.left=tx+'px'; tip.style.top=(ev.clientY-r.top+10)+'px'; });
+   s.addEventListener('mouseleave',function(){ tip.style.display='none'; });
+   return wrap; }
+ function renderGroup(k){
+   var b=document.getElementById('ind-'+k+'-body'), top=document.getElementById('ind-'+k+'-top'); if(!b) return; b.innerHTML=''; top.innerHTML='';
+   var g=(I.data&&I.data.groups&&I.data.groups[k])||null; if(!g){ b.appendChild(el('div','lmsg','데이터 없음')); return; }
+   var items=g.items||{}; var cfg=CFG[k]; var keys=Object.keys(items).filter(function(x){return items[x]&&items[x].series&&items[x].series.length});
+   var st=el('span'); st.style.cssText='font-size:11.5px;color:var(--faint);margin-left:auto'; st.textContent='수집 '+(I.data.updated||'').slice(0,16).replace('T',' ')+' · 3시간마다 갱신';
+   var win=I.win[k]||'6M'; top.appendChild(grp('기간',sw([['1M','1개월'],['3M','3개월'],['6M','6개월'],['1Y','1년'],['ALL','전체']],win,function(v){ I.win[k]=v; save(); render(k); }))); top.appendChild(st);
+   // 카드
+   var kc=el('div','kc'); var order=cfg.cards.filter(function(x){return items[x]}).concat(keys.filter(function(x){return cfg.cards.indexOf(x)<0}));
+   order.forEach(function(key){ kc.appendChild(card(key,items[key],order.indexOf(key),k)); }); b.appendChild(kc);
+   // 차트
+   var s1=el('div','sec'); s1.appendChild(el('h3',null,'추이')); s1.appendChild(el('small',null,'카드나 범례를 눌러 시리즈 선택 · 단위가 다르면 첫값=100 으로 맞춤')); b.appendChild(s1);
+   b.appendChild(legend(k,items,order));
+   var sel=(I.sel[k]||cfg.sel).filter(function(x){return items[x]&&items[x].series.length}); if(!sel.length) sel=cfg.sel.filter(function(x){return items[x]});
+   var days={ '1M':31,'3M':92,'6M':183,'1Y':366,'ALL':100000 }[win]||183; var dates={}; var lastD='';
+   sel.forEach(function(key){ items[key].series.forEach(function(p){ if(p[0]>lastD) lastD=p[0]; }); });
+   var from=shiftDate(lastD||new Date().toISOString().slice(0,10),days);
+   sel.forEach(function(key){ items[key].series.forEach(function(p){ if(p[0]>=from) dates[p[0]]=1; }); }); var ds=Object.keys(dates).sort();
+   var units={}; sel.forEach(function(key){ units[items[key].unit||'']=1; }); var norm=Object.keys(units).length>1;
+   var series=sel.map(function(key){ var it=items[key]; var raw={}; it.series.forEach(function(p){ if(p[0]>=from) raw[p[0]]=p[1]; }); var base=null; var sv={}; ds.forEach(function(d){ var v=raw[d]; if(v==null) return; if(norm){ if(base==null) base=v; sv[d]=base?v/base*100:null; } else sv[d]=v; }); return {name:it.name,color:C[order.indexOf(key)%C.length],s:sv,raw:raw,unit:it.unit,norm:norm}; });
+   b.appendChild(chart(ds,series,norm?function(v){return v.toFixed(0)}:function(v){ var u=items[sel[0]].unit; return fmt(v,u); }));
+   // 읽는 법
+   var why=el('div','why'); why.innerHTML=cfg.guide; b.appendChild(why);
+   // 표(접힘): 선택 시리즈 최근 40개
+   var tw=el('div','tw'); var t=el('table'), th=el('thead'), tr=el('tr'); tr.appendChild(el('th',null,'날짜')); sel.forEach(function(key){ tr.appendChild(el('th',null,items[key].name)); }); th.appendChild(tr); t.appendChild(th); var tb=el('tbody');
+   ds.slice(-40).reverse().forEach(function(d){ var r=el('tr'); r.appendChild(el('td','nm',d)); sel.forEach(function(key){ var v=null; items[key].series.forEach(function(p){ if(p[0]===d) v=p[1]; }); r.appendChild(el('td',null,v==null?'·':fmt(v,items[key].unit))); }); tb.appendChild(r); });
+   t.appendChild(tb); tw.appendChild(t); tw.style.marginTop='0'; b.appendChild(fold(k,k+'_tbl','표',tw,false));
+   if(g.pending&&g.pending.length) b.appendChild(el('p','note','추가 예정: '+g.pending.join(' · ')));
+   var srcs={}; order.forEach(function(key){ var s=items[key].src; if(s) srcs[s.split(' · ')[0]]=1; }); b.appendChild(el('p','note','출처: '+Object.keys(srcs).join(' · ')+'. 값은 현물·선물 공개 가격이며 투자 판단의 참고용입니다.'));
+ }
+ function renderExports(){
+   var k='exports'; var b=document.getElementById('ind-'+k+'-body'), top=document.getElementById('ind-'+k+'-top'); if(!b) return; b.innerHTML=''; top.innerHTML='';
+   var g=(I.data&&I.data.groups&&I.data.groups[k])||null; if(!g||!g.releases||!g.releases.length){ b.appendChild(el('div','lmsg','데이터 없음')); return; }
+   var rel=g.releases.slice().sort(function(a,c){ return (c.published||'').localeCompare(a.published||''); });
+   var st=el('span'); st.style.cssText='font-size:11.5px;color:var(--faint);margin-left:auto'; st.textContent='관세청 보도자료 '+rel.length+'건 · 수집 '+(I.data.updated||'').slice(0,16).replace('T',' '); top.appendChild(st);
+   // 최신 카드
+   var latest=rel.filter(function(r){ return r.total_yoy!=null; })[0]||rel[0]; var kc=el('div','kc'); function kcard(name,val,sub,color,c2){ var c=el('div','k'); c.style.setProperty('--sc',color); c.style.cursor='default'; c.appendChild(el('div','kn',name)); c.appendChild(el('div','kv',val)); if(sub){ var d=el('div','kd'); d.appendChild(el('b',c2||'',sub[0])); d.appendChild(document.createTextNode(sub[1])); c.appendChild(d); } kc.appendChild(c); }
+   kcard('최신 · '+latest.title.replace(' 수출입 현황','').replace(/\[.*\]/,'').trim(),(latest.total!=null?n0(latest.total)+'억$':'—'),[pct(latest.total_yoy),' 전년동기 · 일평균 '+(latest.daily_avg!=null?latest.daily_avg+'억$':'-')],C[0],cls(latest.total_yoy));
+   var items=['반도체','승용차','선박','석유제품','철강제품','무선통신기기','자동차부품','컴퓨터주변기기','정밀기기','가전제품'];
+   var lat2=rel.filter(function(r){ return r.items&&Object.keys(r.items).length; })[0]||latest;
+   items.slice(0,5).forEach(function(nm,i){ var it=(lat2.items||{})[nm]; if(!it) return; kcard(nm+' · '+(lat2.ym||'')+' '+lat2.kind,n0(it[0]/100,0)+'억$',[pct(it[1]),' 전년동기'],C[i+1],cls(it[1])); });
+   b.appendChild(kc);
+   // 품목별 증감률 차트(10일·20일 잠정만, 발표일 순)
+   var s1=el('div','sec'); s1.appendChild(el('h3',null,'품목별 수출 증감률 추이 (1~10일 · 1~20일 잠정)')); s1.appendChild(el('small',null,'전년 동기 대비 % · 발표일 기준')); b.appendChild(s1);
+   var prov=rel.filter(function(r){ return (r.kind==='10일'||r.kind==='20일')&&r.items&&Object.keys(r.items).length; }).sort(function(a,c){ return (a.published||'').localeCompare(c.published||''); });
+   var sel=I.sel.exports||['반도체','승용차','선박','석유제품']; var lg=el('div','legend'); items.forEach(function(nm,i){ var bt=el('button',sel.indexOf(nm)>=0?'on':''); bt.type='button'; bt.style.setProperty('--c',C[i%C.length]); bt.appendChild(document.createElement('i')); bt.appendChild(document.createTextNode(nm)); bt.addEventListener('click',function(){ var s=sel.slice(); var j=s.indexOf(nm); if(j>=0){ if(s.length>1) s.splice(j,1); } else s.push(nm); I.sel.exports=s; save(); render('exports'); }); lg.appendChild(bt); }); b.appendChild(lg);
+   var ds=prov.map(function(r){return r.published}); var series=sel.map(function(nm){ var sv={}; prov.forEach(function(r){ var it=r.items[nm]; if(it) sv[r.published]=it[1]; }); return {name:nm,color:C[items.indexOf(nm)%C.length],s:sv}; });
+   b.appendChild(chart(ds,series,function(v){return v.toFixed(0)+'%'}));
+   // 총액 표
+   var s2=el('div','sec'); s2.appendChild(el('h3',null,'발표별 총괄')); s2.appendChild(el('small',null,'억달러 · 증감률은 전년 동기 대비 · 품목 금액은 백만달러→억달러 환산')); b.appendChild(s2);
+   var tw=el('div','tw'); var t=el('table'), th=el('thead'), tr=el('tr'); ['발표일','기간','구분','수출(억$)','YoY','일평균(억$)','수입(억$)','반도체','승용차','선박','석유제품','철강','무선통신'].forEach(function(h){tr.appendChild(el('th',null,h))}); th.appendChild(tr); t.appendChild(th); var tb=el('tbody');
+   rel.forEach(function(r){ var row=el('tr'); row.appendChild(el('td','nm',r.published||'')); row.appendChild(el('td',null,(r.ym||'')+(r.kind==='10일'?' 1~10일':r.kind==='20일'?' 1~20일':''))); row.appendChild(el('td',null,r.kind)); row.appendChild(el('td',null,r.total!=null?n0(r.total):'-')); row.appendChild(el('td',cls(r.total_yoy),pct(r.total_yoy))); row.appendChild(el('td',null,r.daily_avg!=null?r.daily_avg.toFixed(1):'-')); row.appendChild(el('td',null,r.imp_total!=null?n0(r.imp_total):'-'));
+     ['반도체','승용차','선박','석유제품','철강제품','무선통신기기'].forEach(function(nm){ var it=(r.items||{})[nm]; var td=el('td',it?cls(it[1]):'',it?n0(it[0]/100,0)+' ('+pct(it[1],0)+')':'·'); row.appendChild(td); }); tb.appendChild(row); });
+   t.appendChild(tb); tw.appendChild(t); b.appendChild(tw);
+   var why=el('div','why'); why.innerHTML=CFG.exports.guide; b.appendChild(why);
+   b.appendChild(el('p','note','출처: 관세청 보도자료(통관 기준 잠정치, 첨부 HWPX 표 파싱). 월간 잠정·확정 보도자료는 총괄만 싣고 품목은 10일·20일 자료에서 가져옵니다. 연간 통계 확정 시 일부 수치는 정정될 수 있습니다.'));
+ }
+ function render(k){ if(k==='exports') renderExports(); else renderGroup(k); }
+ function load(cb){ fetch(BASE+'industry.json?v='+Math.floor(Date.now()/6e5)).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); }).then(function(d){ I.data=d; cb&&cb(); }).catch(function(e){ var k=I.vis; var b=k&&document.getElementById('ind-'+k+'-body'); if(b){ b.innerHTML=''; b.appendChild(el('div','lmsg','데이터를 못 받았습니다 · '+e.message)); } }); }
+ function open(k){ I.vis=k; if(window.LOADBAR) LOADBAR.start(); var b=document.getElementById('ind-'+k+'-body'); if(b&&!I.data){ b.innerHTML=''; b.appendChild(el('div','lmsg','불러오는 중…')); }
+   if(I.data&&Date.now()-(I.at||0)<600000){ render(k); if(window.LOADBAR) LOADBAR.done(); return; }
+   load(function(){ I.at=Date.now(); if(window.LOADBAR) LOADBAR.done(); if(I.vis===k) render(k); }); }
+ function close(){ I.vis=null; }
+ var h=(location.hash||'').replace('#',''); if(h.indexOf('ind-')===0) open(h.slice(4));
+ window.INDTAB={open:open,close:close};
 })();
 </script>
 
