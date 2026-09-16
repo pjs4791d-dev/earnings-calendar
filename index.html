@@ -1029,10 +1029,10 @@ a.mke:hover .mkt{color:var(--accent)}
 
 <style>
 .ind .sec{margin:18px 0 8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.ind .sec h3{margin:0;font-size:14px;font-weight:800}.ind .sec small{font-size:11px;color:var(--faint)}
-.ind .kc{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px}
+.ind .kc{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px}
 .ind .k{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:11px 13px;border-top:3px solid var(--sc,var(--line));min-width:0;cursor:pointer}.ind .k:hover{border-color:var(--accent)}.ind .k.on{outline:1px solid var(--accent)}
 .ind .k .kn{font-size:11.5px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ind .k .kv{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-top:5px;font-variant-numeric:tabular-nums}.ind .k .kv small{font-size:11px;color:var(--faint);font-weight:600;margin-left:3px}
-.ind .k .kd{font-size:11px;margin-top:4px;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;gap:8px;flex-wrap:wrap}.ind .k .kd b{font-weight:800}.ind .k .kd span{white-space:nowrap}
+.ind .k .kd{font-size:11px;margin-top:4px;color:var(--muted);font-variant-numeric:tabular-nums;display:flex;gap:6px 10px;flex-wrap:wrap;overflow:hidden}.ind .k .kd b{font-weight:800}.ind .k .kd span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .ind .pu{color:var(--up)}.ind .pd{color:var(--down)}
 .ind .chart{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 6px 4px;position:relative}.ind .chart svg{display:block;width:100%;height:auto}
 .ind .chart .tk{font-size:10px;fill:var(--faint);font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}.ind .chart .grid{stroke:var(--line);stroke-width:1}
@@ -1369,7 +1369,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-16 10:07 · 평일 매일 자동 갱신</p>
+   생성 2026-09-16 10:26 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3870,7 +3870,8 @@ window.HOME=(function(){
    if(!ser.length){ c.appendChild(el('div','kv','—')); return c; }
    var last=ser[ser.length-1], prev=ser.length>1?ser[ser.length-2]:null; var v=el('div','kv',fmt(last[1],it.unit)); v.appendChild(el('small',null,it.unit==='억원'?'':(it.unit||''))); c.appendChild(v);
    var d=el('div','kd'); var ch=prev?(it.derived&&/크랙|마진/.test(it.name)?last[1]-prev[1]:(prev[1]?(last[1]/prev[1]-1)*100:null)):null; var isDiff=!!(prev&&it.derived&&/크랙|마진/.test(it.name));
-   var s1=el('span'); s1.appendChild(el('b',cls(ch),isDiff?(ch>0?'+':'')+ch.toFixed(2):pct(ch))); s1.appendChild(document.createTextNode(' 전기('+dtxt(prev?prev[0]:'')+'→'+dtxt(last[0])+')')); d.appendChild(s1);
+   var s1=el('span'); s1.appendChild(el('b',cls(ch),isDiff?(ch>0?'+':'')+ch.toFixed(2):pct(ch))); s1.appendChild(document.createTextNode(' 전기')); s1.title='직전 값 대비 · '+dtxt(prev?prev[0]:'')+' → '+dtxt(last[0]); d.appendChild(s1);
+   var s0=el('span',null,dtxt(last[0])+' 기준'); s0.style.color='var(--faint)'; d.appendChild(s0);
    [['1M',30],['3M',91]].forEach(function(w){ var b=atOrBefore(ser,shiftDate(last[0],w[1])); if(b==null) return; var x=isDiff?last[1]-b:(b?(last[1]/b-1)*100:null); var s=el('span'); s.appendChild(el('b',cls(x),isDiff?(x>0?'+':'')+x.toFixed(2):pct(x))); s.appendChild(document.createTextNode(' '+w[0])); d.appendChild(s); });
    c.appendChild(d);
    if(/크랙/.test(it.name)){ var a4=avgLast(ser,20), a12=avgLast(ser,60); var s3=el('div','kd'); s3.appendChild(document.createTextNode('4주 '+n0(a4,1)+' · 12주 '+n0(a12,1)+' → ')); s3.appendChild(el('b',a4>a12?'pu':'pd',a4>a12?'개선':'둔화')); c.appendChild(s3); }
