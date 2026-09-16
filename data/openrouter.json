@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-17T00:40+09:00",
+ "checked": "2026-09-17T01:10+09:00",
  "first_seen": {
   "claude-fable-5.1": {
    "2026-09-11": "2026-09-12T09:10+09:00",
@@ -247,8 +247,8 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-17",
-    "cache_rate": 0.874,
-    "in": 1.6646,
+    "cache_rate": 0.875,
+    "in": 1.6608,
     "out": 49.9995
    },
    "name": "Claude Fable 5.1",
@@ -623,8 +623,8 @@
    "effective": {
     "asof": "2026-09-17",
     "cache_rate": 0.824,
-    "in": 0.5581,
-    "out": 10.0248
+    "in": 0.5589,
+    "out": 10.0249
    },
    "name": "Claude Sonnet 5",
    "order": 4,
@@ -998,8 +998,8 @@
    "effective": {
     "asof": "2026-09-17",
     "cache_rate": 0.755,
-    "in": 0.0401,
-    "out": 0.3033
+    "in": 0.0402,
+    "out": 0.3067
    },
    "name": "DeepSeek V4 Flash",
    "order": 6,
@@ -1162,9 +1162,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-17",
-    "cache_rate": 0.745,
-    "in": 0.2885,
-    "out": 4.0998
+    "cache_rate": 0.75,
+    "in": 0.2837,
+    "out": 4.0871
    },
    "name": "Gemini 3.8 Flash",
    "order": 5,
@@ -1397,9 +1397,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-17",
-    "cache_rate": 0.801,
-    "in": 0.0461,
-    "out": 0.5147
+    "cache_rate": 0.802,
+    "in": 0.046,
+    "out": 0.5138
    },
    "name": "GLM 5.3 Flash",
    "order": 7,
@@ -1772,9 +1772,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-17",
-    "cache_rate": 0.839,
-    "in": 0.0673,
-    "out": 1.2938
+    "cache_rate": 0.84,
+    "in": 0.0672,
+    "out": 1.2944
    },
    "name": "GPT-5.6 Luna",
    "order": 2,
@@ -2063,8 +2063,8 @@
    "effective": {
     "asof": "2026-09-17",
     "cache_rate": 0.701,
-    "in": 5.7807,
-    "out": 55.0925
+    "in": 5.78,
+    "out": 55.0161
    },
    "name": "GPT-6 Astra Pro",
    "order": 1,
@@ -2246,6 +2246,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-17T00:40+09:00",
+ "updated": "2026-09-17T01:10+09:00",
  "url": "https://openrouter.ai/rankings"
 }
