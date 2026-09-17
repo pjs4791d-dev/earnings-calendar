@@ -7,13 +7,13 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="스파르탄 리서치">
 <meta property="og:title" content="다가오는 실적 발표 일정 · 스파르탄 리서치">
-<meta property="og:description" content="2026 2분기 시즌 · 총 18건 (예고 0 · 실적IR 18) · 2026-09-17 기준 · DART 공시 자동 집계">
+<meta property="og:description" content="2026 2분기 시즌 · 총 18건 (예고 0 · 실적IR 18) · 2026-09-18 기준 · DART 공시 자동 집계">
 <meta property="og:url" content="https://spartanterminal.com/">
 <meta property="og:image" content="https://spartanterminal.com/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="description" content="2026 2분기 시즌 · 총 18건 (예고 0 · 실적IR 18) · 2026-09-17 기준 · DART 공시 자동 집계">
+<meta name="description" content="2026 2분기 시즌 · 총 18건 (예고 0 · 실적IR 18) · 2026-09-18 기준 · DART 공시 자동 집계">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="icon-64.png">
 <link rel="shortcut icon" href="favicon.ico">
@@ -1169,7 +1169,7 @@ a.mke:hover .mkt{color:var(--accent)}
 <section id="p-cal" hidden>
  <p class="eyebrow">Earnings Calendar · KRX</p>
  <h1>다가오는 실적 발표 일정</h1>
- <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-09-17</b> 접수 공시<br>
+ <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-09-18</b> 접수 공시<br>
    실적공시예고와 실적 관련 IR개최만 자동 선별했습니다.</p>
 
  <div class="stats">
@@ -1384,7 +1384,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-17 23:15 · 평일 매일 자동 갱신</p>
+   생성 2026-09-18 08:14 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2561,16 +2561,23 @@ window.HOME=(function(){
      var sel=window.__fedSel||mts[0].date; var lg=el('div'); lg.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px';
      mts.forEach(function(m){ var b=el('button',null,m.date.slice(5).replace('-','/')+' FOMC'); b.type='button'; b.style.cssText='appearance:none;border:1px solid var(--line);background:'+(m.date===sel?'color-mix(in srgb,var(--accent) 15%,transparent)':'var(--surface)')+';color:'+(m.date===sel?'var(--accent)':'var(--muted)')+';font:inherit;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:14px;cursor:pointer'; b.addEventListener('click',function(){ window.__fedSel=m.date; openFed(); }); lg.appendChild(b); }); hs.appendChild(lg);
      var H=hist[sel]||[]; var W=900,HH=220,L=44,R=44,T=12,B=24; var ns='http://www.w3.org/2000/svg'; var svg=document.createElementNS(ns,'svg'); svg.setAttribute('viewBox','0 0 '+W+' '+HH); svg.style.cssText='display:block;width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px';
-     function X(i){ return L+i/Math.max(1,H.length-1)*(W-L-R); } function Y(v){ return T+(1-v/100)*(HH-T-B); }
-     [0,25,50,75,100].forEach(function(v){ var ln=document.createElementNS(ns,'line'); ln.setAttribute('x1',L); ln.setAttribute('x2',W-R); ln.setAttribute('y1',Y(v)); ln.setAttribute('y2',Y(v)); ln.setAttribute('stroke','var(--line)'); svg.appendChild(ln); var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',L-6); tx.setAttribute('y',Y(v)+3); tx.setAttribute('text-anchor','end'); tx.setAttribute('fill','var(--faint)'); tx.setAttribute('font-size','10'); tx.textContent=v+'%'; svg.appendChild(tx); });
+     function X(i){ return L+i/Math.max(1,H.length-1)*(W-L-R); }
+     // 값이 있는 확률(전 구간 0%인 선은 제외)만 그리고, 세로축은 그 값들의 범위에 맞춰 좁힌다 — 0~100 고정이면 몇 %p 변화가 수평선으로 보여서(사용자 요청 9/18)
+     var SER=[[4,'var(--up)','인상'],[3,'var(--faint)','동결'],[2,'var(--down)','인하']].filter(function(k){ return H.some(function(p){return p[k[0]]>0.05}); });
+     var vals=[]; SER.forEach(function(k){ H.forEach(function(p){ vals.push(p[k[0]]); }); }); if(!vals.length) vals=[0,100];
+     var vlo=Math.min.apply(null,vals), vhi=Math.max.apply(null,vals); var span=Math.max(10,vhi-vlo); var pad=span*0.15;
+     var ylo=Math.max(0,Math.floor((vlo-pad)/5)*5), yhi=Math.min(100,Math.ceil((vhi+pad)/5)*5); if(yhi-ylo<10){ yhi=Math.min(100,ylo+10); if(yhi-ylo<10) ylo=Math.max(0,yhi-10); }
+     function Y(v){ return T+(1-(v-ylo)/(yhi-ylo))*(HH-T-B); }
+     var gstep=(yhi-ylo)<=20?5:(yhi-ylo)<=50?10:25; var grid=[]; for(var gv=ylo;gv<=yhi+1e-9;gv+=gstep) grid.push(gv);
+     grid.forEach(function(v){ var ln=document.createElementNS(ns,'line'); ln.setAttribute('x1',L); ln.setAttribute('x2',W-R); ln.setAttribute('y1',Y(v)); ln.setAttribute('y2',Y(v)); ln.setAttribute('stroke','var(--line)'); svg.appendChild(ln); var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',L-6); tx.setAttribute('y',Y(v)+3); tx.setAttribute('text-anchor','end'); tx.setAttribute('fill','var(--faint)'); tx.setAttribute('font-size','10'); tx.textContent=v+'%'; svg.appendChild(tx); });
      var step=Math.max(1,Math.ceil(H.length/8)); H.forEach(function(p,i){ if(i%step&&i!==H.length-1) return; var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',X(i)); tx.setAttribute('y',HH-8); tx.setAttribute('text-anchor','middle'); tx.setAttribute('fill','var(--faint)'); tx.setAttribute('font-size','10'); tx.textContent=p[0].slice(5).replace('-','/'); svg.appendChild(tx); });
-     [[4,'var(--up)','인상'],[3,'var(--faint)','동결'],[2,'var(--down)','인하']].forEach(function(k){ var pl=document.createElementNS(ns,'polyline'); pl.setAttribute('points',H.map(function(p,i){return X(i).toFixed(1)+','+Y(p[k[0]]).toFixed(1)}).join(' ')); pl.setAttribute('fill','none'); pl.setAttribute('stroke',k[1]); pl.setAttribute('stroke-width','2'); svg.appendChild(pl); });
+     SER.forEach(function(k){ var pl=document.createElementNS(ns,'polyline'); pl.setAttribute('points',H.map(function(p,i){return X(i).toFixed(1)+','+Y(p[k[0]]).toFixed(1)}).join(' ')); pl.setAttribute('fill','none'); pl.setAttribute('stroke',k[1]); pl.setAttribute('stroke-width','2'); svg.appendChild(pl); });
      // 회의 후 내재금리(오른쪽 축)
      var rates=H.map(function(p){return p[1]}); var rlo=Math.min.apply(null,rates)-0.05, rhi=Math.max.apply(null,rates)+0.05; function RY(v){ return T+(1-(v-rlo)/(rhi-rlo))*(HH-T-B); }
      var pr=document.createElementNS(ns,'polyline'); pr.setAttribute('points',H.map(function(p,i){return X(i).toFixed(1)+','+RY(p[1]).toFixed(1)}).join(' ')); pr.setAttribute('fill','none'); pr.setAttribute('stroke','var(--accent)'); pr.setAttribute('stroke-width','1.5'); pr.setAttribute('stroke-dasharray','4 3'); svg.appendChild(pr);
      [rlo+0.05,rhi-0.05].forEach(function(v){ var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',W-R+6); tx.setAttribute('y',RY(v)+3); tx.setAttribute('fill','var(--accent)'); tx.setAttribute('font-size','10'); tx.textContent=v.toFixed(2)+'%'; svg.appendChild(tx); });
      hs.appendChild(svg);
-     var lgd=el('div'); lgd.style.cssText='font-size:11px;color:var(--muted);margin-top:6px'; lgd.innerHTML='<span style="color:var(--up)">■ 인상 확률</span> · <span style="color:var(--faint)">■ 동결</span> · <span style="color:var(--down)">■ 인하</span> · <span style="color:var(--accent)">┄ 회의 후 내재 EFFR(오른쪽 축)</span> · '+(sel)+' 회의 기준, '+H[0][0]+'부터 매일 저장'; hs.appendChild(lgd);
+     var lgd=el('div'); lgd.style.cssText='font-size:11px;color:var(--muted);margin-top:6px'; lgd.innerHTML=SER.map(function(k){ return '<span style="color:'+k[1]+'">■ '+k[2]+(k[0]===4?' 확률':'')+'</span>'; }).join(' · ')+' · <span style="color:var(--accent)">┄ 회의 후 내재 EFFR(오른쪽 축)</span> · 세로축 '+ylo+'~'+yhi+'% (값 범위에 맞춤'+(SER.length<3?', 0%인 확률은 생략':'')+') · '+(sel)+' 회의 기준, '+H[0][0]+'부터 매일 저장'; hs.appendChild(lgd);
      var tw=el('div'); tw.style.cssText='overflow:auto;margin-top:8px'; var t2=el('table'), th2=el('thead'), tr2=el('tr'); ['날짜','내재 EFFR','인하','동결','인상'].forEach(function(h){ tr2.appendChild(el('th',null,h)); }); th2.appendChild(tr2); t2.appendChild(th2); var tb2=el('tbody');
      H.slice(-14).reverse().forEach(function(p){ var r=el('tr'); r.appendChild(el('td',null,p[0])); r.appendChild(el('td',null,p[1].toFixed(3)+'%')); r.appendChild(el('td',p[2]?'pd':'z',p[2].toFixed(1)+'%')); r.appendChild(el('td',null,p[3].toFixed(1)+'%')); r.appendChild(el('td',p[4]?'pu':'z',p[4].toFixed(1)+'%')); tb2.appendChild(r); });
      t2.appendChild(tb2); tw.appendChild(t2); hs.appendChild(tw); body.appendChild(hs); }
