@@ -1371,7 +1371,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-17 10:05 · 평일 매일 자동 갱신</p>
+   생성 2026-09-17 10:09 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3491,8 +3491,10 @@ window.HOME=(function(){
    var seq=++R.seq; if(window.LOADBAR) LOADBAR.start();
    if(!Object.keys(R.data).length) { b.innerHTML=''; b.appendChild(el('div','lmsg','불러오는 중…')); }
    var qs='rank?mode='+R.mode+'&mrkt='+R.mrkt+(R.mode==='daily'?'&start='+R.start.replace(/-/g,'')+'&end='+R.end.replace(/-/g,''):'');
-   var fresh={}, ferr={}, left=subjs.length; R.subjOrder=subjs;
-   function arrive(){ if(seq!==R.seq) return; R.data=fresh; R.err=ferr; render(); left--;      // 주체별로 도착하는 대로 그린다(키움 호출 간격 때문에 한 번에 몇 초 걸림)
+   var fresh={}, ferr={}, left=subjs.length; R.subjOrder=subjs; var initial=!subjs.some(function(k){return R.data[k]});
+   function arrive(){ if(seq!==R.seq) return; left--;
+     if(initial){ R.data=fresh; R.err=ferr; render(); }                                  // 첫 로드: 주체별로 도착하는 대로 그린다(키움 호출 간격 때문에 몇 초 걸림)
+     else if(left<=0){ var nd={}; subjs.forEach(function(k){ nd[k]=fresh[k]||R.data[k]; }); R.data=nd; R.err=ferr; render(); }   // 갱신: 다 받은 뒤 한 번에 바꿔 표가 사라졌다 나타나지 않게
      if(left<=0){ if(window.LOADBAR) LOADBAR.done(); if(!memberOn()){ load(); return; } R.timer=setTimeout(load,R.mode==='live'?60000:300000); } }
    subjs.forEach(function(k){ MEMBER.get(qs+'&subj='+k).then(function(d){ fresh[k]=d; arrive(); }).catch(function(e){ if(/fetch/i.test(e&&e.message||'')){ setTimeout(function(){ MEMBER.get(qs+'&subj='+k).then(function(d){ fresh[k]=d; arrive(); }).catch(function(e2){ ferr[k]=e2&&e2.message||'오류'; arrive(); }); },3000); return; } ferr[k]=e&&e.message||'오류'; arrive(); }); });   // 연결 실패(서버 재시작 순간 등)는 3초 뒤 한 번 더
  }
