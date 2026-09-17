@@ -1384,7 +1384,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-18 08:30 · 평일 매일 자동 갱신</p>
+   생성 2026-09-18 08:51 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2623,10 +2623,11 @@ window.HOME=(function(){
  function kwToday(){ var t=F.kw&&F.kw.today&&F.kw.today[kwMrkt()]; return t&&t[kwStex()]?kwRow(t[kwStex()]):null; }
  function kwSeries(){ var s=F.kw&&F.kw.series&&F.kw.series[kwMrkt()]&&F.kw.series[kwMrkt()][kwStex()]; return (s||[]).map(function(p){return {t:p[0],'개인':p[1],'외국인':p[2],'기관계':p[3]}}); }
  function isOpt(){ return !!OPTM[F.mkt]; }
+ function ymdNow(){ var d=new Date(); return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0'); }
  function loadMember(){                                   // 로그인 상태에서 필요한 회원 데이터를 받아 다시 그린다
    if(!memberOn()) return;
    if(isDailyOnly()&&(!F.kwAt||Date.now()-F.kwAt>55000)){ MEMBER.get('kiwoom').then(function(d){ F.kw=d; F.kwAt=Date.now(); drawFlow(); }).catch(function(){}); }
-   if(isOpt()){ var mk=OPTM[F.mkt]; Promise.all([MEMBER.get('latest?market='+mk),MEMBER.get('series?market='+mk)]).then(function(r){ F.opt=F.opt||{}; F.opt[mk]={latest:r[0],series:r[1],at:Date.now()}; drawFlow(); }).catch(function(){}); }
+   if(isOpt()||F.mkt==='03'){ var mk=OPTM[F.mkt]||'K200F'; Promise.all([MEMBER.get('latest?market='+mk),MEMBER.get('series?market='+mk)]).then(function(r){ F.opt=F.opt||{}; F.opt[mk]={latest:r[0],series:r[1],at:Date.now()}; drawFlow(); }).catch(function(){}); }
  }
  document.addEventListener('member-change',function(){ H.nf=null; if(H.built&&tabOn('home')) tickHome(); });   // 로그인/로그아웃 시 야간선물 카드 갱신
  document.addEventListener('member-change',function(){ F.kw=null; F.kwAt=0; F.kwd={}; F.opt={}; F.exSaved=null; F.ex=memberOn()?'all':'krx'; if(F.built){ syncMarket(); drawFlow(); drawDaily(); loadMember(); } });
@@ -2713,6 +2714,7 @@ window.HOME=(function(){
    var cards=document.getElementById('fl-cards'); cards.innerHTML=''; F.chartM=null;
    var dcards=document.getElementById('fl-dcards'); if(dcards) dcards.innerHTML='';
    if(isOpt()){ drawOpt(cards); return; }
+   if(F.mkt==='03'&&memberOn()&&F.opt&&F.opt.K200F&&(F.opt.K200F.series.points||[]).length>=2&&(!F.today||F.today.date!==ymdNow())){ drawOpt(cards); return; }   // 선물: 네이버 오늘치가 아직 없으면(09:00 전) KIS 장중 누적으로
    var kwDone=false;
    if(isDailyOnly()&&memberOn()&&kwToday()){ if(drawKw(cards,dcards)) return; kwDone=true; }
    if(isDailyOnly()&&!kwDone){
@@ -2764,10 +2766,10 @@ window.HOME=(function(){
    return false;                                            // 통합인데 장중 시계열이 아직 없으면 기존 KRX 장중 차트를 이어 그린다
  }
  function drawOpt(cards){                                  // 회원: 한투 콜·풋·주식선물
-   var mk=OPTM[F.mkt], o=F.opt&&F.opt[mk], nm=OPTN[F.mkt];
+   var mk=OPTM[F.mkt]||'K200F', o=F.opt&&F.opt[mk], nm=OPTN[F.mkt]||'K200 선물';
    if(!memberOn()){ cards.appendChild(el('div','lmsg','회원 전용입니다. 로그인하면 보입니다.')); return; }
    if(!o){ cards.appendChild(el('div','lmsg',nm+' 불러오는 중…')); return; }
-   var L=o.latest, unit=L.opt?'계약':'억원', row={}; (L.rows||[]).forEach(function(r){ var k=KISK[r.key]; if(!k) return; row[k]=L.opt?r.net_qty:Math.round(r.net_amt/100); });
+   var L=o.latest; L.opt=L.opt||L.qty==='계약'; var unit=L.opt?'계약':'억원', row={}; (L.rows||[]).forEach(function(r){ var k=KISK[r.key]; if(!k) return; row[k]=L.opt?r.net_qty:Math.round(r.net_amt/100); });
    var gl=el('div','grp',nm+' 장중 누적 · 증권사 집계'); gl.appendChild(el('span','mtag','회원')); gl.appendChild(el('small',null,(L.date||'')+' '+(L.time||'')+' 수집 · '+unit+(L.amt_note?' · '+L.amt_note:'')+(L.open?' · 장중 30초 갱신':' · 장 마감'))); cards.appendChild(gl);
    var grid=el('div','fcards'); cards.appendChild(grid);
    cardsRow(grid,MAIN.concat(['금융투자','투신사모','연기금','기타법인']),row,unit,unit+' · 누적 순매수'+(L.time?' · '+L.time.slice(0,5):''));
