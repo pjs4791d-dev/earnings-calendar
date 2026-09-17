@@ -1384,7 +1384,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-17 22:51 · 평일 매일 자동 갱신</p>
+   생성 2026-09-17 23:06 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2721,6 +2721,7 @@ window.HOME=(function(){
        if(F.market==='all'&&last&&last.krx) c.appendChild(el('div','fm fx','KRX '+fmtEok(last.krx[k])+' · NXT '+fmtEok(last.nxt[k])+(prov?' 잠정':''))); grid1.appendChild(c); });
      cards=cards0;
      if(F.market==='nxt'){
+       if(drawNxToday(cards)) return;
        var lg0=document.getElementById('fl-legend'); lg0.innerHTML='';
        var ch0=document.getElementById('fl-chart'); var old0=ch0.querySelector('svg'); if(old0) old0.remove(); var msg0=ch0.querySelector('.lmsg'); if(msg0) msg0.remove();
        ch0.insertBefore(el('div','lmsg','NXT 장중 투자자별 집계는 공개 출처가 없어 일별로만 계산합니다. 넥스트레이드 공식치는 코스피+코스닥 합산이라, 시장별 값은 NXT 거래 종목 '+((F.split&&F.split.stocks)||'약 600')+'개의 투자자별 순매수(네이버, NXT 체결분)를 평균체결가로 환산해 합산하고 공식 합계에 맞춰 보정한 추정치입니다.'),ch0.querySelector('.ltip'));
@@ -2752,7 +2753,7 @@ window.HOME=(function(){
    var grid=el('div','fcards'); target.appendChild(grid);
    cardsRow(grid,MAIN.concat(['금융투자','투신사모','연기금','기타법인']),row,'억원','억원 · 순매수 · '+dt);
    if(ser.length>=2){ var m={unit:'억원',series:ser}; F.chartM=m; legendFor(MAIN,m); var gl2=el('div','grp',lab+' 장중 누적 · 증권사 집계'); gl2.appendChild(el('small',null,ser[ser.length-1].t+' 기준')); cards.appendChild(gl2); drawChart(m); return true; }
-   if(F.ex==='nxt'){ legendFor([]); var ch=document.getElementById('fl-chart'); var old=ch.querySelector('svg'); if(old) old.remove(); var msg=ch.querySelector('.lmsg'); if(msg) msg.remove();
+   if(F.ex==='nxt'){ if(drawNxToday(cards)) return true; legendFor([]); var ch=document.getElementById('fl-chart'); var old=ch.querySelector('svg'); if(old) old.remove(); var msg=ch.querySelector('.lmsg'); if(msg) msg.remove();
      ch.insertBefore(el('div','lmsg','NXT 장중 누적은 증권사 집계가 장중에 갱신되면 여기에 그려집니다(9/14 확인). 지금은 위 카드의 하루 확정치만 있습니다.'),ch.querySelector('.ltip')); return true; }
    return false;                                            // 통합인데 장중 시계열이 아직 없으면 기존 KRX 장중 차트를 이어 그린다
  }
@@ -2769,6 +2770,12 @@ window.HOME=(function(){
  }
  function nice(lo,hi,n){ var span=hi-lo||Math.abs(hi)||1, raw=span/n, mag=Math.pow(10,Math.floor(Math.log10(raw))), r=raw/mag, step=(r<1.5?1:r<3?2:r<7?5:10)*mag, t0=Math.ceil(lo/step)*step, t=[]; for(var v=t0; v<=hi+step*1e-9; v+=step) t.push(+v.toFixed(10)); return t; }
  var NS='http://www.w3.org/2000/svg'; function sv(tag,attrs){var e=document.createElementNS(NS,tag); for(var k in attrs) e.setAttribute(k,attrs[k]); return e;}
+ function drawNxToday(cards){                             // NXT 전체(코스피+코스닥) 장중 누적 — 네이버 공개 1분 시계열(2026-09-17부터). 시장별 분리는 공개 출처 없음
+   var nx=F.today&&F.today.markets&&F.today.markets.nx; if(!nx||!nx.series||nx.series.length<2) return false;
+   var ser=nx.series, last=ser[ser.length-1]; var m={unit:'억원',series:ser}; F.chartM=m;
+   var gl=el('div','grp','NXT 전체 장중 누적 · 코스피+코스닥 합산'); gl.appendChild(el('small',null,last.t+' 기준 · 억원 · 12주체 · 네이버(넥스트레이드 체결분) · 시장별 분리는 공개 출처가 없어 위 카드는 추정치')); cards.appendChild(gl);
+   var grid=el('div','fcards'); cards.appendChild(grid); cardsRow(grid,MAIN.concat(['금융투자','투신사모','연기금','기타법인']),last,'억원','억원 · 누적 순매수 · '+last.t);
+   legendFor(MAIN.concat(SUB),m); drawChart(m); return true; }
  function drawChart(mOverride){
    var ch=document.getElementById('fl-chart'), m=mOverride||F.chartM||(F.today&&F.today.markets[F.mkt]); if(!ch||!m) return;
    var old=ch.querySelector('svg'); if(old) old.remove(); var msg=ch.querySelector('.lmsg'); if(msg) msg.remove(); var tip=ch.querySelector('.ltip');
