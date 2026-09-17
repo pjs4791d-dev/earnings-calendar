@@ -1371,7 +1371,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-17 10:00 · 평일 매일 자동 갱신</p>
+   생성 2026-09-17 10:05 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3513,9 +3513,9 @@ window.HOME=(function(){
    var tb=el('tbody'); var mx=Math.max.apply(null,rows.map(function(r){return Math.abs(metric(r))}))||1;
    rows.forEach(function(r,i){ var row=el('tr'); var hs=indep(hl[r.code]); if(hs.length>=2) row.className='hl';
      row.appendChild(el('td','no',String(i+1)));
-     var nm=el('td','nm'); if(hs.length>=2){ nm.appendChild(el('span','hb','×'+hs.length)); nm.title=hs.join('·')+' 동반 '+(R.dir==='buy'?'순매수':'순매도')+' · 클릭하면 투자자별 매매'; } else nm.title='투자자별 매매 보기';
+     var nm=el('td','nm'); if(hs.length>=2){ nm.appendChild(el('span','hb','×'+hs.length)); nm.title=hs.join('·')+' 동반 '+(R.dir==='buy'?'순매수':'순매도')+' · 클릭하면 차트(아래에 투자자별 매매)'; } else nm.title='차트 보기(아래로 내리면 투자자별 매매)';
      nm.appendChild(document.createTextNode(r.name)); nm.appendChild(el('span','cd',r.code));
-     nm.addEventListener('click',function(){ if(window.SFLOW) SFLOW.popup(r.code,r.name); }); row.appendChild(nm);
+     nm.addEventListener('click',function(){ if(window.WATCH&&WATCH.chart) WATCH.chart(r.code,r.name); else if(window.SFLOW) SFLOW.popup(r.code,r.name); }); row.appendChild(nm);
      var am=el('td',(R.rank==='amt'?'rt ':'')+(r.amt>0?'pu':'pd'),fmtEok(r.amt)); if(R.rank==='amt') am.style.setProperty('--w',Math.max(3,Math.abs(r.amt)/mx*100).toFixed(0)+'%'); row.appendChild(am);
      var mv=R.rank==='cap'?capRatio(r):strength(r); var rt=el('td',(R.rank!=='amt'?'rt ':'')+(r.amt>0?'pu':'pd'),mv==null?'-':Math.abs(mv).toFixed(R.rank==='cap'?2:1)+'%'); if(R.rank!=='amt') rt.style.setProperty('--w',Math.max(3,Math.abs(mv||0)/mx*100).toFixed(0)+'%'); if(R.rank==='cap') rt.title='시가총액 '+(r.mcap>=10000?(r.mcap/10000).toFixed(1)+'조':n0(r.mcap)+'억'); else rt.title='거래대금 '+(r.tv>=10000?(r.tv/10000).toFixed(1)+'조':n0(r.tv)+'억'); row.appendChild(rt);
      if(live) row.appendChild(el('td','opt '+(r.pct>0?'pu':r.pct<0?'pd':''),pctTxt(r.pct)));
@@ -3532,13 +3532,13 @@ window.HOME=(function(){
    if(dups.length){ var byCode={}; ks.forEach(function(k){ lists[k].forEach(function(r){ byCode[r.code]=r; }); });
      dups.sort(function(a,b){ return hl[b].length-hl[a].length||Math.abs(metric(byCode[b]))-Math.abs(metric(byCode[a])); });
      var dp=el('div','dup'); dp.appendChild(el('b',null,'동반 '+(R.dir==='buy'?'순매수':'순매도')+' · 2곳 이상'));
-     dups.forEach(function(c){ var r=byCode[c]; var ch=el('button','dc',r.name); ch.type='button'; ch.appendChild(el('small',null,'×'+hl[c].length+' '+hl[c].join('·'))); ch.title='클릭하면 투자자별 매매'; ch.addEventListener('click',function(){ if(window.SFLOW) SFLOW.popup(r.code,r.name); }); dp.appendChild(ch); });
+     dups.forEach(function(c){ var r=byCode[c]; var ch=el('button','dc',r.name); ch.type='button'; ch.appendChild(el('small',null,'×'+hl[c].length+' '+hl[c].join('·'))); ch.title='클릭하면 차트'; ch.addEventListener('click',function(){ if(window.WATCH&&WATCH.chart) WATCH.chart(r.code,r.name); else if(window.SFLOW) SFLOW.popup(r.code,r.name); }); dp.appendChild(ch); });
      b.appendChild(dp); }
    else b.appendChild(el('div','warn','2곳 이상의 주체 상위에 같이 오른 종목이 없습니다.'));
    var g=el('div','rkg'); ks.forEach(function(k){ g.appendChild(table(k,lists[k],hl)); }); b.appendChild(g);
    var st=document.getElementById('rk-st'); if(st) st.textContent=live?((any.at||'')+' 기준 · 전 종목 '+n0(any.n)+'개 잠정치 · 60초 갱신'+(any.open?'':' · 장 마감')):((R.start===R.end?pdate(R.start.replace(/-/g,'')):pdate(R.start.replace(/-/g,''))+'~'+pdate(R.end.replace(/-/g,'')))+' 확정 · '+wdCount(R.start,R.end)+'영업일 · KRX+NXT 통합');
    b.appendChild(el('p','note','① 순매수대금 = 돈을 가장 많이 넣은 종목 · ② 순매수강도 = 순매수대금 ÷ 거래대금(그 주체가 거래를 지배하는 종목) · ③ 시총대비 = 순매수대금 ÷ 시가총액(들어온 돈이 주가에 미치는 영향이 큰 종목; 시총 = 상장주식수 × 현재가). '+(live?'거래소가 장중에 내보내는 투자자별 잠정 집계(전 종목, 증권사 경유)이며 거래대금은 거래량×현재가 근사, 마감 후 확정치와 차이가 날 수 있습니다.'
-     :'확정치(KRX+NXT 통합)는 시장별 순매수 금액 상위 100종목(코스피·코스닥 각각) 안에서 다시 세운 것이라 금액이 작은 종목은 강도·시총비가 높아도 빠질 수 있습니다. 기간 거래대금은 기간 거래량×평균단가 근사, 필터의 거래대금은 일평균 기준(기간에 맞춰 환산). 평단대비 = 이 주체의 기간 추정 평균단가 대비 현재가.')+' 노란 행은 2곳 이상의 주체가 함께 순매수(순매도)한 종목. 종목명을 누르면 투자자별 매매가 열립니다.'));
+     :'확정치(KRX+NXT 통합)는 시장별 순매수 금액 상위 100종목(코스피·코스닥 각각) 안에서 다시 세운 것이라 금액이 작은 종목은 강도·시총비가 높아도 빠질 수 있습니다. 기간 거래대금은 기간 거래량×평균단가 근사, 필터의 거래대금은 일평균 기준(기간에 맞춰 환산). 평단대비 = 이 주체의 기간 추정 평균단가 대비 현재가.')+' 노란 행은 2곳 이상의 주체가 함께 순매수(순매도)한 종목. 종목명을 누르면 차트가 열리고 아래로 내리면 투자자별 매매가 나옵니다.'));
  }
  function open(){ R.vis=true; ctl(); load(); }
  function close(){ R.vis=false; clearTimeout(R.timer); }
@@ -3596,8 +3596,7 @@ window.HOME=(function(){
    COLS.forEach(function(c){ var x=el('th',c[2]+(N.sort===c[0]?' on':''),c[1]+(N.sort===c[0]?(N.desc?' ▼':' ▲'):'')); x.addEventListener('click',function(){ if(N.sort===c[0]) N.desc=!N.desc; else { N.sort=c[0]; N.desc=true; } save(); render(); }); tr.appendChild(x); });
    th.appendChild(tr); t.appendChild(th); var tb=el('tbody');
    rows.forEach(function(r,i){ var row=el('tr'); row.appendChild(el('td','no',String(i+1)));
-     var nm=el('td','nm',r.name); nm.appendChild(el('span','cd',r.code)); if(r.size) nm.appendChild(el('span','sz',r.size.replace('주',''))); nm.title='투자자별 매매 보기'; nm.addEventListener('click',function(){ if(window.SFLOW) SFLOW.popup(r.code,r.name); });
-     var cb=el('button','cb','차트'); cb.type='button'; cb.addEventListener('click',function(ev){ ev.stopPropagation(); if(window.WATCH&&WATCH.chart) WATCH.chart(r.code,r.name); }); nm.appendChild(cb); row.appendChild(nm);
+     var nm=el('td','nm',r.name); nm.appendChild(el('span','cd',r.code)); if(r.size) nm.appendChild(el('span','sz',r.size.replace('주',''))); nm.title='차트 보기(아래로 내리면 투자자별 매매)'; nm.addEventListener('click',function(){ if(window.WATCH&&WATCH.chart) WATCH.chart(r.code,r.name); else if(window.SFLOW) SFLOW.popup(r.code,r.name); }); row.appendChild(nm);
      row.appendChild(el('td',r.pct>0?'pu':r.pct<0?'pd':'',pctTxt(r.pct)));
      row.appendChild(el('td',null,n0(r.price)));
      row.appendChild(el('td','opt '+(r.vol_pct>100?'pu':''),n0(r.vol)+' ('+(r.vol_pct==null?'-':(r.vol_pct>=0?'+':'')+r.vol_pct.toFixed(0)+'%')+')'));
@@ -3605,7 +3604,7 @@ window.HOME=(function(){
      row.appendChild(el('td','opt',eok(r.mcap)));
      tb.appendChild(row); });
    t.appendChild(tb); w.appendChild(t); b.appendChild(w);
-   b.appendChild(el('p','note','증권사 집계(KRX+NXT 통합). 기준 [종가] = 오늘 종가(장중엔 현재가)가 기간 내 모든 종가보다 높은 종목, [장중 고가] = 오늘 고가가 기간 내 고가를 넘은 종목. 고가 대비 = 기간의 장중 최고가(일봉 고가) 대비 현재가 — 종가 기준 목록에서도 장중 고가로 계산하니 종가는 신고가여도 장중 고가엔 못 미치면 음수가 나옵니다(마우스를 올리면 저가 대비도 표시). 거래량 전일비 100% 초과는 붉게. 열 제목을 누르면 정렬, 종목명은 투자자별 매매, 차트 버튼은 캔들 차트.'));
+   b.appendChild(el('p','note','증권사 집계(KRX+NXT 통합). 기준 [종가] = 오늘 종가(장중엔 현재가)가 기간 내 모든 종가보다 높은 종목, [장중 고가] = 오늘 고가가 기간 내 고가를 넘은 종목. 고가 대비 = 기간의 장중 최고가(일봉 고가) 대비 현재가 — 종가 기준 목록에서도 장중 고가로 계산하니 종가는 신고가여도 장중 고가엔 못 미치면 음수가 나옵니다(마우스를 올리면 저가 대비도 표시). 거래량 전일비 100% 초과는 붉게. 열 제목을 누르면 정렬, 종목명을 누르면 차트(아래로 내리면 투자자별 매매).'));
  }
  function open(){ N.vis=true; ctl(); load(); }
  function close(){ N.vis=false; clearTimeout(N.timer); }
