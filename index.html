@@ -1369,7 +1369,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-17 09:02 · 평일 매일 자동 갱신</p>
+   생성 2026-09-17 09:48 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3222,6 +3222,11 @@ window.HOME=(function(){
  }
  /* 실시간: /m/stream (SSE, 서버가 1초마다 네이버에서 받아 바뀐 것만 push). 끊기면 2초 뒤 다시 열고, 스트림이 안 되면 10초 폴링으로 내려간다. */
  function stopStream(){ if(W.ctl){ try{W.ctl.abort();}catch(e){} W.ctl=null; } W.live=false; }
+ /* 다른 탭에 갔다 오면 브라우저가 백그라운드에서 스트림·타이머를 죽이거나 늦춰 화면이 멈춘 채 남는다 → 보이는 순간 스트림을 새로 열고 시세를 바로 받는다.
+    감시: 보이는 상태에서 20초 넘게 아무 데이터도 안 오면(장중) 스트림을 다시 연다. */
+ document.addEventListener('visibilitychange',function(){ if(document.hidden||!W.vis||!tabOn()||!memberOn()) return; W.fails=0; W.streamCodes=null; clearTimeout(W.retry); stopStream(); tick(true); });
+ setInterval(function(){ if(document.hidden||!W.vis||!tabOn()||!memberOn()||!W.ctl) return; var h=new Date(Date.now()+9*3600e3).getUTCHours(); if(h<8||h>=20) return;
+   if(W.lastMsg&&Date.now()-W.lastMsg>20000){ W.fails=0; W.streamCodes=null; stopStream(); tick(true); } },5000);
  function startStream(codes){
    stopStream(); if(!codes.length) return; var ctl=new AbortController(); W.ctl=ctl; W.streamCodes=codes.join(',');
    var BASE=(location.hostname==='localhost'||location.hostname==='127.0.0.1')?'http://localhost:8799/m/':'https://api.spartanterminal.com/m/';
@@ -3229,11 +3234,11 @@ window.HOME=(function(){
    fetch(BASE+'stream?codes='+codes.join(','),{headers:{'Authorization':'Bearer '+tok},signal:ctl.signal}).then(function(r){
      if(!r.ok||!r.body) throw new Error('stream '+r.status);
      W.live=true; W.fails=0; setLive(true); var rd=r.body.getReader(), dec=new TextDecoder(), buf='';
-     function pump(){ return rd.read().then(function(x){ if(x.done){ throw new Error('closed'); } buf+=dec.decode(x.value,{stream:true}); var parts=buf.split('\n\n'); buf=parts.pop();
+     function pump(){ return rd.read().then(function(x){ if(x.done){ throw new Error('closed'); } W.lastMsg=Date.now(); buf+=dec.decode(x.value,{stream:true}); var parts=buf.split('\n\n'); buf=parts.pop();
        parts.forEach(function(msg){ msg.split('\n').forEach(function(line){ if(line.indexOf('data: ')===0){ try{ var d=JSON.parse(line.slice(6)); (d.items||[]).forEach(function(q){ W.quotes[q.code]=q; }); W.at=d.at; paintQuotes(); }catch(e){} } }); }); return pump(); }); }
      return pump();
    }).catch(function(e){ if(ctl!==W.ctl) return;                       // 우리가 끊은 게 아니면 다시 연다
-     W.live=false; setLive(false); W.fails=(W.fails||0)+1; if(W.vis&&tabOn()) W.retry=setTimeout(function(){ if(W.fails<6) startStream(codes); },W.fails<6?2000:0); });
+     W.live=false; setLive(false); W.fails=(W.fails||0)+1; if(W.vis&&tabOn()) W.retry=setTimeout(function(){ startStream(codes); },W.fails<6?2000:30000); });   // 몇 번 실패해도 30초 뒤엔 다시 연다(영구 정지 방지)
  }
  function setLive(on){ var st=document.getElementById('wl-st'); if(st) st.dataset.live=on?'1':'0'; }
  function tick(force){
