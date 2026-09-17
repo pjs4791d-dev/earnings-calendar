@@ -818,6 +818,8 @@ a.mke:hover .mkt{color:var(--accent)}
 .sch .cbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:0 4px 6px}
 .sch .ctools{border-top:1px dashed var(--line);padding-top:6px}.sch .csw{display:inline-flex;gap:4px;align-items:center;margin-left:2px}.sch .csb{width:14px;height:14px;border-radius:3px;border:1px solid rgba(255,255,255,.25);cursor:pointer;padding:0}.sch .csb:hover{transform:scale(1.2)}
 .sch .lsw button.on{font-weight:700}
+.sch .ced{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}.sch .ced b{color:var(--ink);font-size:11.5px}.sch .cpt{display:inline-flex;gap:4px;align-items:center}
+.sch .ced input,.sch .ced select{font:inherit;font-size:11.5px;padding:2px 5px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums}
 .tvm.full{padding:0}.tvm.full .tvc{width:100vw;max-width:100vw;height:100vh;max-height:100vh;border-radius:0;border:0;display:flex;flex-direction:column}.tvm.full .sch{flex:1;display:flex;flex-direction:column;min-height:0}.tvm.full #ch-body{flex:1;min-height:0}.tvm.full .tvn,.tvm.full .sf,.tvm.full .sch .lg{display:none}
 .tvh .tvfs{appearance:none;border:1px solid var(--line);background:none;color:var(--muted);font:inherit;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}.tvh .tvfs:hover{color:var(--accent);border-color:var(--accent)}
 .sch .cbar .llab{font-size:10.5px;color:var(--faint);font-weight:700;letter-spacing:.06em}
@@ -1371,7 +1373,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-17 10:09 · 평일 매일 자동 갱신</p>
+   생성 2026-09-17 15:42 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2511,6 +2513,26 @@ window.HOME=(function(){
    t.appendChild(tb); wrap.appendChild(t); body.appendChild(wrap);
    body.appendChild(el('p','note','계산: 각 월물 내재금리(100−가격)에서 회의 후 금리를 풀고(회의 전·후 일수 가중), 회의별 변화폭을 25bp 단위 확률로 나눠 회의를 차례로 곱한 확률 트리 — CME FedWatch 와 같은 방식이며 CME 도구 값과 소수점 차이가 있을 수 있습니다. 인하/동결/인상은 그 회의 한 번의 확률, 목표범위 열은 그 회의 후 범위의 누적 분포. 현재 범위 열은 파란 배경. 2027 일정은 연준 공표 잠정 일정. 출처: CME 30일 연방기금 선물(10분 지연), 뉴욕연은 EFFR·목표범위.'));
    var cc=el('div'); cc.style.cssText='margin-top:10px;font-size:11.5px;color:var(--muted)'; cc.textContent='선물 월물: '+d.contracts.slice(0,10).map(function(z){return z.code+' '+z.price.toFixed(3)+' ('+z.implied.toFixed(2)+'%)'}).join(' · '); body.appendChild(cc);
+   if(d.base_note){ var bn=el('div'); bn.style.cssText='margin-top:6px;font-size:11.5px;color:var(--faint)'; bn.textContent='기준금리: '+d.base_note; body.appendChild(bn); }
+   // 회의별 일별 추이(자체 수집 이력): 인상·동결·인하 확률과 회의 후 내재금리가 날마다 어떻게 바뀌는지
+   var hist=d.history||{}; var mts=d.meetings.filter(function(m){return hist[m.date]&&hist[m.date].length}).slice(0,8);
+   if(mts.length){ var hs=el('div'); hs.style.cssText='margin-top:16px'; var ht=el('div'); ht.style.cssText='font-size:13px;font-weight:800;margin-bottom:6px'; ht.textContent='회의별 일별 추이 · 시장 기대가 날마다 어떻게 바뀌는지'; hs.appendChild(ht);
+     var sel=window.__fedSel||mts[0].date; var lg=el('div'); lg.style.cssText='display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px';
+     mts.forEach(function(m){ var b=el('button',null,m.date.slice(5).replace('-','/')+' FOMC'); b.type='button'; b.style.cssText='appearance:none;border:1px solid var(--line);background:'+(m.date===sel?'color-mix(in srgb,var(--accent) 15%,transparent)':'var(--surface)')+';color:'+(m.date===sel?'var(--accent)':'var(--muted)')+';font:inherit;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:14px;cursor:pointer'; b.addEventListener('click',function(){ window.__fedSel=m.date; openFed(); }); lg.appendChild(b); }); hs.appendChild(lg);
+     var H=hist[sel]||[]; var W=900,HH=220,L=44,R=44,T=12,B=24; var ns='http://www.w3.org/2000/svg'; var svg=document.createElementNS(ns,'svg'); svg.setAttribute('viewBox','0 0 '+W+' '+HH); svg.style.cssText='display:block;width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px';
+     function X(i){ return L+i/Math.max(1,H.length-1)*(W-L-R); } function Y(v){ return T+(1-v/100)*(HH-T-B); }
+     [0,25,50,75,100].forEach(function(v){ var ln=document.createElementNS(ns,'line'); ln.setAttribute('x1',L); ln.setAttribute('x2',W-R); ln.setAttribute('y1',Y(v)); ln.setAttribute('y2',Y(v)); ln.setAttribute('stroke','var(--line)'); svg.appendChild(ln); var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',L-6); tx.setAttribute('y',Y(v)+3); tx.setAttribute('text-anchor','end'); tx.setAttribute('fill','var(--faint)'); tx.setAttribute('font-size','10'); tx.textContent=v+'%'; svg.appendChild(tx); });
+     var step=Math.max(1,Math.ceil(H.length/8)); H.forEach(function(p,i){ if(i%step&&i!==H.length-1) return; var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',X(i)); tx.setAttribute('y',HH-8); tx.setAttribute('text-anchor','middle'); tx.setAttribute('fill','var(--faint)'); tx.setAttribute('font-size','10'); tx.textContent=p[0].slice(5).replace('-','/'); svg.appendChild(tx); });
+     [[4,'var(--up)','인상'],[3,'var(--faint)','동결'],[2,'var(--down)','인하']].forEach(function(k){ var pl=document.createElementNS(ns,'polyline'); pl.setAttribute('points',H.map(function(p,i){return X(i).toFixed(1)+','+Y(p[k[0]]).toFixed(1)}).join(' ')); pl.setAttribute('fill','none'); pl.setAttribute('stroke',k[1]); pl.setAttribute('stroke-width','2'); svg.appendChild(pl); });
+     // 회의 후 내재금리(오른쪽 축)
+     var rates=H.map(function(p){return p[1]}); var rlo=Math.min.apply(null,rates)-0.05, rhi=Math.max.apply(null,rates)+0.05; function RY(v){ return T+(1-(v-rlo)/(rhi-rlo))*(HH-T-B); }
+     var pr=document.createElementNS(ns,'polyline'); pr.setAttribute('points',H.map(function(p,i){return X(i).toFixed(1)+','+RY(p[1]).toFixed(1)}).join(' ')); pr.setAttribute('fill','none'); pr.setAttribute('stroke','var(--accent)'); pr.setAttribute('stroke-width','1.5'); pr.setAttribute('stroke-dasharray','4 3'); svg.appendChild(pr);
+     [rlo+0.05,rhi-0.05].forEach(function(v){ var tx=document.createElementNS(ns,'text'); tx.setAttribute('x',W-R+6); tx.setAttribute('y',RY(v)+3); tx.setAttribute('fill','var(--accent)'); tx.setAttribute('font-size','10'); tx.textContent=v.toFixed(2)+'%'; svg.appendChild(tx); });
+     hs.appendChild(svg);
+     var lgd=el('div'); lgd.style.cssText='font-size:11px;color:var(--muted);margin-top:6px'; lgd.innerHTML='<span style="color:var(--up)">■ 인상 확률</span> · <span style="color:var(--faint)">■ 동결</span> · <span style="color:var(--down)">■ 인하</span> · <span style="color:var(--accent)">┄ 회의 후 내재 EFFR(오른쪽 축)</span> · '+(sel)+' 회의 기준, '+H[0][0]+'부터 매일 저장'; hs.appendChild(lgd);
+     var tw=el('div'); tw.style.cssText='overflow:auto;margin-top:8px'; var t2=el('table'), th2=el('thead'), tr2=el('tr'); ['날짜','내재 EFFR','인하','동결','인상'].forEach(function(h){ tr2.appendChild(el('th',null,h)); }); th2.appendChild(tr2); t2.appendChild(th2); var tb2=el('tbody');
+     H.slice(-14).reverse().forEach(function(p){ var r=el('tr'); r.appendChild(el('td',null,p[0])); r.appendChild(el('td',null,p[1].toFixed(3)+'%')); r.appendChild(el('td',p[2]?'pd':'z',p[2].toFixed(1)+'%')); r.appendChild(el('td',null,p[3].toFixed(1)+'%')); r.appendChild(el('td',p[4]?'pu':'z',p[4].toFixed(1)+'%')); tb2.appendChild(r); });
+     t2.appendChild(tb2); tw.appendChild(t2); hs.appendChild(tw); body.appendChild(hs); }
    c.appendChild(body); m.appendChild(c); m.addEventListener('click',function(ev){ if(ev.target===m) m.remove(); }); document.body.appendChild(m); }
  function renderEarn(){
    var p=document.querySelector('#hm-earn .hb'); if(!p) return; p.innerHTML='';
@@ -3029,7 +3051,17 @@ window.HOME=(function(){
    m.addEventListener('click',function(ev){ if(ev.target===m) closeAll(); }); document.body.appendChild(m); syncTools(); loadChart(); loadDraws(code,function(){ redraw(); });
  }
  function syncTools(){ var tb=document.getElementById('ch-tools'); if(!tb) return; [].forEach.call(tb.querySelectorAll('button[data-tool]'),function(b){ b.classList.toggle('on',b.dataset.tool===CH.tool); });
-   var h=document.getElementById('ch-hint'); if(h){ var t=toolDef(CH.tool); h.textContent=t?(t[1]+': '+t[4]+' · Esc 취소'):(CH.sel>=0?'선택됨 · 끌어서 이동, Delete 삭제, 색 버튼으로 색 변경':(CH.draws.length?CH.draws.length+'개 그림':'')); } }
+   var h=document.getElementById('ch-hint'); if(!h) return; var t=toolDef(CH.tool); h.innerHTML='';
+   if(t){ h.textContent=t[1]+': '+t[4]+' · Esc 취소'; return; }
+   var o=CH.sel>=0?CH.draws[CH.sel]:null; if(!o){ h.textContent=CH.draws.length?CH.draws.length+'개 그림':''; return; }
+   // 꼭짓점 편집: 날짜·가격을 숫자로 정확히 넣는다(추세선 끝점 가격 지정 등)
+   var ed=el('span','ced'); ed.appendChild(el('b',null,toolDef(o.type)[1]+' 좌표 '));
+   o.pts.forEach(function(pt,i){ var w=el('span','cpt'); w.appendChild(el('span',null,'P'+(i+1)));
+     if(o.type!=='hline'){ var di=el('input'); di.type='date'; di.value=new Date(pt.t).toISOString().slice(0,10); di.title='날짜'; di.addEventListener('change',function(){ if(!di.value) return; var old=new Date(pt.t); var nd=new Date(di.value+'T00:00:00Z'); nd.setUTCHours(old.getUTCHours(),old.getUTCMinutes()); pushUndo(); pt.t=nd.getTime(); saveDraws(); redraw(); }); w.appendChild(di); }
+     if(o.type!=='vline'){ var pi=el('input'); pi.type='number'; pi.step='any'; pi.value=pt.p>=100?Math.round(pt.p):Math.round(pt.p*100)/100; pi.title='가격 — 숫자를 넣고 Enter'; pi.style.width='92px'; pi.addEventListener('change',function(){ var v=parseFloat(pi.value); if(!isFinite(v)) return; pushUndo(); pt.p=v; saveDraws(); redraw(); }); w.appendChild(pi); }
+     ed.appendChild(w); });
+   if(o.type==='trend'||o.type==='channel'){ var ex=el('select'); [['none','연장 없음'],['right','오른쪽 연장'],['both','양쪽 연장']].forEach(function(x){ var op=el('option',null,x[1]); op.value=x[0]; if((o.ext||'none')===x[0]) op.selected=true; ex.appendChild(op); }); ex.addEventListener('change',function(){ pushUndo(); o.ext=ex.value; saveDraws(); redraw(); }); ed.appendChild(ex); }
+   ed.appendChild(el('span','cinfo','· 끌기 이동 · Delete 삭제')); h.appendChild(ed); }
  function delSel(){ if(CH.sel<0||!CH.draws[CH.sel]) return; pushUndo(); CH.draws.splice(CH.sel,1); CH.sel=-1; saveDraws(); syncTools(); redraw(); }
  function loadChart(){ var body=document.getElementById('ch-body'); if(!body) return; body.innerHTML=''; body.appendChild(el('div','cmsg','불러오는 중…'));
    var code=CH.code, tf=CH.tf; MEMBER.get('chart?code='+encodeURIComponent(code)+'&tf='+tf).then(function(d){ if(CH.code!==code||CH.tf!==tf) return; CH.data=d.items||[]; CH.view=null; CH.st=null; drawCandles(); }).catch(function(e){ body.innerHTML=''; body.appendChild(el('div','cmsg','차트를 못 받았습니다 · '+e.message)); }); }
@@ -3124,14 +3156,16 @@ window.HOME=(function(){
        if(!mark) continue; var x=Math.round(X(i))+0.5; g.strokeStyle=C.line; g.beginPath(); g.moveTo(x,top); g.lineTo(x,H-TX); g.stroke(); g.fillStyle=C.mute; g.fillText(txt,x,H-TX/2); }
      // 거래량
      var cw=Math.max(1,st.barW*0.72);
-     for(var i=i0;i<=i1;i++){ var r=all[i]; if(r.v==null) continue; var up=r.c>=(r.o!=null?r.o:(i?all[i-1].c:r.c)); g.fillStyle=up?C.up:C.dn; g.globalAlpha=.35; var x=X(i); g.fillRect(x-cw/2,VY(r.v),cw,top+ph+8+vh-VY(r.v)); g.globalAlpha=1; }
+     for(var i=i0;i<=i1;i++){ var r=all[i]; if(r.v==null) continue; var up=r.c>=(r.o!=null?r.o:(i?all[i-1].c:r.c)); g.fillStyle=up?C.up:C.dn; g.globalAlpha=.35; var x=X(i); g.fillRect(Math.round(x-cw/2),VY(r.v),Math.max(1,Math.round(cw)),top+ph+8+vh-VY(r.v)); g.globalAlpha=1; }
      // 볼린저 밴드(캔들 뒤)
      if(BB){ g.save(); g.beginPath(); g.rect(0,top,pw,ph); g.clip(); g.fillStyle='rgba(148,163,184,.10)'; g.beginPath(); var on=false; for(var i=Math.max(0,i0-1);i<=Math.min(total-1,i1+1);i++){ if(BB.up[i]==null) continue; var x=X(i); if(!on){ g.moveTo(x,Y(BB.up[i])); on=true; } else g.lineTo(x,Y(BB.up[i])); } for(var i=Math.min(total-1,i1+1);i>=Math.max(0,i0-1);i--){ if(BB.lo[i]==null) continue; g.lineTo(X(i),Y(BB.lo[i])); } g.closePath(); g.fill();
        [['up','#94a3b8'],['mid','#cbd5e1'],['lo','#94a3b8']].forEach(function(k){ g.strokeStyle=k[1]; g.lineWidth=k[0]==='mid'?1:0.8; g.setLineDash(k[0]==='mid'?[3,3]:[]); g.beginPath(); var on=false; for(var i=Math.max(0,i0-1);i<=Math.min(total-1,i1+1);i++){ var v=BB[k[0]][i]; if(v==null) continue; var x=X(i), y=Y(v); if(!on){ g.moveTo(x,y); on=true; } else g.lineTo(x,y); } g.stroke(); g.setLineDash([]); }); g.restore(); }
      // 캔들
+     var bw=Math.max(1,Math.round(cw)), half=Math.floor(bw/2);
      for(var i=i0;i<=i1;i++){ var r=all[i]; if(r.o==null||r.h==null||r.l==null) continue; var up=r.c>=r.o, x=X(i); g.strokeStyle=g.fillStyle=up?C.up:C.dn; g.lineWidth=1;
-       g.beginPath(); g.moveTo(Math.round(x)+0.5,Y(r.h)); g.lineTo(Math.round(x)+0.5,Y(r.l)); g.stroke();
-       var y0=Y(Math.max(r.o,r.c)), y1=Y(Math.min(r.o,r.c)); if(cw<=2){ g.fillRect(Math.round(x),y0,1,Math.max(1,y1-y0)); } else g.fillRect(x-cw/2,y0,cw,Math.max(1,y1-y0)); }
+       var bl=Math.round(x-cw/2), wx=bl+half+0.5;                                       // 몸통 왼쪽 픽셀 + 반폭 = 꼬리 x (몸통 중앙 픽셀에 정확히)
+       g.beginPath(); g.moveTo(wx,Y(r.h)); g.lineTo(wx,Y(r.l)); g.stroke();
+       var y0=Y(Math.max(r.o,r.c)), y1=Y(Math.min(r.o,r.c)); if(bw<=2){ g.fillRect(bl+half,y0,1,Math.max(1,y1-y0)); } else g.fillRect(bl,y0,bw,Math.max(1,y1-y0)); }
      // 이동평균
      if(CH.ind.ma) MAS.forEach(function(m){ var a=ma[m[0]]; g.strokeStyle=m[1]; g.lineWidth=m[0]>=120?1.3:1; g.beginPath(); var on=false; for(var i=Math.max(0,i0-1);i<=Math.min(total-1,i1+1);i++){ if(a[i]==null) continue; var x=X(i), y=Y(a[i]); if(!on){ g.moveTo(x,y); on=true; } else g.lineTo(x,y); } g.stroke(); });
      // 보조지표 패널(RSI · MACD)
@@ -3196,7 +3230,7 @@ window.HOME=(function(){
      st.hover=Math.round(I(p[0])); st.hx=p[0]; st.hy=p[1]; if(p[0]>pw||p[1]>H-TX) st.hover=-1;
      var over=null; if(!CH.tool&&CH.showDraw&&p[0]<=pw){ for(var i=CH.draws.length-1;i>=0;i--){ var hh=hitObj(CH.draws[i],p[0],p[1]); if(hh){ over=hh; break; } } }
      cv.style.cursor=p[0]>pw?'ns-resize':p[1]>H-TX?'ew-resize':over?(over.h>=0?'move':'pointer'):'crosshair'; req(); });
-   function up(ev){ delete ptrs[ev.pointerId]; if(mode==='draw'){ saveDraws(); } if(!Object.keys(ptrs).length){ mode=null; start=null; pinch=null; drag=null; cv.style.cursor='crosshair'; } }
+   function up(ev){ delete ptrs[ev.pointerId]; if(mode==='draw'){ saveDraws(); syncTools(); } if(!Object.keys(ptrs).length){ mode=null; start=null; pinch=null; drag=null; cv.style.cursor='crosshair'; } }
    cv.addEventListener('pointerup',up); cv.addEventListener('pointercancel',up); cv.addEventListener('lostpointercapture',up);
    cv.addEventListener('pointerleave',function(){ if(!mode){ st.hover=-1; st.hx=null; req(); } });
    cv.addEventListener('contextmenu',function(ev){ ev.preventDefault(); var p=pos(ev); for(var i=CH.draws.length-1;i>=0;i--){ if(hitObj(CH.draws[i],p[0],p[1])){ CH.sel=i; syncTools(); if(confirm('이 그림을 삭제할까요?')) delSel(); else req(); return; } } });
