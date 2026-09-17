@@ -973,6 +973,16 @@ a.mke:hover .mkt{color:var(--accent)}
 .nh .wlogin button{margin-top:12px;appearance:none;border:1px solid var(--accent);background:var(--accent);color:#fff;font:inherit;font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:7px;cursor:pointer}
 .nh .note{font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.6}
 .nh .sum{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 10px;font-size:12px;color:var(--muted)}.nh .sum b{color:var(--ink);font-size:16px;margin-right:3px}
+.nh .dnav{display:inline-flex;align-items:stretch;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface);font-variant-numeric:tabular-nums}
+.nh .dnav button{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-size:12px;font-weight:700;padding:5px 9px;cursor:pointer}.nh .dnav button:hover{color:var(--accent);background:var(--line2)}
+.nh .dnav button.on{color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}.nh .dnav button:disabled{opacity:.3;cursor:default}
+.nh .dnav .dl{position:relative;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-left:1px solid var(--line);border-right:1px solid var(--line);color:var(--ink);font-size:12.5px;font-weight:800;cursor:pointer;min-width:132px;justify-content:center}
+.nh .dnav .dl small{color:var(--faint);font-weight:600}.nh .dnav .dl:hover{background:var(--line2)}.nh .dnav .dl input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.nh .dnav .dl .ico{font-size:12px;color:var(--accent)}
+.nh .tl{display:flex;align-items:flex-end;gap:2px;height:96px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 8px 4px;overflow-x:auto;margin-top:10px}
+.nh .tl .c{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:26px;height:100%;cursor:pointer;border-radius:4px;padding:0 1px}.nh .tl .c:hover{background:var(--line2)}
+.nh .tl .c .n{font-size:9.5px;color:var(--muted);margin-bottom:2px}.nh .tl .c .b{width:16px;border-radius:3px 3px 0 0;background:var(--up);opacity:.7}.nh .tl .c.on .b{background:var(--accent);opacity:1}.nh .tl .c.on .n{color:var(--accent);font-weight:800}
+.nh .tl .c .d{font-size:9px;color:var(--faint);margin-top:3px}.nh .tl .c.wk .d{color:var(--muted)}.nh .tl .c .b.bf{background:var(--muted);opacity:.55}
 @media(max-width:700px){.nh th.opt,.nh td.opt{display:none}}
 </style>
 
@@ -1373,7 +1383,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-17 20:57 · 평일 매일 자동 갱신</p>
+   생성 2026-09-17 21:09 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3605,13 +3615,17 @@ window.HOME=(function(){
    c.appendChild(grp('기준',sw([['2','종가'],['1','장중 고가']],N.basis,function(v){N.basis=v; save(); load();})));
    c.appendChild(grp('시장',sw([['000','전체'],['001','코스피'],['101','코스닥']],N.mrkt,function(v){N.mrkt=v; save(); load();})));
    var et=sw([[1,'ETF 제외'],[0,'ETF 포함']],N.noEtf?1:0,function(v){ N.noEtf=!!+v; save(); render(); }); et.title='ETF·ETN·스팩 제외'; c.appendChild(et);
-   var dg=el('span'); dg.style.cssText='display:inline-flex;align-items:center;gap:4px'; dg.appendChild(el('span','llab','날짜 '));
-   var bt=el('button',N.date?'':'on','오늘'); bt.type='button'; bt.className='cb'; bt.style.opacity='1'; bt.title='오늘(실시간)'; bt.addEventListener('click',function(){ N.date=null; ctl(); load(); }); dg.appendChild(bt);
-   var prev=el('button','cb','◀'); prev.type='button'; prev.style.opacity='1'; var di=el('input'); di.type='date'; di.max=kst(); di.value=N.date||kst(); di.style.cssText='font:inherit;font-size:12px;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)'; var next=el('button','cb','▶'); next.type='button'; next.style.opacity='1';
+   var dg=el('span'); dg.style.cssText='display:inline-flex;align-items:center;gap:6px'; dg.appendChild(el('span','llab','날짜 '));
+   var nav=el('span','dnav'); var cur=N.date||kst(); var WD=['일','월','화','수','목','금','토'];
+   var prev=el('button',null,'‹'); prev.type='button'; prev.title='이전 거래일'; nav.appendChild(prev);
+   var dl=el('span','dl'); dl.appendChild(el('span','ico','▦')); var dd=new Date(cur+'T00:00:00Z'); dl.appendChild(document.createTextNode(cur.replace(/-/g,'.')+' ')); dl.appendChild(el('small',null,WD[dd.getUTCDay()]+(N.date?'':' · 오늘')));
+   var di=el('input'); di.type='date'; di.max=kst(); di.value=cur; di.title='달력에서 날짜 고르기'; di.addEventListener('change',function(){ if(di.value) go(di.value); }); dl.appendChild(di); nav.appendChild(dl);
+   var next=el('button',null,'›'); next.type='button'; next.title='다음 거래일'; next.disabled=!N.date; nav.appendChild(next);
+   var bt=el('button',N.date?'':'on','오늘'); bt.type='button'; bt.title='오늘(실시간)'; bt.addEventListener('click',function(){ N.date=null; ctl(); load(); }); nav.appendChild(bt);
    function go(d){ N.date=(d>=kst())?null:d; ctl(); load(); }
-   function step(k){ var ds=(N.idx||[]).map(function(x){return x.date}); var cur=N.date||kst(); if(ds.length){ var i=ds.indexOf(cur); if(i<0){ var c2=ds.filter(function(x){return x<cur}); i=k<0?c2.length:ds.length; } var j=i+k; if(j>=0&&j<ds.length){ go(ds[j]); return; } if(j>=ds.length){ go(kst()); return; } } var x=new Date(cur+'T00:00:00Z'); x.setUTCDate(x.getUTCDate()+k); go(x.toISOString().slice(0,10)); }
-   prev.addEventListener('click',function(){ step(-1); }); next.addEventListener('click',function(){ step(1); }); di.addEventListener('change',function(){ if(di.value) go(di.value); });
-   dg.appendChild(prev); dg.appendChild(di); dg.appendChild(next); c.appendChild(dg);
+   function step(k){ var ds=(N.idx||[]).map(function(x){return x.date}); var c0=N.date||kst(); if(ds.length){ var i=ds.indexOf(c0); if(i<0){ var c2=ds.filter(function(x){return x<c0}); i=k<0?c2.length:ds.length; } var j=i+k; if(j>=0&&j<ds.length){ go(ds[j]); return; } if(j>=ds.length){ go(kst()); return; } } var x=new Date(c0+'T00:00:00Z'); x.setUTCDate(x.getUTCDate()+k); go(x.toISOString().slice(0,10)); }
+   prev.addEventListener('click',function(){ step(-1); }); next.addEventListener('click',function(){ step(1); });
+   dg.appendChild(nav); c.appendChild(dg);
    var st=el('span'); st.id='nh-st'; st.style.cssText='font-size:11.5px;color:var(--faint);margin-left:auto'; c.appendChild(st);
  }
  function load(){
@@ -3632,7 +3646,7 @@ window.HOME=(function(){
    var b=document.getElementById('nh-body'); if(!b) return; b.innerHTML=''; var d=N.data; if(!d) return;
    var rows=(d.rows||[]).filter(function(r){ return !(N.noEtf&&r.etf); });
    rows.sort(function(a,c){ var x=a[N.sort], y=c[N.sort]; if(x==null) return 1; if(y==null) return -1; return N.desc?y-x:x-y; });
-   var st=document.getElementById('nh-st'); if(st) st.textContent=d.hist?(d.date+' 기록 · '+(d.at||'')+' 저장분'):(d.at+' 기준 · '+(d.open?'장중(60초 갱신)':'장 마감 · 오늘 종가 기준')+' · KRX+NXT 통합');
+   var st=document.getElementById('nh-st'); if(st) st.textContent=d.hist?(d.date+' 기록 · '+(d.at==='backfill'?'네이버 일봉으로 계산(ETF 제외)':(d.at||'')+' 저장분')):(d.at+' 기준 · '+(d.open?'장중(60초 갱신)':'장 마감 · 오늘 종가 기준')+' · KRX+NXT 통합');
    var sm=el('div','sum'); var big=rows.filter(function(r){return r.size==='대형주'}).length, mid=rows.filter(function(r){return r.size==='중형주'}).length;
    var s1=el('span'); s1.appendChild(el('b',null,String(rows.length))); s1.appendChild(document.createTextNode('종목')); sm.appendChild(s1);
    var s2=el('span'); s2.appendChild(el('b',null,String(big))); s2.appendChild(document.createTextNode('대형주 · ')); s2.appendChild(el('b',null,String(mid))); s2.appendChild(document.createTextNode('중형주')); sm.appendChild(s2);
@@ -3655,10 +3669,11 @@ window.HOME=(function(){
    b.appendChild(el('p','note','증권사 집계(KRX+NXT 통합). 기준 [종가] = 오늘 종가(장중엔 현재가)가 기간 내 모든 종가보다 높은 종목, [장중 고가] = 오늘 고가가 기간 내 고가를 넘은 종목. 고가 대비 = 기간의 장중 최고가(일봉 고가) 대비 현재가 — 종가 기준 목록에서도 장중 고가로 계산하니 종가는 신고가여도 장중 고가엔 못 미치면 음수가 나옵니다(마우스를 올리면 저가 대비도 표시). 거래량 전일비 100% 초과는 붉게. 열 제목을 누르면 정렬, 종목명을 누르면 차트(아래로 내리면 투자자별 매매).'));
  }
  function renderIdx(){ var ix=document.getElementById('nh-idx'); if(!ix) return; ix.innerHTML=''; var idx=N.idx||[]; if(!idx.length) return;
-   var h=el('div'); h.style.cssText='margin:16px 0 6px;font-size:13px;font-weight:800'; h.textContent='일별 신고가 종목 수 · '+(N.dt==='250'?'52주':N.dt+'일')+' · '+(N.basis==='2'?'종가':'장중 고가')+' 기준 (ETF 제외)'; ix.appendChild(h);
-   var mx=Math.max.apply(null,idx.map(function(x){return x.n}))||1; var wrap=el('div'); wrap.style.cssText='display:flex;align-items:flex-end;gap:3px;height:90px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px 4px;overflow-x:auto';
-   idx.slice(-60).forEach(function(x){ var col=el('div'); col.style.cssText='display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:22px;height:100%;cursor:pointer'; col.title=x.date+' · 전체 '+x.n+' (코스피 '+x.kospi+' · 코스닥 '+x.kosdaq+')'; var bar=el('div'); bar.style.cssText='width:14px;border-radius:3px 3px 0 0;background:'+((N.date||kst())===x.date?'var(--accent)':'var(--up)')+';opacity:.85;height:'+Math.max(2,Math.round(x.n/mx*60))+'px'; col.appendChild(el('div',null,String(x.n))).style.cssText='font-size:9.5px;color:var(--muted);margin-bottom:2px'; col.appendChild(bar); col.appendChild(el('div',null,x.date.slice(5).replace('-','/'))).style.cssText='font-size:9px;color:var(--faint);margin-top:2px'; col.addEventListener('click',function(){ N.date=x.date>=kst()?null:x.date; ctl(); load(); }); wrap.appendChild(col); });
-   ix.appendChild(wrap); ix.appendChild(el('p','note','막대를 누르면 그날 목록으로 이동. 신고가 종목 수가 늘면 시장 폭(breadth)이 넓어지는 것, 지수는 오르는데 개수가 줄면 소수 종목 주도. 기록은 2026-09-17부터 매 거래일 15:40(잠정)·18:10(확정) 저장.')); }
+   var h=el('div'); h.style.cssText='margin:16px 0 0;font-size:13px;font-weight:800;display:flex;gap:8px;align-items:baseline'; h.appendChild(document.createTextNode('일별 신고가 종목 수')); var sm=el('small',null,(N.dt==='250'?'52주':N.dt+'일')+' · '+(N.basis==='2'?'종가':'장중 고가')+' 기준 · ETF 제외 · 막대를 누르면 그날 목록'); sm.style.cssText='font-size:11px;color:var(--faint);font-weight:500'; h.appendChild(sm); ix.appendChild(h);
+   var mx=Math.max.apply(null,idx.map(function(x){return x.n}))||1; var wrap=el('div','tl'); var sel=N.date||kst(); var WD=['일','월','화','수','목','금','토'];
+   idx.slice(-80).forEach(function(x){ var col=el('div','c'+(sel===x.date?' on':'')); var wd=new Date(x.date+'T00:00:00Z').getUTCDay(); if(wd===1) col.classList.add('wk'); col.title=x.date+'('+WD[wd]+') · 전체 '+x.n+' (코스피 '+x.kospi+' · 코스닥 '+x.kosdaq+')'+(x.at==='backfill'?' · 일봉으로 계산':'');
+     col.appendChild(el('div','n',String(x.n))); var bar=el('div','b'+(x.at==='backfill'?' bf':'')); bar.style.height=Math.max(3,Math.round(x.n/mx*58))+'px'; col.appendChild(bar); col.appendChild(el('div','d',x.date.slice(5).replace('-','/'))); col.addEventListener('click',function(){ N.date=x.date>=kst()?null:x.date; ctl(); load(); }); wrap.appendChild(col); });
+   ix.appendChild(wrap); ix.appendChild(el('p','note','신고가 종목 수가 늘면 시장 폭(breadth)이 넓어지는 것, 지수는 오르는데 개수가 줄면 소수 종목 주도. 회색 막대는 지난 한 달을 네이버 일봉으로 되짚어 계산한 값(ETF 제외), 이후는 매 거래일 15:40(잠정)·18:10(확정) 증권사 집계 저장.')); }
  function open(){ N.vis=true; ctl(); load(); }
  function close(){ N.vis=false; clearTimeout(N.timer); }
  document.addEventListener('member-change',function(){ N.data=null; if(N.vis){ ctl(); load(); } });
