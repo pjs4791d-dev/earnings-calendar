@@ -1384,7 +1384,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-17 22:07 · 평일 매일 자동 갱신</p>
+   생성 2026-09-17 22:21 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2419,7 +2419,7 @@ window.HOME=(function(){
      if(lastPx[c]!=null&&lastPx[c]!==i.price) card.classList.add(i.price>lastPx[c]?'flash-pu':'flash-pd'); lastPx[c]=i.price;
      var qrow=el('div','qrow'); qrow.appendChild(el('div','qp',n0(i.price,2))); var sp=spark(hist,c,i.pct); if(sp) qrow.appendChild(sp); card.appendChild(qrow);
      var d=el('div','qd'+(i.pct>0?' pu':i.pct<0?' pd':''),(i.pct>0?'▲':i.pct<0?'▼':'')+(i.chg!=null?n0(Math.abs(i.chg),2):'')); d.appendChild(el('span',null,sgn(i.pct,2)+'%')); card.appendChild(d);
-     card.appendChild(el('div','qt',(i.state==='OPEN'?'거래 중 · ':'')+(i.at?i.at.slice(5,10).replace('-','/')+' '+hm(i.at):'')+(i.nf?' · 정규장 종가 '+n0(i.nf.base,2)+' 대비'+(H.nf.open?'':' · 세션 종료(18:00~05:00)'):''))); tvable(card,c,QNAME[c]||i.name); grid.appendChild(card); });
+     card.appendChild(el('div','qt',(i.state==='OPEN'?'거래 중 · ':'')+(i.at?i.at.slice(5,10).replace('-','/')+' '+hm(i.at):'')+(i.nf?' · 정규장 종가 '+n0(i.nf.base,2)+' 대비'+(H.nf.open?'':' · 세션 종료(18:00~05:00)'):''))); if(c==='NFUT'){ card.classList.add('tv'); card.title='야간 세션 차트 · 상세'; card.setAttribute('role','button'); card.tabIndex=0; card.addEventListener('click',openNF); card.addEventListener('keydown',function(ev){ if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); openNF(); } }); } else tvable(card,c,QNAME[c]||i.name); grid.appendChild(card); });
    if(gr[1].indexOf('NFUT')>=0&&!by['NFUT']){ n++; var lc=el('div','qc qlock'); var ln=el('div','qn','K200F 야간'); ln.appendChild(el('small',null,'코스피200 야간선물')); lc.appendChild(ln);
      var lb=el('button','qlk',(window.MEMBER&&MEMBER.logged())?'수집 대기 중…':'로그인하면 표시'); lb.type='button'; lb.addEventListener('click',function(){ if(!(window.MEMBER&&MEMBER.logged())) MEMBER.open('login'); }); lc.appendChild(lb);
      lc.appendChild(el('div','qt','18:00~익일 05:00 세션 · 정규장 종가 대비 · KIS')); grid.appendChild(lc); }
@@ -2480,6 +2480,28 @@ window.HOME=(function(){
    var f=document.createElement('iframe'); f.className='tvf'; f.title=title||sym; f.allow='fullscreen'; f.setAttribute('allowfullscreen','');
    f.src='https://s.tradingview.com/widgetembed/?symbol='+encodeURIComponent(sym)+'&interval=D&hidesidetoolbar=1&symboledit=1&saveimage=0&toolbarbg='+(dark?'0b1020':'f1f3f6')+'&studies=[]&theme='+(dark?'dark':'light')+'&style=1&timezone=Asia%2FSeoul&withdateranges=1&hideideas=1&locale=kr';
    c.appendChild(f); c.appendChild(el('div','tvn','TradingView 위젯 · '+(TVNOTE[sym]||sym)+' · 지표·기간은 차트 안에서 바꿀 수 있습니다')); m.appendChild(c);
+   m.addEventListener('click',function(ev){ if(ev.target===m) m.remove(); }); document.body.appendChild(m); }
+ function openNF(){ var d=H.nf&&H.nf.item; if(!d) return; var pts=(H.nf.hist&&H.nf.hist.pts)||[];        // 야간선물: 세션 1분 이력 자체 차트 + 요약(트레이딩뷰 무료 위젯에 유렉스 야간 심볼이 없어서 직접 그림)
+   var old=document.getElementById('tvm'); if(old) old.remove();
+   var m=el('div','tvm'); m.id='tvm'; var c=el('div','tvc'); c.style.width='min(860px,100%)'; var h=el('div','tvh'); h.appendChild(el('b',null,'코스피200 야간선물')); h.appendChild(el('span','tvs',d.code+' · 18:00~익일 05:00 · KIS'));
+   var x=el('button','tvx','×'); x.type='button'; x.addEventListener('click',function(){m.remove()}); h.appendChild(x); c.appendChild(h);
+   var body=el('div'); body.style.cssText='padding:12px 14px'; var top=el('div'); top.style.cssText='display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;margin-bottom:8px';
+   var big=el('span',null,n0(d.price,2)); big.style.cssText='font-size:26px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums'; top.appendChild(big);
+   var ch=el('span',(d.pct>0?'pu':d.pct<0?'pd':''),(d.pct>0?'▲':d.pct<0?'▼':'')+n0(Math.abs(d.chg),2)+' ('+sgn(d.pct,2)+'%)'); ch.style.cssText='font-size:15px;font-weight:700'; top.appendChild(ch);
+   top.appendChild(el('span','tvs',(H.nf.open?'거래 중':'세션 종료')+' · '+(d.at?d.at.slice(5,10).replace('-','/')+' '+hm(d.at):''))); body.appendChild(top);
+   var W=820,HH=260,L=54,R=14,T=14,B=26; var v=pts.map(function(p){return p[1]}); if(d.base!=null) v.push(d.base);
+   if(pts.length>=2){ var lo=Math.min.apply(null,v), hi=Math.max.apply(null,v); if(hi===lo){hi=lo+1;} var pad=(hi-lo)*.08; lo-=pad; hi+=pad;
+     var svg=sv('svg',{viewBox:'0 0 '+W+' '+HH}); svg.style.cssText='display:block;width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px';
+     function X(i){ return L+i/(pts.length-1)*(W-L-R); } function Y(p){ return T+(1-(p-lo)/(hi-lo))*(HH-T-B); }
+     for(var g=0;g<=4;g++){ var yy=T+g*(HH-T-B)/4, pv=hi-(hi-lo)*g/4; svg.appendChild(sv('line',{x1:L,x2:W-R,y1:yy,y2:yy,stroke:'var(--line)','stroke-width':1})); var tx=sv('text',{x:L-6,y:yy+4,'text-anchor':'end','font-size':10,fill:'var(--faint)'}); tx.textContent=n0(pv,2); svg.appendChild(tx); }
+     if(d.base!=null){ svg.appendChild(sv('line',{x1:L,x2:W-R,y1:Y(d.base),y2:Y(d.base),stroke:'var(--muted)','stroke-dasharray':'4 4','stroke-width':1})); var bt=sv('text',{x:W-R-4,y:Y(d.base)-4,'text-anchor':'end','font-size':10,fill:'var(--muted)'}); bt.textContent='정규장 종가 '+n0(d.base,2); svg.appendChild(bt); }
+     var step=Math.max(1,Math.round(pts.length/6)); pts.forEach(function(p,i){ if(i%step===0||i===pts.length-1){ var t=sv('text',{x:X(i),y:HH-8,'text-anchor':'middle','font-size':10,fill:'var(--faint)'}); t.textContent=p[0]; svg.appendChild(t); } });
+     var poly=sv('polyline',{points:pts.map(function(p,i){return X(i).toFixed(1)+','+Y(p[1]).toFixed(1)}).join(' '),fill:'none',stroke:d.pct>0?'var(--up)':d.pct<0?'var(--down)':'var(--ink2)','stroke-width':1.6}); svg.appendChild(poly);
+     body.appendChild(svg); }
+   else body.appendChild(el('div','tvn','세션 중 1분 단위로 쌓인 값이 아직 없습니다(세션 시작 후 표시).'));
+   var grid=el('div'); grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px';
+   [['정규장 선물 종가(기준가)',d.base!=null?n0(d.base,2):'-'],['시가',d.open!=null?n0(d.open,2):'-'],['고가',d.high!=null?n0(d.high,2):'-'],['저가',d.low!=null?n0(d.low,2):'-'],['거래량(계약)',d.vol!=null?n0(d.vol,0):'-'],['이론가',d.theo!=null?n0(d.theo,2):'-'],['코스피200 현물 종가',d.k200!=null?n0(d.k200,2):'-'],['괴리(선물−현물)',(d.k200!=null)?sgn(d.price-d.k200,2):'-']].forEach(function(r){ var b=el('div'); b.style.cssText='background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px'; var kk=el('div',null,r[0]); kk.style.cssText='font-size:10.5px;color:var(--faint)'; b.appendChild(kk); var vv=el('div',null,r[1]); vv.style.cssText='font-size:15px;font-weight:700;font-variant-numeric:tabular-nums'; b.appendChild(vv); grid.appendChild(b); });
+   body.appendChild(grid); body.appendChild(el('div','tvn','유렉스 연계 코스피200 야간선물 · 등락은 당일 정규장 선물 종가 대비 · 20초 갱신 · 회원 전용(KIS)')); c.appendChild(body); m.appendChild(c);
    m.addEventListener('click',function(ev){ if(ev.target===m) m.remove(); }); document.body.appendChild(m); }
  document.addEventListener('keydown',function(ev){ if(ev.key==='Escape'){ var t=document.getElementById('tvm'); if(t) t.remove(); } });
  function tvable(node,code,title){ if(!TV[code]) return node; var ext=TV[code].charAt(0)==='!'; node.classList.add('tv'); if(ext) node.classList.add('tvx'); node.title=(ext?'TradingView 새 탭에서 열기 · ':'차트 보기 · ')+TV[code].replace(/^!/,''); node.setAttribute('role','button'); node.tabIndex=0;
