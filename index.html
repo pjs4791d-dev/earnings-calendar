@@ -1384,7 +1384,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-18 08:14 · 평일 매일 자동 갱신</p>
+   생성 2026-09-18 08:30 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2818,10 +2818,11 @@ window.HOME=(function(){
  function rowsFor(cb){
    if(isOpt()){ cb([], F.daily.program||[]); return; }
    if(isDailyOnly()&&memberOn()&&!F.kwdEmpty){             // 회원: 키움 일별(코스피/코스닥 × KRX/NXT/통합, 12주체) — 비어 있으면 추정치로 폴백
-     var key=kwMrkt()+'|'+kwStex(); F.kwd=F.kwd||{}; var c=F.kwd[key];
+     var days=(F.range==='all'||F.range==='custom'||(+F.range)>250)?4000:400;                     // 3년·전체·직접 기간은 키움 이력 전부(2015년~, kw_backfill)
+     var key=kwMrkt()+'|'+kwStex()+'|'+days; F.kwd=F.kwd||{}; var c=F.kwd[key];
      if(c&&Date.now()-c.at<600000){ if(c.rows.length){ cb(c.rows, F.daily.program||[]); return; } F.kwdEmpty=true; rowsFor(cb); return; }
      if(F.dloading) return; F.dloading=true;
-     MEMBER.get('kiwoom_daily?mrkt='+kwMrkt()+'&stex='+kwStex()+'&days=400').then(function(d){ F.dloading=false; var rows=(d.rows||[]).map(function(r){ var o=kwRow(r); o.t=r.date; o.kw=true; return o; }); F.kwd[key]={rows:rows,at:Date.now()};
+     MEMBER.get('kiwoom_daily?mrkt='+kwMrkt()+'&stex='+kwStex()+'&days='+days).then(function(d){ F.dloading=false; var rows=(d.rows||[]).map(function(r){ var o=kwRow(r); o.t=r.date; o.kw=true; return o; }); F.kwd[key]={rows:rows,at:Date.now()};
          if(!rows.length){ F.kwdEmpty=true; rowsFor(cb); return; } cb(rows, F.daily.program||[]); })
        .catch(function(){ F.dloading=false; F.kwdEmpty=true; rowsFor(cb); });
      return;
