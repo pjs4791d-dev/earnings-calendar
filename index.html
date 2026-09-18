@@ -1384,7 +1384,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-18 09:02 · 평일 매일 자동 갱신</p>
+   생성 2026-09-18 09:05 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2623,11 +2623,12 @@ window.HOME=(function(){
  function kwToday(){ var t=F.kw&&F.kw.today&&F.kw.today[kwMrkt()]; return t&&t[kwStex()]?kwRow(t[kwStex()]):null; }
  function kwSeries(){ var s=F.kw&&F.kw.series&&F.kw.series[kwMrkt()]&&F.kw.series[kwMrkt()][kwStex()]; return (s||[]).map(function(p){return {t:p[0],'개인':p[1],'외국인':p[2],'기관계':p[3]}}); }
  function isOpt(){ return !!OPTM[F.mkt]; }
+ function kisMk(){ return OPTM[F.mkt]||(F.mkt==='03'?'K200F':F.mkt==='02'?'KOSDAQ':'KOSPI'); }   // 회원 장중 시계열: KIS 30초 스냅(KRX 체결분) — 네이버 1분 행보다 빠르고 촘촘
  function ymdNow(){ var d=new Date(); return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0'); }
  function loadMember(){                                   // 로그인 상태에서 필요한 회원 데이터를 받아 다시 그린다
    if(!memberOn()) return;
    if(isDailyOnly()&&(!F.kwAt||Date.now()-F.kwAt>55000)){ MEMBER.get('kiwoom').then(function(d){ F.kw=d; F.kwAt=Date.now(); drawFlow(); }).catch(function(){}); }
-   if(isOpt()||F.mkt==='03'){ var mk=OPTM[F.mkt]||'K200F'; Promise.all([MEMBER.get('latest?market='+mk),MEMBER.get('series?market='+mk)]).then(function(r){ F.opt=F.opt||{}; F.opt[mk]={latest:r[0],series:r[1],at:Date.now()}; drawFlow(); }).catch(function(){}); }
+   if(isOpt()||F.mkt==='03'||F.market==='01'||F.market==='02'){ var mk=kisMk(); Promise.all([MEMBER.get('latest?market='+mk),MEMBER.get('series?market='+mk)]).then(function(r){ F.opt=F.opt||{}; F.opt[mk]={latest:r[0],series:r[1],at:Date.now()}; drawFlow(); }).catch(function(){}); }
  }
  document.addEventListener('member-change',function(){ H.nf=null; if(H.built&&tabOn('home')) tickHome(); });   // 로그인/로그아웃 시 야간선물 카드 갱신
  document.addEventListener('member-change',function(){ F.kw=null; F.kwAt=0; F.kwd={}; F.opt={}; F.exSaved=null; F.ex=memberOn()?'all':'krx'; if(F.built){ syncMarket(); drawFlow(); drawDaily(); loadMember(); } });
@@ -2706,7 +2707,7 @@ window.HOME=(function(){
    .catch(function(){ if(first&&window.LOADBAR) LOADBAR.done(); if(lv){ lv.className='live off'; lv.lastChild.textContent='실시간 서버에 연결하지 못했습니다'; } });
    if(!F.daily||Date.now()-F.daily._at>600000){ Promise.all([getJ(LIVE+'flow_daily.json'), getJ(LIVE+'nxt_daily.json').catch(function(){return null}), getJ(LIVE+'nxt_split.json').catch(function(){return null})]).then(function(r){ r[0]._at=Date.now(); F.daily=r[0]; F.nxt=r[1]; F.split=r[2]; drawDaily(); drawFlow(); }).catch(function(){}); }
    loadMember();
-   F.timer=setTimeout(tickFlow,ivl(60000));
+   F.timer=setTimeout(tickFlow,ivl(memberOn()?30000:60000));                 // 회원 장중 시계열(KIS 30초 스냅)은 30초마다
  }
  function isDailyOnly(){ return F.market==='nxt'||F.market==='all'; }
  function drawFlow(){
@@ -2714,7 +2715,7 @@ window.HOME=(function(){
    var cards=document.getElementById('fl-cards'); cards.innerHTML=''; F.chartM=null;
    var dcards=document.getElementById('fl-dcards'); if(dcards) dcards.innerHTML='';
    if(isOpt()){ drawOpt(cards); return; }
-   if(F.mkt==='03'&&memberOn()&&F.opt&&F.opt.K200F&&(F.opt.K200F.series.points||[]).length>=2&&(!F.today||F.today.date!==ymdNow())){ drawOpt(cards); return; }   // 선물: 네이버 오늘치가 아직 없으면(09:00 전) KIS 장중 누적으로
+   if((F.mkt==='03'||F.market==='01'||F.market==='02')&&memberOn()&&F.opt&&F.opt[kisMk()]&&(F.opt[kisMk()].series.points||[]).length>=2){ drawOpt(cards); return; }   // 회원: 선물·코스피·코스닥(KRX) 장중 누적은 KIS 30초 스냅(개장 직후부터, 네이버 1분 행은 09:02 부터)
    var kwDone=false;
    if(isDailyOnly()&&memberOn()&&kwToday()){ if(drawKw(cards,dcards)) return; kwDone=true; }
    if(isDailyOnly()&&!kwDone){
@@ -2766,7 +2767,7 @@ window.HOME=(function(){
    return false;                                            // 통합인데 장중 시계열이 아직 없으면 기존 KRX 장중 차트를 이어 그린다
  }
  function drawOpt(cards){                                  // 회원: 한투 콜·풋·주식선물
-   var mk=OPTM[F.mkt]||'K200F', o=F.opt&&F.opt[mk], nm=OPTN[F.mkt]||'K200 선물';
+   var mk=kisMk(), o=F.opt&&F.opt[mk], nm=OPTN[F.mkt]||(mk==='K200F'?'K200 선물':mk==='KOSDAQ'?'KRX 코스닥':'KRX 코스피');
    if(!memberOn()){ cards.appendChild(el('div','lmsg','회원 전용입니다. 로그인하면 보입니다.')); return; }
    if(!o){ cards.appendChild(el('div','lmsg',nm+' 불러오는 중…')); return; }
    var L=o.latest; L.opt=L.opt||L.qty==='계약'; var unit=L.opt?'계약':'억원', row={}; (L.rows||[]).forEach(function(r){ var k=KISK[r.key]; if(!k) return; row[k]=L.opt?r.net_qty:Math.round(r.net_amt/100); });
