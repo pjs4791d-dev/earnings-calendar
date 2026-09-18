@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-19T01:40+09:00",
+ "checked": "2026-09-19T02:10+09:00",
  "first_seen": {
   "claude-fable-5.1": {
    "2026-09-11": "2026-09-12T09:10+09:00",
@@ -691,8 +691,8 @@
    "effective": {
     "asof": "2026-09-19",
     "cache_rate": 0.821,
-    "in": 0.5652,
-    "out": 10.0233
+    "in": 0.5668,
+    "out": 10.024
    },
    "name": "Claude Sonnet 5",
    "order": 4,
@@ -1087,9 +1087,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.765,
-    "in": 0.0416,
-    "out": 0.3031
+    "cache_rate": 0.764,
+    "in": 0.0414,
+    "out": 0.3017
    },
    "name": "DeepSeek V4 Flash",
    "order": 6,
@@ -1275,9 +1275,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.737,
-    "in": 0.2742,
-    "out": 3.8267
+    "cache_rate": 0.738,
+    "in": 0.2739,
+    "out": 3.835
    },
    "name": "Gemini 3.8 Flash",
    "order": 5,
@@ -1533,8 +1533,8 @@
    "effective": {
     "asof": "2026-09-19",
     "cache_rate": 0.821,
-    "in": 0.0467,
-    "out": 0.475
+    "in": 0.0468,
+    "out": 0.4753
    },
    "name": "GLM 5.3 Flash",
    "order": 7,
@@ -1931,7 +1931,7 @@
     "asof": "2026-09-19",
     "cache_rate": 0.86,
     "in": 0.0626,
-    "out": 1.3249
+    "out": 1.3256
    },
    "name": "GPT-5.6 Luna",
    "order": 2,
@@ -2096,9 +2096,9 @@
    "default_on": true,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.943,
-    "in": 1.759,
-    "out": 44.7856
+    "cache_rate": 0.944,
+    "in": 1.7524,
+    "out": 44.7042
    },
    "name": "GPT-6 Astra",
    "order": 0,
@@ -2264,8 +2264,8 @@
    "effective": {
     "asof": "2026-09-19",
     "cache_rate": 0.651,
-    "in": 6.1382,
-    "out": 53.7234
+    "in": 6.161,
+    "out": 53.8062
    },
    "name": "GPT-6 Astra Pro",
    "order": 1,
@@ -2459,6 +2459,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-19T01:40+09:00",
+ "updated": "2026-09-19T02:10+09:00",
  "url": "https://openrouter.ai/rankings"
 }
