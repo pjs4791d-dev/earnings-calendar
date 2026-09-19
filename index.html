@@ -1477,7 +1477,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-20 00:57 · 평일 매일 자동 갱신</p>
+   생성 2026-09-20 01:01 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2440,8 +2440,8 @@ window.HOME=(function(){
    panel('hm-breadth','시장 폭 · 52주 신고가/신저가','7개 시장 · 종가 기준',['52주 신고가 →','#nhigh']);
    panel('hm-sect','오늘의 업종','시총가중 등락률 · 국장 3초 · 미장 5초',['히트맵 →','#hmap']);
    panel('hm-rank','순매수 상위','외국인 · 기관 · 장중 잠정',['순매수 상위 →','#rank']);
-   panel('hm-nh','52주 신고가 · 오늘','한국 · 종가 기준 · 시총순',['52주 신고가 →','#nhigh']);
-   panel('hm-flow','오늘 수급','통합(KRX+NXT) 누적 순매수',['수급 →','#flow']);
+   var nhp=panel('hm-nh','52주 신고가 · 오늘','한국 · 종가 기준 · 시총순',['52주 신고가 →','#nhigh']);
+   nhp.querySelector('.hb').appendChild(el('div','nhlist')); nhp.querySelector('.hb').appendChild(el('div','flowbox'));   // 아래쪽 빈 자리에 오늘 수급(통합)
    var row2=el('div','hrow2'); g.appendChild(row2);                                                 // 주요 일정 · 다가오는 실적 한 줄
    panel('hm-cal','주요 일정','오늘·내일 · ★★★ 지표와 휴장',['캘린더 →','#mkt'],false,row2);
    panel('hm-earn','다가오는 실적','DART 공시',['실적 일정 →','#cal'],false,row2);
@@ -2532,7 +2532,8 @@ window.HOME=(function(){
    var st=el('div','qsrc'); st.textContent='네이버 금융 · 코인게코·업비트(BTC·USDC) · '+q.updated.slice(11,19)+' 수집 · 30초 갱신 · 금·WTI 선물은 5분'; box.appendChild(st);
  }
  function renderFlowSummary(f){
-   var p=document.querySelector('#hm-flow .hb'); if(!p) return; p.innerHTML='';
+   var p=document.querySelector('#hm-nh .flowbox'); if(!p) return; p.innerHTML='';
+   var hdr=el('div','mr hd'); hdr.style.cssText='display:flex;justify-content:space-between;margin-top:10px;padding-top:8px;border-top:1px solid var(--line)'; hdr.appendChild(document.createTextNode('오늘 수급 · 통합(KRX+NXT) 누적 순매수')); var lk=el('a','hl','수급 →'); lk.href='#flow'; lk.addEventListener('click',function(ev){ ev.preventDefault(); var b=document.querySelector('.nav[data-p="flow"]'); if(b) b.click(); }); hdr.appendChild(lk); p.appendChild(hdr);
    var wrap=el('table','fs'), any=false, th=el('thead'), tr=el('tr'); ['시장','개인','외국인','기관'].forEach(function(h){tr.appendChild(el('th',null,h))}); th.appendChild(tr); wrap.appendChild(th);
    var tb=el('tbody');
    function row(name,sub,vals,unit){ var r=el('tr'); var c0=el('td',null,name); if(sub) c0.appendChild(el('small',null,sub)); r.appendChild(c0);
@@ -2548,7 +2549,7 @@ window.HOME=(function(){
    if(!any){ p.appendChild(el('div','lmsg','오늘은 아직 집계된 수급이 없습니다 (장중 09:00~ 갱신)')); return; }
    wrap.appendChild(tb); p.appendChild(wrap);
    var l=f.markets['01'].series[f.markets['01'].series.length-1], dd=f.date?f.date.slice(4,6).replace(/^0/,'')+'/'+f.date.slice(6,8).replace(/^0/,''):'';
-   var sub=document.querySelector('#hm-flow .hs'); if(sub) sub.textContent=dd+(l?' '+l.t+' 기준 · ':' · ')+src+' · 억원 / 선물은 계약'+(f.date&&f.date!==kstToday().replace(/-/g,'')?' · 마지막 거래일':'');
+   var sub=el('div','mr hd'); sub.style.padding='4px 0 0'; sub.textContent=dd+(l?' '+l.t+' 기준 · ':' · ')+src+' · 억원 / 선물은 계약'+(f.date&&f.date!==kstToday().replace(/-/g,'')?' · 마지막 거래일':''); p.appendChild(sub);
  }
  function renderCal(){
    var p=document.querySelector('#hm-cal .hb'); if(!p) return;
@@ -2743,7 +2744,7 @@ window.HOME=(function(){
      p.appendChild(wrap); var sub=document.querySelector('#hm-rank .hs'); if(sub) sub.textContent=(r[0].at||'')+' 기준 · '+(r[0].open?'장중 잠정치':'마지막 거래일 잠정치')+' · KRX+NXT · ETF 제외'; }).catch(function(e){ p.innerHTML=''; p.appendChild(el('div','mr','불러오지 못했습니다 · '+e.message)); H.rankAt=0; });
  }
  function renderNhHome(){
-   var p=document.querySelector('#hm-nh .hb'); if(!p) return;
+   var p=document.querySelector('#hm-nh .nhlist'); if(!p) return;
    if(!memberOn()){ p.innerHTML=''; var m=el('div','mlock'); m.appendChild(document.createTextNode('종목 목록은 증권사 집계라 회원 전용입니다(위 시장 폭은 공개). ')); var b=el('button','mlb','로그인'); b.type='button'; b.addEventListener('click',function(){ MEMBER.open('login'); }); m.appendChild(b); p.appendChild(m); return; }
    if(H.nhAt&&Date.now()-H.nhAt<55000) return; H.nhAt=Date.now();
    MEMBER.get('newhigh?mrkt=000&basis=2&dt=250').then(function(d){ p.innerHTML=''; var rows=(d.rows||[]).filter(function(z){return !z.etf}).sort(function(a,b){return (b.mcap||0)-(a.mcap||0)});
