@@ -1422,7 +1422,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-19 22:22 · 평일 매일 자동 갱신</p>
+   생성 2026-09-19 22:40 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3764,7 +3764,7 @@ window.HOME=(function(){
  function viewBar(){ var v=document.getElementById('nh-view'); if(!v) return; v.innerHTML=''; var cur=G.view||(memberOn()?'kr':'global');
    [['global','글로벌 요약'],['kr','한국 상세'+(memberOn()?'':' · 회원')]].forEach(function(o){ var b=el('button',cur===o[0]?'on':'',o[1]); b.type='button'; b.addEventListener('click',function(){ G.view=o[0]; gsave(); applyView(); }); v.appendChild(b); }); }
  function applyView(){ var cur=G.view||(memberOn()?'kr':'global'); viewBar(); var g=document.getElementById('nh-global'), c=document.getElementById('nh-ctl'), b=document.getElementById('nh-body');
-   if(cur==='global'){ g.hidden=false; c.hidden=true; b.hidden=true; clearTimeout(N.timer); gload(); } else { g.hidden=true; c.hidden=false; b.hidden=false; ctl(); load(); } }
+   if(cur==='global'){ g.hidden=false; c.style.display='none'; b.style.display='none'; clearTimeout(N.timer); gload(); } else { g.hidden=true; c.style.display=''; b.style.display=''; ctl(); load(); } }   // .lctl 은 display:flex 라 hidden 속성이 안 먹어 style 로 숨긴다
  function gload(){ var g=document.getElementById('nh-global'); if(!g) return; if(G.data&&Date.now()-G.at<600000){ grender(); return; } if(!G.data){ g.innerHTML=''; g.appendChild(el('div','lmsg','불러오는 중…')); }
    fetch(LIVE+'global_newhigh.json?t='+Math.floor(Date.now()/600000)).then(function(r){ return r.json(); }).then(function(d){ G.data=d; G.at=Date.now(); grender(); }).catch(function(){ if(!G.data){ g.innerHTML=''; g.appendChild(el('div','lmsg','글로벌 신고가 데이터를 못 받았습니다')); } }); }
  function grender(){
@@ -3821,9 +3821,6 @@ window.HOME=(function(){
      tr.appendChild(el('td','tot','')); tb2.appendChild(tr); });
    t2b.appendChild(tb2); hw2.appendChild(t2b); g.appendChild(hw2);
    // ── 종목 표
-   if(M.EU&&M.EU.countries&&(G.selMk==='EU'||G.country||!G.selMk)){ var cw=el('div','lctl'); cw.style.margin='10px 0 0'; var cs=Object.keys(M.EU.countries).sort(function(a,b){return M.EU.countries[b]-M.EU.countries[a]});
-     var cnt={}; (M.EU.rows||[]).forEach(function(r){ if(pick(r)&&(G.size==='ALL'||r.size===G.size)&&(!G.newOnly||isNew(r))) cnt[r.country]=(cnt[r.country]||0)+1; });
-     cw.appendChild(grp('유럽 국가',sw([['','전체']].concat(cs.map(function(c){return [c,c+' '+(cnt[c]||0)]})),G.country||'',function(v){ G.country=v||null; if(v) G.selMk='EU'; grender(); }))); g.appendChild(cw); }
    var rows=rowsAll.filter(function(r){ return (!G.selMk||r.mkt===G.selMk)&&(!G.selSec||r.sector===G.selSec); });
    rows.sort(function(a,b){ var k=G.sort; var x=a[k],y=b[k]; if(k==='mkt'||k==='sector'||k==='name'){ x=String(x||''); y=String(y||''); return G.desc?y.localeCompare(x):x.localeCompare(y); } if(x==null) return 1; if(y==null) return -1; return G.desc?y-x:x-y; });
    var h3=el('div','gh'); h3.appendChild(el('b',null,(G.mode==='lo'?'신저가':'신고가')+' 종목 '+rows.length+'개')); var fl=el('small'); var chips=[]; if(G.selMk) chips.push(M[G.selMk].name); if(G.country) chips.push(G.country); if(G.selSec) chips.push(G.selSec); if(G.size!=='ALL') chips.push((d.sizes||[]).filter(function(z){return z.key===G.size})[0].label); if(G.newOnly) chips.push('신규 진입만'); fl.textContent=(chips.length?chips.join(' · ')+' · ':'')+'열 제목을 누르면 정렬 · 종목명을 누르면 차트';
