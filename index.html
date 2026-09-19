@@ -1476,7 +1476,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-20 00:15 · 평일 매일 자동 갱신</p>
+   생성 2026-09-20 00:25 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2568,7 +2568,7 @@ window.HOME=(function(){
    '.VIX':'CAPITALCOM:VIX','.DXY':'CAPITALCOM:DXY','FX_USDKRW':'FX_IDC:USDKRW','FX_USDJPY':'OANDA:USDJPY','.INX':'OANDA:SPX500USD','.IXIC':'OANDA:NAS100USD','.DJI':'OANDA:US30USD','.N225':'OANDA:JP225USD','.SOX':'!NASDAQ:SOX',
    'NQcv1':'OANDA:NAS100USD','.TOPX':'!TSE:TOPIX','.HSI':'OANDA:HK33HKD','.HSCE':'!HSI:HSCEI','.SSEC':'!SSE:000001','.SZSC':'!SZSE:399106','.FTSE':'OANDA:UK100GBP','.GDAXI':'OANDA:DE30EUR','.STOXX50E':'OANDA:EU50EUR',
    'KOSPI':'!KRX:KOSPI','KOSDAQ':'!KRX:KOSDAQ','FUT':'!KRX:KOSPI200','KPI200':'!KRX:KOSPI200','BTC':'COINBASE:BTCUSD','USDC_MCAP':'!CRYPTOCAP:USDC',
-   'CLcv1':'OANDA:WTICOUSD','LCOcv1':'OANDA:BCOUSD','NGcv1':'OANDA:NATGASUSD','GCcv1':'OANDA:XAUUSD','SIcv1':'OANDA:XAGUSD','HGcv1':'OANDA:XCUUSD','TIOc1':'!COMEX:TIO1!',
+   'CLcv1':'OANDA:WTICOUSD','LCOcv1':'OANDA:BCOUSD','NGcv1':'OANDA:NATGASUSD','GCcv1':'OANDA:XAUUSD','SIcv1':'OANDA:XAGUSD','HGcv1':'OANDA:XCUUSD','TIOc1':'!COMEX:TIO1!','Ccv1':'!CBOT:ZC1!','Scv1':'!CBOT:ZS1!','Wcv1':'!CBOT:ZW1!','SBcv1':'!ICEUS:SB1!','CMNI0':'!LME:NI1!','CMZN0':'!LME:ZS1!','CMAA0':'!LME:AH1!','^MOVE':'!TVC:MOVE','FRED:BAMLH0A0HYM2':'FRED:BAMLH0A0HYM2','FRED:BAMLC0A0CM':'FRED:BAMLC0A0CM','FRED:T10YIE':'FRED:T10YIE','FRED:DFII10':'FRED:DFII10',
    'SP:US10-2':'FRED:T10Y2Y','SP:KR10-3':'!TVC:KR10Y-TVC:KR03Y','SP:KRUS10':'!TVC:KR10Y-TVC:US10Y'};
  var TVEXT={'US2YT=RR':'TVC:US02Y','US10YT=RR':'TVC:US10Y','US30YT=RR':'TVC:US30Y','US3MT=RR':'TVC:US03MY','USFOMC=ECIX':'ECONOMICS:USINTR','SP:US10-2':'TVC:US10Y-TVC:US02Y','.IXIC':'NASDAQ:IXIC','NQcv1':'CME_MINI:NQ1!','.INX':'SP:SPX','.DJI':'DJ:DJI','.N225':'TVC:NI225','.HSI':'HSI:HSI','.FTSE':'FTSE:UKX','.GDAXI':'XETR:DAX','.STOXX50E':'SXXP:SX5E','.VIX':'TVC:VIX','.DXY':'TVC:DXY'};
  var TVNOTE={'OANDA:NAS100USD':'나스닥 100 CFD(종합지수 대용)','OANDA:HK33HKD':'항셍 CFD','OANDA:UK100GBP':'FTSE 100 CFD','OANDA:DE30EUR':'DAX CFD','OANDA:EU50EUR':'유로스톡스 50 CFD','OANDA:USDJPY':'달러/엔','FRED:DGS2':'미 2년물 수익률(FRED, 일별)','FRED:DGS30':'미 30년물 수익률(FRED, 일별)','FRED:T10Y2Y':'미 10년-2년 스프레드(FRED)','OANDA:SPX500USD':'S&P 500 CFD','OANDA:US30USD':'다우 30 CFD','OANDA:JP225USD':'니케이 225 CFD','FRED:DFF':'실효 연방기금금리(FRED)','FRED:DGS10':'미 10년물 수익률(FRED, 일별)','CAPITALCOM:VIX':'VIX CFD','CAPITALCOM:DXY':'달러인덱스 CFD','COINBASE:BTCUSD':'코인베이스 BTC/USD'};
@@ -2625,12 +2625,18 @@ window.HOME=(function(){
    var r=document.querySelector('#hm-risk .hb'); if(r){ r.innerHTML='';
      var qb={}; ((q&&q.items)||[]).forEach(function(i){qb[i.code]=i});
      head(r,'변동성 · 달러'); [['.VIX','VIX (공포지수)'],['.DXY','달러인덱스'],['FX_USDKRW','원/달러']].forEach(function(k){ var x=qb[k[0]]; if(!x) return; var c=pc(x.pct); row(r,k[1],n0(x.price,2),c[0],c[1],null,k[0]); });
+     if(m.move){ var c0=pc(m.move.pct); row(r,'MOVE (채권 변동성)',n0(m.move.price,2),c0[0],c0[1],'미 국채 옵션 내재변동성 · 야후','^MOVE'); }
      head(r,'스프레드'); (m.spreads||[]).forEach(function(x){ var c=bp(x.chg); var s=el('div','mr'); var n=el('span','mn',x.name); n.title=x.note; s.appendChild(n); s.appendChild(el('span','mv'+(x.value<0?' pd':''),(x.value>0?'+':'')+x.value.toFixed(2)+'%p')); s.appendChild(el('span','mc'+c[1],c[0])); if(TVSP[x.name]) tvable(s,TVSP[x.name],x.name); r.appendChild(s); });
-     var n2=el('div','mr hd','미 10-2년 역전(−)은 침체 신호 · 신용 스프레드 확대는 위험회피'); r.appendChild(n2); }
+     if(m.fred&&m.fred.length){ head(r,'미국 신용 · 인플레 기대 (FRED, 전일)'); m.fred.forEach(function(x){ var c=bp(x.chg); var s=el('div','mr'); var n=el('span','mn',x.name); n.appendChild(el('small',null,(x.at||'').slice(5).replace('-','/'))); n.title=x.note||''; s.appendChild(n); s.appendChild(el('span','mv',x.price.toFixed(2)+(x.unit==='%p'?'%p':'%'))); s.appendChild(el('span','mc'+c[1],c[0])); tvable(s,x.code,x.name); r.appendChild(s); }); }
+     head(r,'위험 선호'); var btc=qb['BTC'], nq=qb['NQcv1']; if(btc){ var cb=pc(btc.pct); row(r,'비트코인 (24h)','$'+n0(btc.price),cb[0],cb[1],btc.kimchi!=null?'김프 '+sgn(btc.kimchi,2)+'%':'','BTC'); } if(nq){ var cn=pc(nq.pct); row(r,'나스닥100 선물',n0(nq.price,2),cn[0],cn[1],null,'NQcv1'); }
+     var mb={}; (m.metals||[]).forEach(function(x){mb[x.code]=x}); if(mb['HGcv1']&&mb['GCcv1']&&mb['HGcv1'].price&&mb['GCcv1'].price){ var cg=mb['HGcv1'].price/mb['GCcv1'].price*1000; var pcg=(mb['HGcv1'].pct||0)-(mb['GCcv1'].pct||0); var cc=pc(pcg); var s3=el('div','mr'); var n3=el('span','mn','구리/금 비율'); n3.appendChild(el('small',null,'×1000')); n3.title='구리(경기) ÷ 금(안전자산) · 오르면 경기 낙관, 내리면 위험회피'; s3.appendChild(n3); s3.appendChild(el('span','mv',cg.toFixed(2))); s3.appendChild(el('span','mc'+cc[1],cc[0])); r.appendChild(s3); }
+     var n2=el('div','mr hd','미 10-2년 역전(−)은 침체 신호 · 신용·하이일드 스프레드 확대는 위험회피 · MOVE↑는 채권시장 불안'); r.appendChild(n2); }
    // 원자재
    var c=document.querySelector('#hm-cmd .hb'); if(c){ c.innerHTML='';
-     head(c,'에너지'); (m.energy||[]).forEach(function(x){ var p=pc(x.pct); row(c,x.name,n0(x.price,2),p[0],p[1],x.unit,x.code); });
-     head(c,'금속'); (m.metals||[]).forEach(function(x){ if(x.code==='CMCU0') return; var p=pc(x.pct); row(c,x.name,n0(x.price,x.price<10?3:2),p[0],p[1],x.unit,x.code); }); }
+     head(c,'에너지'); (m.energy||[]).forEach(function(x){ var p=pc(x.pct); row(c,x.code==='OIL_GSL'?'국내 휘발유':x.name,n0(x.price,x.code==='OIL_GSL'?0:2),p[0],p[1],x.code==='OIL_GSL'?'원/L · 오피넷':x.unit,x.code); });
+     head(c,'금속'); (m.metals||[]).forEach(function(x){ if(x.code==='CMCU0') return; var p=pc(x.pct); row(c,x.code==='CMAA0'?'알루미늄':x.name,n0(x.price,x.price<10?3:x.price<100?2:0),p[0],p[1],(x.code.indexOf('CM')===0?'LME 현물 $/t':x.unit),x.code); });
+     if(m.agri&&m.agri.length){ head(c,'농산물'); m.agri.forEach(function(x){ var p=pc(x.pct); row(c,x.name,n0(x.price,2),p[0],p[1],x.unit,x.code); }); }
+     renderIndSnap(c); }
  }
  var FED=null;
  function renderFed(){
@@ -2748,6 +2754,14 @@ window.HOME=(function(){
        r.appendChild(el('span','mv',k[2]==='%'?v[1].toFixed(2)+'%':fmtEok(v[1],true).replace('+','')+'원')); r.appendChild(el('span','mc'+(chg>0?' pu':chg<0?' pd':' z'),chg==null?'-':(k[2]==='%'?sgn(chg,2)+'%p':fmtEok(chg,true))+' /1주')); r.style.cursor='pointer'; r.addEventListener('click',function(){ var t=document.querySelector('.nav[data-p="ind-securities"]'); if(t) t.click(); }); box.appendChild(r); });
      var kt=last('kospi_tv'); if(kt){ var r2=el('div','mr'); var n2=el('span','mn','코스피 거래대금'); n2.appendChild(el('small',null,kt[0].slice(5).replace('-','/'))); r2.appendChild(n2); r2.appendChild(el('span','mv',fmtEok(kt[1],true).replace('+','')+'원')); var w2=ago('kospi_tv',5); var c2=w2?kt[1]-w2[1]:null; r2.appendChild(el('span','mc'+(c2>0?' pu':c2<0?' pd':' z'),c2==null?'-':fmtEok(c2,true)+' /1주')); box.appendChild(r2); }
      b.appendChild(box); }).catch(function(){});
+ }
+ function renderIndSnap(c){                                      // 원자재 패널 끝: 산업 지표 대표값(3시간 수집) — 리튬·폴리실리콘·SCFI·BDI
+   function pc(p){ if(p==null) return ['-','z']; return [(p>0?'▲':p<0?'▼':'')+Math.abs(p).toFixed(2)+'%', p>0?' pu':p<0?' pd':' z']; }
+   getJ(LIVE+'industry.json?t='+Math.floor(Date.now()/1800000)).then(function(d){ var G=d&&d.groups; if(!G||c.querySelector('.isnap')) return; var box=el('div','isnap'); box.appendChild(el('div','mr hd','산업 지표 · 주간 변화'));
+     function it(grp,key){ var g=G[grp]; var items=g&&g.items; if(!items) return null; return Array.isArray(items)?items.filter(function(x){return x.key===key})[0]:items[key]; }
+     [['battery','li_carb','탄산리튬','ind-battery'],['solar','poly','폴리실리콘','ind-solar'],['shipping','scfi','SCFI','ind-shipping'],['shipping','bdi','BDI','ind-shipping'],['steel','hrc','중국 열연','ind-steel']].forEach(function(k){ var x=it(k[0],k[1]); var sr=x&&x.series; if(!sr||!sr.length) return; var v=sr[sr.length-1], w=sr.length>5?sr[sr.length-6]:null; var chg=w&&w[1]?(v[1]/w[1]-1)*100:null; var cc=pc(chg);
+       var r=el('div','mr'); var n=el('span','mn',k[2]); n.appendChild(el('small',null,(x.unit||'')+' · '+String(v[0]).slice(5).replace('-','/'))); r.appendChild(n); r.appendChild(el('span','mv',n0(v[1],v[1]<100?2:0))); r.appendChild(el('span','mc'+cc[1],chg==null?'-':cc[0]+' /1주')); r.style.cursor='pointer'; r.addEventListener('click',function(){ var t=document.querySelector('.nav[data-p="'+k[3]+'"]'); if(t) t.click(); }); box.appendChild(r); });
+     if(box.children.length>1) c.appendChild(box); }).catch(function(){});
  }
  function renderEarn(){
    var p=document.querySelector('#hm-earn .hb'); if(!p) return; p.innerHTML='';
