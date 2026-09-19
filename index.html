@@ -8,13 +8,13 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="스파르탄 리서치">
 <meta property="og:title" content="스파르탄 리서치 · 투자 터미널">
-<meta property="og:description" content="실시간 시세·수급·히트맵·52주 신고가·순매수 상위·산업 지표 · 실적 일정 2026 2분기 시즌 18건 · 2026-09-19 기준 · DART 공시 자동 집계">
+<meta property="og:description" content="실시간 시세·수급·히트맵·52주 신고가·순매수 상위·산업 지표 · 실적 일정 2026 2분기 시즌 18건 · 2026-09-20 기준 · DART 공시 자동 집계">
 <meta property="og:url" content="https://spartanterminal.com/">
 <meta property="og:image" content="https://spartanterminal.com/og-home.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="description" content="실시간 시세·수급·히트맵·52주 신고가·순매수 상위·산업 지표 · 실적 일정 2026 2분기 시즌 18건 · 2026-09-19 기준 · DART 공시 자동 집계">
+<meta name="description" content="실시간 시세·수급·히트맵·52주 신고가·순매수 상위·산업 지표 · 실적 일정 2026 2분기 시즌 18건 · 2026-09-20 기준 · DART 공시 자동 집계">
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="icon-64.png">
 <link rel="shortcut icon" href="favicon.ico">
@@ -509,6 +509,7 @@ a.mke:hover .mkt{color:var(--accent)}
 .qc .qt{font-size:10px;color:var(--faint);margin-top:3px}
 /* 패널 그리드 */
 .hg{display:grid;grid-template-columns:1fr;gap:12px}
+.hrow{grid-column:1/-1;display:grid;grid-template-columns:1fr;gap:12px}@media(min-width:960px){.hrow{grid-template-columns:1fr 1fr 1fr}}
 @media(min-width:960px){.hg{grid-template-columns:1fr 1fr}}
 @media(min-width:1400px){.hg{grid-template-columns:1fr 1fr 1fr}.hg .wide{grid-column:span 2}}
 .hp{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow);min-width:0}
@@ -570,7 +571,7 @@ a.mke:hover .mkt{color:var(--accent)}
 .br .bb{position:relative;height:9px;background:var(--line);border-radius:4px;overflow:hidden}.br .bb i{position:absolute;top:0;bottom:0}.br .bb i.l{right:50%;background:var(--down);opacity:.85}.br .bb i.h{left:50%;background:var(--up);opacity:.9}.br .bb::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--surface)}
 .br .bv{text-align:right;font-variant-numeric:tabular-nums;font-size:12px;white-space:nowrap}.br .bv b{font-weight:800}.br .bv .pu,.mr .pu{color:var(--up)}.br .bv .pd{color:var(--down)}.br .bv .z{color:var(--faint)}
 .mlock{font-size:12.5px;color:var(--muted);padding:14px 0;line-height:1.7}.mlb{appearance:none;border:1px solid var(--accent);background:none;color:var(--accent);font:inherit;font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px;cursor:pointer;margin-left:4px}
-.liq{margin-top:8px}
+.liq{margin-top:2px}
 .fw{margin-top:4px}.fw .fwr{display:grid;grid-template-columns:minmax(0,1fr) 92px auto;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line2);font-size:12px;cursor:pointer}.fw .fwr:hover{background:var(--line2)}
 .fw .fwr .mn{color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fw .fwr .mn small{color:var(--faint);margin-left:5px;font-size:10.5px}
 .fw .bar{display:flex;height:8px;border-radius:3px;overflow:hidden;background:var(--line2)}.fw .bar i{display:block;height:100%}.fw .bar .c{background:var(--down)}.fw .bar .h{background:var(--faint);opacity:.55}.fw .bar .u{background:var(--up)}
@@ -1247,7 +1248,7 @@ a.mke:hover .mkt{color:var(--accent)}
 <section id="p-cal" hidden>
  <p class="eyebrow">Earnings Calendar · KRX</p>
  <h1>다가오는 실적 발표 일정</h1>
- <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-09-19</b> 접수 공시<br>
+ <p class="meta"><b>2026 2분기</b> 시즌 · 조회기간 <b>2026-07-01 ~ 2026-09-20</b> 접수 공시<br>
    실적공시예고와 실적 관련 IR개최만 자동 선별했습니다.</p>
 
  <div class="stats">
@@ -1475,7 +1476,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-19 23:59 · 평일 매일 자동 갱신</p>
+   생성 2026-09-20 00:15 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2426,22 +2427,24 @@ window.HOME=(function(){
    box.appendChild(el('div','wmap')).id='hm-map';
    box.appendChild(el('div')).id='hm-q';
    var g=el('div','hg'); box.appendChild(g);
-   function panel(id,title,sub,link,wide){ var p=el('section','hp'+(wide?' wide':'')); p.id=id; var h=el('div','hh'); var t=el('div','ht',title); h.appendChild(t);
+   var top=el('div','hrow'); g.appendChild(top);                                                   // 맨 윗줄: 금리 · 위험 지표 · 원자재 (한 가로줄)
+   function panel(id,title,sub,link,wide,parent){ var p=el('section','hp'+(wide?' wide':'')); p.id=id; var h=el('div','hh'); var t=el('div','ht',title); h.appendChild(t);
      if(sub){ var s=el('span','hs',sub); s.className='hs'; t.appendChild(document.createTextNode(' ')); t.appendChild(s); }
      if(link){ var a=el('a','hl',link[0]); a.href=link[1]; a.addEventListener('click',function(ev){ ev.preventDefault(); var b=document.querySelector('.nav[data-p="'+link[1].slice(1)+'"]'); if(b) b.click(); }); h.appendChild(a); }
-     p.appendChild(h); p.appendChild(el('div','hb')); g.appendChild(p); return p; }
+     p.appendChild(h); p.appendChild(el('div','hb')); (parent||g).appendChild(p); return p; }
+   panel('hm-rate','금리','국채 · 기준금리 · 회사채 · 클릭하면 차트',null,false,top);
+   panel('hm-risk','위험 지표','스프레드 · 변동성 · 달러 · 클릭하면 차트',null,false,top);
+   panel('hm-cmd','원자재','에너지 · 금속 · 클릭하면 차트',null,false,top);
    panel('hm-mover','거래대금 · 등락률 상위','국장 전 종목 · 장중 60초',['히트맵 →','#hmap'],true);
    panel('hm-breadth','시장 폭 · 52주 신고가/신저가','7개 시장 · 종가 기준',['52주 신고가 →','#nhigh']);
    panel('hm-sect','오늘의 업종','시총가중 등락률 · 국장 3초 · 미장 5초',['히트맵 →','#hmap']);
    panel('hm-rank','순매수 상위','외국인 · 기관 · 장중 잠정',['순매수 상위 →','#rank']);
    panel('hm-nh','52주 신고가 · 오늘','한국 · 종가 기준 · 시총순',['52주 신고가 →','#nhigh']);
-   panel('hm-ai','AI 데이터','LLM 토큰 가격 지수 · OpenRouter 토큰 사용량',['자세히 →','#sd'],true);
-   panel('hm-rate','금리','국채 · 기준금리 · 회사채 · 클릭하면 차트',null);
-   panel('hm-risk','위험 지표','스프레드 · 변동성 · 달러 · 클릭하면 차트',null);
-   panel('hm-cmd','원자재','에너지 · 금속 · 클릭하면 차트',null);
+   panel('hm-liq','유동성','고객예탁금 · 신용융자 · 금투협(T+2) · 1주 변화',['증권 →','#ind-securities']);
    panel('hm-cal','주요 일정','오늘·내일 · ★★★ 지표와 휴장',['캘린더 →','#mkt']);
    panel('hm-flow','오늘 수급','누적 순매수',['수급 →','#flow']);
    panel('hm-earn','다가오는 실적','DART 공시',['실적 일정 →','#cal'],true);
+   panel('hm-ai','AI 데이터','LLM 토큰 가격 지수 · OpenRouter 토큰 사용량',['자세히 →','#sd'],true);
    renderCal(); renderEarn(); renderAI();
  }
  function netBanner(on){ var b=document.getElementById('netbn'); if(!on){ if(b) b.remove(); return; } if(b) return; b=el('div'); b.id='netbn'; b.style.cssText='position:fixed;left:50%;top:8px;transform:translateX(-50%);z-index:520;background:#7f1d1d;color:#fee2e2;border:1px solid #f87171;border-radius:8px;padding:8px 14px;font-size:12.5px;max-width:min(92vw,720px);box-shadow:0 8px 24px rgba(0,0,0,.4);line-height:1.5';
@@ -2737,12 +2740,13 @@ window.HOME=(function(){
      var sub=document.querySelector('#hm-nh .hs'); if(sub) sub.textContent=(d.at||'')+' 기준 · '+(d.open?'장중(현재가 기준)':'종가 기준')+' · ETF 제외 · 전체 '+rows.length+'종목'; }).catch(function(e){ p.innerHTML=''; p.appendChild(el('div','mr','불러오지 못했습니다 · '+e.message)); H.nhAt=0; });
  }
  function renderLiq(){
-   var b=document.querySelector('#hm-rate .hb'); if(!b||b.querySelector('.liq')) return;
+   var b=document.querySelector('#hm-liq .hb'); if(!b||b.querySelector('.liq')) return;
    getJ(LIVE+'industry.json?t='+Math.floor(Date.now()/1800000)).then(function(d){ var it=d&&d.groups&&d.groups.securities&&d.groups.securities.items; if(!it) return; if(b.querySelector('.liq')) return;
-     var box=el('div','liq'); box.appendChild(el('div','mr hd','유동성 · 고객예탁금 · 신용융자'));
+     var box=el('div','liq');
      function last(k){ var s=(it[k]||{}).series||[]; return s.length?s[s.length-1]:null; } function ago(k,n){ var s=(it[k]||{}).series||[]; return s.length>n?s[s.length-1-n]:null; }
      [['deposit','고객예탁금','억'],['credit','신용융자 잔고','억'],['credit_ratio','신용/예탁금','%']].forEach(function(k){ var v=last(k[0]), w=ago(k[0],5); if(!v) return; var chg=w?v[1]-w[1]:null; var r=el('div','mr'); var n=el('span','mn',k[1]); n.appendChild(el('small',null,v[0].slice(5).replace('-','/'))); r.appendChild(n);
        r.appendChild(el('span','mv',k[2]==='%'?v[1].toFixed(2)+'%':fmtEok(v[1],true).replace('+','')+'원')); r.appendChild(el('span','mc'+(chg>0?' pu':chg<0?' pd':' z'),chg==null?'-':(k[2]==='%'?sgn(chg,2)+'%p':fmtEok(chg,true))+' /1주')); r.style.cursor='pointer'; r.addEventListener('click',function(){ var t=document.querySelector('.nav[data-p="ind-securities"]'); if(t) t.click(); }); box.appendChild(r); });
+     var kt=last('kospi_tv'); if(kt){ var r2=el('div','mr'); var n2=el('span','mn','코스피 거래대금'); n2.appendChild(el('small',null,kt[0].slice(5).replace('-','/'))); r2.appendChild(n2); r2.appendChild(el('span','mv',fmtEok(kt[1],true).replace('+','')+'원')); var w2=ago('kospi_tv',5); var c2=w2?kt[1]-w2[1]:null; r2.appendChild(el('span','mc'+(c2>0?' pu':c2<0?' pd':' z'),c2==null?'-':fmtEok(c2,true)+' /1주')); box.appendChild(r2); }
      b.appendChild(box); }).catch(function(){});
  }
  function renderEarn(){
