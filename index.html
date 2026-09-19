@@ -1038,6 +1038,7 @@ a.mke:hover .mkt{color:var(--accent)}
 .hmp .g .gl small{font-weight:600;color:var(--faint);margin-left:5px}
 .hmp .t{position:absolute;box-sizing:border-box;border:1px solid rgba(0,0,0,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;transition:background-color .6s;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 .hmp .t:hover{outline:2px solid #fff;outline-offset:-2px;z-index:3}
+.hmp .t .lgi{border-radius:50%;background:#fff;object-fit:contain;box-shadow:0 1px 3px rgba(0,0,0,.5);margin-bottom:3px;flex:none}
 .hmp .t .tn{font-weight:800;white-space:nowrap;letter-spacing:-.01em}.hmp .t .tp{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:.95}
 .hmp .tip{position:fixed;z-index:700;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 11px;font-size:12px;box-shadow:0 8px 24px rgba(0,0,0,.4);min-width:180px}
 .hmp .tip b{font-size:13px}.hmp .tip .r{display:flex;justify-content:space-between;gap:14px;color:var(--muted)}.hmp .tip .r span:last-child{color:var(--ink);font-variant-numeric:tabular-nums}
@@ -1463,7 +1464,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-19 23:14 · 평일 매일 자동 갱신</p>
+   생성 2026-09-19 23:21 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3957,6 +3958,7 @@ window.HOME=(function(){
    if(t>0) return 'rgb('+Math.round(58+(214-58)*a)+','+Math.round(66+(48-66)*a)+','+Math.round(82+(56-82)*a)+')';          // 회색(58,66,82) → 빨강(214,48,56)
    if(t<0) return 'rgb('+Math.round(58+(37-58)*a)+','+Math.round(66+(99-66)*a)+','+Math.round(82+(235-82)*a)+')';         // → 파랑(37,99,235)
    return 'rgb(58,66,82)'; }
+ var NOLOGO={};
  var tip=null;
  function showTip(ev,i,unit){ if(!tip){ tip=el('div','tip'); document.body.appendChild(tip); } tip.innerHTML='';
    var b=el('b',null,i.n); b.appendChild(el('small',null,' '+(i.c.indexOf('.')>0?i.c.split('.')[0]:i.c))); tip.appendChild(b);
@@ -3991,6 +3993,7 @@ window.HOME=(function(){
        var area=r.w*r.h; var sn=shortName(i); var cw=/[가-힣]/.test(sn)?1.0:0.62;                                   // 한글은 정사각, 영문은 폭이 좁다
        var fs=Math.min(22,Math.sqrt(area)/4.2,(r.w-4)/(sn.length*cw));
        if(fs<8&&r.w>=20&&r.h>=11){ var mx=Math.max(2,Math.floor((r.w-4)/(8*cw))); if(mx<sn.length){ sn=sn.slice(0,mx); fs=Math.min(8,Math.sqrt(area)/4.2); } }   // 좁으면 앞 글자만(툴팁에 전체 이름)
+       if(r.w>=56&&r.h>=48&&!NOLOGO[i.c]){ var im=document.createElement('img'); im.className='lgi'; var lsz=Math.round(Math.max(16,Math.min(48,Math.min(r.w,r.h)*0.34))); im.width=lsz; im.height=lsz; im.alt=''; im.loading='lazy'; im.src='https://ssl.pstatic.net/imgstock/fn/real/logo/png/stock/Stock'+i.c+'.png'; im.addEventListener('error',function(){ NOLOGO[i.c]=1; im.remove(); }); t.appendChild(im); }   // 네이버 종목 로고(있는 종목만 · 없으면 다음부터 안 물음)
        if(r.w>=20&&r.h>=11&&fs>=7.5){ var nm=el('div','tn',sn); nm.style.fontSize=fs+'px'; t.appendChild(nm); if(r.h>fs*2.3&&r.w>=30){ var tp=el('div','tp',(i.r>0?'+':'')+i.r.toFixed(2)+'%'); tp.style.fontSize=Math.max(8,Math.min(fs*0.85,(r.w-6)/5))+'px'; t.appendChild(tp); } }
        t.addEventListener('mouseenter',function(ev){ showTip(ev,i,d.unit); }); t.addEventListener('mousemove',moveTip); t.addEventListener('mouseleave',hideTip);
        t.addEventListener('click',function(){ if(H.moved) return; hideTip(); if(window.WATCH&&WATCH.chart) WATCH.chart(i.c,i.n); });
