@@ -1007,6 +1007,10 @@ a.mke:hover .mkt{color:var(--accent)}
 .nh .hmt td.cell{cursor:pointer;color:var(--faint);min-width:64px;border-left:1px solid var(--line2)}.nh .hmt td.cell b{color:var(--ink);font-size:13px}.nh .hmt td.cell small{font-size:10px;color:var(--up);margin-left:3px;font-weight:700}
 .nh .hmt td.cell:hover{outline:1px solid var(--accent);outline-offset:-1px}.nh .hmt td.cell.on{outline:2px solid var(--accent);outline-offset:-2px}
 .nh .hmt td.tot{border-left:1px solid var(--line);padding:0 10px}.nh .hmt td.tot b{font-size:13px}.nh .hmt td.tot small{font-size:10px;color:var(--up);margin-left:3px;font-weight:700}
+.nh .hmt.rot th.dt{padding:6px 4px;min-width:38px;cursor:default}.nh .hmt.rot th.dt .mn{font-size:10.5px;font-weight:700;color:var(--muted)}.nh .hmt.rot th.dt .md{font-size:9px;color:var(--faint)}.nh .hmt.rot th.dt.wk .mn{color:var(--ink)}
+.nh .hmt.rot td.cell{min-width:38px;height:30px;font-size:12px}.nh .hmt.rot td.cell b{font-size:12px}.nh .hmt.rot tr.total td{border-bottom:2px solid var(--line)}.nh .hmt.rot tr.total td.sec{color:var(--muted)}
+.nh .hmt.rot td.sec,.nh .hmt.rot th.sec{position:sticky;left:0;background:var(--panel);z-index:1;box-shadow:1px 0 0 var(--line)}.nh .hmt.rot td.tot,.nh .hmt.rot th.tot{position:sticky;right:0;background:var(--panel);z-index:1}
+.nh .gh small .lsw{margin-left:4px}
 .nh .gh i.lg{display:inline-block;width:8px;height:8px;border-radius:2px;margin:0 3px 0 6px;vertical-align:0}
 .nh .ghist .c .st{width:14px;display:flex;flex-direction:column-reverse;border-radius:3px 3px 0 0;overflow:hidden}.nh .ghist .c .st i{display:block;width:100%;opacity:.85}
 .nh .ghist{display:flex;align-items:flex-end;gap:2px;height:80px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 8px 4px;overflow-x:auto}
@@ -1413,7 +1417,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-19 21:37 · 평일 매일 자동 갱신</p>
+   생성 2026-09-19 21:47 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3805,6 +3809,21 @@ window.HOME=(function(){
    if(series.length>=2){ var h4=el('div','gh'); h4.appendChild(el('b',null,'일별 신고가 종목 수')); var lg=el('small',null,'시장별 누적 막대 ·'); order.forEach(function(k){ var i=el('i','lg'); i.style.background=MKC[k]; lg.appendChild(i); lg.appendChild(document.createTextNode(M[k].name)); }); lg.appendChild(document.createTextNode(' · 수집 시작 이후')); h4.appendChild(lg); g.appendChild(h4);
      var hw2=el('div','ghist'); var hmx=Math.max.apply(null,series.map(function(x){return x.n}))||1;
      series.slice(-60).forEach(function(x){ var c=el('div','c'); c.title=x.d+' · '+x.n+' ('+order.map(function(k){return M[k].name+' '+(x.by[k]||0)}).join(', ')+')'; c.appendChild(el('div','n',String(x.n))); var st=el('div','st'); st.style.height=Math.max(3,Math.round(x.n/hmx*46))+'px'; order.forEach(function(k){ var seg=el('i'); seg.style.flex=String(x.by[k]||0); seg.style.background=MKC[k]; st.appendChild(seg); }); c.appendChild(st); c.appendChild(el('div','d',x.d.slice(5).replace('-','/'))); hw2.appendChild(c); }); g.appendChild(hw2); }
+   // ── 섹터 로테이션: 섹터 × 날짜 히트맵(시장 선택) — 어느 섹터에서 신고가가 이어지는지/옮겨가는지
+   var HS=d.history_sec||{}; G.hsMk=G.hsMk||'ALL'; var hsSel=G.hsMk==='ALL'?order:[G.hsMk]; var hb=C?0:1;
+   var dates={}; hsSel.forEach(function(k){ Object.keys(HS[k]||{}).forEach(function(dt){ dates[dt]=1; }); }); var dl=Object.keys(dates).sort().slice(-45);
+   if(dl.length>=2){ var h5=el('div','gh'); var tt5=el('b',null,'섹터별 일별 신고가 수'); h5.appendChild(tt5); var sub5=el('small'); sub5.appendChild(document.createTextNode('행 = 섹터, 열 = 거래일 · 색이 진할수록 많음 · 오른쪽이 최근 · ')); sub5.appendChild(sw([['ALL','5개 시장 합산']].concat(order.map(function(k){return [k,M[k].name]})),G.hsMk,function(v){ G.hsMk=v; grender(); })); h5.appendChild(sub5); g.appendChild(h5);
+     var agg={}; var colTot={}; dl.forEach(function(dt){ colTot[dt]=0; hsSel.forEach(function(k){ var day=(HS[k]||{})[dt]||{}; Object.keys(day).forEach(function(sec){ var o=agg[sec]=agg[sec]||{name:sec,tot:0,by:{}}; var v=day[sec][hb]||0; o.by[dt]=(o.by[dt]||0)+v; o.tot+=v; colTot[dt]+=v; }); }); });
+     var secList=Object.keys(agg).map(function(k){return agg[k]}).filter(function(x){return x.tot>0}).sort(function(a,b){return b.tot-a.tot}); var cmx=1; secList.forEach(function(x){ dl.forEach(function(dt){ if((x.by[dt]||0)>cmx) cmx=x.by[dt]; }); });
+     var hw3=el('div','hm'); var t3=el('table','hmt rot'); var th3=el('thead'), tr3=el('tr'); var c3=el('th','sec'); c3.textContent='섹터 ＼ 날짜'; tr3.appendChild(c3);
+     dl.forEach(function(dt){ var th=el('th','dt'); var wd=new Date(dt+'T00:00:00Z').getUTCDay(); th.appendChild(el('div','mn',dt.slice(5).replace('-','/'))); th.appendChild(el('div','md',['일','월','화','수','목','금','토'][wd])); if(wd===1) th.classList.add('wk'); th.style.cursor='default'; tr3.appendChild(th); });
+     var thtot=el('th','tot','합계'); tr3.appendChild(thtot); th3.appendChild(tr3); t3.appendChild(th3); var tb3=el('tbody');
+     var trT=el('tr','total'); var tdT=el('td','sec','전체'); tdT.style.cursor='default'; trT.appendChild(tdT); dl.forEach(function(dt){ var td=el('td','cell'); td.style.cursor='default'; var v=colTot[dt]; if(v){ td.style.background='color-mix(in srgb,var(--up) '+Math.round(8+Math.min(1,v/(Math.max.apply(null,dl.map(function(x){return colTot[x]}))||1))*50)+'%,transparent)'; td.appendChild(el('b',null,String(v))); } else td.textContent='·'; trT.appendChild(td); }); var tT=el('td','tot'); tT.appendChild(el('b',null,String(dl.reduce(function(a,dt){return a+colTot[dt]},0)))); trT.appendChild(tT); tb3.appendChild(trT);
+     secList.forEach(function(x){ var tr=el('tr'); var td0=el('td','sec',x.name); td0.style.cursor='default'; tr.appendChild(td0);
+       dl.forEach(function(dt){ var v=x.by[dt]||0; var td=el('td','cell'); td.style.cursor='default'; if(v){ td.style.background='color-mix(in srgb,var(--accent) '+Math.round(8+Math.min(1,v/cmx)*52)+'%,transparent)'; td.appendChild(el('b',null,String(v))); td.title=dt+' · '+x.name+' · '+v; } else td.textContent='·'; tr.appendChild(td); });
+       var tt=el('td','tot'); tt.appendChild(el('b',null,String(x.tot))); tr.appendChild(tt); tb3.appendChild(tr); });
+     t3.appendChild(tb3); hw3.appendChild(t3); g.appendChild(hw3); hw3.scrollLeft=hw3.scrollWidth;
+     g.appendChild(el('p','note','지난 60거래일을 같은 일봉으로 되짚어 계산(대상 종목·시총 기준은 오늘 것). 한 섹터에 진한 칸이 가로로 이어지면 그 섹터가 주도, 진한 칸이 다른 행으로 옮겨가면 순환. 위 "전체" 행은 시장 폭(breadth).')); }
    g.appendChild(el('p','note',(d.note||'')+' 미국은 전날(현지) 종가, 아시아·한국은 당일 종가 기준. 상장 1년 미만은 보유 이력(20일 이상)으로 계산. 히트맵 색은 칸의 신고가 수(진할수록 많음), 작은 숫자는 신규 진입.'));
  }
  var MKC={KR:'#22d3ee',US:'#f87171',JP:'#fbbf24',HK:'#a78bfa',CN:'#34d399'};
