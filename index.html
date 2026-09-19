@@ -1045,6 +1045,10 @@ a.mke:hover .mkt{color:var(--accent)}
 .hmp .lg .sc{display:inline-flex;height:10px;border-radius:3px;overflow:hidden}.hmp .lg .sc i{display:block;width:26px;height:100%}
 .hmp .fsb{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:6px;cursor:pointer}.hmp .fsb:hover{color:var(--accent);border-color:var(--accent)}
 .hmp .tm .fsx{position:absolute;right:10px;top:10px;z-index:5;display:none}.hmp .tm.full .fsx{display:block}
+.hmp .tm .tmz{position:absolute;left:0;top:0;transform-origin:0 0}
+.hmp .tm .zb{position:absolute;right:10px;bottom:10px;z-index:5;display:flex;gap:4px}.hmp .tm.full .zb{bottom:16px}
+.hmp .tm .zb button{appearance:none;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 85%,transparent);color:var(--ink);font:inherit;font-size:13px;font-weight:700;width:30px;height:28px;border-radius:6px;cursor:pointer;backdrop-filter:blur(4px)}.hmp .tm .zb button:hover{border-color:var(--accent);color:var(--accent)}.hmp .tm .zb .zl{width:auto;padding:0 8px;font-size:11px;color:var(--muted);font-weight:600}
+.hmp .tm.drag{cursor:grabbing}.hmp .tm.drag .t{cursor:grabbing}
 .hmp .note{font-size:11.5px;color:var(--faint);margin-top:10px;line-height:1.6}
 </style>
 
@@ -1359,9 +1363,10 @@ a.mke:hover .mkt{color:var(--accent)}
  <div class="hint">HEATMAP · 국장 · 미장 · 실시간</div>
  <h2>시장 히트맵</h2>
  <div id="hm-ctl" class="lctl"></div>
- <div id="hm-tm" class="tm"><button type="button" class="fsb fsx" id="hm-fsx">✕ 닫기 (Esc)</button></div>
+ <div id="hm-tm" class="tm"><div class="tmz" id="hm-tmz"></div><button type="button" class="fsb fsx" id="hm-fsx">✕ 닫기 (Esc)</button>
+  <div class="zb"><button type="button" id="hm-zo" title="축소">−</button><button type="button" class="zl" id="hm-zl" title="휠로 확대·축소, 끌어서 이동, 섹터 이름 더블클릭으로 그 섹터만">1.0×</button><button type="button" id="hm-zi" title="확대">+</button><button type="button" id="hm-zr" title="원래대로">⟲</button></div></div>
  <div class="lg" id="hm-lg"></div>
- <p class="note">칸 크기 = 시가총액(국장은 상장주식수×현재가, 미장은 네이버 시총), 색 = 당일 등락률(±3%에서 포화 · 상승 빨강·하락 파랑, 국내 관례). 국장은 코스피 시총 300 + 코스닥 100(ETF·스팩 제외), 정규장 밖엔 NXT 프리·애프터 값. 미장은 나스닥·뉴욕·아멕스 시총 상위 500, 정규장 밖엔 프리·애프터 값. 종목을 누르면 차트, 섹터 이름 위에 올리면 합계. 출처: 네이버 금융(공개).</p>
+ <p class="note">칸 크기 = 시가총액(국장은 상장주식수×현재가, 미장은 네이버 시총; √시총을 고르면 대형주를 눌러 작은 종목 이름까지 보임 — 국장 기본), 색 = 당일 등락률(±3%에서 포화 · 상승 빨강·하락 파랑, 국내 관례). 국장은 코스피 시총 300 + 코스닥 100(ETF·스팩 제외), 정규장 밖엔 NXT 프리·애프터 값. 미장은 나스닥·뉴욕·아멕스 시총 상위 500, 정규장 밖엔 프리·애프터 값. 종목을 누르면 차트, 섹터 이름 위에 올리면 합계. 휠로 확대·축소(모바일은 두 손가락), 확대 상태에서 끌어서 이동, 섹터 이름 더블클릭으로 그 섹터만 크게, ⟲ 로 원래대로. 출처: 네이버 금융(공개).</p>
 </section>
 
 
@@ -1458,7 +1463,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-19 23:09 · 평일 매일 자동 갱신</p>
+   생성 2026-09-19 23:14 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3910,22 +3915,23 @@ window.HOME=(function(){
  function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
  function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
  var LIVE='https://api.spartanterminal.com/pub/';
- var H={vis:false,mk:'kr',sub:'all',grp:1,sat:3,data:null,timer:null,full:false,seq:0};
- try{ var sv=JSON.parse(localStorage.getItem('hm_set')||'{}'); ['mk','sub','grp','sat'].forEach(function(k){ if(sv[k]!=null) H[k]=sv[k]; }); }catch(e){}
- function save(){ try{ localStorage.setItem('hm_set',JSON.stringify({mk:H.mk,sub:H.sub,grp:H.grp,sat:H.sat})); }catch(e){} }
+ var H={vis:false,mk:'kr',sub:'all',grp:1,sat:3,sz:{kr:'sqrt',us:'lin'},data:null,timer:null,full:false,seq:0,z:1,tx:0,ty:0};   // z·tx·ty: 확대 배율과 이동(px)   // sz: 칸 크기 lin=시총 비례, sqrt=√시총(삼성전자·하이닉스가 절반을 먹는 국장에서 작은 종목도 보이게)
+ try{ var sv=JSON.parse(localStorage.getItem('hm_set')||'{}'); ['mk','sub','grp','sat'].forEach(function(k){ if(sv[k]!=null) H[k]=sv[k]; }); if(sv.sz) H.sz=sv.sz; }catch(e){}
+ function save(){ try{ localStorage.setItem('hm_set',JSON.stringify({mk:H.mk,sub:H.sub,grp:H.grp,sat:H.sat,sz:H.sz})); }catch(e){} }
  function tabOn(){ var p=document.getElementById('p-hmap'); return p&&!p.hidden; }
  function sw(opts,cur,set){ var w=el('span','lsw'); opts.forEach(function(o){ var b=el('button',String(o[0])===String(cur)?'on':'',o[1]); b.type='button'; b.addEventListener('click',function(){ [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); }); w.appendChild(b); }); return w; }
  function grp(label,node){ var g=el('span'); g.appendChild(el('span','llab',label+' ')); g.appendChild(node); return g; }
  function ctl(){
    var c=document.getElementById('hm-ctl'); if(!c) return; c.innerHTML='';
-   c.appendChild(grp('시장',sw([['kr','국장'],['us','미장']],H.mk,function(v){ H.mk=v; H.data=null; save(); ctl(); load(); })));
+   c.appendChild(grp('시장',sw([['kr','국장'],['us','미장']],H.mk,function(v){ H.mk=v; H.data=null; H.z=1; H.tx=0; H.ty=0; save(); ctl(); load(); })));
    if(H.mk==='kr') c.appendChild(grp('범위',sw([['all','코스피+코스닥'],['kospi','코스피'],['kosdaq','코스닥']],H.sub,function(v){ H.sub=v; save(); render(); })));
    c.appendChild(grp('묶음',sw([[1,'섹터'],[0,'없음']],H.grp,function(v){ H.grp=+v; save(); render(); })));
+   var szw=grp('칸 크기',sw([['lin','시총 비례'],['sqrt','√시총']],H.sz[H.mk]||'lin',function(v){ H.sz[H.mk]=v; save(); render(); })); szw.title='√시총: 대형주 비중을 눌러 작은 종목도 이름이 보이게(면적이 시총에 비례하지 않음)'; c.appendChild(szw);
    c.appendChild(grp('색 범위',sw([[2,'±2%'],[3,'±3%'],[5,'±5%'],[10,'±10%']],H.sat,function(v){ H.sat=+v; save(); render(); })));
    var fb=el('button','fsb','⛶ 전체화면'); fb.type='button'; fb.addEventListener('click',function(){ setFull(!H.full); }); c.appendChild(fb);
    var st=el('span','hst'); st.id='hm-st'; c.appendChild(st);
  }
- function setFull(on){ H.full=on; document.getElementById('hm-tm').classList.toggle('full',on); document.body.style.overflow=on?'hidden':''; render(); }
+ function setFull(on){ H.full=on; document.getElementById('hm-tm').classList.toggle('full',on); document.body.style.overflow=on?'hidden':''; H.z=1; H.tx=0; H.ty=0; render(); }
  document.addEventListener('keydown',function(ev){ if(ev.key==='Escape'&&H.full) setFull(false); });
  document.getElementById('hm-fsx').addEventListener('click',function(){ setFull(false); });
  function load(){
@@ -3959,36 +3965,57 @@ window.HOME=(function(){
  function moveTip(ev){ if(!tip) return; var x=ev.clientX+14, y=ev.clientY+14; if(x+220>innerWidth) x=ev.clientX-230; if(y+140>innerHeight) y=ev.clientY-150; tip.style.left=x+'px'; tip.style.top=y+'px'; }
  function hideTip(){ if(tip) tip.style.display='none'; }
  function render(){
-   var box=document.getElementById('hm-tm'); if(!box) return; var d=H.data; var st=document.getElementById('hm-st');
-   [].forEach.call(box.querySelectorAll('.g,.t'),function(n){ n.remove(); });
+   var box=document.getElementById('hm-tm'); if(!box) return; var d=H.data; var st=document.getElementById('hm-st'); var zbox=document.getElementById('hm-tmz'); zbox.innerHTML='';
    if(!d||!d.items){ return; }
    var items=d.items.filter(function(i){ return i.v&&i.r!=null&&(H.mk!=='kr'||H.sub==='all'||(H.sub==='kospi'?i.m==='코스피':i.m==='코스닥')); });
-   var W=box.clientWidth, Hh=box.clientHeight; var PAD=1;
+   var VW=box.clientWidth, VH=box.clientHeight; clampPan(VW,VH); var W=VW*H.z, Hh=VH*H.z; var PAD=1;
+   zbox.style.width=W+'px'; zbox.style.height=Hh+'px'; zbox.style.transform='translate('+H.tx+'px,'+H.ty+'px)'; var zl=document.getElementById('hm-zl'); if(zl) zl.textContent=H.z.toFixed(1)+'×';
    var tot=0, up=0, dn=0, wsum=0; items.forEach(function(i){ tot++; if(i.r>0) up++; else if(i.r<0) dn++; wsum+=i.v*i.r; });
    var totv=items.reduce(function(a,i){return a+i.v},0); var capw=totv?wsum/totv:0;
    if(st){ st.innerHTML=''; var lv=el('i','live'+(d.open||d.session==='nxt'||d.session==='pre'||d.session==='after'?'':' off')); st.appendChild(lv);
      st.appendChild(document.createTextNode((d.open?'정규장 · ':d.session==='nxt'?'NXT 프리/애프터 · ':d.session==='pre'?'프리마켓 · ':d.session==='after'?'애프터마켓 · ':'장 마감 · ')+(d.at||'').slice(11,19)+' · '));
      var b1=el('b',null,String(up)); st.appendChild(b1); st.appendChild(document.createTextNode('↑ ')); var b2=el('b',null,String(dn)); st.appendChild(b2); st.appendChild(document.createTextNode('↓ / '+tot+' · 시총가중 '+(capw>0?'+':'')+capw.toFixed(2)+'%')); }
+   var wf=(H.sz[H.mk]==='sqrt')?function(i){return Math.sqrt(i.v)}:function(i){return i.v};
    var groups=[];
-   if(H.grp){ var by={}; items.forEach(function(i){ (by[i.s]=by[i.s]||[]).push(i); }); groups=Object.keys(by).map(function(k){ var arr=by[k].sort(function(a,b){return b.v-a.v}); return {name:k,items:arr,w:arr.reduce(function(a,i){return a+i.v},0)}; }).sort(function(a,b){return b.w-a.w}); }
-   else groups=[{name:null,items:items.slice().sort(function(a,b){return b.v-a.v}),w:totv}];
+   if(H.grp){ var by={}; items.forEach(function(i){ (by[i.s]=by[i.s]||[]).push(i); }); groups=Object.keys(by).map(function(k){ var arr=by[k].sort(function(a,b){return b.v-a.v}); return {name:k,items:arr,w:arr.reduce(function(a,i){return a+wf(i)},0)}; }).sort(function(a,b){return b.w-a.w}); }
+   else groups=[{name:null,items:items.slice().sort(function(a,b){return b.v-a.v}),w:items.reduce(function(a,i){return a+wf(i)},0)}];
    var frag=document.createDocumentFragment();
    var GH=H.grp?16:0;
    var gr=squarify(groups,0,0,W,Hh);
    gr.forEach(function(g){ var gd=el('div','g'); gd.style.left=g.x+'px'; gd.style.top=g.y+'px'; gd.style.width=g.w+'px'; gd.style.height=g.h+'px';
-     if(H.grp){ var s=0,ws=0; g.it.items.forEach(function(i){ s+=i.v; ws+=i.v*i.r; }); var gl=el('div','gl',g.it.name); gl.appendChild(el('small',null,g.it.items.length+' · '+(ws/s>0?'+':'')+(ws/s).toFixed(2)+'%')); gl.title=g.it.name+' · '+g.it.items.length+'종목 · 시총가중 '+(ws/s).toFixed(2)+'%'; gd.appendChild(gl); }
-     var inner=squarify(g.it.items,PAD,GH+PAD,Math.max(0,g.w-2*PAD),Math.max(0,g.h-GH-2*PAD),function(i){return i.v});
+     if(g.x+g.w<-H.tx||g.x>-H.tx+VW||g.y+g.h<-H.ty||g.y>-H.ty+VH) return;                                          // 화면 밖 섹터는 그리지 않는다(확대 시 DOM 절약)
+     if(H.grp){ var s=0,ws=0; g.it.items.forEach(function(i){ s+=i.v; ws+=i.v*i.r; }); var gl=el('div','gl',g.it.name); gl.appendChild(el('small',null,g.it.items.length+' · '+(ws/s>0?'+':'')+(ws/s).toFixed(2)+'%')); gl.title=g.it.name+' · '+g.it.items.length+'종목 · 시총가중 '+(ws/s).toFixed(2)+'% · 더블클릭: 이 섹터만 크게'; gd.appendChild(gl);
+       gl.addEventListener('dblclick',function(ev){ ev.preventDefault(); zoomTo(g.x/H.z,g.y/H.z,g.w/H.z,g.h/H.z,VW,VH); }); }
+     var inner=squarify(g.it.items,PAD,GH+PAD,Math.max(0,g.w-2*PAD),Math.max(0,g.h-GH-2*PAD),wf);
      inner.forEach(function(r){ var i=r.it; var t=el('div','t'); t.style.left=r.x+'px'; t.style.top=r.y+'px'; t.style.width=r.w+'px'; t.style.height=r.h+'px'; t.style.background=color(i.r);
        var area=r.w*r.h; var sn=shortName(i); var cw=/[가-힣]/.test(sn)?1.0:0.62;                                   // 한글은 정사각, 영문은 폭이 좁다
-       var fs=Math.min(22,Math.sqrt(area)/4.2,(r.w-6)/(sn.length*cw));
-       if(r.w>30&&r.h>14&&fs>=8.5){ var nm=el('div','tn',sn); nm.style.fontSize=fs+'px'; t.appendChild(nm); if(r.h>fs*2.3){ var tp=el('div','tp',(i.r>0?'+':'')+i.r.toFixed(2)+'%'); tp.style.fontSize=Math.max(8.5,Math.min(fs*0.85,(r.w-6)/5))+'px'; t.appendChild(tp); } }
+       var fs=Math.min(22,Math.sqrt(area)/4.2,(r.w-4)/(sn.length*cw));
+       if(fs<8&&r.w>=20&&r.h>=11){ var mx=Math.max(2,Math.floor((r.w-4)/(8*cw))); if(mx<sn.length){ sn=sn.slice(0,mx); fs=Math.min(8,Math.sqrt(area)/4.2); } }   // 좁으면 앞 글자만(툴팁에 전체 이름)
+       if(r.w>=20&&r.h>=11&&fs>=7.5){ var nm=el('div','tn',sn); nm.style.fontSize=fs+'px'; t.appendChild(nm); if(r.h>fs*2.3&&r.w>=30){ var tp=el('div','tp',(i.r>0?'+':'')+i.r.toFixed(2)+'%'); tp.style.fontSize=Math.max(8,Math.min(fs*0.85,(r.w-6)/5))+'px'; t.appendChild(tp); } }
        t.addEventListener('mouseenter',function(ev){ showTip(ev,i,d.unit); }); t.addEventListener('mousemove',moveTip); t.addEventListener('mouseleave',hideTip);
-       t.addEventListener('click',function(){ hideTip(); if(window.WATCH&&WATCH.chart) WATCH.chart(i.c,i.n); });
+       t.addEventListener('click',function(){ if(H.moved) return; hideTip(); if(window.WATCH&&WATCH.chart) WATCH.chart(i.c,i.n); });
        gd.appendChild(t); });
      frag.appendChild(gd); });
-   box.appendChild(frag);
-   var lg=document.getElementById('hm-lg'); if(lg){ lg.innerHTML=''; lg.appendChild(document.createTextNode('-'+H.sat+'%')); var sc=el('span','sc'); [-1,-.66,-.33,0,.33,.66,1].forEach(function(t){ var i=document.createElement('i'); i.style.background=color(t*H.sat); sc.appendChild(i); }); lg.appendChild(sc); lg.appendChild(document.createTextNode('+'+H.sat+'% · 칸 = 시총 · '+(H.mk==='kr'?'코스피 300 + 코스닥 100':'미국 시총 상위 500')+' · '+(H.mk==='kr'?'3초':'5초')+' 갱신(장중)')); }
+   zbox.appendChild(frag);
+   var lg=document.getElementById('hm-lg'); if(lg){ lg.innerHTML=''; lg.appendChild(document.createTextNode('-'+H.sat+'%')); var sc=el('span','sc'); [-1,-.66,-.33,0,.33,.66,1].forEach(function(t){ var i=document.createElement('i'); i.style.background=color(t*H.sat); sc.appendChild(i); }); lg.appendChild(sc); lg.appendChild(document.createTextNode('+'+H.sat+'% · 칸 = '+(H.sz[H.mk]==='sqrt'?'√시총(대형주 축소)':'시총 비례')+' · '+(H.mk==='kr'?'코스피 300 + 코스닥 100':'미국 시총 상위 500')+' · '+(H.mk==='kr'?'3초':'5초')+' 갱신(장중)')); }
  }
+ function clampPan(VW,VH){ var W=VW*H.z, Hh=VH*H.z; H.tx=Math.min(0,Math.max(VW-W,H.tx)); H.ty=Math.min(0,Math.max(VH-Hh,H.ty)); }
+ function zoomAt(f,mx,my){ var box=document.getElementById('hm-tm'); var VW=box.clientWidth, VH=box.clientHeight; var z2=Math.max(1,Math.min(16,H.z*f)); if(z2===H.z) return; var k=z2/H.z; H.tx=mx-(mx-H.tx)*k; H.ty=my-(my-H.ty)*k; H.z=z2; render(); }
+ function zoomTo(x,y,w,h,VW,VH){ var z2=Math.max(1,Math.min(16,Math.min(VW/w,VH/h)*0.98)); H.z=z2; H.tx=-(x*z2)+(VW-w*z2)/2; H.ty=-(y*z2)+(VH-h*z2)/2; render(); }
+ function zoomReset(){ H.z=1; H.tx=0; H.ty=0; render(); }
+ (function(){ var box=document.getElementById('hm-tm'); if(!box) return; var drag=null;
+   box.addEventListener('wheel',function(ev){ ev.preventDefault(); var r=box.getBoundingClientRect(); zoomAt(ev.deltaY<0?1.25:0.8,ev.clientX-r.left,ev.clientY-r.top); },{passive:false});
+   box.addEventListener('mousedown',function(ev){ if(ev.button!==0||H.z<=1) return; drag={x:ev.clientX,y:ev.clientY,tx:H.tx,ty:H.ty}; H.moved=false; });
+   window.addEventListener('mousemove',function(ev){ if(!drag) return; var dx=ev.clientX-drag.x, dy=ev.clientY-drag.y; if(!H.moved&&Math.abs(dx)+Math.abs(dy)>4){ H.moved=true; box.classList.add('drag'); hideTip(); } if(H.moved){ H.tx=drag.tx+dx; H.ty=drag.ty+dy; var z=document.getElementById('hm-tmz'); clampPan(box.clientWidth,box.clientHeight); z.style.transform='translate('+H.tx+'px,'+H.ty+'px)'; } });
+   window.addEventListener('mouseup',function(){ if(!drag) return; drag=null; box.classList.remove('drag'); if(H.moved){ render(); setTimeout(function(){H.moved=false;},50); } });
+   box.addEventListener('dblclick',function(ev){ if(ev.target.closest('.gl')) return; var r=box.getBoundingClientRect(); zoomAt(2,ev.clientX-r.left,ev.clientY-r.top); });
+   document.getElementById('hm-zi').addEventListener('click',function(){ zoomAt(1.5,box.clientWidth/2,box.clientHeight/2); });
+   document.getElementById('hm-zo').addEventListener('click',function(){ zoomAt(1/1.5,box.clientWidth/2,box.clientHeight/2); });
+   document.getElementById('hm-zr').addEventListener('click',zoomReset); document.getElementById('hm-zl').addEventListener('click',zoomReset);
+   var t0=null; box.addEventListener('touchstart',function(ev){ if(ev.touches.length===2){ t0={d:Math.hypot(ev.touches[0].clientX-ev.touches[1].clientX,ev.touches[0].clientY-ev.touches[1].clientY),z:H.z}; } },{passive:true});
+   box.addEventListener('touchmove',function(ev){ if(t0&&ev.touches.length===2){ ev.preventDefault(); var d=Math.hypot(ev.touches[0].clientX-ev.touches[1].clientX,ev.touches[0].clientY-ev.touches[1].clientY); var r=box.getBoundingClientRect(); var cx=(ev.touches[0].clientX+ev.touches[1].clientX)/2-r.left, cy=(ev.touches[0].clientY+ev.touches[1].clientY)/2-r.top; zoomAt((t0.z*d/t0.d)/H.z,cx,cy); } },{passive:false});
+   box.addEventListener('touchend',function(){ t0=null; });
+ })();
  function shortName(i){ var n=i.n||''; if(H.mk==='us'){ var tk=i.c.indexOf('.')>0?i.c.split('.')[0]:i.c; return tk.toUpperCase(); } return n.replace(/보통주|우선주/,'').slice(0,8); }
  var ro=null;
  function open(){ H.vis=true; ctl(); load(); if(!ro&&window.ResizeObserver){ ro=new ResizeObserver(function(){ if(H.vis) render(); }); ro.observe(document.getElementById('hm-tm')); } }
