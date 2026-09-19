@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-19T09:40+09:00",
+ "checked": "2026-09-19T10:10+09:00",
  "first_seen": {
   "claude-fable-5.1": {
    "2026-09-11": "2026-09-12T09:10+09:00",
@@ -117,7 +117,7 @@
   },
   "2026-09-18": {
    "models": 489,
-   "total": 19515541256235
+   "total": 19515600550533
   }
  },
  "models": {
@@ -316,8 +316,8 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.924,
-    "in": 1.1394,
+    "cache_rate": 0.929,
+    "in": 1.0813,
     "out": 50.0
    },
    "name": "Claude Fable 5.1",
@@ -710,23 +710,23 @@
      "total": 255638961229
     },
     "2026-09-18": {
-     "cached": 175140233400,
-     "completion": 3469005050,
-     "prompt": 214544761931,
+     "cached": 188600264470,
+     "completion": 3746448380,
+     "prompt": 231201889809,
      "rank": 17,
-     "reasoning": 1666228886,
-     "requests": 4414294,
-     "spend": 148526.91,
-     "spend_eff": 175145.88,
-     "total": 218013766981
+     "reasoning": 1797980615,
+     "requests": 4743180,
+     "spend": 160387.54,
+     "spend_eff": 179373.71,
+     "total": 234948338189
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.789,
-    "in": 0.6237,
-    "out": 10.0127
+    "cache_rate": 0.795,
+    "in": 0.6136,
+    "out": 10.0117
    },
    "name": "Claude Sonnet 5",
    "order": 4,
@@ -1118,23 +1118,23 @@
      "total": 1327626971301
     },
     "2026-09-18": {
-     "cached": 1579190560555,
-     "completion": 69507764477,
-     "prompt": 1853218682009,
+     "cached": 1562222512992,
+     "completion": 68264947855,
+     "prompt": 1832386999818,
      "rank": 4,
-     "reasoning": 48264077728,
-     "requests": 72995435,
-     "spend": 33545.73,
-     "spend_eff": 52336.78,
-     "total": 1922726446486
+     "reasoning": 47376957067,
+     "requests": 71621344,
+     "spend": 32961.16,
+     "spend_eff": 49775.17,
+     "total": 1900651947673
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.775,
-    "in": 0.03,
-    "out": 0.2739
+    "cache_rate": 0.788,
+    "in": 0.0295,
+    "out": 0.2712
    },
    "name": "DeepSeek V4 Flash",
    "order": 6,
@@ -1317,23 +1317,23 @@
      "total": 327654633791
     },
     "2026-09-18": {
-     "cached": 175558514956,
-     "completion": 7068533854,
-     "prompt": 238708818531,
+     "cached": 178461796089,
+     "completion": 7173706337,
+     "prompt": 242773109864,
      "rank": 13,
-     "reasoning": 4263583183,
-     "requests": 7559195,
-     "spend": 86851.25,
-     "spend_eff": 93657.43,
-     "total": 245777352385
+     "reasoning": 4325167885,
+     "requests": 7674315,
+     "spend": 88325.05,
+     "spend_eff": 92215.84,
+     "total": 249946816201
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.707,
-    "in": 0.281,
-    "out": 3.7511
+    "cache_rate": 0.731,
+    "in": 0.2677,
+    "out": 3.8081
    },
    "name": "Gemini 3.8 Flash",
    "order": 5,
@@ -1585,23 +1585,23 @@
      "total": 1965547008136
     },
     "2026-09-18": {
-     "cached": 1569501161594,
-     "completion": 33023290541,
-     "prompt": 1900679952079,
+     "cached": 1569525516410,
+     "completion": 33031090450,
+     "prompt": 1900736308791,
      "rank": 3,
-     "reasoning": 19784709371,
-     "requests": 49403115,
-     "spend": 67955.56,
-     "spend_eff": 102631.16,
-     "total": 1933703242620
+     "reasoning": 19791078811,
+     "requests": 49411431,
+     "spend": 67960.27,
+     "spend_eff": 91455.89,
+     "total": 1933767399241
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.854,
-    "in": 0.042,
-    "out": 0.4646
+    "cache_rate": 0.873,
+    "in": 0.0401,
+    "out": 0.4618
    },
    "name": "GLM 5.3 Flash",
    "order": 7,
@@ -1993,23 +1993,23 @@
      "total": 1212738314753
     },
     "2026-09-18": {
-     "cached": 995642434110,
-     "completion": 19077599670,
-     "prompt": 1161749874201,
+     "cached": 999687261129,
+     "completion": 19186526307,
+     "prompt": 1166676380560,
      "rank": 5,
-     "reasoning": 7682199812,
-     "requests": 42850444,
-     "spend": 75947.51,
-     "spend_eff": 116712.6,
-     "total": 1180827473871
+     "reasoning": 7725480718,
+     "requests": 43094091,
+     "spend": 76331.37,
+     "spend_eff": 108260.33,
+     "total": 1185862906867
     }
    },
    "default_on": false,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.814,
-    "in": 0.0737,
-    "out": 1.291
+    "cache_rate": 0.824,
+    "in": 0.0716,
+    "out": 1.2926
    },
    "name": "GPT-5.6 Luna",
    "order": 2,
@@ -2171,23 +2171,23 @@
      "total": 830100963226
     },
     "2026-09-18": {
-     "cached": 224285741095,
-     "completion": 1182358202,
-     "prompt": 237372143037,
+     "cached": 224287373106,
+     "completion": 1182376142,
+     "prompt": 237374487974,
      "rank": 15,
-     "reasoning": 456748000,
-     "requests": 1985593,
-     "spend": 413866.16,
-     "spend_eff": 590349.06,
-     "total": 238554501239
+     "reasoning": 456752989,
+     "requests": 1985613,
+     "spend": 413870.99,
+     "spend_eff": 544430.72,
+     "total": 238556864116
     }
    },
    "default_on": true,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.955,
-    "in": 2.0161,
-    "out": 54.4342
+    "cache_rate": 0.956,
+    "in": 2.0205,
+    "out": 54.7741
    },
    "name": "GPT-6 Astra",
    "order": 0,
@@ -2349,23 +2349,23 @@
      "total": 6903751814
     },
     "2026-09-18": {
-     "cached": 4999500069,
-     "completion": 138349797,
-     "prompt": 7592188377,
+     "cached": 5006085711,
+     "completion": 138675707,
+     "prompt": 7601802410,
      "rank": 96,
-     "reasoning": 61546812,
-     "requests": 64375,
-     "spend": 37839.34,
-     "spend_eff": 57733.47,
-     "total": 7730538174
+     "reasoning": 61626465,
+     "requests": 64437,
+     "spend": 37891.74,
+     "spend_eff": 54059.78,
+     "total": 7740478117
     }
    },
    "default_on": true,
    "effective": {
     "asof": "2026-09-19",
-    "cache_rate": 0.674,
-    "in": 6.0639,
-    "out": 51.2908
+    "cache_rate": 0.658,
+    "in": 6.1689,
+    "out": 51.7013
    },
    "name": "GPT-6 Astra Pro",
    "order": 1,
@@ -2559,6 +2559,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-19T09:40+09:00",
+ "updated": "2026-09-19T10:10+09:00",
  "url": "https://openrouter.ai/rankings"
 }
