@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-20T05:10+09:00",
+ "checked": "2026-09-20T05:40+09:00",
  "first_seen": {
   "claude-fable-5.1": {
    "2026-09-11": "2026-09-12T09:10+09:00",
@@ -317,7 +317,7 @@
    "effective": {
     "asof": "2026-09-20",
     "cache_rate": 0.881,
-    "in": 1.5802,
+    "in": 1.5867,
     "out": 50.0
    },
    "name": "Claude Fable 5.1",
@@ -725,8 +725,8 @@
    "effective": {
     "asof": "2026-09-20",
     "cache_rate": 0.803,
-    "in": 0.6008,
-    "out": 10.0231
+    "in": 0.6005,
+    "out": 10.0229
    },
    "name": "Claude Sonnet 5",
    "order": 4,
@@ -1133,8 +1133,8 @@
    "effective": {
     "asof": "2026-09-20",
     "cache_rate": 0.81,
-    "in": 0.0275,
-    "out": 0.2044
+    "in": 0.0276,
+    "out": 0.203
    },
    "name": "DeepSeek V4 Flash",
    "order": 6,
@@ -1331,9 +1331,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-20",
-    "cache_rate": 0.743,
-    "in": 0.2798,
-    "out": 3.9221
+    "cache_rate": 0.741,
+    "in": 0.2819,
+    "out": 3.9237
    },
    "name": "Gemini 3.8 Flash",
    "order": 5,
@@ -1601,7 +1601,7 @@
     "asof": "2026-09-20",
     "cache_rate": 0.889,
     "in": 0.0402,
-    "out": 0.454
+    "out": 0.4537
    },
    "name": "GLM 5.3 Flash",
    "order": 7,
@@ -2009,7 +2009,7 @@
     "asof": "2026-09-20",
     "cache_rate": 0.868,
     "in": 0.0626,
-    "out": 1.377
+    "out": 1.3786
    },
    "name": "GPT-5.6 Luna",
    "order": 2,
@@ -2186,8 +2186,8 @@
    "effective": {
     "asof": "2026-09-20",
     "cache_rate": 0.936,
-    "in": 2.0336,
-    "out": 38.2658
+    "in": 2.0356,
+    "out": 38.6342
    },
    "name": "GPT-6 Astra",
    "order": 0,
@@ -2583,6 +2583,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-20T05:10+09:00",
+ "updated": "2026-09-20T05:40+09:00",
  "url": "https://openrouter.ai/rankings"
 }
