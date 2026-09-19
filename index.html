@@ -1011,6 +1011,8 @@ a.mke:hover .mkt{color:var(--accent)}
 .nh .hmt.rot td.cell{min-width:38px;height:30px;font-size:12px}.nh .hmt.rot td.cell b{font-size:12px}.nh .hmt.rot tr.total td{border-bottom:2px solid var(--line)}.nh .hmt.rot tr.total td.sec{color:var(--muted)}
 .nh .hmt.rot td.sec,.nh .hmt.rot th.sec{position:sticky;left:0;background:var(--panel);z-index:1;box-shadow:1px 0 0 var(--line)}.nh .hmt.rot td.tot,.nh .hmt.rot th.tot{position:sticky;right:0;background:var(--panel);z-index:1}
 .nh .gh small .lsw{margin-left:4px}
+.nh .crit{display:flex;flex-wrap:wrap;gap:6px 18px;background:color-mix(in srgb,var(--accent) 7%,var(--panel));border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));border-left:3px solid var(--accent);border-radius:8px;padding:9px 14px;margin:0 0 12px;font-size:12px;color:var(--ink2)}
+.nh .crit .ci b{color:var(--accent);font-size:10.5px;letter-spacing:.06em;margin-right:6px;font-weight:800}
 .nh .gh i.lg{display:inline-block;width:8px;height:8px;border-radius:2px;margin:0 3px 0 6px;vertical-align:0}
 .nh .ghist .c .st{width:14px;display:flex;flex-direction:column-reverse;border-radius:3px 3px 0 0;overflow:hidden}.nh .ghist .c .st i{display:block;width:100%;opacity:.85}
 .nh .ghist{display:flex;align-items:flex-end;gap:2px;height:80px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 8px 4px;overflow-x:auto}
@@ -1417,7 +1419,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-19 21:50 · 평일 매일 자동 갱신</p>
+   생성 2026-09-19 21:52 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3774,6 +3776,10 @@ window.HOME=(function(){
    top.appendChild(grp('표시',sw([[0,'전체'],[1,'신규 진입만']],G.newOnly?1:0,function(v){ G.newOnly=!!+v; grender(); })));
    var uni=0,fe=0; order.forEach(function(k){ uni+=M[k].universe; fe+=M[k].fetched; }); var tot=rowsAll.length, tn=rowsAll.filter(isNew).length;
    var sm=el('span'); sm.style.cssText='font-size:12px;color:var(--muted);margin-left:auto'; sm.innerHTML='<b style="color:var(--ink);font-size:15px">'+tot+'</b> 신고가 · <b style="color:var(--up)">+'+tn+'</b> 신규 · 대상 '+n0(uni)+'종목('+(uni?(tot/fe*100).toFixed(2):'-')+'%) · 수집 '+(d.updated||'').replace('T',' ').slice(5,16); top.appendChild(sm); g.appendChild(top);
+   // 선정 기준 띠 — 어떤 종목이 대상인지가 숫자 해석의 전제라 맨 위에 항상 보이게
+   var cr=el('div','crit'); var kr=d.min_krw&&d.min_krw.KR, us=d.min_krw&&d.min_krw.US;
+   [['대상','시가총액 해외 '+(us>=10000?(us/10000)+'조':n0(us)+'억')+'원 이상 · 한국 '+(kr>=10000?(kr/10000)+'조':n0(kr)+'억')+'원 이상'],['제외','ETF·ETN·스팩·워런트'],['신고가','종가 > 직전 250거래일 최고 종가 (고가 기준은 고가 > 직전 최고 고가) · 같으면 제외'],['신규','직전 거래일엔 신고가가 아니었던 종목'],['시장',order.map(function(k){return M[k].name+' '+n0(M[k].universe)}).join(' · ')+' 종목']].forEach(function(x){ var it=el('span','ci'); it.appendChild(el('b',null,x[0])); it.appendChild(document.createTextNode(x[1])); cr.appendChild(it); });
+   g.appendChild(cr);
    // ── 히트맵: 섹터 × 시장 (셀 = 신고가 수 · 신규). 행/열/셀을 누르면 아래 표가 그 조건으로 좁혀진다
    var secs={}; order.forEach(function(k){ (M[k].sectors||[]).forEach(function(s){ var o=secs[s.name]=secs[s.name]||{name:s.name,tot:0,nw:0,by:{}}; o.by[k]={n:s[nk],nw:s[wk]}; o.tot+=s[nk]; o.nw+=s[wk]; }); });
    var sl=Object.keys(secs).map(function(k){return secs[k]}).filter(function(x){return x.tot>0}).sort(function(a,b){return b.tot-a.tot});
