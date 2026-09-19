@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-20T01:40+09:00",
+ "checked": "2026-09-20T02:10+09:00",
  "first_seen": {
   "claude-fable-5.1": {
    "2026-09-11": "2026-09-12T09:10+09:00",
@@ -317,7 +317,7 @@
    "effective": {
     "asof": "2026-09-20",
     "cache_rate": 0.885,
-    "in": 1.5372,
+    "in": 1.5451,
     "out": 50.0
    },
    "name": "Claude Fable 5.1",
@@ -724,9 +724,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-20",
-    "cache_rate": 0.799,
-    "in": 0.6091,
-    "out": 10.0243
+    "cache_rate": 0.8,
+    "in": 0.6056,
+    "out": 10.0241
    },
    "name": "Claude Sonnet 5",
    "order": 4,
@@ -1132,9 +1132,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-20",
-    "cache_rate": 0.814,
-    "in": 0.0269,
-    "out": 0.2138
+    "cache_rate": 0.813,
+    "in": 0.0271,
+    "out": 0.2114
    },
    "name": "DeepSeek V4 Flash",
    "order": 6,
@@ -1332,8 +1332,8 @@
    "effective": {
     "asof": "2026-09-20",
     "cache_rate": 0.742,
-    "in": 0.2814,
-    "out": 3.9533
+    "in": 0.2811,
+    "out": 3.9463
    },
    "name": "Gemini 3.8 Flash",
    "order": 5,
@@ -1599,9 +1599,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-20",
-    "cache_rate": 0.887,
+    "cache_rate": 0.888,
     "in": 0.0408,
-    "out": 0.4561
+    "out": 0.4558
    },
    "name": "GLM 5.3 Flash",
    "order": 7,
@@ -2009,7 +2009,7 @@
     "asof": "2026-09-20",
     "cache_rate": 0.866,
     "in": 0.0628,
-    "out": 1.3692
+    "out": 1.3712
    },
    "name": "GPT-5.6 Luna",
    "order": 2,
@@ -2186,8 +2186,8 @@
    "effective": {
     "asof": "2026-09-20",
     "cache_rate": 0.935,
-    "in": 2.0129,
-    "out": 37.046
+    "in": 2.019,
+    "out": 37.213
    },
    "name": "GPT-6 Astra",
    "order": 0,
@@ -2363,9 +2363,9 @@
    "default_on": true,
    "effective": {
     "asof": "2026-09-20",
-    "cache_rate": 0.695,
-    "in": 5.7761,
-    "out": 54.9099
+    "cache_rate": 0.7,
+    "in": 5.7244,
+    "out": 55.0848
    },
    "name": "GPT-6 Astra Pro",
    "order": 1,
@@ -2583,6 +2583,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-20T01:40+09:00",
+ "updated": "2026-09-20T02:10+09:00",
  "url": "https://openrouter.ai/rankings"
 }
