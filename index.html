@@ -1464,7 +1464,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-19 23:21 · 평일 매일 자동 갱신</p>
+   생성 2026-09-19 23:27 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3916,7 +3916,7 @@ window.HOME=(function(){
  function el(tag,cls,txt){var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
  function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
  var LIVE='https://api.spartanterminal.com/pub/';
- var H={vis:false,mk:'kr',sub:'all',grp:1,sat:3,sz:{kr:'sqrt',us:'lin'},data:null,timer:null,full:false,seq:0,z:1,tx:0,ty:0};   // z·tx·ty: 확대 배율과 이동(px)   // sz: 칸 크기 lin=시총 비례, sqrt=√시총(삼성전자·하이닉스가 절반을 먹는 국장에서 작은 종목도 보이게)
+ var H={vis:false,mk:'kr',sub:'all',grp:2,sat:3,sz:{kr:'sqrt',us:'lin'},data:null,timer:null,full:false,seq:0,z:1,tx:0,ty:0};   // z·tx·ty: 확대 배율과 이동(px)   // sz: 칸 크기 lin=시총 비례, sqrt=√시총(삼성전자·하이닉스가 절반을 먹는 국장에서 작은 종목도 보이게)
  try{ var sv=JSON.parse(localStorage.getItem('hm_set')||'{}'); ['mk','sub','grp','sat'].forEach(function(k){ if(sv[k]!=null) H[k]=sv[k]; }); if(sv.sz) H.sz=sv.sz; }catch(e){}
  function save(){ try{ localStorage.setItem('hm_set',JSON.stringify({mk:H.mk,sub:H.sub,grp:H.grp,sat:H.sat,sz:H.sz})); }catch(e){} }
  function tabOn(){ var p=document.getElementById('p-hmap'); return p&&!p.hidden; }
@@ -3926,7 +3926,7 @@ window.HOME=(function(){
    var c=document.getElementById('hm-ctl'); if(!c) return; c.innerHTML='';
    c.appendChild(grp('시장',sw([['kr','국장'],['us','미장']],H.mk,function(v){ H.mk=v; H.data=null; H.z=1; H.tx=0; H.ty=0; save(); ctl(); load(); })));
    if(H.mk==='kr') c.appendChild(grp('범위',sw([['all','코스피+코스닥'],['kospi','코스피'],['kosdaq','코스닥']],H.sub,function(v){ H.sub=v; save(); render(); })));
-   c.appendChild(grp('묶음',sw([[1,'섹터'],[0,'없음']],H.grp,function(v){ H.grp=+v; save(); render(); })));
+   var gw=grp('묶음',sw([[2,'업종(중분류)'],[1,'섹터(대분류)'],[0,'없음']],H.grp,function(v){ H.grp=+v; save(); render(); })); gw.title='대분류 = TRBC 경제섹터 11개(한국은 KRX 업종을 같은 분류로) · 중분류 = TRBC 비즈니스 섹터(자동차·부품 / 소매·유통 / 반도체·하드웨어 …), 한국은 KRX 업종 25개'; c.appendChild(gw);
    var szw=grp('칸 크기',sw([['lin','시총 비례'],['sqrt','√시총']],H.sz[H.mk]||'lin',function(v){ H.sz[H.mk]=v; save(); render(); })); szw.title='√시총: 대형주 비중을 눌러 작은 종목도 이름이 보이게(면적이 시총에 비례하지 않음)'; c.appendChild(szw);
    c.appendChild(grp('색 범위',sw([[2,'±2%'],[3,'±3%'],[5,'±5%'],[10,'±10%']],H.sat,function(v){ H.sat=+v; save(); render(); })));
    var fb=el('button','fsb','⛶ 전체화면'); fb.type='button'; fb.addEventListener('click',function(){ setFull(!H.full); }); c.appendChild(fb);
@@ -3962,7 +3962,7 @@ window.HOME=(function(){
  var tip=null;
  function showTip(ev,i,unit){ if(!tip){ tip=el('div','tip'); document.body.appendChild(tip); } tip.innerHTML='';
    var b=el('b',null,i.n); b.appendChild(el('small',null,' '+(i.c.indexOf('.')>0?i.c.split('.')[0]:i.c))); tip.appendChild(b);
-   [['현재가',n0(i.p,i.p<100?2:0)],['등락률',(i.r>0?'+':'')+(i.r==null?'-':i.r.toFixed(2))+'%'],['시총',H.mk==='kr'?(i.v>=10000?(i.v/10000).toFixed(1)+'조':n0(i.v)+'억'):('$'+n0(i.v,i.v>=100?0:1)+'B')],['섹터',i.s+(i.i?' · '+i.i:'')],['시장',i.m+(i.x==='nxt'?' · NXT':i.x==='pre'?' · 프리마켓':i.x==='after'?' · 애프터':'')]].forEach(function(r){ var d=el('div','r'); d.appendChild(el('span',null,r[0])); d.appendChild(el('span',null,r[1])); tip.appendChild(d); });
+   [['현재가',n0(i.p,i.p<100?2:0)],['등락률',(i.r>0?'+':'')+(i.r==null?'-':i.r.toFixed(2))+'%'],['시총',H.mk==='kr'?(i.v>=10000?(i.v/10000).toFixed(1)+'조':n0(i.v)+'억'):('$'+n0(i.v,i.v>=100?0:1)+'B')],['섹터',i.s+(i.s2&&i.s2!==i.s?' › '+i.s2:'')+(i.i&&i.i!==i.s2?' › '+i.i:'')],['시장',i.m+(i.x==='nxt'?' · NXT':i.x==='pre'?' · 프리마켓':i.x==='after'?' · 애프터':'')]].forEach(function(r){ var d=el('div','r'); d.appendChild(el('span',null,r[0])); d.appendChild(el('span',null,r[1])); tip.appendChild(d); });
    moveTip(ev); tip.style.display='block'; }
  function moveTip(ev){ if(!tip) return; var x=ev.clientX+14, y=ev.clientY+14; if(x+220>innerWidth) x=ev.clientX-230; if(y+140>innerHeight) y=ev.clientY-150; tip.style.left=x+'px'; tip.style.top=y+'px'; }
  function hideTip(){ if(tip) tip.style.display='none'; }
@@ -3979,7 +3979,8 @@ window.HOME=(function(){
      var b1=el('b',null,String(up)); st.appendChild(b1); st.appendChild(document.createTextNode('↑ ')); var b2=el('b',null,String(dn)); st.appendChild(b2); st.appendChild(document.createTextNode('↓ / '+tot+' · 시총가중 '+(capw>0?'+':'')+capw.toFixed(2)+'%')); }
    var wf=(H.sz[H.mk]==='sqrt')?function(i){return Math.sqrt(i.v)}:function(i){return i.v};
    var groups=[];
-   if(H.grp){ var by={}; items.forEach(function(i){ (by[i.s]=by[i.s]||[]).push(i); }); groups=Object.keys(by).map(function(k){ var arr=by[k].sort(function(a,b){return b.v-a.v}); return {name:k,items:arr,w:arr.reduce(function(a,i){return a+wf(i)},0)}; }).sort(function(a,b){return b.w-a.w}); }
+   var gk=function(i){ return H.grp===2?(i.s2||i.s):i.s; };
+   if(H.grp){ var by={}; items.forEach(function(i){ (by[gk(i)]=by[gk(i)]||[]).push(i); }); groups=Object.keys(by).map(function(k){ var arr=by[k].sort(function(a,b){return b.v-a.v}); return {name:k,items:arr,w:arr.reduce(function(a,i){return a+wf(i)},0)}; }).sort(function(a,b){return b.w-a.w}); }
    else groups=[{name:null,items:items.slice().sort(function(a,b){return b.v-a.v}),w:items.reduce(function(a,i){return a+wf(i)},0)}];
    var frag=document.createDocumentFragment();
    var GH=H.grp?16:0;
