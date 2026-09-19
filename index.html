@@ -1417,7 +1417,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-19 21:47 · 평일 매일 자동 갱신</p>
+   생성 2026-09-19 21:50 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -3677,10 +3677,10 @@ window.HOME=(function(){
  function n0(v,d){ return v==null?'-':(+v).toLocaleString(undefined,{minimumFractionDigits:d||0,maximumFractionDigits:d||0}); }
  function pctTxt(v){ return v==null?'-':(v>0?'+':'')+(+v).toFixed(2)+'%'; }
  function eok(v){ return v==null?'-':v>=10000?(v/10000).toFixed(1)+'조':n0(v)+'억'; }
- var N={vis:false,mrkt:'000',basis:'2',dt:'250',noEtf:true,sort:'pct',desc:true,data:null,timer:null,seq:0,date:null,idx:null};
+ var N={vis:false,mrkt:'000',basis:'2',dt:'250',noEtf:true,minCap:0,sort:'pct',desc:true,data:null,timer:null,seq:0,date:null,idx:null};
  function kst(){ return new Date(Date.now()+9*3600e3).toISOString().slice(0,10); }
- try{ var sv=JSON.parse(localStorage.getItem('nh_set')||'{}'); ['mrkt','basis','dt','noEtf','sort','desc'].forEach(function(k){ if(sv[k]!=null) N[k]=sv[k]; }); }catch(e){}
- function save(){ try{ localStorage.setItem('nh_set',JSON.stringify({mrkt:N.mrkt,basis:N.basis,dt:N.dt,noEtf:N.noEtf,sort:N.sort,desc:N.desc})); }catch(e){} }
+ try{ var sv=JSON.parse(localStorage.getItem('nh_set')||'{}'); ['mrkt','basis','dt','noEtf','minCap','sort','desc'].forEach(function(k){ if(sv[k]!=null) N[k]=sv[k]; }); }catch(e){}
+ function save(){ try{ localStorage.setItem('nh_set',JSON.stringify({mrkt:N.mrkt,basis:N.basis,dt:N.dt,noEtf:N.noEtf,minCap:N.minCap,sort:N.sort,desc:N.desc})); }catch(e){} }
  function memberOn(){ return !!(window.MEMBER&&MEMBER.logged()); }
  function tabOn(){ var p=document.getElementById('p-nhigh'); return p&&!p.hidden; }
  function sw(opts,cur,set){ var w=el('span','lsw'); opts.forEach(function(o){ var b=el('button',String(o[0])===String(cur)?'on':'',o[1]); b.type='button'; b.addEventListener('click',function(){ [].forEach.call(w.children,function(x){x.classList.remove('on')}); b.classList.add('on'); set(o[0]); }); w.appendChild(b); }); return w; }
@@ -3691,6 +3691,7 @@ window.HOME=(function(){
    c.appendChild(grp('기준',sw([['2','종가'],['1','장중 고가']],N.basis,function(v){N.basis=v; save(); load();})));
    c.appendChild(grp('시장',sw([['000','전체'],['001','코스피'],['101','코스닥']],N.mrkt,function(v){N.mrkt=v; save(); load();})));
    var et=sw([[1,'ETF 제외'],[0,'ETF 포함']],N.noEtf?1:0,function(v){ N.noEtf=!!+v; save(); render(); }); et.title='ETF·ETN·스팩 제외'; c.appendChild(et);
+   var mc=grp('시총',sw([[0,'전체'],[1000,'1,000억↑'],[5000,'5,000억↑'],[10000,'1조↑']],N.minCap||0,function(v){ N.minCap=+v; save(); load(); })); mc.title='시가총액 하한 · 글로벌 요약의 한국은 5,000억↑ 기준'; c.appendChild(mc);
    var dg=el('span'); dg.style.cssText='display:inline-flex;align-items:center;gap:6px'; dg.appendChild(el('span','llab','날짜 '));
    var nav=el('span','dnav'); var cur=N.date||kst(); var WD=['일','월','화','수','목','금','토'];
    var prev=el('button',null,'‹'); prev.type='button'; prev.title='이전 거래일'; nav.appendChild(prev);
@@ -3709,7 +3710,7 @@ window.HOME=(function(){
    if(!memberOn()){ b.innerHTML=''; var lg=el('div','wlogin'); lg.appendChild(document.createTextNode('52주 신고가 종목은 증권사 집계 데이터라 회원에게만 열립니다. 오늘 종가(또는 장중 고가) 기준으로 52주·60일·20일 신고가에 닿은 종목을 등락률·거래량·저가 대비로 봅니다.')); var bt=el('button',null,'로그인 / 회원가입'); bt.type='button'; bt.addEventListener('click',function(){MEMBER.open('login')}); lg.appendChild(document.createElement('br')); lg.appendChild(bt); b.appendChild(lg); return; }
    if(!N.vis||!tabOn()) return;
    var seq=++N.seq; if(window.LOADBAR) LOADBAR.start(); if(!N.data){ b.innerHTML=''; b.appendChild(el('div','lmsg','불러오는 중…')); }
-   MEMBER.get('newhigh_hist?basis='+N.basis+'&dt='+N.dt).then(function(d){ N.idx=d.dates||[]; renderIdx(); }).catch(function(){});
+   MEMBER.get('newhigh_hist?basis='+N.basis+'&dt='+N.dt+'&mincap='+(N.minCap||0)).then(function(d){ N.idx=d.dates||[]; renderIdx(); }).catch(function(){});
    var req=N.date?MEMBER.get('newhigh_hist?date='+N.date+'&basis='+N.basis+'&dt='+N.dt).then(function(d){ d.hist=true; d.open=false; d.rows=(d.rows||[]).filter(function(r){ return N.mrkt==='000'||(N.mrkt==='001'?r.mkt==='코스피':r.mkt==='코스닥'); }); return d; }):MEMBER.get('newhigh?mrkt='+N.mrkt+'&basis='+N.basis+'&dt='+N.dt);
    req.then(function(d){ if(seq!==N.seq) return; if(window.LOADBAR) LOADBAR.done(); N.fail=0; N.data=d; render(); if(!N.date) N.timer=setTimeout(load,60000); })
      .catch(function(e){ if(seq!==N.seq) return; if(window.LOADBAR) LOADBAR.done(); if(!memberOn()){ load(); return; }
@@ -3720,11 +3721,11 @@ window.HOME=(function(){
  var COLS=[['pct','등락률',''],['price','현재가',''],['vol_pct','거래량 전일비','opt'],['from_high','고가 대비','opt'],['mcap','시총','opt']];
  function render(){
    var b=document.getElementById('nh-body'); if(!b) return; b.innerHTML=''; var d=N.data; if(!d) return;
-   var rows=(d.rows||[]).filter(function(r){ return !(N.noEtf&&r.etf); });
+   var rows=(d.rows||[]).filter(function(r){ return !(N.noEtf&&r.etf)&&!(N.minCap&&!(r.mcap>=N.minCap)); });
    rows.sort(function(a,c){ var x=a[N.sort], y=c[N.sort]; if(x==null) return 1; if(y==null) return -1; return N.desc?y-x:x-y; });
    var st=document.getElementById('nh-st'); if(st) st.textContent=d.hist?(d.date+' 기록 · '+(d.at==='backfill'?'네이버 일봉으로 계산(ETF 제외)':(d.at||'')+' 저장분')):(d.at+' 기준 · '+(d.open?'장중(60초 갱신)':'장 마감 · 오늘 종가 기준')+' · KRX+NXT 통합');
    var sm=el('div','sum'); var big=rows.filter(function(r){return r.size==='대형주'}).length, mid=rows.filter(function(r){return r.size==='중형주'}).length;
-   var s1=el('span'); s1.appendChild(el('b',null,String(rows.length))); s1.appendChild(document.createTextNode('종목')); sm.appendChild(s1);
+   var s1=el('span'); s1.appendChild(el('b',null,String(rows.length))); s1.appendChild(document.createTextNode('종목'+(N.minCap?' · 시총 '+(N.minCap>=10000?(N.minCap/10000)+'조':n0(N.minCap)+'억')+'↑':''))); sm.appendChild(s1);
    var s2=el('span'); s2.appendChild(el('b',null,String(big))); s2.appendChild(document.createTextNode('대형주 · ')); s2.appendChild(el('b',null,String(mid))); s2.appendChild(document.createTextNode('중형주')); sm.appendChild(s2);
    var up=rows.filter(function(r){return r.pct>0}).length; var s3=el('span'); s3.appendChild(el('b',null,String(up))); s3.appendChild(document.createTextNode('종목 상승 마감/진행')); sm.appendChild(s3);
    b.appendChild(sm);
@@ -3745,7 +3746,7 @@ window.HOME=(function(){
    b.appendChild(el('p','note','증권사 집계(KRX+NXT 통합). 기준 [종가] = 오늘 종가(장중엔 현재가)가 기간 내 모든 종가보다 높은 종목, [장중 고가] = 오늘 고가가 기간 내 고가를 넘은 종목. 고가 대비 = 기간의 장중 최고가(일봉 고가) 대비 현재가 — 종가 기준 목록에서도 장중 고가로 계산하니 종가는 신고가여도 장중 고가엔 못 미치면 음수가 나옵니다(마우스를 올리면 저가 대비도 표시). 거래량 전일비 100% 초과는 붉게. 열 제목을 누르면 정렬, 종목명을 누르면 차트(아래로 내리면 투자자별 매매).'));
  }
  function renderIdx(){ var ix=document.getElementById('nh-idx'); if(!ix) return; ix.innerHTML=''; var idx=N.idx||[]; if(!idx.length) return;
-   var h=el('div'); h.style.cssText='margin:16px 0 0;font-size:13px;font-weight:800;display:flex;gap:8px;align-items:baseline'; h.appendChild(document.createTextNode('일별 신고가 종목 수')); var sm=el('small',null,(N.dt==='250'?'52주':N.dt+'일')+' · '+(N.basis==='2'?'종가':'장중 고가')+' 기준 · ETF 제외 · 막대를 누르면 그날 목록'); sm.style.cssText='font-size:11px;color:var(--faint);font-weight:500'; h.appendChild(sm); ix.appendChild(h);
+   var h=el('div'); h.style.cssText='margin:16px 0 0;font-size:13px;font-weight:800;display:flex;gap:8px;align-items:baseline'; h.appendChild(document.createTextNode('일별 신고가 종목 수')); var sm=el('small',null,(N.dt==='250'?'52주':N.dt+'일')+' · '+(N.basis==='2'?'종가':'장중 고가')+' 기준 · ETF 제외'+(N.minCap?' · 시총 '+(N.minCap>=10000?(N.minCap/10000)+'조':n0(N.minCap)+'억')+'↑':'')+' · 막대를 누르면 그날 목록'); sm.style.cssText='font-size:11px;color:var(--faint);font-weight:500'; h.appendChild(sm); ix.appendChild(h);
    var mx=Math.max.apply(null,idx.map(function(x){return x.n}))||1; var wrap=el('div','tl'); var sel=N.date||kst(); var WD=['일','월','화','수','목','금','토'];
    idx.slice(-80).forEach(function(x){ var col=el('div','c'+(sel===x.date?' on':'')); var wd=new Date(x.date+'T00:00:00Z').getUTCDay(); if(wd===1) col.classList.add('wk'); col.title=x.date+'('+WD[wd]+') · 전체 '+x.n+' (코스피 '+x.kospi+' · 코스닥 '+x.kosdaq+')'+(x.at==='backfill'?' · 일봉으로 계산':'');
      col.appendChild(el('div','n',String(x.n))); var bar=el('div','b'+(x.at==='backfill'?' bf':'')); bar.style.height=Math.max(3,Math.round(x.n/mx*58))+'px'; col.appendChild(bar); col.appendChild(el('div','d',x.date.slice(5).replace('-','/'))); col.addEventListener('click',function(){ N.date=x.date>=kst()?null:x.date; ctl(); load(); }); wrap.appendChild(col); });
