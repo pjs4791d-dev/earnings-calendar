@@ -510,6 +510,7 @@ a.mke:hover .mkt{color:var(--accent)}
 /* 패널 그리드 */
 .hg{display:grid;grid-template-columns:1fr;gap:12px}
 .hrow{grid-column:1/-1;display:grid;grid-template-columns:1fr;gap:12px}@media(min-width:960px){.hrow{grid-template-columns:1fr 1fr 1fr}}
+.hrow2{grid-column:1/-1;display:grid;grid-template-columns:1fr;gap:12px}@media(min-width:960px){.hrow2{grid-template-columns:1fr 2fr}}
 @media(min-width:960px){.hg{grid-template-columns:1fr 1fr}}
 @media(min-width:1400px){.hg{grid-template-columns:1fr 1fr 1fr}.hg .wide{grid-column:span 2}}
 .hp{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow);min-width:0}
@@ -1476,7 +1477,7 @@ a.mke:hover .mkt{color:var(--accent)}
 
  <p class="foot"><a href="https://t.me/SpartanResearch" target="_blank" rel="noopener">스파르탄 리서치 · t.me/SpartanResearch</a><br>
    출처: 금융감독원 전자공시시스템(DART) · 자동 집계<br>
-   생성 2026-09-20 00:38 · 평일 매일 자동 갱신</p>
+   생성 2026-09-20 00:57 · 평일 매일 자동 갱신</p>
 </div>
 
 <script>
@@ -2440,9 +2441,10 @@ window.HOME=(function(){
    panel('hm-sect','오늘의 업종','시총가중 등락률 · 국장 3초 · 미장 5초',['히트맵 →','#hmap']);
    panel('hm-rank','순매수 상위','외국인 · 기관 · 장중 잠정',['순매수 상위 →','#rank']);
    panel('hm-nh','52주 신고가 · 오늘','한국 · 종가 기준 · 시총순',['52주 신고가 →','#nhigh']);
-   panel('hm-cal','주요 일정','오늘·내일 · ★★★ 지표와 휴장',['캘린더 →','#mkt']);
-   panel('hm-flow','오늘 수급','누적 순매수',['수급 →','#flow']);
-   panel('hm-earn','다가오는 실적','DART 공시',['실적 일정 →','#cal'],true);
+   panel('hm-flow','오늘 수급','통합(KRX+NXT) 누적 순매수',['수급 →','#flow']);
+   var row2=el('div','hrow2'); g.appendChild(row2);                                                 // 주요 일정 · 다가오는 실적 한 줄
+   panel('hm-cal','주요 일정','오늘·내일 · ★★★ 지표와 휴장',['캘린더 →','#mkt'],false,row2);
+   panel('hm-earn','다가오는 실적','DART 공시',['실적 일정 →','#cal'],false,row2);
    panel('hm-ai','AI 데이터','LLM 토큰 가격 지수 · OpenRouter 토큰 사용량',['자세히 →','#sd'],true);
    renderCal(); renderEarn(); renderAI();
  }
@@ -2451,8 +2453,9 @@ window.HOME=(function(){
  function tickHome(){
    clearTimeout(H.timer); if(!visible.home||!tabOn('home')) return;
    var nfq=(window.MEMBER&&MEMBER.logged())?MEMBER.get('nightfut').catch(function(){return null}):Promise.resolve(null);   // 코스피200 야간선물(KIS, 회원 전용)
-   Promise.all([getJ(LIVE+'quotes.json').catch(function(){return null}), getJ(LIVE+'flow_today.json').catch(function(){return null}), getJ(LIVE+'macro.json').catch(function(){return null}), getJ(LIVE+'quotes_hist.json').catch(function(){return null}), getJ(LIVE+'nxt_daily.json').catch(function(){return null}), nfq])
-   .then(function(r){ netBanner(!r[0]&&!r[1]&&!r[2]&&!r[3]); if(r[4]) H.nxt=r[4]; if(r[2]) H.macro=r[2]; if(r[5]&&r[5].item) H.nf=r[5];
+   var kwq=(window.MEMBER&&MEMBER.logged())?MEMBER.get('kiwoom').catch(function(){return null}):Promise.resolve(null);   // 오늘 수급 통합(회원)
+   Promise.all([getJ(LIVE+'quotes.json').catch(function(){return null}), getJ(LIVE+'flow_today.json').catch(function(){return null}), getJ(LIVE+'macro.json').catch(function(){return null}), getJ(LIVE+'quotes_hist.json').catch(function(){return null}), getJ(LIVE+'nxt_daily.json').catch(function(){return null}), nfq, getJ(LIVE+'nxt_split.json').catch(function(){return null}), kwq])
+   .then(function(r){ netBanner(!r[0]&&!r[1]&&!r[2]&&!r[3]); if(r[4]) H.nxt=r[4]; if(r[2]) H.macro=r[2]; if(r[5]&&r[5].item) H.nf=r[5]; if(r[6]) H.split=r[6]; H.kwToday=r[7]&&r[7].today?r[7]:null;
      var good=r[0]&&r[0].items&&r[0].items.some(function(i){return i.code==='KOSPI'&&i.price!=null});     // 빈 응답이면 마지막 정상값으로 유지
      if(good){ H.lastQ=r[0]; H.lastHist=r[3]||H.lastHist; } if(H.lastQ) renderQuotes(H.lastQ, H.lastHist, H.macro);
      if(r[1]) renderFlowSummary(r[1]); if(r[2]) renderMacro(r[2], H.lastQ||r[0]); if(r[2]) renderFed(); renderExtras();
@@ -2534,13 +2537,18 @@ window.HOME=(function(){
    var tb=el('tbody');
    function row(name,sub,vals,unit){ var r=el('tr'); var c0=el('td',null,name); if(sub) c0.appendChild(el('small',null,sub)); r.appendChild(c0);
      vals.forEach(function(v){ r.appendChild(el('td',v>0?'pu':v<0?'pd':'',v==null?'-':(unit==='계약'?sgn(v):fmtEok(v)))); }); tb.appendChild(r); }
-   Object.keys(f.markets).forEach(function(k){ var m=f.markets[k]; var last=m.series[m.series.length-1]; if(!last) return; any=true;
-     row(m.name, m.unit==='계약'?'계약':null, ['개인','외국인','기관계'].map(function(s){return last[s]}), m.unit); });
+   // 통합(KRX+NXT): 회원은 키움 통합 정확치, 비회원은 KRX 1분 + NXT 시장별 추정(15분, nxt_split 오늘 행). 선물은 KRX 만.
+   var fdate=f.date?f.date.slice(0,4)+'-'+f.date.slice(4,6)+'-'+f.date.slice(6,8):null; var sp=(H.split&&H.split.rows||[]).filter(function(r){return r.t===fdate})[0];
+   var kw=memberOn()&&H.kwToday&&H.kwToday.date===f.date?H.kwToday:null; var src=kw?'키움 통합 정확치':(sp?'KRX + NXT 추정':'KRX 체결분');
+   [['01','코스피','KOSPI','STK'],['02','코스닥','KOSDAQ','KSQ'],['03','K200 선물',null,null]].forEach(function(k){ var m=f.markets[k[0]]; if(!m) return; var last=m.series[m.series.length-1]; if(!last) return; any=true;
+     var vals=['개인','외국인','기관계'].map(function(s){return last[s]}); var subt=null;
+     if(k[2]&&kw&&kw.today&&kw.today[k[2]]&&kw.today[k[2]].ALL){ var t=kw.today[k[2]].ALL; vals=[t.ind,t.frgnr,t.orgn]; subt='통합'; }
+     else if(k[3]&&sp&&sp[k[3]]){ vals=vals.map(function(v,i){ var add=sp[k[3]][['개인','외국인','기관계'][i]]; return v==null?null:v+(add||0); }); subt='KRX+NXT'+(sp.cal===false?' 잠정':''); }
+     row(k[1], k[0]==='03'?'계약 · KRX':subt, vals, m.unit); });
    if(!any){ p.appendChild(el('div','lmsg','오늘은 아직 집계된 수급이 없습니다 (장중 09:00~ 갱신)')); return; }
-   if(H.nxt&&H.nxt.rows&&H.nxt.rows[0]){ var n=H.nxt.rows[0]; row('NXT', n.t.slice(5).replace('-','/')+' 확정치', ['개인','외국인','기관계'].map(function(s){return n[s]}), '억원'); }
    wrap.appendChild(tb); p.appendChild(wrap);
    var l=f.markets['01'].series[f.markets['01'].series.length-1], dd=f.date?f.date.slice(4,6).replace(/^0/,'')+'/'+f.date.slice(6,8).replace(/^0/,''):'';
-   var sub=document.querySelector('#hm-flow .hs'); if(sub) sub.textContent=dd+(l?' '+l.t+' 기준 · ':' · ')+'KRX 체결분 · 억원 / 선물은 계약'+(f.date&&f.date!==kstToday().replace(/-/g,'')?' · 마지막 거래일':'');
+   var sub=document.querySelector('#hm-flow .hs'); if(sub) sub.textContent=dd+(l?' '+l.t+' 기준 · ':' · ')+src+' · 억원 / 선물은 계약'+(f.date&&f.date!==kstToday().replace(/-/g,'')?' · 마지막 거래일':'');
  }
  function renderCal(){
    var p=document.querySelector('#hm-cal .hb'); if(!p) return;
