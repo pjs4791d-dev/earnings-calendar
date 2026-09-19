@@ -1,5 +1,5 @@
 {
- "checked": "2026-09-20T03:40+09:00",
+ "checked": "2026-09-20T04:10+09:00",
  "first_seen": {
   "claude-fable-5.1": {
    "2026-09-11": "2026-09-12T09:10+09:00",
@@ -317,7 +317,7 @@
    "effective": {
     "asof": "2026-09-20",
     "cache_rate": 0.883,
-    "in": 1.5613,
+    "in": 1.5649,
     "out": 50.0
    },
    "name": "Claude Fable 5.1",
@@ -1133,8 +1133,8 @@
    "effective": {
     "asof": "2026-09-20",
     "cache_rate": 0.81,
-    "in": 0.0274,
-    "out": 0.2074
+    "in": 0.0275,
+    "out": 0.2067
    },
    "name": "DeepSeek V4 Flash",
    "order": 6,
@@ -1331,9 +1331,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-20",
-    "cache_rate": 0.739,
-    "in": 0.2818,
-    "out": 3.9189
+    "cache_rate": 0.74,
+    "in": 0.2817,
+    "out": 3.9158
    },
    "name": "Gemini 3.8 Flash",
    "order": 5,
@@ -1599,9 +1599,9 @@
    "default_on": false,
    "effective": {
     "asof": "2026-09-20",
-    "cache_rate": 0.888,
-    "in": 0.0405,
-    "out": 0.4548
+    "cache_rate": 0.889,
+    "in": 0.0404,
+    "out": 0.4545
    },
    "name": "GLM 5.3 Flash",
    "order": 7,
@@ -2008,8 +2008,8 @@
    "effective": {
     "asof": "2026-09-20",
     "cache_rate": 0.867,
-    "in": 0.0628,
-    "out": 1.3743
+    "in": 0.0627,
+    "out": 1.375
    },
    "name": "GPT-5.6 Luna",
    "order": 2,
@@ -2583,6 +2583,6 @@
  },
  "source": "OpenRouter · 모델별 일일 토큰 사용량",
  "unit": "tokens",
- "updated": "2026-09-20T03:40+09:00",
+ "updated": "2026-09-20T04:10+09:00",
  "url": "https://openrouter.ai/rankings"
 }
